@@ -3,11 +3,11 @@
 import { randomUUID } from "node:crypto";
 import { dispatchSentinel, findRunByRequest } from "@/lib/github";
 import { redisConfigured, redis } from "@/lib/redis";
+import { scenarioAvailability } from "@/lib/scenarios";
 import { HttpError, acquireLock, clientKey, json, passcodeMatches, rateLimit, readJsonBody, releaseLock } from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 
-const WEB_SCENARIOS = new Set(["daily", "intel-demo", "peer-incident", "early-signal", "php2shell", "nas", "insider-path", "mobile-sdk"]);
 const LEASE = "run:web:lease";
 const COOLDOWN = "run:web:cooldown";
 
@@ -19,7 +19,9 @@ export async function POST(req: Request): Promise<Response> {
     if (!(await rateLimit(`rl:run:${clientKey(req)}`, 10, 60))) return json({ error: "嘗試次數過多，請稍後再試" }, 429);
     if (!passcodeMatches(body.passcode, process.env.DEMO_PASSCODE)) return json({ error: "密碼錯誤" }, 401);
     const scenario = String(body.scenario ?? "");
-    if (!WEB_SCENARIOS.has(scenario)) return json({ error: "不允許的情境" }, 400);
+    const availability = scenarioAvailability(scenario);
+    if (availability === "unknown") return json({ error: "不允許的情境" }, 400);
+    if (availability === "p2") return json({ error: "此情境屬 P2，尚未啟用（沒有輸入資料）", skipped: true }, 409);
     let admin = false;
     if (body.admin_passcode !== undefined) {
       admin = passcodeMatches(body.admin_passcode, process.env.ADMIN_PASSCODE);   // 未設定 ADMIN_PASSCODE 時永遠 false

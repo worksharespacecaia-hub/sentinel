@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-
-const WEB_SCENARIOS = ["daily", "intel-demo", "peer-incident", "early-signal", "php2shell", "nas", "insider-path", "mobile-sdk"];
+import { P2_SCENARIOS, WEB_SCENARIOS } from "@/lib/scenarios";
 
 interface Job { name: string; status: string; conclusion: string | null }
 
@@ -57,7 +56,7 @@ export default function RunButton({ sources }: { sources: string[] }) {
     <form onSubmit={submit}>
       <p className="muted">網站觸發一律使用伺服器設定的執行模式（預設重播，不花 API 費用），不會使用訂閱方案；每小時最多一次。</p>
       <label>情境 <select value={scenario} onChange={(e) => setScenario(e.target.value)}>
-        {options.map((s) => <option key={s} value={s}>{s}</option>)}</select></label>{" "}
+        {options.map((s) => <option key={s} value={s} disabled={P2_SCENARIOS.has(s)}>{P2_SCENARIOS.has(s) ? `${s}（P2 未啟用）` : s}</option>)}</select></label>{" "}
       <label>示範密碼 <input type="password" value={passcode} onChange={(e) => setPasscode(e.target.value)} required autoComplete="off" /></label>{" "}
       <details style={{ display: "inline-block" }}><summary className="muted">管理者</summary>
         <input type="password" placeholder="管理者密碼（只略過冷卻）" value={admin} onChange={(e) => setAdmin(e.target.value)} autoComplete="off" />

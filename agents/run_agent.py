@@ -14,7 +14,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-from context import OUT_DIR, build_ctx  # noqa: E402
+from context import OUT_DIR, ScenarioDisabled, build_ctx  # noqa: E402
 
 ORDER = ["orchestrator", "a0", "a1", "a2", "a3", "a4", "a5"]
 
@@ -39,7 +39,11 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--scenario")
     ap.add_argument("--fresh", action="store_true", help="執行前清空 out/（本機）")
     a = ap.parse_args(argv)
-    ctx = build_ctx(mode=a.mode, scenario=a.scenario)
+    try:
+        ctx = build_ctx(mode=a.mode, scenario=a.scenario)
+    except ScenarioDisabled as exc:
+        print(f"[{a.agent}] 未啟用：{exc}", file=sys.stderr)
+        return 2
     if a.fresh and OUT_DIR.exists():
         shutil.rmtree(OUT_DIR)
     names = ORDER if a.agent == "all" else [a.agent]

@@ -149,6 +149,36 @@ test("隔離：不同 simulation_id 可重複排練、互不抑制；模擬與�
   assert.equal(await redis("EXISTS", "rt:real:ipfs:dba-alice"), 0, "模擬不寫入真實已知 IP");
 });
 
+test("RT-002：白天排練也能命中（模擬事件帶台北凌晨時間戳）；白天的大量讀取不命中", async () => {
+  const afternoon = new Date("2026-11-09T06:00:00Z");          // 台北 14:00 按下模擬器
+  const at = afternoon.getTime();
+  const sid = newSimulationId();
+  const outcomes = [];
+  for (const e of buildPreset("night-bulk-read", sid, afternoon)) {
+    outcomes.push((await processEvent(e, at)).results.find((r) => r.rule_id === "RT-002")?.outcome ?? "no_match");
+  }
+  assert.ok(outcomes.includes("alert"), outcomes.join(","));
+  const daySid = newSimulationId();
+  const day = audit("sim-day-1", "2026-11-09T02:00:00Z", "203.0.113.88", 50000, daySid);   // 台北 10:00
+  assert.equal((await processEvent(day, at)).results[0].outcome, "no_match");
+});
+
+test("RT-003：只有 2 個品牌不命中；24 小時窗外的品牌不計入；第 3 個品牌進窗才告警", async () => {
+  const sid = newSimulationId();
+  const now = Date.parse("2026-11-09T06:00:00Z");
+  const complaint = (n: number, hoursAgo: number, brand: string): RtEvent => ({
+    id: `sim-w-${n}`, source: "support.complaint", event_time: new Date(now - hoursAgo * 3600000).toISOString(),
+    received_at: new Date(now).toISOString(), asset_id: "platform", account: null, simulated: true, simulation_id: sid,
+    data: { brand, text: `對方報出我的訂單編號：ZX2026110${n}99 要我轉帳` },
+  });
+  const out = [];
+  for (const e of [complaint(1, 30, "brand-a"), complaint(2, 2, "brand-b"), complaint(3, 1, "brand-c"), complaint(4, 0.5, "brand-c")]) {
+    out.push((await processEvent(e)).results[0].outcome);
+  }
+  assert.deepEqual(out, ["below", "below", "below", "below"], "brand-a 在 24 小時窗外，窗內只有 2 個品牌");
+  assert.equal((await processEvent(complaint(5, 0.2, "brand-d"))).results[0].outcome, "alert");
+});
+
 test("RT-003：24 小時內 3 個品牌命中；同品牌多件不重複計算", async () => {
   const sid = newSimulationId();
   const out = [];
