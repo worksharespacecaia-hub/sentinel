@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 刻意的錯誤：debuggable、允許明文傳輸、對外開放且無權限保護的元件（虛構） -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application
+        android:label="BrandApp"
+        android:debuggable="true"
+        android:usesCleartextTraffic="true"
+        android:allowBackup="true">
+        <activity android:name=".MainActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".DeepLinkOrderActivity" android:exported="true" />
+        <receiver android:name=".PushCommandReceiver" android:exported="true" />
+    </application>
+</manifest>

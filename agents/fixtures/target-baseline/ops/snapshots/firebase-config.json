@@ -1,0 +1,9 @@
+{
+  "project": "shopsaas-demo-brand-app",
+  "storage": [
+    {"asset_id": "firebase-brand-app-storage", "bucket": "shopsaas-demo-brand-app.appspot.example",
+     "rules": [{"match": "/user-uploads/{allPaths=**}", "read": "if true", "write": "if request.auth != null"}],
+     "public_read": true, "contains": ["user_uploads", "order_receipts"]}
+  ],
+  "database": {"rules": {"read": "auth != null", "write": "auth != null"}, "public_read": false}
+}

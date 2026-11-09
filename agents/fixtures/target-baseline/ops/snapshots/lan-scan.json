@@ -1,0 +1,12 @@
+{
+  "note": "模擬的辦公室內網探測結果（快照）。Demo 不對任何網路實際掃描。",
+  "scanned_subnets": ["10.30.0.0/24"],
+  "hosts": [
+    {"ip": "10.30.0.15", "hostname": "nas-office-01", "mac_vendor": "Synology Incorporated",
+     "open_ports": [445, 5000, 5001], "http_title": "Synology DiskStation", "banner": "DS920+ DSM 7.2.1-69057 Update 5"},
+    {"ip": "10.30.0.21", "hostname": "laptop-eng-07", "mac_vendor": "Apple, Inc.", "open_ports": []},
+    {"ip": "10.30.0.22", "hostname": "laptop-eng-03", "mac_vendor": "Apple, Inc.", "open_ports": []},
+    {"ip": "10.30.0.23", "hostname": "laptop-ops-02", "mac_vendor": "Lenovo", "open_ports": []},
+    {"ip": "10.30.0.40", "hostname": "fileserver-01", "mac_vendor": "Dell Inc.", "open_ports": [445]}
+  ]
+}

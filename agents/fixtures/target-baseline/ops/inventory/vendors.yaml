@@ -1,0 +1,19 @@
+# 第三方與委外清冊（虛構）。刻意沒有登記建站平台 QuickSite Builder。
+- id: mail-service
+  name: MailRelay（虛構寄信服務）
+  billing_name: MailRelay
+  owner: member-team
+  credentials: [mail-api-key]
+  data_shared: [email, order_summary]
+- id: firebase
+  name: Firebase（推播與儲存）
+  billing_name: Firebase
+  owner: mobile-team
+  credentials: [push-key-fcm-apns]
+  data_shared: [device_token, user_uploads]
+- id: slack
+  name: Slack
+  billing_name: Slack
+  owner: it-team
+  credentials: []
+  data_shared: []

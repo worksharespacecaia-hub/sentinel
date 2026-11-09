@@ -1,0 +1,9 @@
+{
+  "note": "其他服務 Repo 的 Pipeline 部署紀錄匯出（模擬）。本 Repo 的 storefront、member-api 以 GitHub Deployments（ci.yml）為準；internal-tool、marketing-site 沒有任何部署紀錄。",
+  "deployments": [
+    {"service_id": "api-gateway", "environment": "production", "state": "success", "source_repo": "platform/api-gateway", "source_sha": "4b1f0c2e9a7d6b5c3e1f0a9b8c7d6e5f4a3b2c1d", "created_at": "2026-11-03T02:10:00Z", "creator": "github-actions[bot]"},
+    {"service_id": "payment-service", "environment": "production", "state": "success", "source_repo": "payments/payment-service", "source_sha": "9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1e0d", "created_at": "2026-10-29T06:00:00Z", "creator": "github-actions[bot]"},
+    {"service_id": "report-svc", "environment": "production", "state": "success", "source_repo": "data/report-svc", "source_sha": "1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b", "created_at": "2026-10-20T03:30:00Z", "creator": "github-actions[bot]"},
+    {"service_id": "phpmyadmin", "environment": "production", "state": "success", "source_repo": "infra/db-tools", "source_sha": "0f1e2d3c4b5a69788796a5b4c3d2e1f0a9b8c7d6", "created_at": "2026-09-15T01:00:00Z", "creator": "github-actions[bot]"}
+  ]
+}

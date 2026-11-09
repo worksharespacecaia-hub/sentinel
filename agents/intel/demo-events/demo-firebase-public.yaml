@@ -1,0 +1,15 @@
+id: demo-firebase-public
+kind: demo
+demo: true
+title: "示範：電商平台 Firebase 儲存空間公開，訂單匯出檔外洩"
+date: "2026-11-03"
+industry: "電商"
+attack_chain: ["搜尋公開的雲端儲存空間", "匿名列出並下載訂單匯出檔"]
+attck: ["T1530"]
+cves: []
+revision: "2026-11-03.1"
+confidence: confirmed
+controls: [C-CLOUD-STORAGE-PUBLIC]
+products: []
+sources:
+  - {url: null, title: "虛構示範事件，非真實報導", quote: null, published: null}

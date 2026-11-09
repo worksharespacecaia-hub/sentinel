@@ -1,0 +1,7 @@
+{
+  "_note": "虛構設定。憑證存放在工具執行個體內（secrets.json: gitlab-read-token-internal-tool），不在 Repo。",
+  "integrations": [
+    {"type": "gitlab", "url": "https://gitlab.internal.shopsaas-demo.example", "scope": "read_repository (all projects)"},
+    {"type": "postgres", "host": "order-db-prod.internal", "port": 5432, "credential": "由使用者在介面輸入"}
+  ]
+}

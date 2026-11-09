@@ -1,0 +1,13 @@
+{
+  "name": "member-api",
+  "version": "1.14.2",
+  "private": true,
+  "description": "會員 API（虛構）。刻意鎖定舊版 lodash@4.17.20。",
+  "main": "index.js",
+  "scripts": { "start": "node index.js" },
+  "dependencies": {
+    "express": "4.18.2",
+    "lodash": "4.17.20",
+    "pg": "8.11.3"
+  }
+}
