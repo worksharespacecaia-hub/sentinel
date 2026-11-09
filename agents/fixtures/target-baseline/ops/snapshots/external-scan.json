@@ -1,0 +1,15 @@
+{
+  "note": "模擬的自家網域外部暴露面檢查（快照）。網域使用保留的 .example，IP 使用文件用位址。",
+  "results": [
+    {"target": "shop.shopsaas-demo.example", "port": 443, "asset_hint": "storefront", "service": "https", "headers": {"x-powered-by": "Next.js"}},
+    {"target": "api.shopsaas-demo.example", "port": 443, "asset_hint": "api-gateway", "service": "https"},
+    {"target": "internal-tool.shopsaas-demo.example", "port": 443, "asset_hint": "internal-tool", "service": "https",
+     "http_title": "OpsBuilder", "version_endpoint": {"path": "/version", "body": {"product": "opsbuilder", "version": "1.88"}}},
+    {"target": "campaign.shopsaas-demo.example", "port": 443, "asset_hint": "marketing-site", "service": "https",
+     "headers": {"x-powered-by": "PHP/8.1.27"}, "generator": "WordPress 6.4.3"},
+    {"target": "203.0.113.24", "port": 5001, "asset_hint": "nas-office-01", "service": "https",
+     "http_title": "Synology DiskStation", "note": "辦公室路由器 port forwarding 到 10.30.0.15"},
+    {"target": "storage.shopsaas-demo.example", "port": 443, "asset_hint": "firebase-brand-app-storage", "service": "https", "anonymous_list": true},
+    {"target": "shopsaas-demo-order-exports.s3.example", "port": 443, "asset_hint": "order-exports-bucket", "service": "https", "anonymous_list": true}
+  ]
+}

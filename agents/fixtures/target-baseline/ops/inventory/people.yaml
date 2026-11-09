@@ -1,0 +1,16 @@
+# 工程師、團隊、持有的設備與權杖（假資料）
+- id: eng-03
+  name: 工程師 03（假資料）
+  team: web-team
+  devices: [laptop-eng-03]
+  tokens: []
+- id: eng-07
+  name: 工程師 07（假資料）
+  team: platform-team
+  devices: [laptop-eng-07]
+  tokens: [deploy-token-eng07]
+- id: ops-02
+  name: 維運 02（假資料）
+  team: devops-team
+  devices: [laptop-ops-02]
+  tokens: []

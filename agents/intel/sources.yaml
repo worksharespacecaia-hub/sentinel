@@ -1,0 +1,17 @@
+# 受信任來源網域清單與可信度分級（受審查設定，不接受 request 動態指定）。
+# tier：vendor（廠商官方）> advisory（GitHub Advisory、CISA）> media（資安媒體）> community（社群）
+domains:
+  - {domain: github.com, tier: advisory}
+  - {domain: cisa.gov, tier: advisory}
+  - {domain: nvd.nist.gov, tier: advisory}
+  - {domain: php.net, tier: vendor}
+  - {domain: synology.com, tier: vendor}
+  - {domain: nextjs.org, tier: vendor}
+  - {domain: vercel.com, tier: vendor}
+  - {domain: rapid7.com, tier: media}
+  - {domain: stepsecurity.io, tier: media}
+  - {domain: technews.tw, tier: media}
+  - {domain: cyberq.tw, tier: media}
+  - {domain: bnext.com.tw, tier: media}
+  - {domain: ithome.com.tw, tier: media}
+  - {domain: heatalk.com, tier: community}

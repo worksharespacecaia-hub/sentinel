@@ -1,0 +1,12 @@
+// 品牌 App Android 設定（虛構）。targetSdkVersion 低於商店要求。
+android {
+    namespace "example.shopsaas.brandapp"
+    compileSdkVersion 33
+    defaultConfig {
+        applicationId "example.shopsaas.brandapp"
+        minSdkVersion 21
+        targetSdkVersion 31
+        versionCode 340
+        versionName "3.4.0"
+    }
+}

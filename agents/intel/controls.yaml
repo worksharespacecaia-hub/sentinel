@@ -1,0 +1,41 @@
+# 控制項清單（第 7.2 節 A1）。check 只能是 controls.py 中 CHECKS 白名單的函式名稱。
+- id: C-SECRET-IN-GIT
+  title: Git 中不得有正式環境金鑰
+  base_points: 2
+  check: secret_in_git
+- id: C-INTERNAL-TOOL-EXPOSED
+  title: 內部工具不得對外開放
+  base_points: 2
+  check: internal_tool_exposed
+- id: C-NET-SEGMENT
+  title: 非正式環境不得連線正式資料庫
+  base_points: 2
+  check: net_segment
+- id: C-THIRD-PARTY-KEY-ROTATION
+  title: 第三方服務金鑰 90 天內輪替且有 IP 白名單
+  base_points: 2
+  check: third_party_key_rotation
+- id: C-NON-CI-DEPLOY
+  title: 正式部署必須來自 Pipeline
+  base_points: 2
+  check: non_ci_deploy
+- id: C-DEV-DEVICE-TOKEN
+  title: 員工電腦不得持有正式部署權杖
+  base_points: 2
+  check: dev_device_token
+- id: C-BACKUP-ISOLATION
+  title: 備份與來源設備隔離，且 90 天內做過還原測試
+  base_points: 2
+  check: backup_isolation
+- id: C-APP-SDK
+  title: App SDK 無已知漏洞，舊版使用者比例低於門檻
+  base_points: 2
+  check: app_sdk
+- id: C-CLOUD-STORAGE-PUBLIC
+  title: 雲端儲存空間不得公開讀取
+  base_points: 3
+  check: cloud_storage_public
+- id: C-CACHE-TLS
+  title: 快取服務連線須加密
+  base_points: 1
+  check: cache_tls

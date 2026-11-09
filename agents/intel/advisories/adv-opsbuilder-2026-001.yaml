@@ -1,0 +1,31 @@
+# 示範公告 fixture：OpsBuilder 是虛構的「類 Appsmith」內部工具，本公告不是任何真實廠商的內容。
+id: adv-opsbuilder-2026-001
+kind: advisory
+demo: false
+demo_fixture: true
+fixture_note: "虛構產品 OpsBuilder 的示範公告；CVSS 與已利用旗標為明確標示的模擬 fixture 值（規格第 7.4 節）"
+title: "示範公告：OpsBuilder 1.90 以前版本的帳號接管漏洞（虛構產品）"
+date: "2026-09-30"
+industry: null
+attack_chain: ["未登入者可重設管理者密碼", "以管理者身分使用工具內設定的整合與資料來源"]
+attck: ["T1190", "T1078"]
+cves: ["DEMO-2026-0001"]
+revision: "2026-09-30.1"
+confidence: confirmed
+controls: []
+products:
+  - name: opsbuilder
+    ecosystem: generic
+    affected:
+      - {introduced: "0", fixed: "1.90"}
+    conditions:
+      - {key: login_reachable, equals: true}
+    cvss: 9.8
+    known_exploited: true
+    impact: account_takeover
+    confirmed: true
+sources:
+  - url: null
+    title: "虛構示範公告（模擬 fixture），非真實報導"
+    quote: null
+    published: "2026-09-30"

@@ -1,0 +1,8 @@
+[
+  {"asset_id": "marketing-site", "php_version": "8.1.27", "sapi": "apache2handler",
+   "settings": {"session.upload_progress.enabled": "On", "expose_php": "On"}},
+  {"asset_id": "phpmyadmin", "php_version": "8.3.20", "sapi": "fpm-fcgi",
+   "settings": {"session.upload_progress.enabled": "On", "expose_php": "Off"}},
+  {"asset_id": "report-svc", "php_version": "8.4.27", "sapi": "fpm-fcgi",
+   "settings": {"session.upload_progress.enabled": "On", "expose_php": "Off"}}
+]

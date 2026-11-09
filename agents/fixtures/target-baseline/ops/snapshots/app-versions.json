@@ -1,0 +1,18 @@
+{
+  "note": "每列以 (brand_id, platform, app_version, observed_at) 唯一；sdks 是該版本實際打包的 SDK 版本。安裝數為 Demo 假設數字。",
+  "rows": [
+    {"brand_id": "brand-bloom", "platform": "ios", "app_version": "3.4.0", "active_installations": 3000, "observed_at": "2026-11-09T00:00:00Z", "sdks": {"@demo-vendor/push-sdk": "2.3.1"}},
+    {"brand_id": "brand-bloom", "platform": "ios", "app_version": "3.2.0", "active_installations": 1400, "observed_at": "2026-11-09T00:00:00Z", "sdks": {"@demo-vendor/push-sdk": "2.2.0"}},
+    {"brand_id": "brand-bloom", "platform": "android", "app_version": "3.4.0", "active_installations": 2500, "observed_at": "2026-11-09T00:00:00Z", "sdks": {"@demo-vendor/push-sdk": "2.3.1"}},
+    {"brand_id": "brand-bloom", "platform": "android", "app_version": "3.2.0", "active_installations": 1200, "observed_at": "2026-11-09T00:00:00Z", "sdks": {"@demo-vendor/push-sdk": "2.2.0"}},
+    {"brand_id": "brand-bloom", "platform": "android", "app_version": "2.9.1", "active_installations": 300, "observed_at": "2026-11-09T00:00:00Z", "sdks": {"@demo-vendor/push-sdk": "1.9.2"}},
+    {"brand_id": "brand-hikari", "platform": "ios", "app_version": "3.4.0", "active_installations": 2000, "observed_at": "2026-11-09T00:00:00Z", "sdks": {"@demo-vendor/push-sdk": "2.3.1"}},
+    {"brand_id": "brand-hikari", "platform": "ios", "app_version": "3.1.0", "active_installations": 900, "observed_at": "2026-11-09T00:00:00Z", "sdks": {"@demo-vendor/push-sdk": "2.2.0"}},
+    {"brand_id": "brand-hikari", "platform": "android", "app_version": "3.4.0", "active_installations": 2600, "observed_at": "2026-11-09T00:00:00Z", "sdks": {"@demo-vendor/push-sdk": "2.3.1"}},
+    {"brand_id": "brand-hikari", "platform": "android", "app_version": "3.1.0", "active_installations": 1100, "observed_at": "2026-11-09T00:00:00Z", "sdks": {"@demo-vendor/push-sdk": "2.2.0"}},
+    {"brand_id": "brand-kumo", "platform": "ios", "app_version": "3.4.0", "active_installations": 1500, "observed_at": "2026-11-09T00:00:00Z", "sdks": {"@demo-vendor/push-sdk": "2.3.1"}},
+    {"brand_id": "brand-kumo", "platform": "ios", "app_version": "2.9.1", "active_installations": 700, "observed_at": "2026-11-09T00:00:00Z", "sdks": {"@demo-vendor/push-sdk": "1.9.2"}},
+    {"brand_id": "brand-kumo", "platform": "android", "app_version": "3.4.0", "active_installations": 1400, "observed_at": "2026-11-09T00:00:00Z", "sdks": {"@demo-vendor/push-sdk": "2.3.1"}},
+    {"brand_id": "brand-kumo", "platform": "android", "app_version": "3.2.0", "active_installations": 1400, "observed_at": "2026-11-09T00:00:00Z", "sdks": {"@demo-vendor/push-sdk": "2.2.0"}}
+  ]
+}

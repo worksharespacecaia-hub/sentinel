@@ -1,0 +1,94 @@
+id: evt-91app-2026-10
+kind: archive
+demo: false
+title: 91APP 訂單資料庫遭入侵：未更新的內部工具 Appsmith 成破口，自內部 GitLab 取得資料庫金鑰
+date: '2026-10-03'
+industry: 電商
+attack_chain:
+- 利用未及時修補的內部效率工具 Appsmith 漏洞進入內部網路
+- 自內部 GitLab 取得訂單資料庫金鑰
+- 以金鑰入侵 Commerce Cloud 訂單資料庫並讀走訂單資料
+- 消費者收到冒用訂單資料的詐騙訊息
+attck:
+- T1190
+- T1552
+- T1078
+cves: []
+revision: 2026-11-09.1
+confidence: confirmed
+controls:
+- C-INTERNAL-TOOL-EXPOSED
+- C-SECRET-IN-GIT
+- C-NET-SEGMENT
+products: []
+facts:
+- field: date
+  source_ref: 0
+  quote: Commerce Cloud 其中一個訂單資料庫在 10 月 3 日 11 時遭受 AI 自動化滲透工具攻擊而被非法存取
+- field: attack_chain[0]
+  source_ref: 0
+  quote: 攻擊者透過 91APP 一項未更新套件的內部效率工具（Appsmith）進入內部網路
+- field: attack_chain[0]
+  source_ref: 1
+  quote: 攻擊者利用一套未及時套用修補更新的第三方工具 Appsmith 的漏洞進入內部網路
+- field: attack_chain[1]
+  source_ref: 0
+  quote: 自 GitLab 取得資料庫金鑰後入侵訂單資料庫
+- field: attack_chain[1]
+  source_ref: 1
+  quote: 接著從內部 GitLab 系統上取得其中一座訂單資料庫的金鑰，直接讀走訂單資料
+- field: attack_chain[3]
+  source_ref: 0
+  quote: 91APP 在 10 月 4 日首次接獲客戶通報消費者收到詐騙訊息
+- field: attack_chain.tooling
+  source_ref: 0
+  quote: 攻擊者使用 AI 自動化工具攻擊，系統內發現 ARTEX 等工具痕跡
+- field: attck[T1078]
+  source_ref: 1
+  quote: 停用遭冒用帳號並重建 GitLab 權限
+- field: timeline.detected
+  source_ref: 1
+  quote: 在內部 CI 主機發現 10/3 有一支未授權執行緒的執行紀錄
+- field: timeline.blocked
+  source_ref: 0
+  quote: 入侵行為在 10 月 14 日晚間 11 時完全阻斷
+- field: timeline.disclosed
+  source_ref: 0
+  quote: 91APP 在 10 月 15 日依規定向主管機關通報並向客戶說明，接著 10 月 16 日清晨進一步發布重大訊息對外說明
+- field: timeline.report_published
+  source_ref: 0
+  quote: 上櫃公司 91APP（91APP*-KY）22 日在官網公布《91APP 2026 遭受駭客攻擊事件 18 天調查報告》
+- field: impact.max_scope
+  source_ref: 1
+  quote: 若依最大可能影響範圍認定，波及 1,329 家品牌、479 萬 8,255 名消費者
+- field: impact.data_fields
+  source_ref: 1
+  quote: 可能遭存取的欄位包含姓名、電話號碼、配送地址（超商取貨者無地址）、電子郵件與訂單紀錄，不含密碼、信用卡與任何支付資料
+- field: impact.systems
+  source_ref: 0
+  quote: 這起事件僅涉及 Commerce Cloud 的訂單資料庫，其他如 Marketing Cloud、91APP Payments 及 iCHEF 均不受影響
+- field: remediation
+  source_ref: 0
+  quote: 91APP 已移除這項工具、更換所有內部系統權杖及資料庫帳密、重建 GitLab 權限、隔離測試與正式環境、限制主機與資料庫網段連線
+- field: remediation
+  source_ref: 1
+  quote: 限制 CI 主機與資料庫網段連線
+sources:
+- url: https://technews.tw/2026/10/23/91app-ky-20261022/
+  title: 91APP 階段性調查結果還原資安事件經過，向品牌客戶與消費者致歉 | TechNews 科技新報
+  quote: 攻擊者透過 91APP 一項未更新套件的內部效率工具（Appsmith）進入內部網路，自 GitLab 取得資料庫金鑰後入侵訂單資料庫。
+  published: '2026-10-23'
+  fetch_status: ok
+  verified: true
+  verified_at: '2026-11-09T05:59:24Z'
+  content_hash: sha256:e21866580d782bb4b3df1cd4871ad6b2f9be1f2ddf1525db1b56c6e355bdb800
+  verification_basis: archived
+- url: https://cyberq.tw/2026/11/02/91app-data-breach-involving-cyber-security/
+  title: 91APP 資安事件後續：從第三方工具漏洞到資料庫金鑰，多家電商開店平台的資安防線出了什麼問題？ – CyberQ 賽博客
+  quote: 攻擊者利用一套未及時套用修補更新的第三方工具 Appsmith 的漏洞進入內部網路，接著從內部 GitLab 系統上取得其中一座訂單資料庫的金鑰，直接讀走訂單資料。
+  published: '2026-11-02'
+  fetch_status: ok
+  verified: true
+  verified_at: '2026-11-09T05:59:24Z'
+  content_hash: sha256:6dccfde4d69250c0c2a48cc6088d43c4030134d28ff44cd966eb6d05aaecbec9
+  verification_basis: archived

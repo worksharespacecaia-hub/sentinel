@@ -1,0 +1,9 @@
+# 版本鎖定（Phase 3 以 pip-compile --generate-hashes 產生含雜湊的鎖定檔前，先鎖定版本）
+claude-agent-sdk==0.2.179
+networkx==3.6.1
+pydantic==2.13.4
+PyYAML==6.0.3
+packaging==26.2
+semantic-version==2.10.0
+httpx==0.28.1
+pytest==9.1.1

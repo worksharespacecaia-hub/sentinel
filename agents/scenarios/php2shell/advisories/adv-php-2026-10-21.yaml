@@ -1,0 +1,34 @@
+# php2shell 情境的公告輸入：依 evt-php2shell-2026-10 已驗證來源整理的結構化公告（Demo），產品名稱刻意寫成未正規化的 "PHP"。
+id: adv-php-2026-10-21
+kind: advisory
+demo: false
+title: "PHP 安全更新：CVE-2026-109618、CVE-2026-109619"
+date: "2026-10-21"
+revision: "2026-10-21.1"
+confidence: confirmed
+cves: [CVE-2026-109618, CVE-2026-109619]
+controls: []
+text: "PHP 於 2026-10-21 釋出 8.2.35、8.3.36、8.4.27、8.5.12 修補兩個免驗證遠端程式碼執行漏洞；8.1 以前的分支沒有上游修補版本。（依已驗證來源整理的 Demo 公告摘要，原文見 sources）"
+products:
+  - name: PHP
+    ecosystem: php
+    affected:
+      - {introduced: "8.2.0", fixed: "8.2.35"}
+      - {introduced: "8.3.0", fixed: "8.3.36"}
+      - {introduced: "8.4.0", fixed: "8.4.27"}
+      - {introduced: "8.5.0", fixed: "8.5.12"}
+      - {introduced: "8.1.0", fixed: null}
+      - {introduced: "8.0.0", fixed: null}
+      - {introduced: "7.4.0", fixed: null}
+    unknown_below: "7.4.0"
+    conditions:
+      - {key: serves_web_requests, equals: true}
+    cvss: 9.2
+    known_exploited: true
+    impact: remote_code_execution
+    confirmed: true
+sources:
+  - url: "https://www.rapid7.com/blog/post/etr-cve-2026-109618-and-cve-2026-109619-critical-unauthenticated-remote-code-execution-in-php/"
+    title: "Rapid7：CVE-2026-109618 and CVE-2026-109619"
+    quote: null
+    published: "2026-10-21"

@@ -1,0 +1,8 @@
+{
+  "apps": [
+    {"name": "GitLab", "vendor_id": null, "asset_id": "gitlab", "users": 42},
+    {"name": "Slack", "vendor_id": "slack", "users": 120},
+    {"name": "Firebase Console", "vendor_id": "firebase", "users": 6},
+    {"name": "QuickSite Builder", "vendor_id": null, "asset_id": null, "users": 4, "first_login": "2026-06-12"}
+  ]
+}

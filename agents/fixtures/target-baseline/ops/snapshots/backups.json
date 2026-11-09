@@ -1,0 +1,6 @@
+[
+  {"asset_id": "order-db-prod", "method": "managed-snapshot", "target": "vault:backup-account", "isolated": true, "last_restore_test": "2026-09-30"},
+  {"asset_id": "member-db-prod", "method": "managed-snapshot", "target": "vault:backup-account", "isolated": true, "last_restore_test": "2026-09-30"},
+  {"asset_id": "gitlab", "method": "nightly-export", "target": "vault:backup-account", "isolated": true, "last_restore_test": "2026-08-20"},
+  {"asset_id": "nas-office-01", "method": "usb-copy", "target": "usb:attached-to-nas-office-01", "isolated": false, "last_restore_test": null}
+]

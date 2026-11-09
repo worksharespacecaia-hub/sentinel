@@ -1,0 +1,111 @@
+id: evt-synology-2026-10
+kind: archive
+demo: false
+title: Synology NAS 遭 C3RB3R 勒索軟體加密：DSM 登入頁對外暴露，常駐連接的備份碟一併被加密
+date: '2026-10-28'
+industry: null
+attack_chain:
+- DSM 登入頁經 UPnP、連接埠轉發、QuickConnect 或反向代理暴露於網際網路
+- 疑利用 DSM 舊漏洞（360 歸因 CVE-2026-13639、CVE-2026-13684，9/18 已修補）免帳密遠端讀寫任意檔案
+- 刪除快照
+- 加密檔案（副檔名 .L0CK3D），常駐連接的 Hyper Backup USB 硬碟／備份碟一併被加密
+- 每個資料夾留下 read-me3.txt 勒索信，要求透過 Tor 網站購買解密器
+attck:
+- T1190
+- T1490
+- T1486
+cves:
+- CVE-2026-13639
+- CVE-2026-13684
+- CVE-2024-10441
+revision: 2026-11-09.1
+confidence: provisional
+match_scope:               # 控制項命中只套用在設備類資產（NAS），不延伸到內部工具
+  asset_types: [device]
+controls:
+- C-BACKUP-ISOLATION
+- C-INTERNAL-TOOL-EXPOSED
+products:
+- name: synology-dsm
+  ecosystem: synology-dsm
+  affected:
+  - {introduced: "7.4", fixed: "7.4-90075"}
+  - {introduced: "7.3", fixed: "7.3.2-86009-4"}
+  - {introduced: "7.2.2", fixed: "7.2.2-72806-9"}
+  - {introduced: "7.2.1", fixed: "7.2.1-69057-12"}
+  conditions:
+  - {key: management_interface_internet_exposed, equals: true, source_ref: 0}
+  cvss: 9.8
+  known_exploited: true
+  impact: other
+  confirmed: false
+  source_refs:
+  - 0
+facts:
+- field: date
+  source_ref: 0
+  quote: 10 月 28 日與 29 日一天內連續出現四位 Synology 用戶
+- field: timeline.onset
+  source_ref: 0
+  quote: 10 月 17 日起才密集出現 NAS 受害者
+- field: cves[0..1]
+  source_ref: 0
+  quote: 攻擊者利用的是 CVE-2026-13639（DSM 登入邏輯的亂數熵不足）與 CVE-2026-13684（DSM SCGI 元件輸出編碼不當）
+- field: cves[0..1].attribution
+  source_ref: 0
+  quote: pwn.watch 轉述 360 反勒索團隊的分析指出，自 2026 年 10 月起已處理多起 Synology NAS 遭 C3RB3R 攻擊的案件
+- field: products[0].cvss
+  source_ref: 0
+  quote: 這兩個漏洞均為 CVSS 9.8，無需帳號密碼即可遠端讀寫任意檔案
+- field: products[0].affected
+  source_ref: 0
+  quote: Synology 已於 9 月 18 日在 Synology-SA-26:13 公告修補，該公告共修補 8 個 DSM 漏洞，官方未提供任何緩解措施，唯一解法是更新。
+- field: products[0].affected
+  source_ref: 0
+  quote: DSM 7.4 7.4-90075 或更新 DSM 7.3 7.3.2-86009-4 或更新 DSM 7.2.2 7.2.2-72806-9 或更新 DSM 7.2.1 7.2.1-69057-12 或更新
+- field: products[0].affected[2]
+  source_ref: 0
+  quote: 7.2.2-72806 本身不夠，要到 Update 9
+- field: products[0].affected.uncertainty
+  source_ref: 0
+  quote: 受害 NAS 已經是較新的 DSM 7.4.1 版本
+- field: cves[2]
+  source_ref: 0
+  quote: 認為攻擊者利用的是 CVE-2024-10441，這是 2024 年 Pwn2Own Ireland 揭露、Synology-SA-24:20 於 2024 年底修補的 synoplugind 未授權遠端程式碼執行漏洞
+- field: confidence
+  source_ref: 0
+  quote: 目前攻擊入口尚未完全釐清
+- field: products[0].conditions[0]
+  source_ref: 0
+  quote: 受害者真正的共同點是 DSM 登入頁可以從網際網路連到，途徑包括路由器 UPnP 自動開埠、為 Plex 或串流開的連接埠轉發、QuickConnect 以及反向代理。
+- field: attack_chain[1]
+  source_ref: 0
+  quote: 密碼與兩步驟驗證對這個漏洞毫無作用
+- field: attack_chain[2]
+  source_ref: 0
+  quote: 注意攻擊者會刪快照，avebelle 的資料夾原有 36 個快照，事後只剩 1 個
+- field: attack_chain[3]
+  source_ref: 0
+  quote: Reddit 兩位受害者接在 NAS 上的 Hyper Backup USB 硬碟與備份碟都被一併加密
+- field: attack_chain[4]
+  source_ref: 0
+  quote: 每個資料夾留下名為 read-me3.txt 的勒索信，要求受害者透過 Tor 網站購買「C3rb3r Decryptor」
+- field: controls[C-BACKUP-ISOLATION]
+  source_ref: 0
+  quote: 有 3-2-1 備份，資料未損失
+- field: impact.recovery
+  source_ref: 0
+  quote: 目前沒有任何公開可用的 C3RB3R 解密工具
+- field: cves.excluded_php2shell
+  source_ref: 0
+  quote: PHP2Shell 是否已被用於 NAS 勒索攻擊，截至本文撰寫時沒有公開證據
+sources:
+- url: https://cyberq.tw/2026/10/30/synology-nas-c3rb3r-ransomware/
+  title: Synology NAS 接連遭勒索、PHP2Shell 漏洞波及套件，用戶自保與各家 NAS 因應之道 – CyberQ 賽博客
+  quote: 被加密的檔案會被加上 .L0CK3D 副檔名（注意是數字 0），每個資料夾留下名為 read-me3.txt 的勒索信，要求受害者透過 Tor 網站購買「C3rb3r Decryptor」。
+  published: '2026-10-30'
+  fetch_status: ok
+  verified: true
+  verified_at: '2026-11-09T05:59:24Z'
+  content_hash: sha256:2cc7b704e1d317d22f4a67d2d3b9b97602dafd774468c1d135156a789234c8d6
+  verification_basis: archived

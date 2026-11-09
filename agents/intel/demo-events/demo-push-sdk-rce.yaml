@@ -1,0 +1,25 @@
+id: demo-push-sdk-rce
+kind: demo
+demo: true
+title: "示範：行動推播 SDK 遠端程式碼執行漏洞（虛構套件 @demo-vendor/push-sdk）"
+date: "2026-11-05"
+industry: "行動 App"
+attack_chain: ["攻擊者送出特製推播內容", "App 內的推播 SDK 解析時執行任意程式碼"]
+attck: ["T1203"]
+cves: ["DEMO-2026-0002"]
+revision: "2026-11-05.1"
+confidence: confirmed
+controls: [C-APP-SDK]
+products:
+  - name: "@demo-vendor/push-sdk"
+    ecosystem: npm
+    affected: ">=2.0.0 <2.4.0"
+    fixed: "2.4.0"
+    conditions: []
+    cvss: 9.8
+    known_exploited: false
+    impact: remote_code_execution
+    confirmed: true
+    target: app_sdk
+sources:
+  - {url: null, title: "虛構示範事件，非真實報導", quote: null, published: null}
