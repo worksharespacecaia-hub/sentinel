@@ -12,3 +12,5 @@ target/
 *.log
 .DS_Store
 .vercel
+dashboard/next-env.d.ts
+dashboard/tsconfig.tsbuildinfo
