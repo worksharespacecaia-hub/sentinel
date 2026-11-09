@@ -98,12 +98,12 @@ def write_outputs(out_dir: Path, built: dict, result: dict, *, reports_md_dir: P
     write_json(state / "findings.json", result["findings"])
     write_json(state / "intel.json", {"events": result["events"], "verification": result["verification"]})
     write_json(state / "signals.json", result["signals"])
-    (out_dir / "engineer_report.md").write_text(engineer_markdown(report, result), encoding="utf-8")
+    (out_dir / "engineer_report.md").write_text(engineer_markdown(report, result), encoding="utf-8", newline="\n")
     if reports_md_dir:
         for rep in built["intel_reports"]:
             p = Path(reports_md_dir) / f"{rep['event']['id']}.md"
             p.parent.mkdir(parents=True, exist_ok=True)
-            p.write_text(to_markdown(rep), encoding="utf-8")
+            p.write_text(to_markdown(rep), encoding="utf-8", newline="\n")
     files = {str(p.relative_to(out_dir)).replace("\\", "/"): sha256_file(p) for p in sorted(out_dir.rglob("*"))
              if p.is_file() and p.name != "manifest.json"}
     from datetime import timedelta
