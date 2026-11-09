@@ -1,0 +1,3 @@
+# php2shell：intel/advisories 加入 PHP 官方公告 → 預篩命中 → 抽取 → 比對
+intel_kinds: [archive, advisory]
+extra_event_dirs: [advisories]

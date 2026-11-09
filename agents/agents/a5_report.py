@@ -1,0 +1,155 @@
+"""A5 報告與建議：流程的最後一步。只產出報告與建議，不開 PR、不修改任何系統。
+
+即使上游失敗也要執行：確定性評估由程式重算；缺少的上游產物記錄為 data_issues，LLM 文字缺少時用範本。
+"""
+from __future__ import annotations
+
+from datetime import timedelta
+
+from agents.common import finish, load
+from context import RunCtx
+from llm import Task
+from tools.cache import merge_cache
+from tools.common import AGENTS_DIR, SENTINEL_ROOT, iso, read_json, write_json
+from tools.graph_query import GraphQuery
+from tools.pipeline import evaluate
+from tools.report_builder import assemble, write_outputs
+from tools.trace import merge_traces
+
+UPSTREAM = ["orchestrator", "a0", "a1", "a2", "a3", "a4"]
+
+
+def _llm_texts(ctx: RunCtx, res: dict, built_template: dict) -> dict:
+    runner = ctx.runner("a5")
+    tr = runner.tracer
+    risks = [r for r in res["risks"] if r["level"] in ("high", "medium") and r["status"] != "fixed"]
+    tasks = [Task(id="remediation", subagent="remediation-advisor",
+                  payload={"ids": [r["id"] for r in risks[:12]],
+                           "risks": [{"id": r["id"], "title": r["title"], "level": r["level"], "breakdown": r["breakdown"],
+                                      "category": r["category"]} for r in risks[:12]]})]
+    secrets = [r for r in risks if r["category"] in ("secret", "identity")]
+    if secrets:
+        tasks.append(Task(id="key-rotation", subagent="key-rotation-advisor",
+                          payload={"ids": [r["id"] for r in secrets], "items": [{"id": r["id"], "title": r["title"]} for r in secrets]}))
+    rep = built_template["report"]
+    tasks.append(Task(id="ceo", subagent="ceo-briefer", payload={"ids": ["ceo"], "light": rep["light"], "counts": rep["counts"],
+                                                                "light_reasons": rep["light_reasons"],
+                                                                "top": [r["title"] for r in risks[:5]]}))
+    affected = [r for r in built_template["intel_reports"] if r["affected_count"] > 0]
+    for r in affected:
+        tasks.append(Task(id=f"intel:{r['event']['id']}", subagent="intel-report-writer",
+                          payload={"ids": [f"intel:{r['event']['id']}"], "event": r["event"]["title"],
+                                   "conclusion": r["conclusion"], "rows": r["blocks"].get("3_affected", [])}))
+    notices = [r for r in affected if (r.get("notice") or {}).get("needed")]
+    for r in notices:
+        tasks.append(Task(id=f"notice:{r['event']['id']}", subagent="brand-notice-writer",
+                          payload={"ids": [f"notice:{r['event']['id']}"], "event": r["event"]["title"]}))
+    scope = {r["asset_id"] for r in risks} | {n for r in risks for n in (r.get("attack_path") or [])}
+    results = runner.run(tasks, graph_query=GraphQuery(res["graph_json"], res["paths"], scope=scope))
+    llm: dict = {"solutions": {}, "intel": {}}
+    sol = results.get("remediation", {})
+    for s in sol.get("output") or []:
+        llm["solutions"][s["risk_id"]] = {**s, "source": sol["source"], "suggested_owner": s.get("suggested_owner")}
+    ceo = (results.get("ceo") or {}).get("output")
+    if ceo:
+        llm["ceo_summary"], llm["decisions"] = ceo["ceo_summary"], ceo.get("decisions") or []
+    for r in affected:
+        out = (results.get(f"intel:{r['event']['id']}") or {})
+        items = out.get("output") or []
+        if items:
+            llm["intel"][r["event"]["id"]] = {"summary": items[0]["explanation"], "source": out["source"]}
+    sources = {k: v["source"] for k, v in results.items()}
+    tr.emit("result", "文字來源：" + "、".join(f"{k}={v}" for k, v in sorted(sources.items())))
+    return llm
+
+
+def run(ctx: RunCtx) -> dict:
+    tr = ctx.tracer("a5")
+    tr.emit("start", f"報告與建議 → {ctx.output_dir}")
+    plan = load(ctx, "orchestrator", "plan.json")
+    issues = []
+    for up in UPSTREAM:
+        if not (ctx.out / up / "trace.jsonl").is_file():
+            issues.append({"source": f"job/{up}", "status": "missing", "required": False,
+                           "impact": "上游產物缺失：確定性評估已重算，相關說明改用範本"})
+    output_dir = ctx.output_dir if plan else f"failures/{ctx.run_id}"
+    pre = load(ctx, "a1", "verified.json")
+    res = evaluate(ctx.eval_input(preverified=pre))
+    res["data_issues"] = [*res["data_issues"], *issues]
+
+    expl = {**(load(ctx, "a2", "explanations.json", {}) or {}), **(load(ctx, "a4", "explanations.json", {}) or {})}
+    for r in res["risks"]:
+        e = expl.get(r["id"])
+        if e and e.get("source") != "template":
+            r["explanation"], r["explanation_source"] = e["text"], e["source"]
+
+    daily_intel = "skipped"
+    if ctx.scenario == "daily":
+        if ctx.mode == "replay":
+            daily_intel = "replay"
+        elif plan and plan.get("daily_intel"):
+            daily_intel = "ok" if (ctx.out / "intel-daily.json").is_file() else "failed"
+    common = dict(run_id=ctx.run_id, scenario=ctx.scenario, trigger_source=ctx.trigger_source, scope=ctx.scope,
+                  generated_at=ctx.as_of, execution_mode=ctx.mode, daily_intel_status=daily_intel)
+    template = assemble(res, **common)
+    llm = _llm_texts(ctx, res, template)
+    cost = {"total_usd": ctx.cost["total_usd"], "per_agent": _collect_costs(ctx), "cache_hit_rate": ctx.cache.hit_rate}
+    built = assemble(res, llm=llm, cost=cost, **common)
+    if daily_intel == "failed":
+        built["report"]["data_issues"].append({"source": "daily-intel", "status": "failed", "impact": "今日新聞情資未更新"})
+
+    out_dir = ctx.data_dir / output_dir
+    md_dir = SENTINEL_ROOT / "reports" / "intel" / ctx.scope / ctx.as_of.strftime("%Y-%m-%d") / ctx.run_id
+    tr.emit("result", f"燈號 {built['report']['light']}；{len(built['intel_reports'])} 份情資比對報告")
+    manifest = write_outputs(out_dir, built, res, reports_md_dir=md_dir, run_id=ctx.run_id)
+    merge_traces([ctx.out / up / "trace.jsonl" for up in [*UPSTREAM, "a5"]], out_dir / "trace.jsonl")
+    _merge_cache(ctx)
+    _update_index(ctx, output_dir, built["report"], manifest)
+    finish(ctx, "a5")
+    return {"output_dir": output_dir, "light": built["report"]["light"]}
+
+
+def _collect_costs(ctx: RunCtx) -> dict:
+    per = {}
+    for up in [*UPSTREAM, "a5"]:
+        c = read_json(ctx.out / up / "cost.json")
+        if c:
+            per[up] = c["usd"]
+    per.update({k: v for k, v in ctx.cost["per_agent"].items()})
+    return per
+
+
+def _merge_cache(ctx: RunCtx) -> None:
+    deltas = [read_json(ctx.out / up / "llm-delta.json", {}) or {} for up in [*UPSTREAM, "a5"]]
+    deltas.append(ctx.cache.new)
+    merged, conflicts = merge_cache(read_json(AGENTS_DIR / "cache" / "llm.json", {}) or {}, deltas)
+    write_json(AGENTS_DIR / "cache" / "llm.json", merged)
+    if conflicts:
+        ctx.tracer("a5").emit("error", f"快取衝突 {len(conflicts)} 筆：保留既有值")
+
+
+def _update_index(ctx: RunCtx, output_dir: str, report: dict, manifest: dict) -> None:
+    path = ctx.data_dir / "index.json"
+    index = read_json(path, {}) or {"schema_version": 1, "advisories": {}, "scenarios": {}}
+    entry = {"run_id": ctx.run_id, "generated_at": report["generated_at"], "target_sha": report["target_sha"],
+             "completeness": report["completeness"], "path": output_dir, "light": report["light"],
+             "execution_mode": report["execution_mode"]}
+    if output_dir.startswith("failures/"):
+        index.setdefault("failures", {})[ctx.run_id] = entry
+    elif ctx.scope == "daily":
+        index["latest_daily"] = entry
+        if report["completeness"] == "complete":
+            index["latest_complete_daily"] = entry
+        hist = ctx.data_dir / "history" / f"{ctx.as_of:%Y-%m-%d}-daily.json"
+        write_json(hist, {"date": f"{ctx.as_of:%Y-%m-%d}", "light": report["light"], "counts": report["counts"],
+                          "cost": report["cost"].get("total_usd")})
+        cutoff = ctx.as_of - timedelta(days=30)
+        for p in (ctx.data_dir / "history").glob("*-daily.json"):
+            if p.name[:10] < f"{cutoff:%Y-%m-%d}":
+                p.unlink()
+    elif ctx.scope == "advisory":
+        index.setdefault("advisories", {})[ctx.advisory_id] = entry
+    else:
+        index.setdefault("scenarios", {})[ctx.scenario] = entry
+    index["updated_at"] = iso(ctx.as_of)
+    write_json(path, index)

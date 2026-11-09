@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "run_id": "local-20261109062555",
+  "job": "a5-report",
+  "scope": "scenario",
+  "target_sha": "8ae244637733e6f55917dc981b0b862e9e8bb18a",
+  "input_hash": "e46d2ce98ad7687f9f1e80e71a3fc3c33ab0e1008f2f3105cd5475b301dde6bd",
+  "observed_at": "2026-11-09T06:25:55Z",
+  "valid_until": "2026-11-10T06:25:55Z",
+  "tool_version": {},
+  "database_revision": {},
+  "status": "ok",
+  "reason": null,
+  "files": {
+    "attack_paths.json": "2300ffa7b9b0a707f74274f44a08aace45c35a7f38a1a8ee16e1432f27eaf0ea",
+    "coverage.json": "5f4e6a33207b10483273331a983cccb6315221afb4356f06150a0c4474faaf34",
+    "engineer_report.md": "c15a52502835ede7125b1245cddf9e39dd1a7720c054cd0de67129bf2ca30ea0",
+    "graph.json": "0868a98e4dab7e620f75d0f627ed61d0ffebfda817c7c1c5635d5900d0db626c",
+    "intel/demo-cache-plaintext.json": "b8690ec13018d995484c3f533f796a82e0620251e24fb946a3275a9c9976ecca",
+    "intel/demo-clone-app-fraud.json": "bc35c987729fb908f316b8424c0979d970bd98e3151a7a4c9d83a65a304f1945",
+    "intel/demo-erp-rce.json": "fe93c0cd98df45b69bd59d10532dfefa783e7e2c8ec6c046c619ad37586b2a98",
+    "intel/demo-firebase-public.json": "d5aac0483842dfd395bb7914af9b6db2c4b91465d3131eb903c01eb40be53093",
+    "intel/demo-push-sdk-rce.json": "8655d3093808e1a77dd0b916f7046039087fc8385bfe5ba19bbec8e0b26b01de",
+    "intel/index.json": "49d04fe174c33c869e17e7eb8e36fbb5e971db1b6b98130a55456463360bd6ae",
+    "report.json": "de8d71107709918a2290fdc129edcf22af500d4e90df7902ec24b4fe8ea289f5",
+    "state/findings.json": "a951e4c32c52fabc9fadd843c8684f00a2ca71c2618f3846d55b542bbad6bcbe",
+    "state/intel.json": "0d5f68b79a11bcdded164d71f898ff6e8a978a4bd7b6afa0b3acaaa113b5bcd1",
+    "state/risks.json": "d926e256c54562da7bc5630e671b626aa00f462521ed8ddde8e30f979bcf53da",
+    "state/signals.json": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f"
+  }
+}

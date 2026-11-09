@@ -13,7 +13,7 @@ from tools.templates import ceo_summary, decisions, solution_for
 
 PUBLIC_RISK_KEYS = ("id", "finding_ids", "asset_id", "title", "category", "level", "score", "raw_score", "score_level",
                     "level_reason", "breakdown", "attack_path", "matched_events", "deadline_hours", "solution", "status",
-                    "first_seen", "last_evaluated", "verification_evidence")
+                    "first_seen", "last_evaluated", "verification_evidence", "explanation", "explanation_source")
 
 
 def assemble(result: dict, *, run_id: str, scenario: str, trigger_source: str, scope: str, generated_at,

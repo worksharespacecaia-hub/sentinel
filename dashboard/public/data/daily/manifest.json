@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "run_id": "local-20261109062541",
+  "job": "a5-report",
+  "scope": "daily",
+  "target_sha": "8ae244637733e6f55917dc981b0b862e9e8bb18a",
+  "input_hash": "5fb8c925fc13e9616d7793d98b97fe97a6928a84888cd5c655892556863d77f7",
+  "observed_at": "2026-11-09T06:25:41Z",
+  "valid_until": "2026-11-10T06:25:41Z",
+  "tool_version": {},
+  "database_revision": {},
+  "status": "ok",
+  "reason": null,
+  "files": {
+    "attack_paths.json": "99cf999252d4e5669993d22351a738c54ba04fd618ac232c744508ccd0af9f36",
+    "coverage.json": "5f4e6a33207b10483273331a983cccb6315221afb4356f06150a0c4474faaf34",
+    "engineer_report.md": "e69cbfde19450c4daddf2783b7b83ba38d39ee667596720db57ad3f5e482df77",
+    "graph.json": "ad17f04a6f5ff5d561804e9b761746b9bb72422e1037aa3a7b8bc5c5aa04894c",
+    "intel/adv-opsbuilder-2026-001.json": "9dd8aa3088fbb85ffee84fbc3f602363c4b9c328e8c45999aba69727026b668a",
+    "intel/evt-1shop-2026-10.json": "887e67fee246a2f2106bab1d160a29cf1ba0c97dfdaf6b0da589de2342998d23",
+    "intel/evt-91app-2026-10.json": "b14fc3e3ebad98f5b2fa5b3b5233a7990f22c59ff3c98a712a0b93299ad5f2db",
+    "intel/evt-binance-2026-10.json": "b260c3aff6f2e333c4ee21bf245bd21fe23e56d4ad393603080f54c029036390",
+    "intel/evt-nextjs-cve-2025-29927.json": "c62152d20b5409aaffb8c4da0dd1fefc0e60621092276f151d9524e48f3bc391",
+    "intel/evt-php2shell-2026-10.json": "f3e04daedb6525ee92a0edfed22dc31b6482d1a3b34c8ac11c426c9a8bf96a2f",
+    "intel/evt-synology-2026-10.json": "5ed3fca19215aa7f6d824bf03146891b8b39bef215bf6caca77e57b5979113c0",
+    "intel/index.json": "613936c0dd5e2b3148255bd7c3fc011b4098db748a0d743ffd525dc314d99440",
+    "report.json": "d6dab22ad204946aaecabf2baed24ab8f3abff21cbfa06194ccfe8fe4e17997e",
+    "state/findings.json": "bab0dfdda9b3ab92e22a0b1d1f81f5999d85af567c367cb40100df713aa53820",
+    "state/intel.json": "baf0a3841829fbcc6f94d744847b6a36e1c8ba1a624a76177fda65df94b764c0",
+    "state/risks.json": "4f674f9eb878968869583714e2479f3394bb462481698ea2b43b6b53efaab4d6",
+    "state/signals.json": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f"
+  }
+}

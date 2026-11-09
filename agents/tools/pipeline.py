@@ -35,9 +35,10 @@ class EvalInput:
     online_verify: bool = False
     signal_overrides: dict | None = None
     target_sha: str | None = None
+    preverified: list[dict] | None = None      # A1 已驗證的 [{event, verification}]，避免重抓來源
 
 
-def _event_sources(inp: EvalInput) -> list[dict]:
+def event_sources(inp: EvalInput) -> list[dict]:
     raw = []
     if "archive" in inp.intel_kinds:
         raw += load_events(INTEL_DIR / "archive")
@@ -60,9 +61,10 @@ def evaluate(inp: EvalInput) -> dict:
     recon = reconcile(data)
     g = build_graph(data, recon)
 
-    verified = []
-    for raw in _event_sources(inp):
-        verified.append(verify_event(raw, as_of=inp.as_of, online=inp.online_verify))
+    if inp.preverified is not None:
+        verified = list(inp.preverified)
+    else:
+        verified = [verify_event(raw, as_of=inp.as_of, online=inp.online_verify) for raw in event_sources(inp)]
     events = [v["event"] for v in verified]
     verification = {v["event"]["id"]: v["verification"] for v in verified}
     sdk_advisories = [{**p, "event_id": e["id"]} for e in events for p in e.get("products", []) if p.get("target") == "app_sdk"]

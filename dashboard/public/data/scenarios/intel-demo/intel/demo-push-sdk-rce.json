@@ -1,0 +1,246 @@
+{
+  "event": {
+    "id": "demo-push-sdk-rce",
+    "kind": "demo",
+    "title": "示範：行動推播 SDK 遠端程式碼執行漏洞（虛構套件 @demo-vendor/push-sdk）",
+    "date": "2026-11-05",
+    "industry": "行動 App",
+    "attack_chain": [
+      "攻擊者送出特製推播內容",
+      "App 內的推播 SDK 解析時執行任意程式碼"
+    ],
+    "attck": [
+      "T1203"
+    ],
+    "cves": [
+      "DEMO-2026-0002"
+    ],
+    "products": [
+      {
+        "name": "@demo-vendor/push-sdk",
+        "ecosystem": "npm",
+        "affected": ">=2.0.0 <2.4.0",
+        "fixed": "2.4.0",
+        "conditions": [],
+        "cvss": 9.8,
+        "known_exploited": false,
+        "impact": "remote_code_execution",
+        "confirmed": true,
+        "target": "app_sdk"
+      }
+    ],
+    "revision": "2026-11-05.1",
+    "controls": [
+      "C-APP-SDK"
+    ],
+    "confidence": "confirmed",
+    "sources": [
+      {
+        "url": null,
+        "title": "虛構示範事件，非真實報導",
+        "quote": null,
+        "published": null,
+        "fetch_status": "skipped",
+        "verified": false,
+        "verified_at": null,
+        "content_hash": null,
+        "verification_basis": "demo"
+      }
+    ],
+    "demo": true,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "1 項受影響，最高風險為高。brand-app：目前程式碼 @demo-vendor/push-sdk 2.3.1；受影響 3 個品牌、19,000 個安裝（共 20,000）；非最新版安裝占 35%。",
+  "affected_count": 1,
+  "max_level": "high",
+  "impacts": [
+    {
+      "event_id": "demo-push-sdk-rce",
+      "asset_id": "brand-app",
+      "basis": "version",
+      "our_state": "目前程式碼 @demo-vendor/push-sdk 2.3.1；受影響 3 個品牌、19,000 個安裝（共 20,000）；非最新版安裝占 35%",
+      "verdict": "affected",
+      "risk_id": "brand-app:@demo-vendor/push-sdk:vuln",
+      "reason": "App 版本內實際打包的 SDK 落在受影響範圍",
+      "app_impact": {
+        "affected_installations": 19000,
+        "total_installations": 20000,
+        "affected_brands": 3,
+        "per_brand": {
+          "brand-bloom": 8100,
+          "brand-hikari": 6600,
+          "brand-kumo": 4300
+        },
+        "latest_version": "3.4.0",
+        "old_version_share": 0.35,
+        "note": "安裝數為逐品牌、逐版本加總；沒有跨平台去重依據，不代表不重複使用者"
+      }
+    }
+  ],
+  "solutions": [
+    {
+      "risk_id": "brand-app:@demo-vendor/push-sdk:vuln",
+      "temporary": "確認 brand-app 的暴露範圍，先以 WAF 或存取限制降低風險",
+      "permanent": "將 brand-app 的受影響元件升級到修補版本",
+      "options": [
+        {
+          "name": "修補",
+          "action": "升級到修補版本",
+          "cost": "需回歸測試",
+          "timing": "24 小時內"
+        },
+        {
+          "name": "緩解",
+          "action": "限制來源、關閉受影響功能",
+          "cost": "部分功能受限",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "mobile-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template"
+    }
+  ],
+  "notice": {
+    "needed": true,
+    "draft": "致各品牌商：我們發現與「示範：行動推播 SDK 遠端程式碼執行漏洞（虛構套件 @demo-vendor/push-sdk）」相關的風險，正在處理中。請提醒會員：官方不會以電話或簡訊要求轉帳或提供驗證碼，也請只從官方商店下載品牌 App。有疑問請聯繫平台客服。（自動範本，發送前請人工確認）"
+  },
+  "status": "open",
+  "evaluated_asset_ids": [
+    "brand-app"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "攻擊者送出特製推播內容；App 內的推播 SDK 解析時執行任意程式碼",
+  "blocks": {
+    "1_summary": {
+      "title": "示範：行動推播 SDK 遠端程式碼執行漏洞（虛構套件 @demo-vendor/push-sdk）",
+      "date": "2026-11-05",
+      "industry": "行動 App",
+      "attack_chain": [
+        "攻擊者送出特製推播內容",
+        "App 內的推播 SDK 解析時執行任意程式碼"
+      ],
+      "attck": [
+        "T1203"
+      ],
+      "cves": [
+        "DEMO-2026-0002"
+      ],
+      "confidence": "已確認",
+      "label": "示範",
+      "sources": [
+        {
+          "url": null,
+          "title": "虛構示範事件，非真實報導",
+          "quote": null,
+          "fetch_status": "skipped",
+          "verification_basis": "demo",
+          "verified_at": null
+        }
+      ],
+      "verification": {
+        "status": "skipped",
+        "issues": [],
+        "max_level": null
+      },
+      "summary": "攻擊者送出特製推播內容；App 內的推播 SDK 解析時執行任意程式碼",
+      "summary_note": "自動摘要未產生",
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "1 項受影響，最高風險為高。brand-app：目前程式碼 @demo-vendor/push-sdk 2.3.1；受影響 3 個品牌、19,000 個安裝（共 20,000）；非最新版安裝占 35%。",
+      "affected_count": 1,
+      "max_level": "high"
+    },
+    "3_affected": [
+      {
+        "asset_id": "brand-app",
+        "our_state": "目前程式碼 @demo-vendor/push-sdk 2.3.1；受影響 3 個品牌、19,000 個安裝（共 20,000）；非最新版安裝占 35%",
+        "basis": "version",
+        "verdict": "affected",
+        "reason": "App 版本內實際打包的 SDK 落在受影響範圍",
+        "risk_id": "brand-app:@demo-vendor/push-sdk:vuln",
+        "level": "high",
+        "score": 7,
+        "breakdown": [
+          {
+            "factor": "基礎分：漏洞",
+            "points": 3,
+            "reason": "CVSS 9.8"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "商店上架的 App"
+          },
+          {
+            "factor": "資料敏感",
+            "points": 1,
+            "reason": "pii"
+          },
+          {
+            "factor": "影響範圍",
+            "points": 1,
+            "reason": "平台層，影響所有品牌"
+          }
+        ],
+        "app_impact": {
+          "affected_installations": 19000,
+          "total_installations": 20000,
+          "affected_brands": 3,
+          "per_brand": {
+            "brand-bloom": 8100,
+            "brand-hikari": 6600,
+            "brand-kumo": 4300
+          },
+          "latest_version": "3.4.0",
+          "old_version_share": 0.35,
+          "note": "安裝數為逐品牌、逐版本加總；沒有跨平台去重依據，不代表不重複使用者"
+        },
+        "to_verify": [],
+        "observed_at": "2026-11-09T06:25:55Z"
+      }
+    ],
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": [
+        "C-APP-SDK（App SDK 無已知漏洞，舊版使用者比例低於門檻）符合"
+      ]
+    },
+    "5_solutions": [
+      {
+        "risk_id": "brand-app:@demo-vendor/push-sdk:vuln",
+        "temporary": "確認 brand-app 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "permanent": "將 brand-app 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "24 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "mobile-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      }
+    ],
+    "6_notice": {
+      "needed": true,
+      "draft": "致各品牌商：我們發現與「示範：行動推播 SDK 遠端程式碼執行漏洞（虛構套件 @demo-vendor/push-sdk）」相關的風險，正在處理中。請提醒會員：官方不會以電話或簡訊要求轉帳或提供驗證碼，也請只從官方商店下載品牌 App。有疑問請聯繫平台客服。（自動範本，發送前請人工確認）"
+    },
+    "7_status": {
+      "status": "open",
+      "label": "待處理"
+    }
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "paths": [
+    {
+      "id": "path:internet→brand-app→app-api-key→api-gateway→member-db-prod",
+      "start": "internet",
+      "target": "member-db-prod",
+      "nodes": [
+        "internet",
+        "brand-app",
+        "app-api-key",
+        "api-gateway",
+        "member-db-prod"
+      ],
+      "assumption": null,
+      "steps": [
+        {
+          "from": "internet",
+          "to": "brand-app",
+          "kind": "download",
+          "finding_ids": [],
+          "evidence": [
+            "network.json"
+          ]
+        },
+        {
+          "from": "brand-app",
+          "to": "app-api-key",
+          "kind": "read_secret",
+          "finding_ids": [
+            "brand-app:C-SECRET-IN-GIT"
+          ],
+          "evidence": [
+            "secrets.json:app-api-key.stored_in"
+          ]
+        },
+        {
+          "from": "app-api-key",
+          "to": "api-gateway",
+          "kind": "authorize",
+          "finding_ids": [
+            "brand-app:C-SECRET-IN-GIT"
+          ],
+          "evidence": [
+            "secrets.json:app-api-key.grants"
+          ]
+        },
+        {
+          "from": "api-gateway",
+          "to": "member-db-prod",
+          "kind": "api_data_access",
+          "finding_ids": [],
+          "evidence": [
+            "api-inventory.json:/admin/v1/members"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "path:laptop-eng-07→deploy-token-eng07→deploy-pipeline",
+      "start": "laptop-eng-07",
+      "target": "deploy-pipeline",
+      "nodes": [
+        "laptop-eng-07",
+        "deploy-token-eng07",
+        "deploy-pipeline"
+      ],
+      "assumption": "假設 laptop-eng-07 已遭入侵（情境分析）",
+      "steps": [
+        {
+          "from": "laptop-eng-07",
+          "to": "deploy-token-eng07",
+          "kind": "read_secret",
+          "finding_ids": [
+            "laptop-eng-07:C-DEV-DEVICE-TOKEN"
+          ],
+          "evidence": [
+            "secrets.json:deploy-token-eng07.stored_in"
+          ]
+        },
+        {
+          "from": "deploy-token-eng07",
+          "to": "deploy-pipeline",
+          "kind": "authorize",
+          "finding_ids": [
+            "laptop-eng-07:C-DEV-DEVICE-TOKEN"
+          ],
+          "evidence": [
+            "secrets.json:deploy-token-eng07.grants"
+          ]
+        }
+      ]
+    }
+  ],
+  "chain_finding_ids": [
+    "brand-app:C-SECRET-IN-GIT",
+    "laptop-eng-07:C-DEV-DEVICE-TOKEN"
+  ],
+  "pending": [],
+  "starts": [
+    "internet",
+    "fileserver-01",
+    "laptop-eng-07"
+  ]
+}

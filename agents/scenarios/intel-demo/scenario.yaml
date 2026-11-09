@@ -1,0 +1,2 @@
+# intel-demo：示範事件送進完整確定性流程；不使用訂閱方案，不影響正式總覽
+intel_kinds: [demo]

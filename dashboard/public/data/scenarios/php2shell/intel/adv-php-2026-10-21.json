@@ -1,0 +1,374 @@
+{
+  "event": {
+    "id": "adv-php-2026-10-21",
+    "kind": "advisory",
+    "title": "PHP 安全更新：CVE-2026-109618、CVE-2026-109619",
+    "date": "2026-10-21",
+    "industry": null,
+    "attack_chain": [],
+    "attck": [],
+    "cves": [
+      "CVE-2026-109618",
+      "CVE-2026-109619"
+    ],
+    "products": [
+      {
+        "name": "php",
+        "ecosystem": "php",
+        "affected": [
+          {
+            "introduced": "8.2.0",
+            "fixed": "8.2.35"
+          },
+          {
+            "introduced": "8.3.0",
+            "fixed": "8.3.36"
+          },
+          {
+            "introduced": "8.4.0",
+            "fixed": "8.4.27"
+          },
+          {
+            "introduced": "8.5.0",
+            "fixed": "8.5.12"
+          },
+          {
+            "introduced": "8.1.0",
+            "fixed": null
+          },
+          {
+            "introduced": "8.0.0",
+            "fixed": null
+          },
+          {
+            "introduced": "7.4.0",
+            "fixed": null
+          }
+        ],
+        "unknown_below": "7.4.0",
+        "conditions": [
+          {
+            "key": "serves_web_requests",
+            "equals": true
+          }
+        ],
+        "cvss": 9.2,
+        "known_exploited": true,
+        "impact": "remote_code_execution",
+        "confirmed": true
+      }
+    ],
+    "revision": "2026-10-21.1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.rapid7.com/blog/post/etr-cve-2026-109618-and-cve-2026-109619-critical-unauthenticated-remote-code-execution-in-php/",
+        "title": "Rapid7：CVE-2026-109618 and CVE-2026-109619",
+        "quote": null,
+        "published": "2026-10-21",
+        "fetch_status": "skipped",
+        "verified": false,
+        "verified_at": null,
+        "content_hash": null,
+        "verification_basis": "unverified"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "2 項受影響，最高風險為高。marketing-site：php 8.1.27（apache2handler），對外。",
+  "affected_count": 2,
+  "max_level": "high",
+  "impacts": [
+    {
+      "event_id": "adv-php-2026-10-21",
+      "asset_id": "marketing-site",
+      "basis": "condition",
+      "our_state": "php 8.1.27（apache2handler），對外",
+      "verdict": "affected",
+      "risk_id": "marketing-site:php:vuln",
+      "to_verify": [],
+      "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True；停止支援且無修補"
+    },
+    {
+      "event_id": "adv-php-2026-10-21",
+      "asset_id": "report-svc",
+      "basis": "version",
+      "our_state": "php 8.4.27（fpm-fcgi）",
+      "verdict": "not_affected",
+      "risk_id": null,
+      "reason": "8.4.27 不在受影響範圍（已是修補版本或不同分支）"
+    },
+    {
+      "event_id": "adv-php-2026-10-21",
+      "asset_id": "phpmyadmin",
+      "basis": "condition",
+      "our_state": "php 8.3.20（fpm-fcgi）",
+      "verdict": "affected",
+      "risk_id": "phpmyadmin:php:vuln",
+      "to_verify": [],
+      "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True"
+    }
+  ],
+  "solutions": [
+    {
+      "risk_id": "marketing-site:php:vuln",
+      "temporary": "立即限制 marketing-site 的對外存取（WAF 規則、關閉高風險功能），並加強監控",
+      "permanent": "將 marketing-site 升級到仍受支援且已修補的版本，完成回歸測試後上線",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "WAF 限制異常請求、關閉不必要的功能",
+          "cost": "需驗證不影響現有功能",
+          "timing": "今天"
+        },
+        {
+          "name": "下架",
+          "action": "暫停 marketing-site，改導向其他服務",
+          "cost": "相關流量中斷",
+          "timing": "今天"
+        },
+        {
+          "name": "修補",
+          "action": "升級到受支援的修補版本",
+          "cost": "需回歸測試",
+          "timing": "7 天內"
+        }
+      ],
+      "suggested_owner": "security-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template"
+    },
+    {
+      "risk_id": "phpmyadmin:php:vuln",
+      "temporary": "確認 phpmyadmin 的暴露範圍，先以 WAF 或存取限制降低風險",
+      "permanent": "將 phpmyadmin 的受影響元件升級到修補版本",
+      "options": [
+        {
+          "name": "修補",
+          "action": "升級到修補版本",
+          "cost": "需回歸測試",
+          "timing": "168 小時內"
+        },
+        {
+          "name": "緩解",
+          "action": "限制來源、關閉受影響功能",
+          "cost": "部分功能受限",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "dba-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template"
+    }
+  ],
+  "notice": {
+    "needed": false,
+    "draft": null
+  },
+  "status": "open",
+  "evaluated_asset_ids": [
+    "marketing-site",
+    "phpmyadmin",
+    "report-svc"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "PHP 安全更新：CVE-2026-109618、CVE-2026-109619",
+  "blocks": {
+    "1_summary": {
+      "title": "PHP 安全更新：CVE-2026-109618、CVE-2026-109619",
+      "date": "2026-10-21",
+      "industry": null,
+      "attack_chain": [],
+      "attck": [],
+      "cves": [
+        "CVE-2026-109618",
+        "CVE-2026-109619"
+      ],
+      "confidence": "暫定",
+      "label": "公告",
+      "sources": [
+        {
+          "url": "https://www.rapid7.com/blog/post/etr-cve-2026-109618-and-cve-2026-109619-critical-unauthenticated-remote-code-execution-in-php/",
+          "title": "Rapid7：CVE-2026-109618 and CVE-2026-109619",
+          "quote": null,
+          "fetch_status": "skipped",
+          "verification_basis": "unverified",
+          "verified_at": null
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [
+          "官方來源或兩個獨立來源未驗證通過：改為暫定"
+        ],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "PHP 安全更新：CVE-2026-109618、CVE-2026-109619",
+      "summary_note": "自動摘要未產生",
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "2 項受影響，最高風險為高。marketing-site：php 8.1.27（apache2handler），對外。",
+      "affected_count": 2,
+      "max_level": "high"
+    },
+    "3_affected": [
+      {
+        "asset_id": "marketing-site",
+        "our_state": "php 8.1.27（apache2handler），對外",
+        "basis": "condition",
+        "verdict": "affected",
+        "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True；停止支援且無修補",
+        "risk_id": "marketing-site:php:vuln",
+        "level": "high",
+        "score": 9,
+        "breakdown": [
+          {
+            "factor": "基礎分：漏洞",
+            "points": 3,
+            "reason": "CVSS 9.2"
+          },
+          {
+            "factor": "已遭實際利用",
+            "points": 2,
+            "reason": "KEV 或官方確認"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "可從 internet 連到"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-php2shell-2026-10"
+          },
+          {
+            "factor": "已停止支援",
+            "points": 1,
+            "reason": "無修補可用"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-09T06:25:56Z"
+      },
+      {
+        "asset_id": "phpmyadmin",
+        "our_state": "php 8.3.20（fpm-fcgi）",
+        "basis": "condition",
+        "verdict": "affected",
+        "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True",
+        "risk_id": "phpmyadmin:php:vuln",
+        "level": "medium",
+        "score": 4,
+        "breakdown": [
+          {
+            "factor": "基礎分：漏洞",
+            "points": 3,
+            "reason": "CVSS 9.2"
+          },
+          {
+            "factor": "已遭實際利用",
+            "points": 2,
+            "reason": "KEV 或官方確認"
+          },
+          {
+            "factor": "資料敏感",
+            "points": 1,
+            "reason": "order、pii"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-php2shell-2026-10"
+          },
+          {
+            "factor": "補償措施",
+            "points": -3,
+            "reason": "network.json 顯示只允許 corp-vpn 連入（本次快照證據）"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-09T06:25:56Z"
+      }
+    ],
+    "4_unaffected_and_check": {
+      "not_affected": [
+        {
+          "asset_id": "report-svc",
+          "our_state": "php 8.4.27（fpm-fcgi）",
+          "reason": "8.4.27 不在受影響範圍（已是修補版本或不同分支）"
+        }
+      ],
+      "need_check": [],
+      "notes": []
+    },
+    "5_solutions": [
+      {
+        "risk_id": "marketing-site:php:vuln",
+        "temporary": "立即限制 marketing-site 的對外存取（WAF 規則、關閉高風險功能），並加強監控",
+        "permanent": "將 marketing-site 升級到仍受支援且已修補的版本，完成回歸測試後上線",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "WAF 限制異常請求、關閉不必要的功能",
+            "cost": "需驗證不影響現有功能",
+            "timing": "今天"
+          },
+          {
+            "name": "下架",
+            "action": "暫停 marketing-site，改導向其他服務",
+            "cost": "相關流量中斷",
+            "timing": "今天"
+          },
+          {
+            "name": "修補",
+            "action": "升級到受支援的修補版本",
+            "cost": "需回歸測試",
+            "timing": "7 天內"
+          }
+        ],
+        "suggested_owner": "security-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      {
+        "risk_id": "phpmyadmin:php:vuln",
+        "temporary": "確認 phpmyadmin 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "permanent": "將 phpmyadmin 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "168 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "dba-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      }
+    ],
+    "6_notice": {
+      "needed": false,
+      "draft": null
+    },
+    "7_status": {
+      "status": "open",
+      "label": "待處理"
+    }
+  }
+}

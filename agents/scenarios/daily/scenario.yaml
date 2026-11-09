@@ -1,0 +1,2 @@
+# daily：預先收錄的真實事件＋已知公告＋（受信任 live 時）每日新抓的真實事件
+intel_kinds: [archive, advisory]

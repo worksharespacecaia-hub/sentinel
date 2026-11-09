@@ -1,0 +1,190 @@
+{
+  "event": {
+    "id": "demo-peer-mail-key",
+    "kind": "demo",
+    "title": "示範：同業寄信服務金鑰外洩，詐騙信內容吻合真實訂單",
+    "date": "2026-11-08",
+    "industry": "電商",
+    "attack_chain": [
+      "寄信服務金鑰外洩",
+      "以平台名義寄送含真實訂單內容的詐騙信"
+    ],
+    "attck": [
+      "T1552"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "2026-11-08.1",
+    "controls": [
+      "C-THIRD-PARTY-KEY-ROTATION"
+    ],
+    "confidence": "confirmed",
+    "sources": [
+      {
+        "url": null,
+        "title": "虛構示範事件，非真實報導",
+        "quote": null,
+        "published": null,
+        "fetch_status": "skipped",
+        "verified": false,
+        "verified_at": null,
+        "content_hash": null,
+        "verification_basis": "demo"
+      }
+    ],
+    "demo": true,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "1 項受影響，最高風險為中。mail-api-key：secrets.json: mail-api-key：456 天未輪替、無 IP 白名單。",
+  "affected_count": 1,
+  "max_level": "medium",
+  "impacts": [
+    {
+      "event_id": "demo-peer-mail-key",
+      "asset_id": "mail-api-key",
+      "basis": "control",
+      "our_state": "secrets.json: mail-api-key：456 天未輪替、無 IP 白名單",
+      "verdict": "affected",
+      "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+      "reason": "不符合 C-THIRD-PARTY-KEY-ROTATION（第三方服務金鑰 90 天內輪替且有 IP 白名單）"
+    }
+  ],
+  "solutions": [
+    {
+      "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+      "temporary": "撤銷並輪替 mail-api-key，確認撤銷後舊值無法使用",
+      "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "撤銷並輪替金鑰",
+          "cost": "使用該金鑰的服務需同步更新",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "security-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template"
+    }
+  ],
+  "notice": {
+    "needed": true,
+    "draft": "致各品牌商：我們發現與「示範：同業寄信服務金鑰外洩，詐騙信內容吻合真實訂單」相關的風險，正在處理中。請提醒會員：官方不會以電話或簡訊要求轉帳或提供驗證碼，也請只從官方商店下載品牌 App。有疑問請聯繫平台客服。（自動範本，發送前請人工確認）"
+  },
+  "status": "open",
+  "evaluated_asset_ids": [
+    "mail-api-key"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "寄信服務金鑰外洩；以平台名義寄送含真實訂單內容的詐騙信",
+  "blocks": {
+    "1_summary": {
+      "title": "示範：同業寄信服務金鑰外洩，詐騙信內容吻合真實訂單",
+      "date": "2026-11-08",
+      "industry": "電商",
+      "attack_chain": [
+        "寄信服務金鑰外洩",
+        "以平台名義寄送含真實訂單內容的詐騙信"
+      ],
+      "attck": [
+        "T1552"
+      ],
+      "cves": [],
+      "confidence": "已確認",
+      "label": "示範",
+      "sources": [
+        {
+          "url": null,
+          "title": "虛構示範事件，非真實報導",
+          "quote": null,
+          "fetch_status": "skipped",
+          "verification_basis": "demo",
+          "verified_at": null
+        }
+      ],
+      "verification": {
+        "status": "skipped",
+        "issues": [],
+        "max_level": null
+      },
+      "summary": "寄信服務金鑰外洩；以平台名義寄送含真實訂單內容的詐騙信",
+      "summary_note": "自動摘要未產生",
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "1 項受影響，最高風險為中。mail-api-key：secrets.json: mail-api-key：456 天未輪替、無 IP 白名單。",
+      "affected_count": 1,
+      "max_level": "medium"
+    },
+    "3_affected": [
+      {
+        "asset_id": "mail-api-key",
+        "our_state": "secrets.json: mail-api-key：456 天未輪替、無 IP 白名單",
+        "basis": "control",
+        "verdict": "affected",
+        "reason": "不符合 C-THIRD-PARTY-KEY-ROTATION（第三方服務金鑰 90 天內輪替且有 IP 白名單）",
+        "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "level": "medium",
+        "score": 6,
+        "breakdown": [
+          {
+            "factor": "基礎分：控制項不符",
+            "points": 2,
+            "reason": "controls.yaml base_points"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "第三方金鑰無 IP 白名單，外部任何來源都可使用"
+          },
+          {
+            "factor": "資料敏感",
+            "points": 1,
+            "reason": "order、pii"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-1shop-2026-10"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-09T06:25:58Z"
+      }
+    ],
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": []
+    },
+    "5_solutions": [
+      {
+        "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "temporary": "撤銷並輪替 mail-api-key，確認撤銷後舊值無法使用",
+        "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "撤銷並輪替金鑰",
+            "cost": "使用該金鑰的服務需同步更新",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "security-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      }
+    ],
+    "6_notice": {
+      "needed": true,
+      "draft": "致各品牌商：我們發現與「示範：同業寄信服務金鑰外洩，詐騙信內容吻合真實訂單」相關的風險，正在處理中。請提醒會員：官方不會以電話或簡訊要求轉帳或提供驗證碼，也請只從官方商店下載品牌 App。有疑問請聯繫平台客服。（自動範本，發送前請人工確認）"
+    },
+    "7_status": {
+      "status": "open",
+      "label": "待處理"
+    }
+  }
+}

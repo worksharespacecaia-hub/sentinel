@@ -1,0 +1,34 @@
+[
+  {
+    "id": "SIG-FRAUD-MULTI-BRAND",
+    "rule": "24 小時內 ≥3 個品牌回報含真實訂單資訊的詐騙",
+    "level": "high",
+    "light": "red",
+    "assets": [
+      "platform"
+    ],
+    "summary": "3 個品牌回報疑似外洩詐騙",
+    "evidence": [
+      "complaints.csv: c-9001（brand-bloom）",
+      "complaints.csv: c-9002（brand-hikari）",
+      "complaints.csv: c-9003（brand-kumo）"
+    ],
+    "related_event": "evt-91app-2026-10",
+    "suspected_breach": true
+  },
+  {
+    "id": "SIG-BULK-READ:svc-report",
+    "rule": "單一帳號讀取量超過平日 10 倍",
+    "level": "high",
+    "light": null,
+    "assets": [
+      "order-db-prod"
+    ],
+    "summary": "svc-report 10 分鐘讀取 27000 列（基準 2000）",
+    "evidence": [
+      "db-audit.jsonl: dba-9001",
+      "db-audit.jsonl: dba-9002",
+      "db-audit.jsonl: dba-9003"
+    ]
+  }
+]
