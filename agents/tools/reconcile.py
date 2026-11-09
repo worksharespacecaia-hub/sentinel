@@ -108,10 +108,12 @@ def reconcile(data: TargetData) -> dict:
         if a.get("asset_id") or a.get("vendor_id") in vendor_ids:
             continue
         saas_seen.setdefault(a["name"], set()).add("sso")
+    saas_registered = []      # 本次有觀察到且已對上第三方清冊的 SaaS：前次的影子 IT 風險可依此判定已修復
     for name, srcs in sorted(saas_seen.items()):
-        if name.lower() in billing:
-            continue
         asset_id = "saas-" + re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
+        if name.lower() in billing:
+            saas_registered.append(asset_id)
+            continue
         records.append({"asset_id": asset_id, "type": "saas", "registered": False, "observed": True,
                         "observed_sources": sorted(srcs), "ci_applicable": False, "deployed_via_ci": None,
                         "owner": None, "display_name": name, "conclusion": "shadow_it", "label": "影子 IT",
@@ -120,7 +122,7 @@ def reconcile(data: TargetData) -> dict:
     shadow_apis = find_shadow_apis(data)
     devices = identify_unmatched_devices(data, services, mdm_devices)
     return {"records": records, "shadow_apis": shadow_apis, "devices": devices,
-            "coverage": coverage(data, records)}
+            "coverage": coverage(data, records), "saas_registered": saas_registered}
 
 
 def find_shadow_apis(data: TargetData) -> list[dict]:

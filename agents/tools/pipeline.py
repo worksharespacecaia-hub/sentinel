@@ -106,7 +106,8 @@ def evaluate(inp: EvalInput) -> dict:
 
     data_issues = [*data.data_issues, *a2["data_issues"]]
     complete = not any(i.get("required") and i["status"] in ("missing", "stale") for i in data.data_issues) and not a2["data_issues"]
-    risks += mark_fixed(risks, inp.prev_risks, complete=complete, evaluated_assets=set(g.nodes), as_of=inp.as_of)
+    evaluated = set(g.nodes) | set(recon.get("saas_registered", []))
+    risks += mark_fixed(risks, inp.prev_risks, complete=complete, evaluated_assets=evaluated, as_of=inp.as_of)
     light, reasons = compute_light(risks=risks, signals=signals, open_alerts=inp.open_alerts,
                                    coverage=recon["coverage"], data_issues=data_issues)
     return {

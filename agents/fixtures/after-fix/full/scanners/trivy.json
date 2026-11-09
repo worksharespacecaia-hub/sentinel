@@ -1,0 +1,207 @@
+{
+  "tool_version": "0.57.1",
+  "database_revision": "2026-11-09T00:56:17.155719746Z",
+  "results": [
+    {
+      "tool": "trivy",
+      "target": "services/storefront",
+      "vulnerabilities": []
+    },
+    {
+      "tool": "trivy",
+      "target": "services/member-api",
+      "vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2024-45590",
+          "PkgName": "body-parser",
+          "InstalledVersion": "1.20.1",
+          "FixedVersion": "1.20.3",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "body-parser: Denial of Service Vulnerability in body-parser",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-111181",
+          "PkgName": "body-parser",
+          "InstalledVersion": "1.20.1",
+          "FixedVersion": "2.4.0, 1.20.9",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "body-parser: body-parser: Denial of Service via unhandled decompression stream error",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-12590",
+          "PkgName": "body-parser",
+          "InstalledVersion": "1.20.1",
+          "FixedVersion": "1.20.6, 2.3.0",
+          "Severity": "LOW",
+          "CVSSv3": 5.9,
+          "Title": "body-parser: body-parser: Denial of Service via invalid limit option",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-47764",
+          "PkgName": "cookie",
+          "InstalledVersion": "0.5.0",
+          "FixedVersion": "0.7.0",
+          "Severity": "LOW",
+          "CVSSv3": 3.7,
+          "Title": "cookie: cookie accepts cookie name, path, and domain with out of bounds characters",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-29041",
+          "PkgName": "express",
+          "InstalledVersion": "4.18.2",
+          "FixedVersion": "4.19.2, 5.0.0-beta.3",
+          "Severity": "MEDIUM",
+          "CVSSv3": 6.1,
+          "Title": "express: cause malformed URLs to be evaluated",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-43796",
+          "PkgName": "express",
+          "InstalledVersion": "4.18.2",
+          "FixedVersion": "4.20.0, 5.0.0",
+          "Severity": "LOW",
+          "CVSSv3": 5.0,
+          "Title": "express: Improper Input Handling in Express Redirects",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-23337",
+          "PkgName": "lodash",
+          "InstalledVersion": "4.17.20",
+          "FixedVersion": "4.17.21",
+          "Severity": "HIGH",
+          "CVSSv3": 7.2,
+          "Title": "nodejs-lodash: command injection via template",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-4800",
+          "PkgName": "lodash",
+          "InstalledVersion": "4.17.20",
+          "FixedVersion": "4.18.0",
+          "Severity": "HIGH",
+          "CVSSv3": 9.8,
+          "Title": "lodash: lodash: Arbitrary code execution via untrusted input in template imports",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2020-28500",
+          "PkgName": "lodash",
+          "InstalledVersion": "4.17.20",
+          "FixedVersion": "4.17.21",
+          "Severity": "MEDIUM",
+          "CVSSv3": 5.3,
+          "Title": "nodejs-lodash: ReDoS via the toNumber, trim and trimEnd functions",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-13465",
+          "PkgName": "lodash",
+          "InstalledVersion": "4.17.20",
+          "FixedVersion": "4.17.23",
+          "Severity": "MEDIUM",
+          "CVSSv3": 8.2,
+          "Title": "lodash: prototype pollution in _.unset and _.omit functions",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-45296",
+          "PkgName": "path-to-regexp",
+          "InstalledVersion": "0.1.7",
+          "FixedVersion": "1.9.0, 0.1.10, 8.0.0, 3.3.0, 6.3.0",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "path-to-regexp: Backtracking regular expressions cause ReDoS",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-52798",
+          "PkgName": "path-to-regexp",
+          "InstalledVersion": "0.1.7",
+          "FixedVersion": "0.1.12",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "path-to-regexp: path-to-regexp Unpatched `path-to-regexp` ReDoS in 0.1.x",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-4867",
+          "PkgName": "path-to-regexp",
+          "InstalledVersion": "0.1.7",
+          "FixedVersion": "0.1.13",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "path-to-regexp: path-to-regexp: Denial of Service via catastrophic backtracking from malformed URL parameters",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-15284",
+          "PkgName": "qs",
+          "InstalledVersion": "6.11.0",
+          "FixedVersion": "6.14.1",
+          "Severity": "MEDIUM",
+          "CVSSv3": 7.5,
+          "Title": "qs: qs: Denial of Service via improper input validation in array parsing",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-110816",
+          "PkgName": "qs",
+          "InstalledVersion": "6.11.0",
+          "FixedVersion": "6.16.1",
+          "Severity": "MEDIUM",
+          "CVSSv3": 5.3,
+          "Title": "qs: qs: Denial of Service via unhandled exception during array serialization",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-82417",
+          "PkgName": "qs",
+          "InstalledVersion": "6.11.0",
+          "FixedVersion": "6.16.0",
+          "Severity": "MEDIUM",
+          "CVSSv3": 7.5,
+          "Title": "qs: qs: Denial of Service via improper validation in stringify function",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-2391",
+          "PkgName": "qs",
+          "InstalledVersion": "6.11.0",
+          "FixedVersion": "6.14.2",
+          "Severity": "LOW",
+          "CVSSv3": 7.5,
+          "Title": "qs: qs's arrayLimit bypass in comma parsing allows denial of service",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-43799",
+          "PkgName": "send",
+          "InstalledVersion": "0.18.0",
+          "FixedVersion": "0.19.0",
+          "Severity": "LOW",
+          "CVSSv3": 5.0,
+          "Title": "send: Code Execution Vulnerability in Send Library",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-43800",
+          "PkgName": "serve-static",
+          "InstalledVersion": "1.15.0",
+          "FixedVersion": "1.16.0, 2.1.0",
+          "Severity": "LOW",
+          "CVSSv3": 5.0,
+          "Title": "serve-static: Improper Sanitization in serve-static",
+          "Target": "package-lock.json"
+        }
+      ]
+    }
+  ]
+}

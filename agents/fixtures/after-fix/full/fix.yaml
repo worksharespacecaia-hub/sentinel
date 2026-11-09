@@ -1,0 +1,19 @@
+# 「修復後」情境：完整修復（第 8 節）。處理 baseline 全部高風險與可見度缺口；中低風險刻意保留，
+# 因此預期降為黃燈。真實 open／contained 的即時告警必須另外附證據結案，有效燈號才會跟著降。
+title: 完整修復：處理全部高風險與可見度缺口
+changes:
+  - 包含部分修復的全部內容
+  - 撤銷 app-api-key、deploy-token-eng07 並附撤銷證據；App 改由後端代理呼叫，laptop-eng-07 刪除權杖檔
+  - marketing-site 升級 PHP 8.4.27、改由 Pipeline 部署並補登清冊
+  - internal-tool 改由 Pipeline 部署並補登清冊；nas-office-01 關閉 port forwarding、升級 DSM 並補登清冊
+  - QuickSite Builder 補登第三方清冊
+  - storefront 升級 next 15.5.28、postcss（重產 trivy 結果）
+  - Firebase Storage 規則改為只允許本人讀寫；訂單匯出 bucket 改為私有
+not_fixed:
+  - member-api 相依套件、App 設定、影子 API、寄信金鑰輪替等中低風險（排入本週處理）
+expect:
+  light: yellow
+  fixed_all_baseline_high: true
+  no_open_high: true
+  no_paths: true
+  visibility_ok: true

@@ -100,6 +100,8 @@ def load_target(root: Path, *, as_of: datetime, target_sha: str | None = None,
                                      "observed_at": observed.isoformat(), "required": name in REQUIRED,
                                      "impact": f"超過 {max_age_days} 天未重新觀察"})
 
+    _require_revocation_evidence(data)
+
     for name in ("complaints.csv", "db-audit.jsonl", "auth.jsonl"):
         text = _read_text(root / "ops" / "signals" / name)
         if text is None:
@@ -125,6 +127,19 @@ def load_target(root: Path, *, as_of: datetime, target_sha: str | None = None,
 
     data.scanners = load_scanners(scanners_dir) if scanners_dir else {}
     return data
+
+
+def _require_revocation_evidence(data: TargetData) -> None:
+    """金鑰只有附撤銷證據（revocation_evidence）才算 revoked（第 10 節：有正式撤銷證據才 fixed）。
+
+    Git 歷史仍保留舊值時，只改 HEAD 或只在清冊寫 revoked 都不能解除授權；沒有證據就當作仍然有效。
+    """
+    for s in data.snapshots.get("secrets.json") or []:
+        if s.get("status") == "revoked" and not str(s.get("revocation_evidence") or "").strip():
+            s["status"] = "active"
+            s["revocation_claimed"] = True
+            data.data_issues.append({"source": f"secrets.json:{s.get('id')}", "status": "unverified", "required": False,
+                                     "impact": "宣稱已撤銷但沒有撤銷證據，仍視為有效金鑰"})
 
 
 def expand_github_deployments(deployments: list[dict]) -> list[dict]:
