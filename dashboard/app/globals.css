@@ -45,3 +45,4 @@ button.primary { background: var(--accent); color: #fff; border-color: var(--acc
 input { font: inherit; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--text); }
 .tree li { margin: 2px 0; }
 @media (max-width: 640px) { h1 { font-size: 21px; } .stat { font-size: 24px; } }
+pre { overflow-x: auto; white-space: pre; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 13px; }

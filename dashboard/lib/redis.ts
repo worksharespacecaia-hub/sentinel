@@ -4,7 +4,9 @@ export class RedisUnavailable extends Error {}
 function config() {
   const url = process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-  if (!url || !token || !url.startsWith("https://")) throw new RedisUnavailable("Redis 未設定");
+  // 正式環境只接受 HTTPS；本機整合測試（NODE_ENV 非 production）可連 127.0.0.1 的 Upstash 相容代理
+  const local = process.env.NODE_ENV !== "production" && /^http:\/\/(127\.0\.0\.1|localhost):\d+$/.test(url ?? "");
+  if (!url || !token || !(url.startsWith("https://") || local)) throw new RedisUnavailable("Redis 未設定");
   return { url, token };
 }
 

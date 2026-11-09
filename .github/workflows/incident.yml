@@ -1,0 +1,39 @@
+name: incident
+# 即時告警的圍堵建議（觸發 ④，第 14.5 節）：A3 關聯 → A4（讀已 commit 的 daily/graph.json）→ containment-advisor → Issue 留言
+# 不 commit、不寫入任何 Repo；只留言到 Repo ② 的 Issue。payload 只是查詢提示，權威上下文由受保護的 /api/alerts/context 取回。
+run-name: incident ${{ github.event.client_payload.alert_id }}
+
+on:
+  repository_dispatch:
+    types: [incident]
+
+concurrency:
+  group: incident-${{ github.event.client_payload.alert_id }}   # 每個告警各自一組，不會互相取消
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  contain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip, cache-dependency-path: agents/requirements.txt }
+      - run: pip install -r agents/requirements.txt
+      - name: 圍堵建議
+        env:                           # client_payload 一律經 env 傳入，不直接寫進 run（避免指令注入）
+          ALERT_ID: ${{ github.event.client_payload.alert_id }}
+          ASSET_ID: ${{ github.event.client_payload.asset_id }}
+          EXECUTION_MODE: ${{ vars.INCIDENT_EXECUTION_MODE || 'replay' }}
+          # 只有 live 模式才帶入 API Key；replay（預設）不呼叫任何 LLM 網路服務
+          ANTHROPIC_API_KEY: ${{ vars.INCIDENT_EXECUTION_MODE == 'live' && secrets.ANTHROPIC_API_KEY || '' }}
+          NOTIFY_TOKEN: ${{ secrets.NOTIFY_TOKEN }}          # 不繼承到 LLM 子行程（scrubbed_environ）
+          SENTINEL_BASE_URL: ${{ vars.SENTINEL_BASE_URL }}   # 固定本站 HTTPS origin
+          GH_TOKEN: ${{ github.token }}                      # 只用來留言（issues: write）
+          PYTHONIOENCODING: utf-8
+        run: python agents/run_agent.py incident

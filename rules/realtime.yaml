@@ -1,0 +1,47 @@
+# 即時規則（第 7.6 節）。刻意不用 LLM：規則判斷與告警持久化由 dashboard/lib/rules.ts、lib/window.ts 執行。
+# 修改後執行 python scripts/build-rules.py 重新產生 dashboard/lib/realtime-rules.json（pytest 會檢查兩者一致）。
+
+- id: RT-001
+  title: 非 Pipeline 發起的正式部署
+  source: github.deployment
+  asset_key: deploy-pipeline
+  match:
+    environment: production
+    creator_not_in: ["github-actions[bot]"]
+  level: high
+  dedup_minutes: 30
+  maps_to_event: evt-binance-2026-10
+
+- id: RT-002
+  title: 凌晨大量讀取訂單資料
+  source: db.audit
+  asset_key: order-db-prod
+  match:
+    table: orders
+    event_hour_between: [0, 6]       # 以事件本身的時間戳判斷（Asia/Taipei），不用伺服器時間；含 0 時、不含 6 時
+    ip_seen_before: false
+  window:
+    minutes: 10
+    anchor: event_time               # 時間窗以最新一筆事件的時間為基準
+    group_by: account
+    metric: rows_read_sum
+    over_baseline_multiplier: 10
+    baseline_source: rules/baselines.json   # {unit: rows/10min, default: 100, accounts: {...}}；基準必須 > 0
+  level: high
+  dedup_minutes: 60
+
+- id: RT-003
+  title: 多品牌回報疑似外洩詐騙
+  source: support.complaint
+  asset_key: platform
+  match:
+    text_regex: "(訂單編號|訂單號碼|order\\s*(no\\.?|#)?)\\s*[:：#]?\\s*[A-Z0-9-]{8,}"
+    text_regex_flags: "i"            # JavaScript 不支援 (?i)，旗標分開寫
+  window:
+    hours: 24
+    distinct: brand
+    threshold: 3
+  level: high
+  light: red
+  dedup_minutes: 1440
+  maps_to_event: evt-91app-2026-10
