@@ -104,8 +104,17 @@ def run(ctx: RunCtx) -> dict:
     tr.emit("result", f"燈號 {built['report']['light']}；{len(built['intel_reports'])} 份情資比對報告")
     manifest = write_outputs(out_dir, built, res, reports_md_dir=md_dir, run_id=ctx.run_id)
     merge_traces([ctx.out / up / "trace.jsonl" for up in [*UPSTREAM, "a5"]], out_dir / "trace.jsonl")
+    if ctx.scope == "daily" and ctx.scanners_dir and ctx.scanners_dir.is_dir() and "fixtures" not in ctx.scanners_dir.parts:
+        import shutil
+        dest = out_dir / "state" / "scanners"
+        dest.mkdir(parents=True, exist_ok=True)
+        for f in ctx.scanners_dir.glob("*.json"):      # 已遮蔽的掃描結果與 manifest，供下次沿用
+            shutil.copy2(f, dest / f.name)
     _merge_cache(ctx)
     _update_index(ctx, output_dir, built["report"], manifest)
+    if ctx.scope == "advisory" and ctx.advisory_id and built["report"]["completeness"] == "complete":
+        from tools.intel_watch import mark_done
+        mark_done(ctx.data_dir / "intel-watch.json", ctx.advisory_id, ctx.run_id)
     finish(ctx, "a5")
     return {"output_dir": output_dir, "light": built["report"]["light"]}
 

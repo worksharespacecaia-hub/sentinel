@@ -131,10 +131,27 @@ def build_ctx(*, mode: str | None = None, scenario: str | None = None) -> RunCtx
     cfg = (yaml.safe_load(cfg_path.read_text(encoding="utf-8")) if cfg_path.is_file() else {}) or {}
     # 情境 fixture 可凍結邏輯時間（畫面會標示）；正式 daily 使用實際時間
     as_of = parse_time(env.get("AS_OF") or cfg.get("as_of")) or datetime.now(timezone.utc)
+    if scanners is not None and not any(scanners.glob("*.json")):
+        scanners = None
+    if scanners is None and target != FIXTURE_TARGET:
+        scanners = reusable_scanners(sha, as_of)
     return RunCtx(run_id=run_id, scenario=scenario, scope=scope, trigger_source=trigger, event_name=env.get("EVENT_NAME", "local"),
                   mode=resolve_mode(mode), as_of=as_of, target_root=target, scanners_dir=scanners, target_sha=sha,
                   output_dir=output_dir, advisory_id=advisory_id, advisory_revision=env.get("ADVISORY_REVISION") or None,
                   assets=assets)
+
+
+def reusable_scanners(target_sha: str | None, as_of: datetime) -> Path | None:
+    """沿用 daily/state/scanners：只有 manifest 的 target_sha 相同、狀態 ok 且未過期才可沿用；否則回傳 None（記為 missing）。"""
+    d = DATA_DIR / "daily" / "state" / "scanners"
+    manifests = [read_json(p) for p in d.glob("*.manifest.json")] if d.is_dir() else []
+    if not manifests:
+        return None
+    for m in manifests:
+        until = parse_time(m.get("valid_until"))
+        if m.get("status") != "ok" or m.get("target_sha") != target_sha or until is None or until < as_of:
+            return None
+    return d
 
 
 def _git_sha(path: Path) -> str | None:
