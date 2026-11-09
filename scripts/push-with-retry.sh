@@ -25,8 +25,8 @@ if [[ -n "${PUBLISH_REMOTE_URL:-}" ]]; then
 else
   REMOTE_URL="https://x-access-token:${GH_TOKEN:?需要 GH_TOKEN}@github.com/${GITHUB_REPOSITORY:?需要 GITHUB_REPOSITORY}.git"
 fi
-git config user.name "sentinel-publisher[bot]"
-git config user.email "sentinel-publisher@users.noreply.github.com"
+git config user.name "github-actions[bot]"
+git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
 for attempt in 1 2 3; do
   git fetch --quiet "$REMOTE_URL" main
