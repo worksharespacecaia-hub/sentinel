@@ -9,9 +9,9 @@
    "File": "config/db.yml",
    "StartLine": 4,
    "EndLine": 4,
-   "Commit": "217a093f6c7cd4ec01386039ffe171f20e8b2425",
+   "Commit": "74050ce567215fe62ce5fe07e00bada76fc07d4e",
    "Date": "2026-11-09T05:42:26Z",
-   "Fingerprint": "217a093f6c7cd4ec01386039ffe171f20e8b2425:config/db.yml:demo-fake-secret:4",
+   "Fingerprint": "74050ce567215fe62ce5fe07e00bada76fc07d4e:config/db.yml:demo-fake-secret:4",
    "Secret": "REDACTED",
    "Match": "REDACTED"
   },
@@ -21,9 +21,9 @@
    "File": "config/db.yml",
    "StartLine": 7,
    "EndLine": 7,
-   "Commit": "217a093f6c7cd4ec01386039ffe171f20e8b2425",
+   "Commit": "74050ce567215fe62ce5fe07e00bada76fc07d4e",
    "Date": "2026-11-09T05:42:26Z",
-   "Fingerprint": "217a093f6c7cd4ec01386039ffe171f20e8b2425:config/db.yml:demo-fake-secret:7",
+   "Fingerprint": "74050ce567215fe62ce5fe07e00bada76fc07d4e:config/db.yml:demo-fake-secret:7",
    "Secret": "REDACTED",
    "Match": "REDACTED"
   },
@@ -33,9 +33,9 @@
    "File": "services/brand-app/src/config.ts",
    "StartLine": 3,
    "EndLine": 3,
-   "Commit": "217a093f6c7cd4ec01386039ffe171f20e8b2425",
+   "Commit": "74050ce567215fe62ce5fe07e00bada76fc07d4e",
    "Date": "2026-11-09T05:42:26Z",
-   "Fingerprint": "217a093f6c7cd4ec01386039ffe171f20e8b2425:services/brand-app/src/config.ts:demo-fake-secret:3",
+   "Fingerprint": "74050ce567215fe62ce5fe07e00bada76fc07d4e:services/brand-app/src/config.ts:demo-fake-secret:3",
    "Secret": "REDACTED",
    "Match": "REDACTED"
   }
