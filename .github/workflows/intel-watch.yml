@@ -1,0 +1,51 @@
+name: intel-watch
+# 觸發 ② 的第 1 層（第 14.4 節）：每小時以純程式比對公告與已存的 daily 圖譜，命中才派發 sentinel.yml（scenario=advisory）。
+# 不使用 LLM、不需要 ANTHROPIC_API_KEY。
+on:
+  schedule:
+    - cron: "17 * * * *"           # 每小時一次，避開整點
+  workflow_dispatch:
+
+permissions:
+  contents: write                  # 比對／派工狀態內容改變時發布 intel-watch.json
+  actions: write                   # 觸發 sentinel.yml
+
+concurrency:
+  group: intel-watch-state
+  cancel-in-progress: false
+
+env:
+  PYTHONIOENCODING: utf-8
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false, fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip, cache-dependency-path: agents/requirements.txt }
+      - run: pip install -r agents/requirements.txt
+      - name: 第 1 層比對與派工（派工參數以陣列傳入，不拼接 shell 指令）
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ADVISORY_EXECUTION_MODE: ${{ vars.SENTINEL_SCHEDULE_MODE || 'replay' }}
+        run: python agents/tools/intel_watch.py --dispatch
+      - name: 語意狀態改變時才發布 intel-watch.json
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- dashboard/public/data/intel-watch.json; then
+            echo "狀態沒有變化，不 commit"; exit 0
+          fi
+          python - <<'PY'
+          import json, subprocess
+          new = json.load(open("dashboard/public/data/intel-watch.json", encoding="utf-8"))
+          old = subprocess.run(["git", "show", "HEAD:dashboard/public/data/intel-watch.json"], capture_output=True, text=True)
+          prev = json.loads(old.stdout) if old.returncode == 0 else {}
+          strip = lambda d: {k: v for k, v in d.items() if k != "checked_at"}
+          open(".intel-watch-changed", "w").write("1" if strip(new) != strip(prev) else "0")
+          PY
+          if [[ "$(cat .intel-watch-changed)" == "0" ]]; then echo "只有時間戳改變，不 commit"; exit 0; fi
+          scripts/push-with-retry.sh intel-watch

@@ -1,0 +1,7 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {"matcher": "*", "hooks": [{"type": "command", "command": "python3 .claude/hooks/daily_intel_guard.py"}]}
+    ]
+  }
+}

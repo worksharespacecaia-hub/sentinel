@@ -90,6 +90,27 @@ def run(advisory_dirs: list[Path], graph_path: Path, state_path: Path, *, as_of:
     return result
 
 
+def _mode() -> str:
+    import os
+    mode = os.environ.get("ADVISORY_EXECUTION_MODE", "replay")
+    return mode if mode in ("replay", "live") else "replay"
+
+
+def mark_done(state_path: Path, advisory_id: str, run_id: str) -> bool:
+    """A5 成功發布且完成宣告範圍後，把對應公告標為 done。"""
+    state = read_json(state_path)
+    if not state:
+        return False
+    hit = False
+    for item in state.get("items", []):
+        if item.get("advisory_id") == advisory_id and item.get("status") in ("pending", "running", "failed"):
+            item.update(status="done", run_id=run_id)
+            hit = True
+    if hit:
+        write_json(state_path, state)
+    return hit
+
+
 def _dispatch(adv: dict, res: dict, target_sha: str | None, runner) -> tuple[bool, str | None]:
     if not ID_RE.match(adv["id"]) or not all(ID_RE.match(a) for a in res["asset_ids"]):
         return False, "公告或資產 ID 格式不符，拒絕派工"
@@ -97,7 +118,8 @@ def _dispatch(adv: dict, res: dict, target_sha: str | None, runner) -> tuple[boo
         return False, "target_sha 格式不符"
     args = ["gh", "workflow", "run", "sentinel.yml", "-f", "scenario=advisory", "-f", "trigger_source=intel-watch",
             "-f", f"assets={','.join(res['asset_ids'])}", "-f", f"advisory_id={adv['id']}",
-            "-f", f"advisory_revision={adv.get('revision') or ''}", "-f", "execution_mode=replay"]
+            "-f", f"advisory_revision={adv.get('revision') or ''}",
+            "-f", f"execution_mode={_mode()}"]
     if target_sha:
         args += ["-f", f"target_sha={target_sha}"]
     proc = runner(args, capture_output=True, text=True)
