@@ -18,7 +18,7 @@ class Tracer:
              cost_usd: float | None = None) -> dict:
         ev = TraceEvent(ts=datetime.now(timezone.utc).isoformat(timespec="seconds"), agent=self.agent, subagent=subagent,
                         kind=kind, detail=detail[:500], source=source, cost_usd=cost_usd).model_dump()
-        with self.path.open("a", encoding="utf-8") as f:
+        with self.path.open("a", encoding="utf-8", newline="\n") as f:
             f.write(json.dumps(ev, ensure_ascii=False) + "\n")
         return ev
 
@@ -32,5 +32,5 @@ def read_trace(path: Path) -> list[dict]:
 def merge_traces(paths: list[Path], out: Path) -> int:
     events = sorted((e for p in paths for e in read_trace(p)), key=lambda e: e["ts"])
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text("".join(json.dumps(e, ensure_ascii=False) + "\n" for e in events), encoding="utf-8")
+    out.write_text("".join(json.dumps(e, ensure_ascii=False) + "\n" for e in events), encoding="utf-8", newline="\n")
     return len(events)

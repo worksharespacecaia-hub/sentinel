@@ -31,7 +31,7 @@ def run(ctx: RunCtx) -> dict:
     save(ctx, "orchestrator", "plan.json", d)
     gh_out = os.environ.get("GITHUB_OUTPUT")
     if gh_out:
-        with open(gh_out, "a", encoding="utf-8") as f:
+        with open(gh_out, "a", encoding="utf-8", newline="\n") as f:
             f.write(f"plan={json.dumps(d['plan'], separators=(',', ':'))}\n")
             for k in ("execution_mode", "output_dir", "target_sha", "run_id", "scope"):
                 f.write(f"{k}={d[k]}\n")
