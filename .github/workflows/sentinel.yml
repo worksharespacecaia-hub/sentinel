@@ -37,6 +37,7 @@ on:
 concurrency:
   group: sentinel
   cancel-in-progress: false
+  queue: max                      # 最多 100 個 pending；預設 single 會取代等待中的公告調查
 
 permissions:
   contents: read
