@@ -1,0 +1,23 @@
+# 「修復後」情境：部分修復（第 8 節）。模擬使用者只依建議處理 internal-tool 這條攻擊鏈，
+# PR 通過後合併、重產快照，再跑 daily。target/ 只放修正 PR 改過的檔案，其餘沿用 baseline。
+title: 部分修復：只斷開 internet → internal-tool → order-db-prod
+changes:
+  - internal-tool 升級到 OpsBuilder 1.90，防火牆改為只允許 corp-vpn 連入（network.json、external-scan.json）
+  - 撤銷 order-db-prod-cred 並附撤銷證據；正式連線字串改由 Secrets Manager 注入（config/db.yml）
+  - Git 歷史仍保留舊連線字串，gitleaks 仍會找到；靠撤銷證據才解除授權
+not_fixed:
+  - internal-tool 仍未登記在清冊（影子 IT）
+  - brand-app 內嵌管理金鑰、marketing-site 的 PHP、storefront 的 next／postcss 等其他高風險
+expect:
+  light: red
+  fixed:
+    - internal-tool:opsbuilder:vuln
+    - internal-tool:C-INTERNAL-TOOL-EXPOSED
+    - gitlab:C-SECRET-IN-GIT
+  still_high:
+    - internal-tool:shadow_it
+    - brand-app:C-SECRET-IN-GIT
+    - marketing-site:php:vuln
+    - storefront:next:vuln
+    - laptop-eng-07:C-DEV-DEVICE-TOKEN
+  no_path_through: [internal-tool]

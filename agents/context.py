@@ -22,7 +22,12 @@ from tools.trace import Tracer
 
 SCENARIOS = ["daily", "intel-demo", "peer-incident", "early-signal", "php2shell", "nas", "insider-path", "mobile-sdk", "advisory"]
 WEB_SCENARIOS = ["daily", "intel-demo", "peer-incident", "early-signal", "php2shell", "nas", "insider-path", "mobile-sdk"]
+P2_SCENARIOS = {"nas", "insider-path", "mobile-sdk"}      # 第 12.0 節 P2：尚未提供輸入時明確拒絕，不產出看似完成的報告
 TRIGGERS = ["schedule", "manual", "web", "intel-watch"]
+
+
+class ScenarioDisabled(ValueError):
+    pass
 ID_RE = re.compile(r"^[a-z0-9][a-z0-9._-]{2,80}$")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 DATA_DIR = SENTINEL_ROOT / "dashboard" / "public" / "data"
@@ -103,6 +108,8 @@ def build_ctx(*, mode: str | None = None, scenario: str | None = None) -> RunCtx
     scenario = scenario or env.get("SCENARIO") or "daily"
     if scenario not in SCENARIOS:
         raise ValueError(f"未知情境：{scenario}")
+    if scenario in P2_SCENARIOS and not (AGENTS_DIR / "scenarios" / scenario / "scenario.yaml").is_file():
+        raise ScenarioDisabled(f"情境 {scenario} 屬 P2，尚未提供輸入資料（未啟用），不產出報告")
     trigger = env.get("TRIGGER_SOURCE") or ("schedule" if env.get("EVENT_NAME") == "schedule" else "manual")
     if trigger not in TRIGGERS:
         raise ValueError(f"未知觸發來源：{trigger}")
