@@ -44,7 +44,13 @@ def main(argv: list[str] | None = None) -> int:
         shutil.rmtree(OUT_DIR)
     names = ORDER if a.agent == "all" else [a.agent]
     for name in names:
-        result = _module(name).run(ctx)
+        try:
+            result = _module(name).run(ctx)
+        except RuntimeError as exc:   # incident 的上下文驗證、留言或回報失敗：明確結束，不印出敏感內容
+            if name != "incident":
+                raise
+            print(f"[incident] 失敗：{exc}", file=sys.stderr)
+            return 1
         print(f"[{name}] {result}")
     if a.agent in ("all", "a5"):
         print(f"cost_usd={ctx.cost['total_usd']} mode={ctx.mode}")

@@ -108,8 +108,10 @@ def build_graph_server(gq: GraphQuery):
 
 class LLMRunner:
     def __init__(self, *, agent: str, mode: str, scope: str, target_sha: str, advisory_revision: str | None,
-                 tracer: Tracer, cache: LLMCache, replay: ReplayStore, budget=None, cost: dict | None = None):
+                 tracer: Tracer, cache: LLMCache, replay: ReplayStore, budget=None, cost: dict | None = None,
+                 timeout_s: float | None = None):
         self.agent, self.mode, self.scope = agent, mode, scope
+        self.timeout_s = timeout_s   # LLM 本身的逾時（例如 incident 比 Job timeout 短）；逾時以範本降級
         self.target_sha, self.advisory_revision = target_sha, advisory_revision
         self.tracer, self.cache, self.replay, self.budget = tracer, cache, replay, budget
         self.spec = AGENTS[agent]
@@ -160,7 +162,8 @@ class LLMRunner:
             return out
         for attempt in (1, 2):
             try:
-                raw, cost = asyncio.run(self._query(pending, graph_query))
+                coro = self._query(pending, graph_query)
+                raw, cost = asyncio.run(asyncio.wait_for(coro, self.timeout_s) if self.timeout_s else coro)
             except Exception as exc:   # SDK、網路或預算錯誤一律降級
                 self.tracer.emit("error", f"LLM 呼叫失敗：{type(exc).__name__}", source="template")
                 raw, cost = None, 0.0
