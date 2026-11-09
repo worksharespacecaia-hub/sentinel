@@ -1,5 +1,5 @@
 {
-  "run_id": "local-20261109062555",
+  "run_id": "offline-p0",
   "scenario": "intel-demo",
   "trigger_source": "manual",
   "scope": "scenario",
@@ -12,8 +12,8 @@
       "impact": "使用離線部署紀錄 fixture（未連 GitHub API）"
     }
   ],
-  "generated_at": "2026-11-09T06:25:55Z",
-  "as_of": "2026-11-09T06:25:55Z",
+  "generated_at": "2026-11-09T01:00:00Z",
+  "as_of": "2026-11-09T01:00:00Z",
   "light": "red",
   "light_reasons": [
     "10 個未處理的高風險"
@@ -129,8 +129,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -198,8 +198,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -261,8 +261,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -324,8 +324,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -391,8 +391,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -458,8 +458,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -515,8 +515,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -572,8 +572,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -629,8 +629,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -681,8 +681,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -742,8 +742,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -803,8 +803,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -863,8 +863,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -924,8 +924,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -985,8 +985,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1046,8 +1046,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1102,8 +1102,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1164,8 +1164,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1217,8 +1217,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1273,8 +1273,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1324,8 +1324,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1375,8 +1375,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1437,8 +1437,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1499,8 +1499,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1561,8 +1561,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1612,8 +1612,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1663,8 +1663,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1719,8 +1719,8 @@
         "source": "template"
       },
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1755,8 +1755,8 @@
       "deadline_hours": 720,
       "solution": null,
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1796,8 +1796,8 @@
       "deadline_hours": 720,
       "solution": null,
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1837,8 +1837,8 @@
       "deadline_hours": 720,
       "solution": null,
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1878,8 +1878,8 @@
       "deadline_hours": 720,
       "solution": null,
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1916,8 +1916,8 @@
       "deadline_hours": 720,
       "solution": null,
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1957,8 +1957,8 @@
       "deadline_hours": 720,
       "solution": null,
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1988,8 +1988,8 @@
       "deadline_hours": 720,
       "solution": null,
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -2019,8 +2019,8 @@
       "deadline_hours": 720,
       "solution": null,
       "status": "open",
-      "first_seen": "2026-11-09T06:25:55Z",
-      "last_evaluated": "2026-11-09T06:25:55Z",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null

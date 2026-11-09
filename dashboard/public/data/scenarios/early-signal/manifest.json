@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "run_id": "local-20261109062557",
+  "run_id": "offline-p0",
   "job": "a5-report",
   "scope": "scenario",
   "target_sha": "8ae244637733e6f55917dc981b0b862e9e8bb18a",
@@ -24,7 +24,7 @@
     "intel/evt-php2shell-2026-10.json": "c51bf65227ddd20450a2c437fc8c56a50fc2e04105364b057548d003b705043d",
     "intel/evt-synology-2026-10.json": "cac485d44854aff1909ece402c862f4a1421f5bdec493bdcda542060bf6a12cf",
     "intel/index.json": "613936c0dd5e2b3148255bd7c3fc011b4098db748a0d743ffd525dc314d99440",
-    "report.json": "66d619064b07c628b7fc85be33b457ef886fc6c6a30b6b36dfbc64ebf9ae99c2",
+    "report.json": "5439917596a8707b301f5814f8d8b68984ccdfab0203c7a30bac16924028336c",
     "state/findings.json": "e1d0f9db6a5bf2b3b35f07b972a7b3f19c3800de97cc65c7f17e899eb6a48176",
     "state/intel.json": "baf0a3841829fbcc6f94d744847b6a36e1c8ba1a624a76177fda65df94b764c0",
     "state/risks.json": "f8f066febc42288716074c1824130ae71f73245f916dce19608fd4c4359a812d",

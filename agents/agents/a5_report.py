@@ -10,7 +10,7 @@ from agents.common import finish, load
 from context import RunCtx
 from llm import Task
 from tools.cache import merge_cache
-from tools.common import AGENTS_DIR, SENTINEL_ROOT, iso, read_json, write_json
+from tools.common import AGENTS_DIR, iso, read_json, write_json
 from tools.graph_query import GraphQuery
 from tools.pipeline import evaluate
 from tools.report_builder import assemble, write_outputs
@@ -99,7 +99,8 @@ def run(ctx: RunCtx) -> dict:
         built["report"]["data_issues"].append({"source": "daily-intel", "status": "failed", "impact": "今日新聞情資未更新"})
 
     out_dir = ctx.data_dir / output_dir
-    md_dir = SENTINEL_ROOT / "reports" / "intel" / ctx.scope / ctx.as_of.strftime("%Y-%m-%d") / ctx.run_id
+    scope_dir = ctx.scope if ctx.scope != "scenario" else f"scenario/{ctx.scenario}"   # 情境之間也不互相覆蓋
+    md_dir = ctx.reports_dir / "intel" / scope_dir / ctx.as_of.strftime("%Y-%m-%d") / ctx.run_id
     tr.emit("result", f"燈號 {built['report']['light']}；{len(built['intel_reports'])} 份情資比對報告")
     manifest = write_outputs(out_dir, built, res, reports_md_dir=md_dir, run_id=ctx.run_id)
     merge_traces([ctx.out / up / "trace.jsonl" for up in [*UPSTREAM, "a5"]], out_dir / "trace.jsonl")

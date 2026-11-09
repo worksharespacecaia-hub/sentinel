@@ -54,6 +54,7 @@ class RunCtx:
     output_dir: str
     out: Path = OUT_DIR
     data_dir: Path = DATA_DIR
+    reports_dir: Path = SENTINEL_ROOT / "reports"
     advisory_id: str | None = None
     advisory_revision: str | None = None
     assets: list[str] = field(default_factory=list)

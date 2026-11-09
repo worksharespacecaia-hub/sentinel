@@ -1,58 +1,58 @@
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "orchestrator", "subagent": null, "kind": "start", "detail": "scenario=early-signal trigger=manual mode=replay", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "orchestrator", "subagent": "planner", "kind": "skip", "detail": "planner 只在有新同業事件時呼叫（本次不需要）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "orchestrator", "subagent": null, "kind": "skip", "detail": "daily-intel 不執行（非受信任的 live 每日排程／手動）", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "orchestrator", "subagent": null, "kind": "result", "detail": "{\"scanners\": true, \"a1\": true, \"a2\": true, \"a3\": true, \"a4\": true, \"a5\": true}", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a0", "subagent": null, "kind": "start", "detail": "資產探索與對帳", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a0", "subagent": null, "kind": "tool", "detail": "graph_builder：45 節點、53 邊；未登記對外資產 3 個", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a0", "subagent": null, "kind": "tool", "detail": "graph_diff：無變化", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a0", "subagent": "device-identifier", "kind": "skip", "detail": "所有設備都已由特徵規則辨識，不呼叫 device-identifier", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a0", "subagent": null, "kind": "result", "detail": "stack.json 22 項產品", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a1", "subagent": null, "kind": "start", "detail": "外部情資驗證與比對", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a1", "subagent": null, "kind": "tool", "detail": "intel_verify：7 件（advisory 1, archive 6）", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a1", "subagent": "advisory-extractor", "kind": "skip", "detail": "本次沒有需要抽取的公告原文", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a1", "subagent": null, "kind": "result", "detail": "已驗證 7 件情資", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a2", "subagent": null, "kind": "start", "detail": "弱點掃描解讀", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a2", "subagent": null, "kind": "tool", "detail": "gitleaks：ok", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a2", "subagent": null, "kind": "tool", "detail": "trivy：ok", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a2", "subagent": null, "kind": "tool", "detail": "checkov：missing", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a2", "subagent": "backup-analyst", "kind": "subagent", "detail": "backup-analyst 未錄製，改用程式範本（backup-analyst#0）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a2", "subagent": "compliance-checker", "kind": "subagent", "detail": "compliance-checker 未錄製，改用程式範本（compliance-checker#0）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a2", "subagent": "dependency-analyst", "kind": "subagent", "detail": "dependency-analyst 未錄製，改用程式範本（dependency-analyst#0）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a2", "subagent": "identity-analyst", "kind": "subagent", "detail": "identity-analyst 未錄製，改用程式範本（identity-analyst#0）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a2", "subagent": "mobile-analyst", "kind": "subagent", "detail": "mobile-analyst 未錄製，改用程式範本（mobile-analyst#0）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a2", "subagent": "runtime-analyst", "kind": "subagent", "detail": "runtime-analyst 未錄製，改用程式範本（runtime-analyst#0）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a2", "subagent": "secret-analyst", "kind": "subagent", "detail": "secret-analyst 未錄製，改用程式範本（secret-analyst#0）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a2", "subagent": null, "kind": "result", "detail": "35 個發現；7 個 Subagent 任務", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a3", "subagent": null, "kind": "start", "detail": "早期訊號", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a3", "subagent": "retro-hunter", "kind": "skip", "detail": "retro-hunter 只在公告情境執行", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a3", "subagent": "complaint-classifier", "kind": "subagent", "detail": "complaint-classifier 未錄製，改用程式範本（complaints）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a3", "subagent": null, "kind": "result", "detail": "2 個訊號", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a4", "subagent": null, "kind": "start", "detail": "攻擊鏈與風險", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a4", "subagent": null, "kind": "tool", "detail": "attack_path：3 條完整攻擊鏈", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a4", "subagent": null, "kind": "tool", "detail": "scoring：40 個風險，高 15", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a4", "subagent": "impact-analyst", "kind": "subagent", "detail": "impact-analyst 未錄製，改用程式範本（SIG-FRAUD-MULTI-BRAND）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a4", "subagent": "impact-analyst", "kind": "subagent", "detail": "impact-analyst 未錄製，改用程式範本（internal-tool:opsbuilder:vuln）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a4", "subagent": "impact-analyst", "kind": "subagent", "detail": "impact-analyst 未錄製，改用程式範本（brand-app:C-SECRET-IN-GIT）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a4", "subagent": "impact-analyst", "kind": "subagent", "detail": "impact-analyst 未錄製，改用程式範本（marketing-site:php:vuln）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a4", "subagent": "impact-analyst", "kind": "subagent", "detail": "impact-analyst 未錄製，改用程式範本（gitlab:C-SECRET-IN-GIT）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a4", "subagent": "impact-analyst", "kind": "subagent", "detail": "impact-analyst 未錄製，改用程式範本（internal-tool:C-INTERNAL-TOOL-EXPOSED）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a4", "subagent": "impact-analyst", "kind": "subagent", "detail": "impact-analyst 未錄製，改用程式範本（storefront:next:vuln）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a4", "subagent": "impact-analyst", "kind": "subagent", "detail": "impact-analyst 未錄製，改用程式範本（firebase-brand-app-storage:C-CLOUD-STORAGE-PUBLIC）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a4", "subagent": "impact-analyst", "kind": "subagent", "detail": "impact-analyst 未錄製，改用程式範本（laptop-eng-07:C-DEV-DEVICE-TOKEN）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a4", "subagent": "impact-analyst", "kind": "subagent", "detail": "impact-analyst 未錄製，改用程式範本（order-exports-bucket:C-CLOUD-STORAGE-PUBLIC）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a4", "subagent": null, "kind": "result", "detail": "10 個 impact-analyst 任務", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a5", "subagent": null, "kind": "start", "detail": "報告與建議 → scenarios/early-signal", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a5", "subagent": "remediation-advisor", "kind": "subagent", "detail": "remediation-advisor 未錄製，改用程式範本（remediation）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a5", "subagent": "key-rotation-advisor", "kind": "subagent", "detail": "key-rotation-advisor 未錄製，改用程式範本（key-rotation）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a5", "subagent": "ceo-briefer", "kind": "subagent", "detail": "ceo-briefer 未錄製，改用程式範本（ceo）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a5", "subagent": "intel-report-writer", "kind": "subagent", "detail": "intel-report-writer 未錄製，改用程式範本（intel:evt-1shop-2026-10）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a5", "subagent": "intel-report-writer", "kind": "subagent", "detail": "intel-report-writer 未錄製，改用程式範本（intel:evt-91app-2026-10）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a5", "subagent": "intel-report-writer", "kind": "subagent", "detail": "intel-report-writer 未錄製，改用程式範本（intel:evt-binance-2026-10）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a5", "subagent": "intel-report-writer", "kind": "subagent", "detail": "intel-report-writer 未錄製，改用程式範本（intel:evt-nextjs-cve-2025-29927）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a5", "subagent": "intel-report-writer", "kind": "subagent", "detail": "intel-report-writer 未錄製，改用程式範本（intel:evt-php2shell-2026-10）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a5", "subagent": "intel-report-writer", "kind": "subagent", "detail": "intel-report-writer 未錄製，改用程式範本（intel:evt-synology-2026-10）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a5", "subagent": "intel-report-writer", "kind": "subagent", "detail": "intel-report-writer 未錄製，改用程式範本（intel:adv-opsbuilder-2026-001）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a5", "subagent": "brand-notice-writer", "kind": "subagent", "detail": "brand-notice-writer 未錄製，改用程式範本（notice:evt-91app-2026-10）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a5", "subagent": "brand-notice-writer", "kind": "subagent", "detail": "brand-notice-writer 未錄製，改用程式範本（notice:evt-nextjs-cve-2025-29927）", "source": "template", "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a5", "subagent": null, "kind": "result", "detail": "文字來源：ceo=template、intel:adv-opsbuilder-2026-001=template、intel:evt-1shop-2026-10=template、intel:evt-91app-2026-10=template、intel:evt-binance-2026-10=template、intel:evt-nextjs-cve-2025-29927=template、intel:evt-php2shell-2026-10=template、intel:evt-synology-2026-10=template、key-rotation=template、notice:evt-91app-2026-10=template、notice:evt-nextjs-cve-2025-29927=template、remediation=template", "source": null, "cost_usd": null}
-{"ts": "2026-11-09T06:25:57+00:00", "agent": "a5", "subagent": null, "kind": "result", "detail": "燈號 red；7 份情資比對報告", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "orchestrator", "subagent": null, "kind": "start", "detail": "scenario=early-signal trigger=manual mode=replay", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "orchestrator", "subagent": "planner", "kind": "skip", "detail": "planner 只在有新同業事件時呼叫（本次不需要）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "orchestrator", "subagent": null, "kind": "skip", "detail": "daily-intel 不執行（非受信任的 live 每日排程／手動）", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "orchestrator", "subagent": null, "kind": "result", "detail": "{\"scanners\": true, \"a1\": true, \"a2\": true, \"a3\": true, \"a4\": true, \"a5\": true}", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "a0", "subagent": null, "kind": "start", "detail": "資產探索與對帳", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "a0", "subagent": null, "kind": "tool", "detail": "graph_builder：45 節點、53 邊；未登記對外資產 3 個", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "a0", "subagent": null, "kind": "tool", "detail": "graph_diff：無變化", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "a0", "subagent": "device-identifier", "kind": "skip", "detail": "所有設備都已由特徵規則辨識，不呼叫 device-identifier", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "a0", "subagent": null, "kind": "result", "detail": "stack.json 22 項產品", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "a1", "subagent": null, "kind": "start", "detail": "外部情資驗證與比對", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "a1", "subagent": null, "kind": "tool", "detail": "intel_verify：7 件（advisory 1, archive 6）", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "a1", "subagent": "advisory-extractor", "kind": "skip", "detail": "本次沒有需要抽取的公告原文", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "a1", "subagent": null, "kind": "result", "detail": "已驗證 7 件情資", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "a2", "subagent": null, "kind": "start", "detail": "弱點掃描解讀", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "a2", "subagent": null, "kind": "tool", "detail": "gitleaks：ok", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "a2", "subagent": null, "kind": "tool", "detail": "trivy：ok", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "a2", "subagent": null, "kind": "tool", "detail": "checkov：missing", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "a2", "subagent": "backup-analyst", "kind": "subagent", "detail": "backup-analyst 未錄製，改用程式範本（backup-analyst#0）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "a2", "subagent": "compliance-checker", "kind": "subagent", "detail": "compliance-checker 未錄製，改用程式範本（compliance-checker#0）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "a2", "subagent": "dependency-analyst", "kind": "subagent", "detail": "dependency-analyst 未錄製，改用程式範本（dependency-analyst#0）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "a2", "subagent": "identity-analyst", "kind": "subagent", "detail": "identity-analyst 未錄製，改用程式範本（identity-analyst#0）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "a2", "subagent": "mobile-analyst", "kind": "subagent", "detail": "mobile-analyst 未錄製，改用程式範本（mobile-analyst#0）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "a2", "subagent": "runtime-analyst", "kind": "subagent", "detail": "runtime-analyst 未錄製，改用程式範本（runtime-analyst#0）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "a2", "subagent": "secret-analyst", "kind": "subagent", "detail": "secret-analyst 未錄製，改用程式範本（secret-analyst#0）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:04+00:00", "agent": "a2", "subagent": null, "kind": "result", "detail": "35 個發現；7 個 Subagent 任務", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a3", "subagent": null, "kind": "start", "detail": "早期訊號", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a3", "subagent": "retro-hunter", "kind": "skip", "detail": "retro-hunter 只在公告情境執行", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a3", "subagent": "complaint-classifier", "kind": "subagent", "detail": "complaint-classifier 未錄製，改用程式範本（complaints）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a3", "subagent": null, "kind": "result", "detail": "2 個訊號", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a4", "subagent": null, "kind": "start", "detail": "攻擊鏈與風險", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a4", "subagent": null, "kind": "tool", "detail": "attack_path：3 條完整攻擊鏈", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a4", "subagent": null, "kind": "tool", "detail": "scoring：40 個風險，高 15", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a4", "subagent": "impact-analyst", "kind": "subagent", "detail": "impact-analyst 未錄製，改用程式範本（SIG-FRAUD-MULTI-BRAND）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a4", "subagent": "impact-analyst", "kind": "subagent", "detail": "impact-analyst 未錄製，改用程式範本（internal-tool:opsbuilder:vuln）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a4", "subagent": "impact-analyst", "kind": "subagent", "detail": "impact-analyst 未錄製，改用程式範本（brand-app:C-SECRET-IN-GIT）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a4", "subagent": "impact-analyst", "kind": "subagent", "detail": "impact-analyst 未錄製，改用程式範本（marketing-site:php:vuln）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a4", "subagent": "impact-analyst", "kind": "subagent", "detail": "impact-analyst 未錄製，改用程式範本（gitlab:C-SECRET-IN-GIT）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a4", "subagent": "impact-analyst", "kind": "subagent", "detail": "impact-analyst 未錄製，改用程式範本（internal-tool:C-INTERNAL-TOOL-EXPOSED）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a4", "subagent": "impact-analyst", "kind": "subagent", "detail": "impact-analyst 未錄製，改用程式範本（storefront:next:vuln）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a4", "subagent": "impact-analyst", "kind": "subagent", "detail": "impact-analyst 未錄製，改用程式範本（firebase-brand-app-storage:C-CLOUD-STORAGE-PUBLIC）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a4", "subagent": "impact-analyst", "kind": "subagent", "detail": "impact-analyst 未錄製，改用程式範本（laptop-eng-07:C-DEV-DEVICE-TOKEN）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a4", "subagent": "impact-analyst", "kind": "subagent", "detail": "impact-analyst 未錄製，改用程式範本（order-exports-bucket:C-CLOUD-STORAGE-PUBLIC）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a4", "subagent": null, "kind": "result", "detail": "10 個 impact-analyst 任務", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a5", "subagent": null, "kind": "start", "detail": "報告與建議 → scenarios/early-signal", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a5", "subagent": "remediation-advisor", "kind": "subagent", "detail": "remediation-advisor 未錄製，改用程式範本（remediation）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a5", "subagent": "key-rotation-advisor", "kind": "subagent", "detail": "key-rotation-advisor 未錄製，改用程式範本（key-rotation）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a5", "subagent": "ceo-briefer", "kind": "subagent", "detail": "ceo-briefer 未錄製，改用程式範本（ceo）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a5", "subagent": "intel-report-writer", "kind": "subagent", "detail": "intel-report-writer 未錄製，改用程式範本（intel:evt-1shop-2026-10）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a5", "subagent": "intel-report-writer", "kind": "subagent", "detail": "intel-report-writer 未錄製，改用程式範本（intel:evt-91app-2026-10）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a5", "subagent": "intel-report-writer", "kind": "subagent", "detail": "intel-report-writer 未錄製，改用程式範本（intel:evt-binance-2026-10）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a5", "subagent": "intel-report-writer", "kind": "subagent", "detail": "intel-report-writer 未錄製，改用程式範本（intel:evt-nextjs-cve-2025-29927）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a5", "subagent": "intel-report-writer", "kind": "subagent", "detail": "intel-report-writer 未錄製，改用程式範本（intel:evt-php2shell-2026-10）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a5", "subagent": "intel-report-writer", "kind": "subagent", "detail": "intel-report-writer 未錄製，改用程式範本（intel:evt-synology-2026-10）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a5", "subagent": "intel-report-writer", "kind": "subagent", "detail": "intel-report-writer 未錄製，改用程式範本（intel:adv-opsbuilder-2026-001）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a5", "subagent": "brand-notice-writer", "kind": "subagent", "detail": "brand-notice-writer 未錄製，改用程式範本（notice:evt-91app-2026-10）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a5", "subagent": "brand-notice-writer", "kind": "subagent", "detail": "brand-notice-writer 未錄製，改用程式範本（notice:evt-nextjs-cve-2025-29927）", "source": "template", "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a5", "subagent": null, "kind": "result", "detail": "文字來源：ceo=template、intel:adv-opsbuilder-2026-001=template、intel:evt-1shop-2026-10=template、intel:evt-91app-2026-10=template、intel:evt-binance-2026-10=template、intel:evt-nextjs-cve-2025-29927=template、intel:evt-php2shell-2026-10=template、intel:evt-synology-2026-10=template、key-rotation=template、notice:evt-91app-2026-10=template、notice:evt-nextjs-cve-2025-29927=template、remediation=template", "source": null, "cost_usd": null}
+{"ts": "2026-11-09T06:36:05+00:00", "agent": "a5", "subagent": null, "kind": "result", "detail": "燈號 red；7 份情資比對報告", "source": null, "cost_usd": null}
