@@ -1,0 +1,6 @@
+[
+  {"id": "android-upload-key", "type": "android_signing", "stored_in": "ci-secrets", "accessible_by": ["mobile-ci"], "expires": "2049-01-01"},
+  {"id": "ios-dist-cert", "type": "ios_signing", "stored_in": "ci-secrets", "accessible_by": ["mobile-ci"], "expires": "2027-03-01"},
+  {"id": "push-key-fcm-apns", "type": "push_key", "stored_in": "share:fileserver-01/mobile/push-keys", "accessible_by": ["all-office-staff"],
+   "expires": null, "grants": ["push-service"], "scope": "可對所有品牌 App 的使用者發送推播"}
+]

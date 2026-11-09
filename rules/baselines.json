@@ -1,0 +1,9 @@
+{
+  "unit": "rows/10min",
+  "default": 100,
+  "accounts": {
+    "svc-storefront": 400,
+    "svc-report": 2000,
+    "dba-alice": 200
+  }
+}

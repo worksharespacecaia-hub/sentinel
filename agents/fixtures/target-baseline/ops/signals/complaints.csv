@@ -1,0 +1,5 @@
+id,received_at,brand_id,channel,text
+c-1001,2026-11-07T03:12:00Z,brand-bloom,客服信箱,商品尺寸與網頁標示不符
+c-1002,2026-11-07T06:40:00Z,brand-hikari,電話,詢問退貨流程與運費
+c-1003,2026-11-08T01:05:00Z,brand-kumo,LINE,物流延遲兩天還沒收到
+c-1004,2026-11-08T07:22:00Z,brand-bloom,客服信箱,優惠券無法使用

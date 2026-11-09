@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "run_id": "offline-p0",
+  "job": "a5-report",
+  "scope": "daily",
+  "target_sha": "8ae244637733e6f55917dc981b0b862e9e8bb18a",
+  "input_hash": "dade521fb90e304be210749085616a137a91b7d0bf7c20ec2a9e976e226a82fe",
+  "observed_at": "2026-11-09T01:00:00Z",
+  "valid_until": "2026-11-10T01:00:00Z",
+  "tool_version": {},
+  "database_revision": {},
+  "status": "ok",
+  "reason": null,
+  "files": {
+    "attack_paths.json": "99cf999252d4e5669993d22351a738c54ba04fd618ac232c744508ccd0af9f36",
+    "coverage.json": "5f4e6a33207b10483273331a983cccb6315221afb4356f06150a0c4474faaf34",
+    "engineer_report.md": "3bf7d72bf28afbd59d839c9d1e6c6d8ad0f25cf34c5e9d991a1088eaddc9b253",
+    "graph.json": "44244ee2fc4f80ff0d8d13f581745f377ff8cb87c5e8859f51064ea1cca2ff16",
+    "intel/adv-opsbuilder-2026-001.json": "66b1ed4a541c03bfe0f6603d7525558cc5f17d1e971797048573d4c11f84f838",
+    "intel/evt-1shop-2026-10.json": "44bb1cefb130218412f3be8e5ac8508d175b510a106d59ee7a4b1c1f858c9c71",
+    "intel/evt-91app-2026-10.json": "6e81a8e4325dc1c182d589e8a188bc33127f1ee0ca06fabb40d767358cc79ded",
+    "intel/evt-binance-2026-10.json": "30f354b4d21875435e43702fc7ba060bf65d63d8601502e9e374986d0322709a",
+    "intel/evt-nextjs-cve-2025-29927.json": "7ab11a1b2d24127b7ab25dd83a4fa00a0da37a56f8b2a2a1dedb8fda33cb71d6",
+    "intel/evt-php2shell-2026-10.json": "c51bf65227ddd20450a2c437fc8c56a50fc2e04105364b057548d003b705043d",
+    "intel/evt-synology-2026-10.json": "cac485d44854aff1909ece402c862f4a1421f5bdec493bdcda542060bf6a12cf",
+    "intel/index.json": "613936c0dd5e2b3148255bd7c3fc011b4098db748a0d743ffd525dc314d99440",
+    "report.json": "942e083570ecd68847a5e59cb96cf8009c29778ada8216a4db560a43ff37c424",
+    "state/findings.json": "e1d0f9db6a5bf2b3b35f07b972a7b3f19c3800de97cc65c7f17e899eb6a48176",
+    "state/intel.json": "baf0a3841829fbcc6f94d744847b6a36e1c8ba1a624a76177fda65df94b764c0",
+    "state/risks.json": "f214c97c1c4cb0ca46eca607b263be354aee4c07e5ac6d818122204ecd2ede88",
+    "state/signals.json": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f"
+  }
+}

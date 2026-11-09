@@ -1,0 +1,4 @@
+{"id": "dba-0001", "event_time": "2026-11-08T02:15:00Z", "account": "svc-storefront", "ip": "10.20.1.11", "table": "orders", "rows_read": 120}
+{"id": "dba-0002", "event_time": "2026-11-08T03:40:00Z", "account": "svc-report", "ip": "10.20.1.30", "table": "orders", "rows_read": 900}
+{"id": "dba-0003", "event_time": "2026-11-08T05:05:00Z", "account": "dba-alice", "ip": "10.40.0.8", "table": "orders", "rows_read": 50}
+{"id": "dba-0004", "event_time": "2026-11-08T08:30:00Z", "account": "svc-storefront", "ip": "10.20.1.11", "table": "orders", "rows_read": 140}

@@ -1,0 +1,8 @@
+{
+  "devices": [
+    {"id": "laptop-eng-03", "owner": "eng-03", "os": "macOS 15.1", "disk_encryption": true, "edr": true, "sensitive_files": []},
+    {"id": "laptop-eng-07", "owner": "eng-07", "os": "macOS 15.1", "disk_encryption": true, "edr": true,
+     "sensitive_files": [{"type": "deploy-token", "path": "~/.config/pipeline/token", "credential_id": "deploy-token-eng07"}]},
+    {"id": "laptop-ops-02", "owner": "ops-02", "os": "Windows 11 23H2", "disk_encryption": true, "edr": true, "sensitive_files": []}
+  ]
+}

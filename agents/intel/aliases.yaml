@@ -1,0 +1,31 @@
+# 產品名稱正規化（purl／CPE 別名）。正規化只換名稱，SAPI、OS、套件來源等利用條件另外保留。
+php:
+  aliases: [php, php-fpm, php-cli, php-cgi, mod_php, "php:apache", "php:fpm"]
+  purl: [pkg:generic/php, pkg:docker/library/php]
+  cpe: ["cpe:2.3:a:php:php"]
+next:
+  aliases: [next, nextjs, next.js]
+  purl: [pkg:npm/next]
+lodash:
+  aliases: [lodash]
+  purl: [pkg:npm/lodash]
+express:
+  aliases: [express, expressjs]
+  purl: [pkg:npm/express]
+node:
+  aliases: [node, nodejs, node.js]
+synology-dsm:
+  aliases: [synology-dsm, dsm, "synology dsm", "diskstation manager"]
+opsbuilder:
+  aliases: [opsbuilder, "ops builder"]
+wordpress:
+  aliases: [wordpress, wp]
+phpmyadmin:
+  aliases: [phpmyadmin]
+postgresql:
+  aliases: [postgresql, postgres, pg]
+redis:
+  aliases: [redis]
+"@demo-vendor/push-sdk":
+  aliases: ["@demo-vendor/push-sdk", "demo-vendor push sdk"]
+  purl: [pkg:npm/%40demo-vendor/push-sdk]

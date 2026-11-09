@@ -1,0 +1,12 @@
+{
+  "name": "brand-app",
+  "version": "3.4.0",
+  "private": true,
+  "description": "同一套程式碼打包成各品牌 App（虛構，不需能實際建置）。@demo-vendor/push-sdk 為虛構套件，不在 npm。",
+  "scripts": { "android": "react-native run-android", "ios": "react-native run-ios" },
+  "dependencies": {
+    "react": "18.2.0",
+    "react-native": "0.72.6",
+    "@demo-vendor/push-sdk": "2.3.1"
+  }
+}

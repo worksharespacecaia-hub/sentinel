@@ -1,0 +1,18 @@
+{
+  "openapi": [
+    {"method": "GET", "path": "/v1/products", "scope": "public"},
+    {"method": "POST", "path": "/v1/orders", "scope": "user"},
+    {"method": "GET", "path": "/v1/members/me", "scope": "user", "data_store": "member-db-prod"},
+    {"method": "GET", "path": "/admin/v1/members", "scope": "admin", "data_store": "member-db-prod", "data_fields": ["name", "email", "phone", "address"]}
+  ],
+  "gateway_observed": [
+    {"method": "GET", "path": "/v1/products", "calls_7d": 182000},
+    {"method": "POST", "path": "/v1/orders", "calls_7d": 23000},
+    {"method": "GET", "path": "/v1/members/me", "calls_7d": 51000},
+    {"method": "GET", "path": "/admin/v1/members", "calls_7d": 340, "callers": ["app-api-key"]},
+    {"method": "GET", "path": "/internal/v1/members/export", "calls_7d": 95, "data_store": "member-db-prod"}
+  ],
+  "api_keys": [
+    {"credential_id": "app-api-key", "scopes": ["admin"], "allowed_networks": ["0.0.0.0/0"]}
+  ]
+}

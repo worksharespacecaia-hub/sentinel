@@ -1,0 +1,7 @@
+# 刻意的錯誤：正式資料庫連線字串寫在 Git 中（假值，DEMO-FAKE- 開頭）
+production:
+  adapter: postgresql
+  url: "postgres://order_admin:REDACTED@order-db-prod.internal:5432/orders"
+test:
+  adapter: postgresql
+  url: "postgres://order_test:REDACTED@order-db-test.internal:5432/orders"

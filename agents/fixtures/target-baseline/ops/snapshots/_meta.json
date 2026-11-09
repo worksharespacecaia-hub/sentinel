@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "note": "所有快照皆為虛構的模擬資料；observed_at 為觀察時間，重跑不會自動刷新。",
+  "snapshots": {
+    "runtime.json":         {"observed_at": "2026-11-09T00:00:00Z", "source": "模擬：正式環境容器與主機清單匯出"},
+    "network.json":         {"observed_at": "2026-11-09T00:00:00Z", "source": "模擬：VPC 安全群組與防火牆規則匯出"},
+    "secrets.json":         {"observed_at": "2026-11-09T00:00:00Z", "source": "模擬：金鑰清冊與 Secrets Manager 匯出"},
+    "lan-scan.json":        {"observed_at": "2026-11-09T00:00:00Z", "source": "模擬：辦公室內網探測（快照，不實際掃描）"},
+    "external-scan.json":   {"observed_at": "2026-11-09T00:00:00Z", "source": "模擬：自家網域外部暴露面檢查（快照）"},
+    "mdm.json":             {"observed_at": "2026-11-09T00:00:00Z", "source": "模擬：裝置管理（MDM）匯出"},
+    "sso-apps.json":        {"observed_at": "2026-11-09T00:00:00Z", "source": "模擬：SSO 應用清單匯出"},
+    "payments.csv":         {"observed_at": "2026-11-09T00:00:00Z", "source": "模擬：公司卡 SaaS 付款紀錄"},
+    "backups.json":         {"observed_at": "2026-11-09T00:00:00Z", "source": "模擬：備份設定與還原測試紀錄"},
+    "php-config.json":      {"observed_at": "2026-11-09T00:00:00Z", "source": "模擬：各 PHP 執行環境 php -i 匯出"},
+    "apps.json":            {"observed_at": "2026-11-09T00:00:00Z", "source": "模擬：App Store Connect／Google Play Console 匯出"},
+    "app-versions.json":    {"observed_at": "2026-11-09T00:00:00Z", "source": "模擬：各品牌 App 版本安裝數"},
+    "mobile-keys.json":     {"observed_at": "2026-11-09T00:00:00Z", "source": "模擬：行動簽章與推播金鑰清冊"},
+    "firebase-config.json": {"observed_at": "2026-11-09T00:00:00Z", "source": "模擬：Firebase 規則匯出"},
+    "app-store-scan.json":  {"observed_at": "2026-11-09T00:00:00Z", "source": "模擬：商店關鍵字搜尋結果"},
+    "api-inventory.json":   {"observed_at": "2026-11-09T00:00:00Z", "source": "模擬：OpenAPI 規格與 Gateway 7 天流量"},
+    "deployments.json":     {"observed_at": "2026-11-09T00:00:00Z", "source": "模擬：其他服務 Repo 的 Pipeline 部署紀錄匯出"}
+  }
+}

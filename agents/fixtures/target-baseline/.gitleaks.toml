@@ -1,0 +1,9 @@
+# Repo ① 與 sentinel scanners 共用。延用預設規則，加上 DEMO-FAKE 自訂規則（掃描結果仍須遮蔽匹配值）。
+[extend]
+useDefault = true
+
+[[rules]]
+id = "demo-fake-secret"
+description = "Demo 刻意埋入的假金鑰"
+regex = '''DEMO-FAKE-[A-Z0-9-]{4,}'''
+keywords = ["demo-fake"]

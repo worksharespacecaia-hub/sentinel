@@ -1,0 +1,11 @@
+{
+  "note": "同一套 brand-app 程式碼打包成各品牌 App。品牌皆為虛構。",
+  "apps": [
+    {"brand_id": "brand-bloom", "brand_name": "花漾美妝（虛構）", "platform": "ios", "store_id": "id1000000001", "bundle_id": "example.shopsaas.bloom", "codebase": "brand-app", "developer": "ShopSaaS Demo Ltd."},
+    {"brand_id": "brand-bloom", "brand_name": "花漾美妝（虛構）", "platform": "android", "store_id": "example.shopsaas.bloom", "bundle_id": "example.shopsaas.bloom", "codebase": "brand-app", "developer": "ShopSaaS Demo Ltd."},
+    {"brand_id": "brand-hikari", "brand_name": "光良生活（虛構）", "platform": "ios", "store_id": "id1000000002", "bundle_id": "example.shopsaas.hikari", "codebase": "brand-app", "developer": "ShopSaaS Demo Ltd."},
+    {"brand_id": "brand-hikari", "brand_name": "光良生活（虛構）", "platform": "android", "store_id": "example.shopsaas.hikari", "bundle_id": "example.shopsaas.hikari", "codebase": "brand-app", "developer": "ShopSaaS Demo Ltd."},
+    {"brand_id": "brand-kumo", "brand_name": "雲朵童裝（虛構）", "platform": "ios", "store_id": "id1000000003", "bundle_id": "example.shopsaas.kumo", "codebase": "brand-app", "developer": "ShopSaaS Demo Ltd."},
+    {"brand_id": "brand-kumo", "brand_name": "雲朵童裝（虛構）", "platform": "android", "store_id": "example.shopsaas.kumo", "bundle_id": "example.shopsaas.kumo", "codebase": "brand-app", "developer": "ShopSaaS Demo Ltd."}
+  ]
+}

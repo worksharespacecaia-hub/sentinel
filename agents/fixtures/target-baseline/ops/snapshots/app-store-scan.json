@@ -1,0 +1,9 @@
+{
+  "note": "模擬的商店關鍵字搜尋結果（快照）。",
+  "results": [
+    {"store": "google_play", "app_name": "花漾美妝 官方購物", "developer": "ShopSaaS Demo Ltd.", "package": "example.shopsaas.bloom", "icon_similarity": 1.0, "name_similarity": 1.0},
+    {"store": "google_play", "app_name": "花漾美妝 Bloom 會員福利", "developer": "Bloom Rewards Studio", "package": "app.bloomrewards.example", "icon_similarity": 0.93, "name_similarity": 0.88, "installs": "1,000+", "first_seen": "2026-10-28"},
+    {"store": "app_store", "app_name": "光良生活", "developer": "ShopSaaS Demo Ltd.", "package": "id1000000002", "icon_similarity": 1.0, "name_similarity": 1.0},
+    {"store": "app_store", "app_name": "雲朵童裝 二手交換", "developer": "Kids Swap Co.", "package": "id1999999999", "icon_similarity": 0.21, "name_similarity": 0.62}
+  ]
+}
