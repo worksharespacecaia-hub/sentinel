@@ -1,0 +1,2861 @@
+{
+  "run_id": "offline-p0",
+  "scenario": "daily",
+  "trigger_source": "manual",
+  "scope": "daily",
+  "target_sha": "8ae244637733e6f55917dc981b0b862e9e8bb18a",
+  "completeness": "complete",
+  "data_issues": [
+    {
+      "source": "github/deployments",
+      "status": "reused",
+      "impact": "使用離線部署紀錄 fixture（未連 GitHub API）"
+    }
+  ],
+  "generated_at": "2026-11-09T01:00:00Z",
+  "as_of": "2026-11-09T01:00:00Z",
+  "light": "red",
+  "light_reasons": [
+    "14 個未處理的高風險"
+  ],
+  "ceo_summary": [
+    "今天是紅燈：14 個高風險、18 個中風險。",
+    "最需要處理的是：opsbuilder 1.88：OpsBuilder 1.90 以前版本的帳號接管漏洞、Git 中不得有正式環境金鑰：brand-app、php 8.1.27：PHP2Shell。",
+    "今天檢查 7 件外部資安事件，其中 7 件與我們有關。"
+  ],
+  "decisions": [
+    "是否暫時下架 marketing-site（已停止支援且沒有修補版本）",
+    "internal-tool 要納管還是除役",
+    "marketing-site 要納管還是除役",
+    "nas-office-01 要納管還是除役",
+    "saas-quicksite-builder 要納管還是除役"
+  ],
+  "counts": {
+    "high": 14,
+    "medium": 18,
+    "low": 7
+  },
+  "coverage": {
+    "assets_total": 24,
+    "unregistered_exposed": 3,
+    "unregistered_exposed_ids": [
+      "internal-tool",
+      "marketing-site",
+      "nas-office-01"
+    ],
+    "owner_ratio": 0.833,
+    "version_known_ratio": 0.944,
+    "ci_ratio": 0.75,
+    "eol_exposed": 1,
+    "eol_exposed_items": [
+      {
+        "asset_id": "marketing-site",
+        "component": "php",
+        "version": "8.1.27",
+        "eol_date": "2025-12-31"
+      }
+    ],
+    "backup_verified_ratio": 0.75,
+    "shadow_it": [
+      "internal-tool",
+      "marketing-site",
+      "nas-office-01",
+      "saas-quicksite-builder"
+    ]
+  },
+  "risks": [
+    {
+      "id": "internal-tool:opsbuilder:vuln",
+      "finding_ids": [
+        "internal-tool:opsbuilder:vuln"
+      ],
+      "asset_id": "internal-tool",
+      "title": "opsbuilder 1.88：OpsBuilder 1.90 以前版本的帳號接管漏洞（虛構產品）",
+      "category": "vuln",
+      "level": "high",
+      "score": 11,
+      "raw_score": 11,
+      "score_level": "high",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：漏洞",
+          "points": 3,
+          "reason": "CVSS 9.8"
+        },
+        {
+          "factor": "已遭實際利用",
+          "points": 2,
+          "reason": "KEV 或官方確認"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "可從 internet 連到"
+        },
+        {
+          "factor": "同業事件命中",
+          "points": 1,
+          "reason": "evt-91app-2026-10"
+        },
+        {
+          "factor": "位於完整攻擊鏈",
+          "points": 3,
+          "reason": "攻擊路徑前提的必要一步"
+        }
+      ],
+      "attack_path": [
+        "internet",
+        "internal-tool",
+        "gitlab-read-token-internal-tool",
+        "gitlab",
+        "order-db-prod-cred",
+        "order-db-prod"
+      ],
+      "matched_events": [
+        "adv-opsbuilder-2026-001",
+        "evt-91app-2026-10"
+      ],
+      "deadline_hours": 24,
+      "solution": {
+        "risk_id": "internal-tool:opsbuilder:vuln",
+        "temporary": "確認 internal-tool 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "permanent": "將 internal-tool 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "24 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "devops-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "brand-app:C-SECRET-IN-GIT",
+      "finding_ids": [
+        "brand-app:C-SECRET-IN-GIT"
+      ],
+      "asset_id": "brand-app",
+      "title": "Git 中不得有正式環境金鑰：brand-app",
+      "category": "secret",
+      "level": "high",
+      "score": 10,
+      "raw_score": 10,
+      "score_level": "high",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：控制項不符",
+          "points": 2,
+          "reason": "controls.yaml base_points"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "商店上架的 App"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        },
+        {
+          "factor": "同業事件命中",
+          "points": 1,
+          "reason": "evt-91app-2026-10"
+        },
+        {
+          "factor": "位於完整攻擊鏈",
+          "points": 3,
+          "reason": "攻擊路徑前提的必要一步"
+        }
+      ],
+      "attack_path": [
+        "internet",
+        "brand-app",
+        "app-api-key",
+        "api-gateway",
+        "member-db-prod"
+      ],
+      "matched_events": [
+        "evt-91app-2026-10"
+      ],
+      "deadline_hours": 24,
+      "solution": {
+        "risk_id": "brand-app:C-SECRET-IN-GIT",
+        "temporary": "撤銷並輪替 app-api-key，確認撤銷後舊值無法使用",
+        "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "撤銷並輪替金鑰",
+            "cost": "使用該金鑰的服務需同步更新",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "mobile-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "marketing-site:php:vuln",
+      "finding_ids": [
+        "marketing-site:php:vuln"
+      ],
+      "asset_id": "marketing-site",
+      "title": "php 8.1.27：PHP2Shell",
+      "category": "vuln",
+      "level": "high",
+      "score": 9,
+      "raw_score": 9,
+      "score_level": "high",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：漏洞",
+          "points": 3,
+          "reason": "CVSS 9.2"
+        },
+        {
+          "factor": "已遭實際利用",
+          "points": 2,
+          "reason": "KEV 或官方確認"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "可從 internet 連到"
+        },
+        {
+          "factor": "同業事件命中",
+          "points": 1,
+          "reason": "evt-php2shell-2026-10"
+        },
+        {
+          "factor": "已停止支援",
+          "points": 1,
+          "reason": "無修補可用"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [
+        "evt-php2shell-2026-10"
+      ],
+      "deadline_hours": 24,
+      "solution": {
+        "risk_id": "marketing-site:php:vuln",
+        "temporary": "立即限制 marketing-site 的對外存取（WAF 規則、關閉高風險功能），並加強監控",
+        "permanent": "將 marketing-site 升級到仍受支援且已修補的版本，完成回歸測試後上線",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "WAF 限制異常請求、關閉不必要的功能",
+            "cost": "需驗證不影響現有功能",
+            "timing": "今天"
+          },
+          {
+            "name": "下架",
+            "action": "暫停 marketing-site，改導向其他服務",
+            "cost": "相關流量中斷",
+            "timing": "今天"
+          },
+          {
+            "name": "修補",
+            "action": "升級到受支援的修補版本",
+            "cost": "需回歸測試",
+            "timing": "7 天內"
+          }
+        ],
+        "suggested_owner": "security-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "gitlab:C-SECRET-IN-GIT",
+      "finding_ids": [
+        "gitlab:C-SECRET-IN-GIT"
+      ],
+      "asset_id": "gitlab",
+      "title": "Git 中不得有正式環境金鑰：gitlab",
+      "category": "secret",
+      "level": "high",
+      "score": 8,
+      "raw_score": 8,
+      "score_level": "high",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：控制項不符",
+          "points": 2,
+          "reason": "controls.yaml base_points"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "order、pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        },
+        {
+          "factor": "同業事件命中",
+          "points": 1,
+          "reason": "evt-91app-2026-10"
+        },
+        {
+          "factor": "位於完整攻擊鏈",
+          "points": 3,
+          "reason": "攻擊路徑前提的必要一步"
+        }
+      ],
+      "attack_path": [
+        "internet",
+        "internal-tool",
+        "gitlab-read-token-internal-tool",
+        "gitlab",
+        "order-db-prod-cred",
+        "order-db-prod"
+      ],
+      "matched_events": [
+        "evt-91app-2026-10"
+      ],
+      "deadline_hours": 24,
+      "solution": {
+        "risk_id": "gitlab:C-SECRET-IN-GIT",
+        "temporary": "撤銷並輪替 order-db-prod-cred，確認撤銷後舊值無法使用",
+        "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "撤銷並輪替金鑰",
+            "cost": "使用該金鑰的服務需同步更新",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "devops-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+      "finding_ids": [
+        "internal-tool:C-INTERNAL-TOOL-EXPOSED"
+      ],
+      "asset_id": "internal-tool",
+      "title": "內部工具不得對外開放：internal-tool",
+      "category": "config",
+      "level": "high",
+      "score": 8,
+      "raw_score": 8,
+      "score_level": "high",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：控制項不符",
+          "points": 2,
+          "reason": "controls.yaml base_points"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "可從 internet 連到"
+        },
+        {
+          "factor": "同業事件命中",
+          "points": 1,
+          "reason": "evt-91app-2026-10"
+        },
+        {
+          "factor": "位於完整攻擊鏈",
+          "points": 3,
+          "reason": "攻擊路徑前提的必要一步"
+        }
+      ],
+      "attack_path": [
+        "internet",
+        "internal-tool",
+        "gitlab-read-token-internal-tool",
+        "gitlab",
+        "order-db-prod-cred",
+        "order-db-prod"
+      ],
+      "matched_events": [
+        "evt-91app-2026-10"
+      ],
+      "deadline_hours": 24,
+      "solution": {
+        "risk_id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+        "temporary": "立即關閉 internal-tool 的對外入口，改為只允許 VPN 連入",
+        "permanent": "內部工具一律放在內網並經 SSO，納入清冊與修補流程",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "關閉對外入口",
+            "cost": "遠端使用者需改用 VPN",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "devops-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "storefront:next:vuln",
+      "finding_ids": [
+        "storefront:next:vuln"
+      ],
+      "asset_id": "storefront",
+      "title": "next 14.1.0 有 36 個已知漏洞（最高 CVSS 9.1，CVE-2025-29927）",
+      "category": "vuln",
+      "level": "high",
+      "score": 8,
+      "raw_score": 8,
+      "score_level": "high",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：漏洞",
+          "points": 3,
+          "reason": "CVSS 9.1"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "可從 internet 連到"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "order、pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        },
+        {
+          "factor": "同業事件命中",
+          "points": 1,
+          "reason": "evt-nextjs-cve-2025-29927"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [
+        "evt-nextjs-cve-2025-29927"
+      ],
+      "deadline_hours": 24,
+      "solution": {
+        "risk_id": "storefront:next:vuln",
+        "temporary": "確認 storefront 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "permanent": "將 storefront 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "24 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "web-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "firebase-brand-app-storage:C-CLOUD-STORAGE-PUBLIC",
+      "finding_ids": [
+        "firebase-brand-app-storage:C-CLOUD-STORAGE-PUBLIC"
+      ],
+      "asset_id": "firebase-brand-app-storage",
+      "title": "雲端儲存空間不得公開讀取：firebase-brand-app-storage",
+      "category": "config",
+      "level": "high",
+      "score": 7,
+      "raw_score": 7,
+      "score_level": "high",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：控制項不符",
+          "points": 3,
+          "reason": "controls.yaml base_points"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "可從 internet 連到"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "order、pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 24,
+      "solution": {
+        "risk_id": "firebase-brand-app-storage:C-CLOUD-STORAGE-PUBLIC",
+        "temporary": "關閉 firebase-brand-app-storage 的公開讀取，檢查存取紀錄是否已被下載",
+        "permanent": "儲存空間預設私有，以簽章網址分享；加入設定漂移檢查",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "關閉公開讀取",
+            "cost": "使用公開網址的功能需改為簽章網址",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "mobile-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "laptop-eng-07:C-DEV-DEVICE-TOKEN",
+      "finding_ids": [
+        "laptop-eng-07:C-DEV-DEVICE-TOKEN"
+      ],
+      "asset_id": "laptop-eng-07",
+      "title": "員工電腦不得持有正式部署權杖：laptop-eng-07",
+      "category": "identity",
+      "level": "high",
+      "score": 7,
+      "raw_score": 7,
+      "score_level": "high",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：控制項不符",
+          "points": 2,
+          "reason": "controls.yaml base_points"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        },
+        {
+          "factor": "同業事件命中",
+          "points": 1,
+          "reason": "evt-binance-2026-10"
+        },
+        {
+          "factor": "位於完整攻擊鏈",
+          "points": 3,
+          "reason": "攻擊路徑前提的必要一步"
+        }
+      ],
+      "attack_path": [
+        "laptop-eng-07",
+        "deploy-token-eng07",
+        "deploy-pipeline"
+      ],
+      "matched_events": [
+        "evt-binance-2026-10"
+      ],
+      "deadline_hours": 24,
+      "solution": {
+        "risk_id": "laptop-eng-07:C-DEV-DEVICE-TOKEN",
+        "temporary": "撤銷並輪替 deploy-token-eng07，確認撤銷後舊值無法使用",
+        "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "撤銷並輪替金鑰",
+            "cost": "使用該金鑰的服務需同步更新",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "eng-07",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "order-exports-bucket:C-CLOUD-STORAGE-PUBLIC",
+      "finding_ids": [
+        "order-exports-bucket:C-CLOUD-STORAGE-PUBLIC"
+      ],
+      "asset_id": "order-exports-bucket",
+      "title": "雲端儲存空間不得公開讀取：order-exports-bucket",
+      "category": "config",
+      "level": "high",
+      "score": 7,
+      "raw_score": 7,
+      "score_level": "high",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：控制項不符",
+          "points": 3,
+          "reason": "controls.yaml base_points"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "可從 internet 連到"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "order、pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 24,
+      "solution": {
+        "risk_id": "order-exports-bucket:C-CLOUD-STORAGE-PUBLIC",
+        "temporary": "關閉 order-exports-bucket 的公開讀取，檢查存取紀錄是否已被下載",
+        "permanent": "儲存空間預設私有，以簽章網址分享；加入設定漂移檢查",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "關閉公開讀取",
+            "cost": "使用公開網址的功能需改為簽章網址",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "data-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "storefront:postcss:vuln",
+      "finding_ids": [
+        "storefront:postcss:vuln"
+      ],
+      "asset_id": "storefront",
+      "title": "postcss 8.4.31 有 4 個已知漏洞（最高 CVSS 9.1，CVE-2026-45623）",
+      "category": "vuln",
+      "level": "high",
+      "score": 7,
+      "raw_score": 7,
+      "score_level": "high",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：漏洞",
+          "points": 3,
+          "reason": "CVSS 9.1"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "可從 internet 連到"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "order、pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 24,
+      "solution": {
+        "risk_id": "storefront:postcss:vuln",
+        "temporary": "確認 storefront 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "permanent": "將 storefront 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "24 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "web-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "internal-tool:shadow_it",
+      "finding_ids": [
+        "internal-tool:shadow_it"
+      ],
+      "asset_id": "internal-tool",
+      "title": "未登記的資產：internal-tool",
+      "category": "shadow_it",
+      "level": "high",
+      "score": 4,
+      "raw_score": 4,
+      "score_level": "medium",
+      "level_reason": "規則下限：對帳：影子 IT",
+      "breakdown": [
+        {
+          "factor": "基礎分：其他類別",
+          "points": 2,
+          "reason": "shadow_it"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "可從 internet 連到"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 24,
+      "solution": {
+        "risk_id": "internal-tool:shadow_it",
+        "temporary": "確認 internal-tool 的負責人與用途，必要時先關閉對外存取",
+        "permanent": "納入清冊，指定負責人，改走 CI/CD 與修補流程，或正式除役",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "指定負責人並納管",
+            "cost": "人力",
+            "timing": "24 小時內"
+          },
+          {
+            "name": "下架",
+            "action": "確認無人使用後除役",
+            "cost": "可能影響未知的使用者",
+            "timing": "7 天內"
+          }
+        ],
+        "suggested_owner": "devops-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "marketing-site:shadow_it",
+      "finding_ids": [
+        "marketing-site:shadow_it"
+      ],
+      "asset_id": "marketing-site",
+      "title": "未登記的資產：marketing-site",
+      "category": "shadow_it",
+      "level": "high",
+      "score": 4,
+      "raw_score": 4,
+      "score_level": "medium",
+      "level_reason": "規則下限：對帳：影子 IT",
+      "breakdown": [
+        {
+          "factor": "基礎分：其他類別",
+          "points": 2,
+          "reason": "shadow_it"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "可從 internet 連到"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 24,
+      "solution": {
+        "risk_id": "marketing-site:shadow_it",
+        "temporary": "確認 marketing-site 的負責人與用途，必要時先關閉對外存取",
+        "permanent": "納入清冊，指定負責人，改走 CI/CD 與修補流程，或正式除役",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "指定負責人並納管",
+            "cost": "人力",
+            "timing": "24 小時內"
+          },
+          {
+            "name": "下架",
+            "action": "確認無人使用後除役",
+            "cost": "可能影響未知的使用者",
+            "timing": "7 天內"
+          }
+        ],
+        "suggested_owner": "security-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "nas-office-01:shadow_it",
+      "finding_ids": [
+        "nas-office-01:shadow_it"
+      ],
+      "asset_id": "nas-office-01",
+      "title": "未登記的資產：nas-office-01",
+      "category": "shadow_it",
+      "level": "high",
+      "score": 4,
+      "raw_score": 4,
+      "score_level": "medium",
+      "level_reason": "規則下限：對帳：影子 IT",
+      "breakdown": [
+        {
+          "factor": "基礎分：其他類別",
+          "points": 2,
+          "reason": "shadow_it"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "可從 internet 連到"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 24,
+      "solution": {
+        "risk_id": "nas-office-01:shadow_it",
+        "temporary": "確認 nas-office-01 的負責人與用途，必要時先關閉對外存取",
+        "permanent": "納入清冊，指定負責人，改走 CI/CD 與修補流程，或正式除役",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "指定負責人並納管",
+            "cost": "人力",
+            "timing": "24 小時內"
+          },
+          {
+            "name": "下架",
+            "action": "確認無人使用後除役",
+            "cost": "可能影響未知的使用者",
+            "timing": "7 天內"
+          }
+        ],
+        "suggested_owner": "it-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "saas-quicksite-builder:shadow_it",
+      "finding_ids": [
+        "saas-quicksite-builder:shadow_it"
+      ],
+      "asset_id": "saas-quicksite-builder",
+      "title": "未登記的資產：QuickSite Builder",
+      "category": "shadow_it",
+      "level": "high",
+      "score": 2,
+      "raw_score": 2,
+      "score_level": "low",
+      "level_reason": "規則下限：對帳：影子 IT",
+      "breakdown": [
+        {
+          "factor": "基礎分：其他類別",
+          "points": 2,
+          "reason": "shadow_it"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 24,
+      "solution": {
+        "risk_id": "saas-quicksite-builder:shadow_it",
+        "temporary": "確認 saas-quicksite-builder 的負責人與用途，必要時先關閉對外存取",
+        "permanent": "納入清冊，指定負責人，改走 CI/CD 與修補流程，或正式除役",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "指定負責人並納管",
+            "cost": "人力",
+            "timing": "24 小時內"
+          },
+          {
+            "name": "下架",
+            "action": "確認無人使用後除役",
+            "cost": "可能影響未知的使用者",
+            "timing": "7 天內"
+          }
+        ],
+        "suggested_owner": "it-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "nas-office-01:synology-dsm:vuln",
+      "finding_ids": [
+        "nas-office-01:synology-dsm:vuln"
+      ],
+      "asset_id": "nas-office-01",
+      "title": "synology-dsm 7.2.1-69057 Update 5：Synology NAS 遭 C3RB3R 勒索軟體加密",
+      "category": "vuln",
+      "level": "medium",
+      "score": 8,
+      "raw_score": 8,
+      "score_level": "high",
+      "level_reason": "暫定情資：最高只到中",
+      "breakdown": [
+        {
+          "factor": "基礎分：漏洞",
+          "points": 3,
+          "reason": "CVSS 9.8"
+        },
+        {
+          "factor": "已遭實際利用",
+          "points": 2,
+          "reason": "KEV 或官方確認"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "可從 internet 連到"
+        },
+        {
+          "factor": "同業事件命中",
+          "points": 1,
+          "reason": "evt-91app-2026-10、evt-synology-2026-10"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [
+        "evt-91app-2026-10",
+        "evt-synology-2026-10"
+      ],
+      "deadline_hours": 168,
+      "solution": {
+        "risk_id": "nas-office-01:synology-dsm:vuln",
+        "temporary": "確認 nas-office-01 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "permanent": "將 nas-office-01 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "168 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "it-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "api-gateway:GET /internal/v1/members/export:shadow_api",
+      "finding_ids": [
+        "api-gateway:GET /internal/v1/members/export:shadow_api"
+      ],
+      "asset_id": "api-gateway",
+      "title": "影子 API：GET /internal/v1/members/export（7 天 95 次）",
+      "category": "shadow_api",
+      "level": "medium",
+      "score": 6,
+      "raw_score": 6,
+      "score_level": "medium",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：其他類別",
+          "points": 2,
+          "reason": "shadow_api"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "可從 internet 連到"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 168,
+      "solution": {
+        "risk_id": "api-gateway:GET /internal/v1/members/export:shadow_api",
+        "temporary": "確認 api-gateway 的狀況並限制存取",
+        "permanent": "依控制項要求修正，並在下次掃描確認",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "依控制項修正",
+            "cost": "依項目而定",
+            "timing": "168 小時內"
+          }
+        ],
+        "suggested_owner": "platform-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "brand-app:android-debuggable",
+      "finding_ids": [
+        "brand-app:android-debuggable"
+      ],
+      "asset_id": "brand-app",
+      "title": "正式版 App 開啟 debuggable",
+      "category": "mobile",
+      "level": "medium",
+      "score": 6,
+      "raw_score": 6,
+      "score_level": "medium",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：規則",
+          "points": 2,
+          "reason": "mobile:android-debuggable（規則版 2026-11-09.1）"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "商店上架的 App"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 168,
+      "solution": {
+        "risk_id": "brand-app:android-debuggable",
+        "temporary": "伺服器端先限制舊版 App 可呼叫的 API",
+        "permanent": "修正 App 設定後發版，提高最低支援版本並強制更新",
+        "options": [
+          {
+            "name": "修補",
+            "action": "修正設定並分批發版",
+            "cost": "各品牌需重新上架",
+            "timing": "數天"
+          }
+        ],
+        "suggested_owner": "mobile-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+      "finding_ids": [
+        "mail-api-key:C-THIRD-PARTY-KEY-ROTATION"
+      ],
+      "asset_id": "mail-api-key",
+      "title": "第三方服務金鑰 90 天內輪替且有 IP 白名單：mail-api-key",
+      "category": "secret",
+      "level": "medium",
+      "score": 6,
+      "raw_score": 6,
+      "score_level": "medium",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：控制項不符",
+          "points": 2,
+          "reason": "controls.yaml base_points"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "第三方金鑰無 IP 白名單，外部任何來源都可使用"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "order、pii"
+        },
+        {
+          "factor": "同業事件命中",
+          "points": 1,
+          "reason": "evt-1shop-2026-10"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [
+        "evt-1shop-2026-10"
+      ],
+      "deadline_hours": 168,
+      "solution": {
+        "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "temporary": "撤銷並輪替 mail-api-key，確認撤銷後舊值無法使用",
+        "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "撤銷並輪替金鑰",
+            "cost": "使用該金鑰的服務需同步更新",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "security-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "brand-app:android-cleartext",
+      "finding_ids": [
+        "brand-app:android-cleartext"
+      ],
+      "asset_id": "brand-app",
+      "title": "App 允許明文傳輸",
+      "category": "mobile",
+      "level": "medium",
+      "score": 5,
+      "raw_score": 5,
+      "score_level": "medium",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：規則",
+          "points": 1,
+          "reason": "mobile:android-cleartext（規則版 2026-11-09.1）"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "商店上架的 App"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 168,
+      "solution": {
+        "risk_id": "brand-app:android-cleartext",
+        "temporary": "伺服器端先限制舊版 App 可呼叫的 API",
+        "permanent": "修正 App 設定後發版，提高最低支援版本並強制更新",
+        "options": [
+          {
+            "name": "修補",
+            "action": "修正設定並分批發版",
+            "cost": "各品牌需重新上架",
+            "timing": "數天"
+          }
+        ],
+        "suggested_owner": "mobile-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "brand-app:android-exported-component",
+      "finding_ids": [
+        "brand-app:android-exported-component"
+      ],
+      "asset_id": "brand-app",
+      "title": "對外開放且無權限保護的元件",
+      "category": "mobile",
+      "level": "medium",
+      "score": 5,
+      "raw_score": 5,
+      "score_level": "medium",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：規則",
+          "points": 1,
+          "reason": "mobile:android-exported-component（規則版 2026-11-09.1）"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "商店上架的 App"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 168,
+      "solution": {
+        "risk_id": "brand-app:android-exported-component",
+        "temporary": "伺服器端先限制舊版 App 可呼叫的 API",
+        "permanent": "修正 App 設定後發版，提高最低支援版本並強制更新",
+        "options": [
+          {
+            "name": "修補",
+            "action": "修正設定並分批發版",
+            "cost": "各品牌需重新上架",
+            "timing": "數天"
+          }
+        ],
+        "suggested_owner": "mobile-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "brand-app:target-sdk-outdated",
+      "finding_ids": [
+        "brand-app:target-sdk-outdated"
+      ],
+      "asset_id": "brand-app",
+      "title": "targetSdkVersion 31 低於商店要求",
+      "category": "mobile",
+      "level": "medium",
+      "score": 5,
+      "raw_score": 5,
+      "score_level": "medium",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：規則",
+          "points": 1,
+          "reason": "mobile:target-sdk-outdated（規則版 2026-11-09.1）"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "商店上架的 App"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 168,
+      "solution": {
+        "risk_id": "brand-app:target-sdk-outdated",
+        "temporary": "伺服器端先限制舊版 App 可呼叫的 API",
+        "permanent": "修正 App 設定後發版，提高最低支援版本並強制更新",
+        "options": [
+          {
+            "name": "修補",
+            "action": "修正設定並分批發版",
+            "cost": "各品牌需重新上架",
+            "timing": "數天"
+          }
+        ],
+        "suggested_owner": "mobile-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "member-api:lodash:vuln",
+      "finding_ids": [
+        "member-api:lodash:vuln"
+      ],
+      "asset_id": "member-api",
+      "title": "lodash 4.17.20 有 4 個已知漏洞（最高 CVSS 9.8，CVE-2026-4800）",
+      "category": "vuln",
+      "level": "medium",
+      "score": 5,
+      "raw_score": 5,
+      "score_level": "medium",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：漏洞",
+          "points": 3,
+          "reason": "CVSS 9.8"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 168,
+      "solution": {
+        "risk_id": "member-api:lodash:vuln",
+        "temporary": "確認 member-api 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "permanent": "將 member-api 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "168 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "member-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "nas-office-01:C-BACKUP-ISOLATION",
+      "finding_ids": [
+        "nas-office-01:C-BACKUP-ISOLATION"
+      ],
+      "asset_id": "nas-office-01",
+      "title": "備份與來源設備隔離，且 90 天內做過還原測試：nas-office-01",
+      "category": "backup",
+      "level": "medium",
+      "score": 5,
+      "raw_score": 5,
+      "score_level": "medium",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：控制項不符",
+          "points": 2,
+          "reason": "controls.yaml base_points"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "可從 internet 連到"
+        },
+        {
+          "factor": "同業事件命中",
+          "points": 1,
+          "reason": "evt-synology-2026-10"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [
+        "evt-synology-2026-10"
+      ],
+      "deadline_hours": 168,
+      "solution": {
+        "risk_id": "nas-office-01:C-BACKUP-ISOLATION",
+        "temporary": "建立一份離線或不同帳號的備份",
+        "permanent": "備份與來源隔離（不同帳號或離線），每 90 天做一次還原測試",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "建立隔離備份",
+            "cost": "儲存費用",
+            "timing": "7 天內"
+          }
+        ],
+        "suggested_owner": "it-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "nas-office-01:C-INTERNAL-TOOL-EXPOSED",
+      "finding_ids": [
+        "nas-office-01:C-INTERNAL-TOOL-EXPOSED"
+      ],
+      "asset_id": "nas-office-01",
+      "title": "內部工具不得對外開放：nas-office-01",
+      "category": "config",
+      "level": "medium",
+      "score": 5,
+      "raw_score": 5,
+      "score_level": "medium",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：控制項不符",
+          "points": 2,
+          "reason": "controls.yaml base_points"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "可從 internet 連到"
+        },
+        {
+          "factor": "同業事件命中",
+          "points": 1,
+          "reason": "evt-91app-2026-10、evt-synology-2026-10"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [
+        "evt-91app-2026-10",
+        "evt-synology-2026-10"
+      ],
+      "deadline_hours": 168,
+      "solution": {
+        "risk_id": "nas-office-01:C-INTERNAL-TOOL-EXPOSED",
+        "temporary": "立即關閉 nas-office-01 的對外入口，改為只允許 VPN 連入",
+        "permanent": "內部工具一律放在內網並經 SSO，納入清冊與修補流程",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "關閉對外入口",
+            "cost": "遠端使用者需改用 VPN",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "it-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "order-db-prod:C-NET-SEGMENT",
+      "finding_ids": [
+        "order-db-prod:C-NET-SEGMENT"
+      ],
+      "asset_id": "order-db-prod",
+      "title": "非正式環境不得連線正式資料庫：order-db-prod",
+      "category": "config",
+      "level": "medium",
+      "score": 5,
+      "raw_score": 5,
+      "score_level": "medium",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：控制項不符",
+          "points": 2,
+          "reason": "controls.yaml base_points"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "order、pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        },
+        {
+          "factor": "同業事件命中",
+          "points": 1,
+          "reason": "evt-91app-2026-10"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [
+        "evt-91app-2026-10"
+      ],
+      "deadline_hours": 168,
+      "solution": {
+        "risk_id": "order-db-prod:C-NET-SEGMENT",
+        "temporary": "封鎖非正式環境到正式資料庫的連線",
+        "permanent": "正式與測試環境分開網段與帳號，正式資料庫只接受核准的服務連線",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "調整安全群組",
+            "cost": "需確認測試流程不依賴正式資料",
+            "timing": "7 天內"
+          }
+        ],
+        "suggested_owner": "dba-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "ai-code-assistant:C-NON-CI-DEPLOY",
+      "finding_ids": [
+        "ai-code-assistant:C-NON-CI-DEPLOY"
+      ],
+      "asset_id": "ai-code-assistant",
+      "title": "正式部署必須來自 Pipeline：ai-code-assistant",
+      "category": "config",
+      "level": "medium",
+      "score": 4,
+      "raw_score": 4,
+      "score_level": "medium",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：控制項不符",
+          "points": 2,
+          "reason": "controls.yaml base_points"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        },
+        {
+          "factor": "同業事件命中",
+          "points": 1,
+          "reason": "evt-binance-2026-10"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [
+        "evt-binance-2026-10"
+      ],
+      "deadline_hours": 168,
+      "solution": {
+        "risk_id": "ai-code-assistant:C-NON-CI-DEPLOY",
+        "temporary": "確認 ai-code-assistant 的狀況並限制存取",
+        "permanent": "依控制項要求修正，並在下次掃描確認",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "依控制項修正",
+            "cost": "依項目而定",
+            "timing": "168 小時內"
+          }
+        ],
+        "suggested_owner": "devops-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "clone:app.bloomrewards.example",
+      "finding_ids": [
+        "clone:app.bloomrewards.example"
+      ],
+      "asset_id": "clone:app.bloomrewards.example",
+      "title": "商店上有冒用「花漾美妝（虛構）」的山寨 App：花漾美妝 Bloom 會員福利",
+      "category": "clone_app",
+      "level": "medium",
+      "score": 4,
+      "raw_score": 4,
+      "score_level": "medium",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：其他類別",
+          "points": 2,
+          "reason": "clone_app"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "商店上架，任何人可下載"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 168,
+      "solution": {
+        "risk_id": "clone:app.bloomrewards.example",
+        "temporary": "通知受影響品牌商並向商店檢舉下架",
+        "permanent": "定期監控商店上的冒用 App，提供會員辨識官方 App 的方式",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "檢舉下架、發布防詐提醒",
+            "cost": "客服人力",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "security-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "marketing-site:php:eol",
+      "finding_ids": [
+        "marketing-site:php:eol"
+      ],
+      "asset_id": "marketing-site",
+      "title": "php 8.1.27 已停止支援（2025-12-31）",
+      "category": "eol",
+      "level": "medium",
+      "score": 4,
+      "raw_score": 4,
+      "score_level": "medium",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：規則",
+          "points": 2,
+          "reason": "eol:exposed（規則版 2026-11-09.1）"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "可從 internet 連到"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 168,
+      "solution": {
+        "risk_id": "marketing-site:php:eol",
+        "temporary": "確認 marketing-site 的狀況並限制存取",
+        "permanent": "依控制項要求修正，並在下次掃描確認",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "依控制項修正",
+            "cost": "依項目而定",
+            "timing": "168 小時內"
+          }
+        ],
+        "suggested_owner": "security-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "member-api:body-parser:vuln",
+      "finding_ids": [
+        "member-api:body-parser:vuln"
+      ],
+      "asset_id": "member-api",
+      "title": "body-parser 1.20.1 有 3 個已知漏洞（最高 CVSS 7.5，CVE-2024-45590）",
+      "category": "vuln",
+      "level": "medium",
+      "score": 4,
+      "raw_score": 4,
+      "score_level": "medium",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：漏洞",
+          "points": 2,
+          "reason": "CVSS 7.5"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 168,
+      "solution": {
+        "risk_id": "member-api:body-parser:vuln",
+        "temporary": "確認 member-api 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "permanent": "將 member-api 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "168 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "member-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "member-api:path-to-regexp:vuln",
+      "finding_ids": [
+        "member-api:path-to-regexp:vuln"
+      ],
+      "asset_id": "member-api",
+      "title": "path-to-regexp 0.1.7 有 3 個已知漏洞（最高 CVSS 7.5，CVE-2024-45296）",
+      "category": "vuln",
+      "level": "medium",
+      "score": 4,
+      "raw_score": 4,
+      "score_level": "medium",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：漏洞",
+          "points": 2,
+          "reason": "CVSS 7.5"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 168,
+      "solution": {
+        "risk_id": "member-api:path-to-regexp:vuln",
+        "temporary": "確認 member-api 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "permanent": "將 member-api 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "168 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "member-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "member-api:qs:vuln",
+      "finding_ids": [
+        "member-api:qs:vuln"
+      ],
+      "asset_id": "member-api",
+      "title": "qs 6.11.0 有 4 個已知漏洞（最高 CVSS 7.5，CVE-2025-15284）",
+      "category": "vuln",
+      "level": "medium",
+      "score": 4,
+      "raw_score": 4,
+      "score_level": "medium",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：漏洞",
+          "points": 2,
+          "reason": "CVSS 7.5"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 168,
+      "solution": {
+        "risk_id": "member-api:qs:vuln",
+        "temporary": "確認 member-api 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "permanent": "將 member-api 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "168 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "member-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "phpmyadmin:php:vuln",
+      "finding_ids": [
+        "phpmyadmin:php:vuln"
+      ],
+      "asset_id": "phpmyadmin",
+      "title": "php 8.3.20：PHP2Shell",
+      "category": "vuln",
+      "level": "medium",
+      "score": 4,
+      "raw_score": 4,
+      "score_level": "medium",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：漏洞",
+          "points": 3,
+          "reason": "CVSS 9.2"
+        },
+        {
+          "factor": "已遭實際利用",
+          "points": 2,
+          "reason": "KEV 或官方確認"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "order、pii"
+        },
+        {
+          "factor": "同業事件命中",
+          "points": 1,
+          "reason": "evt-php2shell-2026-10"
+        },
+        {
+          "factor": "補償措施",
+          "points": -3,
+          "reason": "network.json 顯示只允許 corp-vpn 連入（本次快照證據）"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [
+        "evt-php2shell-2026-10"
+      ],
+      "deadline_hours": 168,
+      "solution": {
+        "risk_id": "phpmyadmin:php:vuln",
+        "temporary": "確認 phpmyadmin 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "permanent": "將 phpmyadmin 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "168 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "dba-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "member-api:express:vuln",
+      "finding_ids": [
+        "member-api:express:vuln"
+      ],
+      "asset_id": "member-api",
+      "title": "express 4.18.2 有 2 個已知漏洞（最高 CVSS 6.1，CVE-2024-29041）",
+      "category": "vuln",
+      "level": "low",
+      "score": 3,
+      "raw_score": 3,
+      "score_level": "low",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：漏洞",
+          "points": 1,
+          "reason": "CVSS 6.1"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 720,
+      "solution": null,
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "member-api:send:vuln",
+      "finding_ids": [
+        "member-api:send:vuln"
+      ],
+      "asset_id": "member-api",
+      "title": "send 0.18.0 有 1 個已知漏洞（最高 CVSS 5.0，CVE-2024-43799）",
+      "category": "vuln",
+      "level": "low",
+      "score": 3,
+      "raw_score": 3,
+      "score_level": "low",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：漏洞",
+          "points": 1,
+          "reason": "CVSS 5.0"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 720,
+      "solution": null,
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "member-api:serve-static:vuln",
+      "finding_ids": [
+        "member-api:serve-static:vuln"
+      ],
+      "asset_id": "member-api",
+      "title": "serve-static 1.15.0 有 1 個已知漏洞（最高 CVSS 5.0，CVE-2024-43800）",
+      "category": "vuln",
+      "level": "low",
+      "score": 3,
+      "raw_score": 3,
+      "score_level": "low",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：漏洞",
+          "points": 1,
+          "reason": "CVSS 5.0"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 720,
+      "solution": null,
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "cache-redis:C-CACHE-TLS",
+      "finding_ids": [
+        "cache-redis:C-CACHE-TLS"
+      ],
+      "asset_id": "cache-redis",
+      "title": "快取服務連線須加密：cache-redis",
+      "category": "config",
+      "level": "low",
+      "score": 2,
+      "raw_score": 2,
+      "score_level": "low",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：控制項不符",
+          "points": 1,
+          "reason": "controls.yaml base_points"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "session"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 720,
+      "solution": null,
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "member-api:cookie:vuln",
+      "finding_ids": [
+        "member-api:cookie:vuln"
+      ],
+      "asset_id": "member-api",
+      "title": "cookie 0.5.0 有 1 個已知漏洞（最高 CVSS 3.7，CVE-2024-47764）",
+      "category": "vuln",
+      "level": "low",
+      "score": 2,
+      "raw_score": 2,
+      "score_level": "low",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：漏洞",
+          "points": 0,
+          "reason": "CVSS 3.7"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 720,
+      "solution": null,
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "push-key-fcm-apns:shared-storage",
+      "finding_ids": [
+        "push-key-fcm-apns:shared-storage"
+      ],
+      "asset_id": "push-key-fcm-apns",
+      "title": "push-key-fcm-apns 存放在共用磁碟，所有辦公室人員可取用",
+      "category": "identity",
+      "level": "low",
+      "score": 2,
+      "raw_score": 2,
+      "score_level": "low",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：規則",
+          "points": 2,
+          "reason": "mobile:signing-or-push-key-shared（規則版 2026-11-09.1）"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 720,
+      "solution": null,
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "order-db-test-cred:test-secret-in-git",
+      "finding_ids": [
+        "order-db-test-cred:test-secret-in-git"
+      ],
+      "asset_id": "gitlab",
+      "title": "Git 中有測試環境金鑰（config/db.yml:7）",
+      "category": "secret",
+      "level": "low",
+      "score": 1,
+      "raw_score": 1,
+      "score_level": "low",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：規則",
+          "points": 1,
+          "reason": "secret:test_env（規則版 2026-11-09.1）"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 720,
+      "solution": null,
+      "status": "open",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-09T01:00:00Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    }
+  ],
+  "events": [
+    {
+      "id": "evt-1shop-2026-10",
+      "kind": "archive",
+      "title": "1shop 一頁購物疑 Mailgun API 金鑰遭取得，詐騙信內容吻合真實訂單",
+      "affected_count": 1,
+      "max_level": "medium",
+      "status": "open",
+      "demo": false
+    },
+    {
+      "id": "evt-91app-2026-10",
+      "kind": "archive",
+      "title": "91APP 訂單資料庫遭入侵：未更新的內部工具 Appsmith 成破口，自內部 GitLab 取得資料庫金鑰",
+      "affected_count": 5,
+      "max_level": "high",
+      "status": "open",
+      "demo": false
+    },
+    {
+      "id": "evt-binance-2026-10",
+      "kind": "archive",
+      "title": "幣安 63.4 億美元駭案：假面試惡意程式入侵開發者電腦，取得容器部署憑證後攻陷錢包簽章服務",
+      "affected_count": 2,
+      "max_level": "high",
+      "status": "open",
+      "demo": false
+    },
+    {
+      "id": "evt-nextjs-cve-2025-29927",
+      "kind": "archive",
+      "title": "Next.js Middleware 授權繞過（CVE-2025-29927）",
+      "affected_count": 1,
+      "max_level": "high",
+      "status": "open",
+      "demo": false
+    },
+    {
+      "id": "evt-php2shell-2026-10",
+      "kind": "archive",
+      "title": "PHP2Shell：PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619）",
+      "affected_count": 2,
+      "max_level": "high",
+      "status": "open",
+      "demo": false
+    },
+    {
+      "id": "evt-synology-2026-10",
+      "kind": "archive",
+      "title": "Synology NAS 遭 C3RB3R 勒索軟體加密：DSM 登入頁對外暴露，常駐連接的備份碟一併被加密",
+      "affected_count": 3,
+      "max_level": "medium",
+      "status": "open",
+      "demo": false
+    },
+    {
+      "id": "adv-opsbuilder-2026-001",
+      "kind": "advisory",
+      "title": "示範公告：OpsBuilder 1.90 以前版本的帳號接管漏洞（虛構產品）",
+      "affected_count": 1,
+      "max_level": "high",
+      "status": "open",
+      "demo": false
+    }
+  ],
+  "proposed_controls": [],
+  "open_alerts": [],
+  "intel_summary": {
+    "checked": 7,
+    "affected": 7,
+    "by_kind": {
+      "live": 0,
+      "archive": 6,
+      "demo": 0,
+      "advisory": 1
+    },
+    "real_checked": 6,
+    "real_affected": 6
+  },
+  "daily_intel_status": "replay",
+  "cost": {
+    "total_usd": 0.0,
+    "per_agent": {
+      "a0": 0.0,
+      "a1": 0.0,
+      "a2": 0.0,
+      "a3": 0.0,
+      "a4": 0.0
+    },
+    "cache_hit_rate": 0.0
+  },
+  "signals": [],
+  "reconcile": [
+    {
+      "asset_id": "ai-code-assistant",
+      "type": "ai_tool",
+      "registered": true,
+      "observed": true,
+      "observed_sources": [
+        "runtime"
+      ],
+      "ci_applicable": false,
+      "owner": "devops-team",
+      "deployed_via_ci": null,
+      "conclusion": "normal",
+      "label": "正常",
+      "level_floor": null,
+      "reason": "清冊與實際觀察一致（不適用 CI/CD 部署對帳）"
+    },
+    {
+      "asset_id": "api-gateway",
+      "type": "api",
+      "registered": true,
+      "observed": true,
+      "observed_sources": [
+        "external-scan",
+        "runtime"
+      ],
+      "ci_applicable": true,
+      "owner": "platform-team",
+      "deployed_via_ci": true,
+      "conclusion": "normal",
+      "label": "正常",
+      "level_floor": null,
+      "reason": "清冊有、部署紀錄有、實際觀察有（external-scan, runtime）"
+    },
+    {
+      "asset_id": "brand-app",
+      "type": "app",
+      "registered": true,
+      "observed": true,
+      "observed_sources": [
+        "store-console"
+      ],
+      "ci_applicable": false,
+      "owner": "mobile-team",
+      "deployed_via_ci": null,
+      "conclusion": "normal",
+      "label": "正常",
+      "level_floor": null,
+      "reason": "清冊與實際觀察一致（不適用 CI/CD 部署對帳）"
+    },
+    {
+      "asset_id": "cache-redis",
+      "type": "datastore",
+      "registered": true,
+      "observed": true,
+      "observed_sources": [
+        "runtime"
+      ],
+      "ci_applicable": false,
+      "owner": "web-team",
+      "deployed_via_ci": null,
+      "conclusion": "normal",
+      "label": "正常",
+      "level_floor": null,
+      "reason": "清冊與實際觀察一致（不適用 CI/CD 部署對帳）"
+    },
+    {
+      "asset_id": "deploy-pipeline",
+      "type": "service",
+      "registered": true,
+      "observed": true,
+      "observed_sources": [
+        "runtime"
+      ],
+      "ci_applicable": false,
+      "owner": "devops-team",
+      "deployed_via_ci": null,
+      "conclusion": "normal",
+      "label": "正常",
+      "level_floor": null,
+      "reason": "清冊與實際觀察一致（不適用 CI/CD 部署對帳）"
+    },
+    {
+      "asset_id": "fileserver-01",
+      "type": "device",
+      "registered": true,
+      "observed": true,
+      "observed_sources": [
+        "lan-scan"
+      ],
+      "ci_applicable": false,
+      "owner": "it-team",
+      "deployed_via_ci": null,
+      "conclusion": "normal",
+      "label": "正常",
+      "level_floor": null,
+      "reason": "清冊與實際觀察一致（不適用 CI/CD 部署對帳）"
+    },
+    {
+      "asset_id": "firebase-brand-app-storage",
+      "type": "datastore",
+      "registered": true,
+      "observed": true,
+      "observed_sources": [
+        "external-scan",
+        "runtime"
+      ],
+      "ci_applicable": false,
+      "owner": "mobile-team",
+      "deployed_via_ci": null,
+      "conclusion": "normal",
+      "label": "正常",
+      "level_floor": null,
+      "reason": "清冊與實際觀察一致（不適用 CI/CD 部署對帳）"
+    },
+    {
+      "asset_id": "gitlab",
+      "type": "service",
+      "registered": true,
+      "observed": true,
+      "observed_sources": [
+        "runtime"
+      ],
+      "ci_applicable": false,
+      "owner": "devops-team",
+      "deployed_via_ci": null,
+      "conclusion": "normal",
+      "label": "正常",
+      "level_floor": null,
+      "reason": "清冊與實際觀察一致（不適用 CI/CD 部署對帳）"
+    },
+    {
+      "asset_id": "internal-tool",
+      "type": "service",
+      "registered": false,
+      "observed": true,
+      "observed_sources": [
+        "external-scan",
+        "runtime"
+      ],
+      "ci_applicable": true,
+      "owner": null,
+      "deployed_via_ci": false,
+      "conclusion": "shadow_it",
+      "label": "影子 IT",
+      "level_floor": "high",
+      "reason": "清冊無、部署紀錄無、實際觀察有（external-scan, runtime）"
+    },
+    {
+      "asset_id": "laptop-eng-03",
+      "type": "device",
+      "registered": true,
+      "observed": true,
+      "observed_sources": [
+        "lan-scan",
+        "mdm"
+      ],
+      "ci_applicable": false,
+      "owner": "eng-03",
+      "deployed_via_ci": null,
+      "conclusion": "normal",
+      "label": "正常",
+      "level_floor": null,
+      "reason": "清冊與實際觀察一致（不適用 CI/CD 部署對帳）"
+    },
+    {
+      "asset_id": "laptop-eng-07",
+      "type": "device",
+      "registered": true,
+      "observed": true,
+      "observed_sources": [
+        "lan-scan",
+        "mdm"
+      ],
+      "ci_applicable": false,
+      "owner": "eng-07",
+      "deployed_via_ci": null,
+      "conclusion": "normal",
+      "label": "正常",
+      "level_floor": null,
+      "reason": "清冊與實際觀察一致（不適用 CI/CD 部署對帳）"
+    },
+    {
+      "asset_id": "laptop-ops-02",
+      "type": "device",
+      "registered": true,
+      "observed": true,
+      "observed_sources": [
+        "lan-scan",
+        "mdm"
+      ],
+      "ci_applicable": false,
+      "owner": "ops-02",
+      "deployed_via_ci": null,
+      "conclusion": "normal",
+      "label": "正常",
+      "level_floor": null,
+      "reason": "清冊與實際觀察一致（不適用 CI/CD 部署對帳）"
+    },
+    {
+      "asset_id": "marketing-site",
+      "type": "service",
+      "registered": false,
+      "observed": true,
+      "observed_sources": [
+        "external-scan",
+        "runtime"
+      ],
+      "ci_applicable": true,
+      "owner": null,
+      "deployed_via_ci": false,
+      "conclusion": "shadow_it",
+      "label": "影子 IT",
+      "level_floor": "high",
+      "reason": "清冊無、部署紀錄無、實際觀察有（external-scan, runtime）"
+    },
+    {
+      "asset_id": "member-api",
+      "type": "service",
+      "registered": true,
+      "observed": true,
+      "observed_sources": [
+        "runtime"
+      ],
+      "ci_applicable": true,
+      "owner": "member-team",
+      "deployed_via_ci": true,
+      "conclusion": "normal",
+      "label": "正常",
+      "level_floor": null,
+      "reason": "清冊有、部署紀錄有、實際觀察有（runtime）"
+    },
+    {
+      "asset_id": "member-db-prod",
+      "type": "datastore",
+      "registered": true,
+      "observed": true,
+      "observed_sources": [
+        "runtime"
+      ],
+      "ci_applicable": false,
+      "owner": "dba-team",
+      "deployed_via_ci": null,
+      "conclusion": "normal",
+      "label": "正常",
+      "level_floor": null,
+      "reason": "清冊與實際觀察一致（不適用 CI/CD 部署對帳）"
+    },
+    {
+      "asset_id": "nas-office-01",
+      "type": "device",
+      "registered": false,
+      "observed": true,
+      "observed_sources": [
+        "external-scan",
+        "lan-scan"
+      ],
+      "ci_applicable": false,
+      "owner": null,
+      "deployed_via_ci": null,
+      "conclusion": "shadow_it",
+      "label": "影子 IT",
+      "level_floor": "high",
+      "reason": "未出現在任何清冊，但在 external-scan, lan-scan 被觀察到"
+    },
+    {
+      "asset_id": "order-db-prod",
+      "type": "datastore",
+      "registered": true,
+      "observed": true,
+      "observed_sources": [
+        "runtime"
+      ],
+      "ci_applicable": false,
+      "owner": "dba-team",
+      "deployed_via_ci": null,
+      "conclusion": "normal",
+      "label": "正常",
+      "level_floor": null,
+      "reason": "清冊與實際觀察一致（不適用 CI/CD 部署對帳）"
+    },
+    {
+      "asset_id": "order-db-test",
+      "type": "datastore",
+      "registered": true,
+      "observed": true,
+      "observed_sources": [
+        "runtime"
+      ],
+      "ci_applicable": false,
+      "owner": "dba-team",
+      "deployed_via_ci": null,
+      "conclusion": "normal",
+      "label": "正常",
+      "level_floor": null,
+      "reason": "清冊與實際觀察一致（不適用 CI/CD 部署對帳）"
+    },
+    {
+      "asset_id": "order-exports-bucket",
+      "type": "datastore",
+      "registered": true,
+      "observed": true,
+      "observed_sources": [
+        "external-scan",
+        "runtime"
+      ],
+      "ci_applicable": false,
+      "owner": "data-team",
+      "deployed_via_ci": null,
+      "conclusion": "normal",
+      "label": "正常",
+      "level_floor": null,
+      "reason": "清冊與實際觀察一致（不適用 CI/CD 部署對帳）"
+    },
+    {
+      "asset_id": "payment-service",
+      "type": "service",
+      "registered": true,
+      "observed": true,
+      "observed_sources": [
+        "runtime"
+      ],
+      "ci_applicable": true,
+      "owner": "payments-team",
+      "deployed_via_ci": true,
+      "conclusion": "normal",
+      "label": "正常",
+      "level_floor": null,
+      "reason": "清冊有、部署紀錄有、實際觀察有（runtime）"
+    },
+    {
+      "asset_id": "phpmyadmin",
+      "type": "internal_tool",
+      "registered": true,
+      "observed": true,
+      "observed_sources": [
+        "runtime"
+      ],
+      "ci_applicable": true,
+      "owner": "dba-team",
+      "deployed_via_ci": true,
+      "conclusion": "normal",
+      "label": "正常",
+      "level_floor": null,
+      "reason": "清冊有、部署紀錄有、實際觀察有（runtime）"
+    },
+    {
+      "asset_id": "report-svc",
+      "type": "service",
+      "registered": true,
+      "observed": true,
+      "observed_sources": [
+        "runtime"
+      ],
+      "ci_applicable": true,
+      "owner": "data-team",
+      "deployed_via_ci": true,
+      "conclusion": "normal",
+      "label": "正常",
+      "level_floor": null,
+      "reason": "清冊有、部署紀錄有、實際觀察有（runtime）"
+    },
+    {
+      "asset_id": "storefront",
+      "type": "service",
+      "registered": true,
+      "observed": true,
+      "observed_sources": [
+        "external-scan",
+        "runtime"
+      ],
+      "ci_applicable": true,
+      "owner": "web-team",
+      "deployed_via_ci": true,
+      "conclusion": "normal",
+      "label": "正常",
+      "level_floor": null,
+      "reason": "清冊有、部署紀錄有、實際觀察有（external-scan, runtime）"
+    },
+    {
+      "asset_id": "saas-quicksite-builder",
+      "type": "saas",
+      "registered": false,
+      "observed": true,
+      "observed_sources": [
+        "payments",
+        "sso"
+      ],
+      "ci_applicable": false,
+      "deployed_via_ci": null,
+      "owner": null,
+      "display_name": "QuickSite Builder",
+      "conclusion": "shadow_it",
+      "label": "影子 IT",
+      "level_floor": "high",
+      "reason": "QuickSite Builder 出現在 payments, sso，但不在第三方清冊"
+    }
+  ],
+  "app_impact": {},
+  "execution_mode": "replay"
+}

@@ -1,0 +1,142 @@
+{
+  "event": {
+    "id": "demo-cache-plaintext",
+    "kind": "demo",
+    "title": "示範：快取服務未加密連線遭竊聽",
+    "date": "2026-11-01",
+    "industry": "SaaS",
+    "attack_chain": [
+      "攻擊者已在內網",
+      "竊聽未加密的快取連線取得 session"
+    ],
+    "attck": [
+      "T1040"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "2026-11-01.1",
+    "controls": [
+      "C-CACHE-TLS"
+    ],
+    "confidence": "confirmed",
+    "sources": [
+      {
+        "url": null,
+        "title": "虛構示範事件，非真實報導",
+        "quote": null,
+        "published": null,
+        "fetch_status": "skipped",
+        "verified": false,
+        "verified_at": null,
+        "content_hash": null,
+        "verification_basis": "demo"
+      }
+    ],
+    "demo": true,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "沒有確定受影響的項目，但有 1 項需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "demo-cache-plaintext",
+      "asset_id": "cache-redis",
+      "basis": "control",
+      "our_state": "runtime.json: cache-redis tls=false",
+      "verdict": "need_check",
+      "risk_id": "cache-redis:C-CACHE-TLS",
+      "reason": "不符合 C-CACHE-TLS（快取服務連線須加密）",
+      "to_verify": [
+        "無法自動判斷內網是否已有攻擊者可竊聽快取連線；請檢查快取網段的異常連線與 session 使用紀錄"
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "cache-redis"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "攻擊者已在內網；竊聽未加密的快取連線取得 session",
+  "blocks": {
+    "1_summary": {
+      "title": "示範：快取服務未加密連線遭竊聽",
+      "date": "2026-11-01",
+      "industry": "SaaS",
+      "attack_chain": [
+        "攻擊者已在內網",
+        "竊聽未加密的快取連線取得 session"
+      ],
+      "attck": [
+        "T1040"
+      ],
+      "cves": [],
+      "confidence": "已確認",
+      "label": "示範",
+      "sources": [
+        {
+          "url": null,
+          "title": "虛構示範事件，非真實報導",
+          "quote": null,
+          "fetch_status": "skipped",
+          "verification_basis": "demo",
+          "verified_at": null
+        }
+      ],
+      "verification": {
+        "status": "skipped",
+        "issues": [],
+        "max_level": null
+      },
+      "summary": "攻擊者已在內網；竊聽未加密的快取連線取得 session",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "沒有確定受影響的項目，但有 1 項需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "cache-redis",
+          "our_state": "runtime.json: cache-redis tls=false",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "不符合 C-CACHE-TLS（快取服務連線須加密）",
+          "risk_id": "cache-redis:C-CACHE-TLS",
+          "level": "low",
+          "score": 2,
+          "breakdown": [
+            {
+              "factor": "基礎分：控制項不符",
+              "points": 1,
+              "reason": "controls.yaml base_points"
+            },
+            {
+              "factor": "資料敏感",
+              "points": 1,
+              "reason": "session"
+            }
+          ],
+          "app_impact": null,
+          "to_verify": [
+            "無法自動判斷內網是否已有攻擊者可竊聽快取連線；請檢查快取網段的異常連線與 session 使用紀錄"
+          ],
+          "observed_at": "2026-11-09T01:00:00Z"
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  }
+}

@@ -1,0 +1,3 @@
+# peer-incident：新增一則「同業寄信服務金鑰外洩」示範事件 → 指派檢查第三方金鑰
+intel_kinds: [archive, advisory]
+extra_event_dirs: [events]

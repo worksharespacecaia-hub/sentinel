@@ -1,0 +1,4 @@
+id,received_at,brand_id,channel,text
+c-9001,2026-11-08T23:10:00Z,brand-bloom,電話,自稱客服來電要求退款操作，對方說出訂單編號：SO-20261107-88231
+c-9002,2026-11-08T23:40:00Z,brand-hikari,LINE,收到簡訊連結，內容有我的訂單號碼:HK20261106A77
+c-9003,2026-11-09T00:20:00Z,brand-kumo,客服信箱,the caller knew my order no. KM-20261105-0042

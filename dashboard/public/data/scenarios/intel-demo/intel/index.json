@@ -1,0 +1,47 @@
+[
+  {
+    "id": "demo-cache-plaintext",
+    "kind": "demo",
+    "title": "示範：快取服務未加密連線遭竊聽",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
+    "demo": true
+  },
+  {
+    "id": "demo-clone-app-fraud",
+    "kind": "demo",
+    "title": "示範：冒用品牌的山寨 App 詐騙會員",
+    "affected_count": 1,
+    "max_level": "medium",
+    "status": "open",
+    "demo": true
+  },
+  {
+    "id": "demo-erp-rce",
+    "kind": "demo",
+    "title": "示範：某 ERP 系統重大漏洞",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "not_affected",
+    "demo": true
+  },
+  {
+    "id": "demo-firebase-public",
+    "kind": "demo",
+    "title": "示範：電商平台 Firebase 儲存空間公開，訂單匯出檔外洩",
+    "affected_count": 2,
+    "max_level": "high",
+    "status": "open",
+    "demo": true
+  },
+  {
+    "id": "demo-push-sdk-rce",
+    "kind": "demo",
+    "title": "示範：行動推播 SDK 遠端程式碼執行漏洞（虛構套件 @demo-vendor/push-sdk）",
+    "affected_count": 1,
+    "max_level": "high",
+    "status": "open",
+    "demo": true
+  }
+]

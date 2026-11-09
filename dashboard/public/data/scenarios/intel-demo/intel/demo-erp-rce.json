@@ -1,0 +1,119 @@
+{
+  "event": {
+    "id": "demo-erp-rce",
+    "kind": "demo",
+    "title": "示範：某 ERP 系統重大漏洞",
+    "date": "2026-11-04",
+    "industry": "製造",
+    "attack_chain": [
+      "未登入者對 ERP 管理介面送出特製請求",
+      "取得伺服器控制權"
+    ],
+    "attck": [
+      "T1190"
+    ],
+    "cves": [
+      "DEMO-2026-0003"
+    ],
+    "products": [
+      {
+        "name": "demo-erp-suite",
+        "ecosystem": "generic",
+        "affected": [
+          {
+            "introduced": "0",
+            "fixed": "9.0"
+          }
+        ],
+        "conditions": [],
+        "cvss": 9.8,
+        "known_exploited": false,
+        "impact": "remote_code_execution",
+        "confirmed": true
+      }
+    ],
+    "revision": "2026-11-04.1",
+    "controls": [],
+    "confidence": "confirmed",
+    "sources": [
+      {
+        "url": null,
+        "title": "虛構示範事件，非真實報導",
+        "quote": null,
+        "published": null,
+        "fetch_status": "skipped",
+        "verified": false,
+        "verified_at": null,
+        "content_hash": null,
+        "verification_basis": "demo"
+      }
+    ],
+    "demo": true,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "不受影響：技術棧中沒有 demo-erp-suite（資產清單完整且新鮮）。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [],
+  "solutions": [],
+  "notice": null,
+  "status": "not_affected",
+  "evaluated_asset_ids": [],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "未登入者對 ERP 管理介面送出特製請求；取得伺服器控制權",
+  "blocks": {
+    "1_summary": {
+      "title": "示範：某 ERP 系統重大漏洞",
+      "date": "2026-11-04",
+      "industry": "製造",
+      "attack_chain": [
+        "未登入者對 ERP 管理介面送出特製請求",
+        "取得伺服器控制權"
+      ],
+      "attck": [
+        "T1190"
+      ],
+      "cves": [
+        "DEMO-2026-0003"
+      ],
+      "confidence": "已確認",
+      "label": "示範",
+      "sources": [
+        {
+          "url": null,
+          "title": "虛構示範事件，非真實報導",
+          "quote": null,
+          "fetch_status": "skipped",
+          "verification_basis": "demo",
+          "verified_at": null
+        }
+      ],
+      "verification": {
+        "status": "skipped",
+        "issues": [],
+        "max_level": null
+      },
+      "summary": "未登入者對 ERP 管理介面送出特製請求；取得伺服器控制權",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "不受影響：技術棧中沒有 demo-erp-suite（資產清單完整且新鮮）。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": [
+        "技術棧中沒有 demo-erp-suite（資產清單完整且新鮮）"
+      ]
+    },
+    "7_status": {
+      "status": "not_affected",
+      "label": "不受影響"
+    }
+  }
+}

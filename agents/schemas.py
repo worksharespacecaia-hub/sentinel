@@ -102,6 +102,8 @@ class Risk(_Model):
     first_seen: str
     last_evaluated: str
     verification_evidence: list[str] = Field(default_factory=list)
+    explanation: str | None = None             # A2／A4 Subagent 的說明文字（不影響分數）
+    explanation_source: ResultSource | None = None
 
 
 class TraceEvent(_Model):
