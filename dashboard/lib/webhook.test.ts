@@ -28,7 +28,7 @@ test("body：超過 1 MB 立即中止", async () => {
 const payload = (over: Record<string, unknown> = {}, dep: Record<string, unknown> = {}) => ({
   action: "created", repository: { id: 4242, full_name: "demo/shopsaas-demo-platform" },
   deployment: { id: 99, environment: "production", creator: { login: "alice-dev" }, created_at: "2026-11-09T03:00:00Z",
-                ref: "main", sha: "8ae244637733e6f55917dc981b0b862e9e8bb18a", ...dep },
+                ref: "main", sha: "a0d8611612c2f2631a687271de528a0d7a806245", ...dep },
   ...over,
 });
 
