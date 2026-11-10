@@ -4,7 +4,8 @@ import { getReport, listSources, resolveSource, type Light } from "@/lib/data";
 import { computeSummary } from "@/lib/summary";
 import { openAlertsInfo } from "@/lib/alerts";
 import { deadlineText, fmtTime } from "@/lib/labels";
-import { groupDecisions, riskHeadline, riskTags, topRisks } from "@/lib/brief";
+import { groupDecisions, riskHeadline, riskTags, summaryFacts, topRisks } from "@/lib/brief";
+import SummaryText from "@/components/SummaryText";
 import { PAGES } from "@/lib/nav";
 import { SimNotice, SourceSwitcher, TrafficLight } from "@/components/ui";
 import ScoringNote from "@/components/ScoringNote";
@@ -23,8 +24,10 @@ export default async function Brief({ searchParams }: { searchParams: Promise<Re
   const light = source.simulated ? report.light : summary.light;
   const raised = !source.simulated && RANK[summary.light] > RANK[report.light];
   const unregistered = (report.coverage as Record<string, unknown>).unregistered_exposed;
+  const unregisteredIds = ((report.coverage as Record<string, unknown>).unregistered_exposed_ids as string[] | undefined) ?? [];
   const decisions = groupDecisions(report.decisions);
   const top = topRisks(report);
+  const facts = summaryFacts(report);
 
   return (
     <div className="brief">
@@ -35,20 +38,22 @@ export default async function Brief({ searchParams }: { searchParams: Promise<Re
         {raised && <ul className="muted">{summary.reasons.map((r, i) => <li key={i}>{r}</li>)}</ul>}
         {!source.simulated && summary.degraded.length > 0 && <p className="warn">資料不足：{summary.degraded.join("；")}</p>}
         {report.daily_intel_status === "failed" && <p className="warn">今日新聞情資未更新，外部事件只含已收錄的事件。</p>}
-        <ol className="brief-summary">{report.ceo_summary.map((s, i) => <li key={i}>{s}</li>)}</ol>
+        <ol className="brief-summary">{report.ceo_summary.map((s, i) => <li key={i}><SummaryText text={s} facts={facts} base={`${PAGES.report.href}${q}`} /></li>)}</ol>
+        <p className="muted">點底線數字可看是哪幾項。</p>
       </section>
 
       <section className="kpis" aria-label="三個重點數字">
-        <div className="panel kpi"><div className="num lv-high">{report.counts.high}</div><div>個高風險</div><div className="muted">24 小時內要處理</div></div>
+        <div className="panel kpi"><div className="num lv-high">{report.counts.high}</div><div>個高風險</div><div className="muted">24 小時內要處理｜<Link href={`${PAGES.report.href}${q}#fact-high`}>看是哪些 →</Link></div></div>
         <div className="panel kpi"><div className="num">{report.intel_summary.affected}<span className="of">／{report.intel_summary.checked}</span></div>
           <div>件外部事件與我們有關</div><div className="muted"><Link href={`${PAGES.report.href}${q}#events`}>看事件與來源 →</Link></div></div>
         <div className="panel kpi"><div className="num">{typeof unregistered === "number" ? unregistered : "—"}</div>
-          <div>個系統沒登記就對外開放</div><div className="muted">{typeof unregistered === "number" ? "看不到就管不到" : "無法計算"}</div></div>
+          <div>個系統沒登記就對外開放</div><div className="muted">{typeof unregistered === "number"
+            ? (unregisteredIds.length ? unregisteredIds.join("、") : "看不到就管不到") : "無法計算"}</div></div>
       </section>
 
       <section className="panel">
         <h2>今天要您決定的事</h2>
-        {decisions.length ? <ol className="brief-decisions">{decisions.map((d, i) => <li key={i}>{d}</li>)}</ol>
+        {decisions.length ? <ol className="brief-decisions">{decisions.map((d, i) => <li key={i}><SummaryText text={d} facts={facts} base={`${PAGES.report.href}${q}`} /></li>)}</ol>
           : <p>今天沒有需要您決定的事項。</p>}
       </section>
 
