@@ -3,6 +3,8 @@ import shutil
 
 from schemas import Report
 from tests.conftest import AS_OF, risk
+from tools.intel_match import match_event
+from tools.intel_report import build_report
 from tools.lights import compute_light
 from tools.loaders import FIXTURE_SCANNERS, FIXTURE_TARGET
 from tools.pipeline import EvalInput, evaluate
@@ -79,6 +81,25 @@ def test_missing_data_never_green_or_not_affected(tmp_path):
     demo = evaluate(EvalInput(target_root=root, as_of=AS_OF, scanners_dir=tmp_path / "no-scanners", intel_kinds=("demo",)))
     m = next(m for m in demo["matches"] if m["event"]["id"] == erp["id"])
     assert m["status"] != "not_affected"            # 清單不完整時不能判定不受影響
+
+
+def test_event_with_nothing_to_compare_is_not_not_affected(baseline):
+    """沒有產品、CVE、控制項的新聞事件：程式沒比對任何資產，清單再完整也不能判定不受影響。"""
+    ev = {"id": "live-shop-member-breach", "kind": "live", "title": "某電商會員中心遭攻擊", "date": "2026-11-09",
+          "revision": "1", "confidence": "confirmed", "sources": [], "products": [], "cves": [], "controls": [],
+          "proposed_controls": [{"title": "訂單查詢需有存取控制", "reason": "x"}]}
+    kw = dict(data=baseline["data"], g=baseline["graph"], control_results=baseline["controls"],
+              findings=baseline["findings"], coverage=baseline["recon"]["coverage"])
+    assert baseline["stack_complete"] is True
+    m = match_event(ev, **kw)
+    assert m["status"] == "need_check"
+    rep = build_report(m, {}, {})
+    assert rep["status"] == "need_check" and rep["conclusion"].startswith("無法自動判定") and "不受影響" not in rep["conclusion"]
+    assert "建議新增控制項：訂單查詢需有存取控制" in rep["blocks"]["4_unaffected_and_check"]["need_check"][0]["to_verify"]
+    # 控制項 ID 沒有檢查結果，同樣沒比對任何東西
+    assert match_event({**ev, "controls": ["C-NOT-CHECKED"]}, **kw)["status"] == "need_check"
+    # 對照：有產品、且完整清單確認沒有 → 才是不受影響
+    assert match_event({**ev, "products": [{"name": "some-erp", "ecosystem": "generic"}]}, **kw)["status"] == "not_affected"
 
 
 def test_previous_high_kept_until_complete_evidence(tmp_path, baseline):
