@@ -14,6 +14,7 @@ from tools.common import AGENTS_DIR, iso, read_json, write_json
 from tools.graph_query import GraphQuery
 from tools.pipeline import evaluate
 from tools.report_builder import assemble, write_outputs
+from tools.templates import summary_facts, unsourced_numbers
 from tools.trace import merge_traces
 
 UPSTREAM = ["orchestrator", "a0", "a1", "a2", "a3", "a4"]
@@ -58,7 +59,13 @@ def _llm_texts(ctx: RunCtx, res: dict, built_template: dict) -> dict:
         llm["solutions"][s["risk_id"]] = {**s, "source": sol["source"], "suggested_owner": s.get("suggested_owner")}
     ceo = (results.get("ceo") or {}).get("output")
     if ceo:
-        llm["ceo_summary"], llm["decisions"] = ceo["ceo_summary"], ceo.get("decisions") or []
+        # 摘要裡的數字必須都能對應程式結果（網站會把數字連到來源）；對不上就用程式範本
+        facts = summary_facts(rep["risks"], rep["intel_summary"])
+        bad = unsourced_numbers([*ceo["ceo_summary"], *(ceo.get("decisions") or [])], facts)
+        if bad:
+            tr.emit("skip", f"CEO 摘要的數字 {sorted(set(bad))} 對不上程式結果，改用程式範本", subagent="ceo-briefer", source="template")
+        else:
+            llm["ceo_summary"], llm["decisions"] = ceo["ceo_summary"], ceo.get("decisions") or []
     for r in affected:
         out = (results.get(f"intel:{r['event']['id']}") or {})
         items = out.get("output") or []

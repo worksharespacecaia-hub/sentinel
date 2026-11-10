@@ -44,3 +44,18 @@ def test_decisions_merge_shadow_it_after_takedown(baseline):
 def test_single_shadow_it_keeps_original_sentence():
     assert decisions([_risk(category="shadow_it", asset_id="nas-office-01")]) == ["nas-office-01 要納管還是除役"]
     assert decisions([_risk(category="shadow_it", status="fixed")]) == []
+
+
+def test_summary_facts_and_unsourced_numbers(baseline):
+    from tools.templates import summary_facts, unsourced_numbers
+    nodes = dict(baseline["graph"].nodes(data=True))
+    intel = {"checked": 11, "affected": 7, "real_checked": 10, "real_affected": 6}
+    facts = summary_facts(baseline["risks"], intel)
+    assert (facts["high"], facts["medium"], facts["chained"], facts["eol"], facts["shadow_it"]) == (14, 18, 5, 1, 4)
+    template = ceo_summary(baseline["light"], baseline["risks"], intel, nodes) + decisions(baseline["risks"])
+    assert unsourced_numbers(template, facts) == []                     # 程式範本的數字一定有來源
+    claude = ["今天是紅燈：14 個高風險、18 個中風險、7 個低風險。",
+              "最需要處理的是：有 5 個問題可以被串成一條入侵路徑；另有 1 個對外系統已不再有官方更新。",
+              "今天檢查了 11 件外部資安事件，其中 7 件與我們有關，24 小時內要處理。"]
+    assert unsourced_numbers(claude, facts) == []
+    assert unsourced_numbers(["今天有 15 個高風險。"], facts) == [15]   # 自行改數字 → 對不上

@@ -1,6 +1,8 @@
 """程式範本：LLM 失敗、超出預算或 replay 未錄製時的降級文字。只建議，不執行任何修改。"""
 from __future__ import annotations
 
+import re
+
 OWNER_BY_ASSET_TYPE = {"internal_tool": "devops-team", "datastore": "dba-team", "device": "it-team", "app": "mobile-team",
                        "token": "security-team", "saas": "it-team", "api": "platform-team"}
 
@@ -136,6 +138,30 @@ def decisions(risks: list[dict]) -> list[str]:
     elif shadow:
         out.append(f"{len(shadow)} 個未登記的系統要納管還是除役：{'、'.join(shadow)}")
     return out[:5]
+
+
+def summary_facts(risks: list[dict], intel: dict) -> dict:
+    """CEO 摘要與決策可以出現的數字（全部由程式計算）；網站 lib/brief.ts 的 summaryFacts 用同一套定義帶出來源。"""
+    live = [r for r in risks if r["status"] != "fixed"]
+    highs = [r for r in live if r["level"] == "high"]
+    return {
+        "high": len(highs), "medium": sum(1 for r in live if r["level"] == "medium"), "low": sum(1 for r in live if r["level"] == "low"),
+        "chained": sum(1 for r in highs if len(r.get("attack_path") or []) > 1),
+        "eol": sum(1 for r in highs if _has_factor(r, "已停止支援")),
+        "shadow_it": len({r["asset_id"] for r in highs if r["category"] == "shadow_it"}),
+        "checked": int(intel.get("checked", 0)), "affected": int(intel.get("affected", 0)),
+        "real_checked": int(intel.get("real_checked", intel.get("checked", 0))),
+        "real_affected": int(intel.get("real_affected", intel.get("affected", 0))),
+    }
+
+
+_COUNT_RE = re.compile(r"(\d+)\s*(?:個|件|項|則|筆)")
+
+
+def unsourced_numbers(texts: list[str], facts: dict) -> list[int]:
+    """文字中「N 個／件／項」的 N 必須是程式算出的數字之一；回傳找不到來源的數字（LLM 不能自行增減數字）。"""
+    allowed = set(facts.values())
+    return [int(n) for t in texts for n in _COUNT_RE.findall(t) if int(n) not in allowed]
 
 
 def notice_draft(event_title: str, brands: list[str] | None = None) -> str:

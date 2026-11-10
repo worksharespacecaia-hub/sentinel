@@ -65,3 +65,66 @@ export function suggestedDeadline(r: Pick<Risk, "first_seen" | "deadline_hours">
   const t = Date.parse(r.first_seen);
   return Number.isNaN(t) ? null : new Date(t + r.deadline_hours * 3600 * 1000);
 }
+
+// ---------------------------------------------------------------- 摘要數字的來源
+// 與 Python tools/templates.py 的 summary_facts 同一套定義：CEO 摘要與決策裡的數字都要能點出是哪幾項。
+
+export type FactKey = "high" | "medium" | "low" | "chained" | "eol" | "shadow_it" | "checked" | "affected" | "real_checked" | "real_affected";
+export interface Fact { key: FactKey; count: number; label: string; risks: Risk[]; events: Report["events"] }
+
+const REAL_KINDS = new Set(["archive", "live"]);
+
+export function summaryFacts(report: Pick<Report, "risks" | "events" | "intel_summary">): Record<FactKey, Fact> {
+  const live = report.risks.filter((r) => r.status !== "fixed");
+  const highs = live.filter((r) => r.level === "high");
+  const shadow = highs.filter((r) => r.category === "shadow_it");
+  const real = report.events.filter((e) => REAL_KINDS.has(e.kind));
+  const i = report.intel_summary;
+  const f = (key: FactKey, label: string, count: number, risks: Risk[] = [], events: Report["events"] = []): Fact =>
+    ({ key, label, count, risks, events });
+  return {
+    high: f("high", "高風險", highs.length, highs),
+    medium: f("medium", "中風險", live.filter((r) => r.level === "medium").length, live.filter((r) => r.level === "medium")),
+    low: f("low", "低風險", live.filter((r) => r.level === "low").length, live.filter((r) => r.level === "low")),
+    chained: f("chained", "可串成入侵路徑的高風險", highs.filter((r) => (r.attack_path?.length ?? 0) > 1).length,
+      highs.filter((r) => (r.attack_path?.length ?? 0) > 1)),
+    eol: f("eol", "已停止支援、沒有修補版本的對外系統", highs.filter((r) => r.breakdown.some((b) => b.factor === "已停止支援")).length,
+      highs.filter((r) => r.breakdown.some((b) => b.factor === "已停止支援"))),
+    shadow_it: f("shadow_it", "未登記的系統", new Set(shadow.map((r) => r.asset_id)).size, shadow),
+    checked: f("checked", "今天檢查的外部資安事件", i.checked, [], report.events),
+    affected: f("affected", "與我們有關的外部事件", i.affected, [], report.events.filter((e) => e.affected_count > 0)),
+    real_checked: f("real_checked", "檢查的真實事件", i.real_checked ?? i.checked, [], real),
+    real_affected: f("real_affected", "與我們有關的真實事件", i.real_affected ?? i.affected, [], real.filter((e) => e.affected_count > 0)),
+  };
+}
+
+// 數字後面（同一句內）出現這些字，就對應到該項數字；同一個數字可能對應多項（例如 7 個低風險、7 件有關）
+const FACT_WORDS: [FactKey, RegExp][] = [
+  ["high", /高風險/], ["medium", /中風險/], ["low", /低風險/], ["chained", /入侵路徑|串/],
+  ["eol", /停止支援|官方更新|修補/], ["shadow_it", /未登記|納管|除役/],
+  ["affected", /與我們有關|有關|命中|受影響/], ["real_affected", /真實.*有關/],
+  ["checked", /外部資安事件|外部事件|資安事件|檢查/], ["real_checked", /真實事件/],
+];
+
+export type SummaryPart = string | { text: string; key: FactKey | null };
+
+/** 把摘要切成文字與數字片段；數字對應到程式算出的事實（key），對不上時 key 為 null（畫面標示警告）。 */
+export function linkSummary(text: string, facts: Record<FactKey, Fact>): SummaryPart[] {
+  const out: SummaryPart[] = [];
+  const re = /(\d+)\s*(個|件|項|則|筆)/g;
+  let last = 0;
+  for (let m = re.exec(text); m; m = re.exec(text)) {
+    const n = Number(m[1]);
+    const after = text.slice(m.index + m[0].length).split(/[，。；、,;]/)[0];
+    const before = text.slice(0, m.index).split(/[，。；、,;]/).pop() ?? "";        // 只看同一個短句
+    const candidates = (Object.values(facts) as Fact[]).filter((f) => f.count === n).map((f) => f.key);
+    const byWord = FACT_WORDS.find(([k, w]) => candidates.includes(k) && w.test(after))?.[0]
+      ?? FACT_WORDS.find(([k, w]) => candidates.includes(k) && w.test(before))?.[0];
+    const key = byWord ?? (candidates.length ? candidates[0] : null);
+    if (m.index > last) out.push(text.slice(last, m.index));
+    out.push({ text: m[0], key });
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) out.push(text.slice(last));
+  return out;
+}

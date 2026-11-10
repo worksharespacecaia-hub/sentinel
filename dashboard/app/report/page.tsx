@@ -12,6 +12,10 @@ import PrintButton from "@/components/PrintButton";
 import ScoringNote from "@/components/ScoringNote";
 import SendToLine from "@/components/SendToLine";
 import TrackForm from "@/components/TrackForm";
+import SummaryText from "@/components/SummaryText";
+import FactSources from "@/components/FactSources";
+import OpenOnHash from "@/components/OpenOnHash";
+import { summaryFacts } from "@/lib/brief";
 
 export const dynamic = "force-dynamic";
 
@@ -33,6 +37,8 @@ export default async function ReportPage({ searchParams }: SP) {
   if (!loaded) return <><h1>{PAGES.report.label}</h1><div className="panel">尚未有評估結果。</div></>;
   const { report, action, trackingDegraded } = loaded;
   const c = action.counts;
+  const facts = summaryFacts(report);
+  const q = source.simulated ? `?source=${encodeURIComponent(source.key)}` : "";
 
   return (
     <div className="report">
@@ -50,12 +56,13 @@ export default async function ReportPage({ searchParams }: SP) {
 
       <section className="panel report-section">
         <TrafficLight light={action.light} />
-        <ol className="brief-summary">{action.summary.map((s, i) => <li key={i}>{s}</li>)}</ol>
+        <ol className="brief-summary">{action.summary.map((s, i) => <li key={i}><SummaryText text={s} facts={facts} base="" /></li>)}</ol>
+        <p className="muted no-print">點底線數字可看是哪幾項（見下方「數字從哪來」）。</p>
       </section>
 
       <section className="panel report-section">
         <h2>今天要決定的事</h2>
-        {action.decisions.length ? <ol>{action.decisions.map((d, i) => <li key={i}>{d}</li>)}</ol> : <p>今天沒有需要決定的事項。</p>}
+        {action.decisions.length ? <ol>{action.decisions.map((d, i) => <li key={i}><SummaryText text={d} facts={facts} base="" /></li>)}</ol> : <p>今天沒有需要決定的事項。</p>}
       </section>
 
       <section className="panel report-section">
@@ -130,6 +137,9 @@ export default async function ReportPage({ searchParams }: SP) {
           </ol>
         )}
       </section>
+
+      <FactSources facts={facts} q={q} actionIds={new Set(action.items.map((i) => i.id))} />
+      <OpenOnHash />
 
       {action.notices.length > 0 && (
         <section className="panel report-section">
