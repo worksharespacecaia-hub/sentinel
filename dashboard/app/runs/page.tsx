@@ -29,7 +29,12 @@ export default async function Runs({ searchParams }: { searchParams: Promise<Rec
       <SimNotice source={source} />
       <p className="muted">執行 {report?.run_id}（{fmtTime(report?.generated_at)}，模式 {report?.execution_mode}）
         {runUrl && <> ｜ <a href={runUrl} target="_blank" rel="noreferrer">GitHub Actions 執行頁</a></>}</p>
-      {replayed && <div className="panel sim">此次為{report?.execution_mode === "replay" ? "重播" : "範本"}模式：Subagent 結果來自錄製或程式範本，並未真的呼叫 Subagent。</div>}
+      {replayed && <div className="panel sim">
+        A0～A5 為{report?.execution_mode === "replay" ? "重播" : "範本"}模式：分析 Agent 的 Subagent 結果來自錄製或程式範本，沒有呼叫 Claude API（不花 API 費用）；
+        版本比對、評分、攻擊鏈與燈號仍由程式實際計算。
+        {report?.daily_intel_status === "ok" && <> 每日情資則由訂閱方案實際搜尋今日新聞（狀態：正常）。</>}
+        {report?.daily_intel_status === "failed" && <> 每日情資本次未成功（今日新聞情資未更新）。</>}
+      </div>}
       <div className="panel">
         <ul className="tree">
           {ORDER.filter((a) => byAgent.has(a)).map((agent) => {

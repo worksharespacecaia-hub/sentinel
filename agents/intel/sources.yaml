@@ -14,4 +14,15 @@ domains:
   - {domain: cyberq.tw, tier: media}
   - {domain: bnext.com.tw, tier: media}
   - {domain: ithome.com.tw, tier: media}
+  - {domain: twcert.org.tw, tier: advisory}         # 台灣電腦網路危機處理暨協調中心
+  - {domain: nics.nat.gov.tw, tier: advisory}       # 國家資通安全研究院
+  - {domain: cna.com.tw, tier: media}               # 中央社
+  - {domain: focustaiwan.tw, tier: media}           # 中央社英文
+  - {domain: taipeitimes.com, tier: media}
+  - {domain: inside.com.tw, tier: media}
+  - {domain: informationsecurity.com.tw, tier: media}   # 資安人
+  - {domain: bleepingcomputer.com, tier: media}
+  - {domain: thehackernews.com, tier: media}
+  - {domain: securityweek.com, tier: media}
+  - {domain: therecord.media, tier: media}
   - {domain: heatalk.com, tier: community}

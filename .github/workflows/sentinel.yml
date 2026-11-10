@@ -226,7 +226,12 @@ jobs:
         env:
           EXEC_FILE: ${{ steps.claude.outputs.execution_file || format('{0}/claude-execution-output.json', runner.temp) }}
         run: |
-          if [[ -s out/intel-daily.json ]]; then echo "已寫出 out/intel-daily.json（$(wc -c < out/intel-daily.json) bytes）"; exit 0; fi
+          if [[ -s out/intel-daily.json ]]; then
+            events="$(python3 -c 'import json; d = json.load(open("out/intel-daily.json", encoding="utf-8")); print(len(d.get("events", [])))' 2>/dev/null || echo "無法解析")"
+            echo "已寫出 out/intel-daily.json（$(wc -c < out/intel-daily.json) bytes，事件 ${events} 件）"
+            python3 scripts/claude-error-summary.py "$EXEC_FILE"     # 每日統計：工具呼叫次數、被擋的網站（不含對話內容）
+            exit 0
+          fi
           echo "::error::Claude 執行結束但沒有寫出 out/intel-daily.json"
           find out -maxdepth 1 -type f -printf '%f %s bytes\n' | head -20
           python3 scripts/claude-error-summary.py --with-result "$EXEC_FILE"
