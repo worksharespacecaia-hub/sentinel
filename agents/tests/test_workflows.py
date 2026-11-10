@@ -167,3 +167,16 @@ def test_target_read_token_never_reaches_agent_steps(sentinel):
             # 只用於 checkout Repo ① 與讀取 Deployments 的腳本，不進入執行 Agent／LLM 的步驟
             allowed = str(step.get("uses", "")).startswith("actions/checkout") or "fetch-deployments.py" in str(step.get("run", ""))
             assert allowed, (name, body)
+
+
+def test_daily_intel_diagnostics(sentinel):
+    _, d = sentinel
+    steps = d["jobs"]["daily-intel"]["steps"]
+    idx = {s.get("id") or s.get("name") or s.get("uses"): i for i, s in enumerate(steps)}
+    check = steps[idx["檢查訂閱 Token 格式（不印出 Token）"]]
+    assert check["env"] == {"TOKEN": "${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}"} and "echo \"$TOKEN\"" not in check["run"]
+    assert idx["檢查訂閱 Token 格式（不印出 Token）"] < idx["claude"]
+    diag = next(s for s in steps if "claude-error-summary.py" in str(s.get("run", "")))
+    assert diag["if"] == "${{ failure() && steps.claude.conclusion == 'failure' }}"
+    assert steps.index(diag) == idx["claude"] + 1
+    assert "secrets." not in yaml.safe_dump(diag)             # 診斷步驟拿不到任何 Secret

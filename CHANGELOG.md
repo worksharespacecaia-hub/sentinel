@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.1 — 2026-11-10（hotfix：每日情資失敗診斷）
+
+- 首次啟用的 daily-intel 在第一個 API 請求就結束（0 回合用量），但 claude-code-action 隱藏了錯誤訊息，無法判斷原因
+- 執行前檢查 `CLAUDE_CODE_OAUTH_TOKEN` 格式：未設定或含空白／換行（複製時被折行）就直接失敗並說明；不印出 Token
+- 失敗時以 `scripts/claude-error-summary.py` 只列出模型、驗證來源、錯誤代碼與錯誤訊息（截斷、遮蔽疑似金鑰），不列對話內容（公開 Repo 的 log 是公開的）
+- 驗證：0.3.0 後的 daily 完整度為 complete，GitHub Deployments 由 API 讀取成功（不再有 `github/deployments` 資料問題）
+
 ## 0.3.0 — 2026-11-10（每日情資串接訂閱方案、讀取 GitHub Deployments）
 
 - **每日情資**：`daily-intel` 不再要求 live 模式，每日排程與手動 `daily` 都會執行（A1～A5 維持 replay，不花 API 費用）。原本綁 live 是實作時多加、規格沒有的條件，導致從未執行

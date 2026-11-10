@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "run_id": "42769337664",
+  "job": "scanners-gitleaks",
+  "scope": "scanner",
+  "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
+  "observed_at": "2026-11-10T06:34:48Z",
+  "valid_until": "2026-11-11T06:34:48Z",
+  "tool_version": {
+    "gitleaks": null
+  },
+  "database_revision": {
+    "gitleaks": null
+  },
+  "files": {
+    "gitleaks.json": "2b4d7bcc0d72dbb7b3feb8c4fea9d9744e65aa370ef8fe4d3ccb2be480d39b04"
+  },
+  "status": "ok"
+}
