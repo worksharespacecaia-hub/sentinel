@@ -139,7 +139,7 @@ def test_daily_intel_least_privilege_and_trusted_upload(sentinel):
     assert check < upload and "if" not in job["steps"][upload]   # 檢查失敗就不上傳，A1 不會用到可疑結果
     wrote = names.index("確認已寫出 out/intel-daily.json")
     assert names.index("anthropics/claude-code-action@v1") < wrote < check   # Claude 沒寫出檔案時 Job 明確失敗，並列出被拒絕的工具
-    assert "claude-error-summary.py" in job["steps"][wrote]["run"] and "exit 1" in job["steps"][wrote]["run"]
+    assert "claude-error-summary.py --with-result" in job["steps"][wrote]["run"] and "exit 1" in job["steps"][wrote]["run"]
 
 
 def test_deployments_fetched_once_and_shared(sentinel):
