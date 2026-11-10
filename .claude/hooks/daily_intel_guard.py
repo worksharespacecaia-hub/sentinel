@@ -3,7 +3,7 @@
 
 - Read：只允許 out/ 與 .claude/（Skill、Subagent 定義）；拒絕 ..、.git、.env
 - Write：只允許 out/intel-daily.json
-- Agent：只允許 4 個每日情資 Subagent
+- Agent：只允許 4 個每日情資 Subagent，且必須在前景執行（無人值守的單次執行，主 Agent 結束回合時背景 Subagent 會被中斷）
 - WebFetch：只允許 HTTPS 與受信任來源網域（agents/intel/sources.yaml）；WebSearch 允許
 - Skill：只允許 daily-intel；其他工具一律拒絕
 """
@@ -53,7 +53,11 @@ def main():
         target = (ROOT / inp.get("file_path", "")).resolve() if inp.get("file_path") else None
         return allow() if target == ROOT / "out" / "intel-daily.json" else deny("只能寫 out/intel-daily.json")
     if tool in ("Agent", "Task"):
-        return allow() if inp.get("subagent_type") in SUBAGENTS else deny("只允許每日情資 Subagent")
+        if inp.get("subagent_type") not in SUBAGENTS:
+            deny("只允許每日情資 Subagent")
+        if inp.get("run_in_background"):
+            deny("Subagent 必須在前景執行（不要設定 run_in_background）：這是無人值守的單次執行，結束回合流程就結束，請直接等它回報")
+        return allow()
     if tool == "Skill":
         return allow() if inp.get("skill") == "daily-intel" else deny("只允許 daily-intel Skill")
     if tool == "WebSearch":

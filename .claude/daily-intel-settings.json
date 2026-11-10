@@ -1,7 +1,18 @@
 {
+  "env": {
+    "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS": "1"
+  },
   "hooks": {
     "PreToolUse": [
-      {"matcher": "*", "hooks": [{"type": "command", "command": "python3 .claude/hooks/daily_intel_guard.py"}]}
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/daily_intel_guard.py"
+          }
+        ]
+      }
     ]
   }
 }
