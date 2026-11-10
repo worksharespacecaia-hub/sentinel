@@ -175,6 +175,18 @@ def match_event(ev: dict, *, data: TargetData, g: nx.MultiDiGraph, control_resul
                 imp["verdict"] = "need_check"
                 imp["to_verify"] = list(ev["requires_manual_check"])
 
+    # 沒有產品、也沒有任何有檢查結果的控制項：程式其實沒比對任何資產，不能當成「不受影響」
+    has_criteria = (bool(ev.get("products")) or bool(ev.get("match_finding_categories"))
+                    or any(cid in control_results for cid in ev.get("controls", [])))
+    if not has_criteria:
+        proposed = [pc.get("title") or pc.get("id") for pc in ev.get("proposed_controls", []) if isinstance(pc, dict)]
+        impacts.append({"event_id": ev["id"], "asset_id": "*", "basis": "control",
+                        "our_state": "事件沒有可比對的產品、版本或控制項", "verdict": "need_check", "risk_id": None,
+                        "to_verify": ["人工判斷事件的攻擊手法是否適用於我們的系統",
+                                      "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+                                      *[f"建議新增控制項：{t}" for t in proposed if t]],
+                        "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產"})
+
     affected = [i for i in impacts if i["verdict"] == "affected"]
     need = [i for i in impacts if i["verdict"] == "need_check"]
     if affected:

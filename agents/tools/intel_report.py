@@ -38,6 +38,8 @@ def build_report(match: dict, risks_by_id: dict[str, dict], graph_nodes: dict, *
     if affected:
         top = rows[0]
         conclusion = f"{len(affected)} 項受影響，最高風險為{LEVEL_ZH.get(max_level, '未評')}。{top['asset_id']}：{top['our_state']}。"
+    elif need and all(i["asset_id"] == "*" for i in need):
+        conclusion = f"無法自動判定：{need[0]['reason']}，需要人工確認。"
     elif need:
         conclusion = f"沒有確定受影響的項目，但有 {len(need)} 項需要人工確認。"
     else:
