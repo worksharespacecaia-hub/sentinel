@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.0 — 2026-11-10（每日情資信任來源擴充）
+
+- 0.4.2 後每日情資全流程跑通（狀態正常、報告完整、無資料問題），但新事件 0 件：信任網站清單只有 15 個網域，多數台灣新聞網站抓不到原文，依「每項判斷必附原文引用」的規則不列入
+- 新增 11 個信任網域（使用者選定）：TWCERT/CC、國家資通安全研究院（advisory）；中央社、Focus Taiwan、Taipei Times、INSIDE、資安人、BleepingComputer、The Hacker News、SecurityWeek、The Record（media，需兩家一致才確認）
+- Job 中 Claude 只能讀 `.claude/`，讀不到 `agents/intel/sources.yaml`：可抓取網域改寫進 Skill 參考檔，測試檢查 hook 解析結果、YAML 與參考檔三者一致
+- news-scout、advisory-scout 可讀參考檔；每個事件至少要有一個清單內來源，清單外網站的新聞改找清單內網站的報導
+- 每次執行在 log 印出事件數、各工具呼叫次數與被擋的網站（調整清單的依據），不含對話內容
+- 「Agent 執行」頁的重播說明分開說明：A0～A5 是重播（不花 API 費用），每日情資由訂閱方案實際搜尋
+
 ## 0.4.2 — 2026-11-10（hotfix：每日情資的 Subagent 在背景被中斷）
 
 - 0.4.1 的診斷找到原因：Claude 把 news-scout、advisory-scout 放到背景執行後結束回合；GitHub 上是無人值守的單次執行，主 Agent 結束回合就整個結束，背景 Subagent 被中斷，沒有寫出結果
