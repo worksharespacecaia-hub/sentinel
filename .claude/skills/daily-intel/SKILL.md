@@ -8,6 +8,11 @@ description: 每日情資流程：讀技術棧摘要，派發 4 個 Subagent，�
 2. 派發 Subagent：`news-scout`、`advisory-scout`、`incident-analyst`、`stack-impact-analyst`。
 3. 只寫出 `out/intel-daily.json`，不做其他寫入。
 
+這是無人值守的單次執行：結束回合就代表整個流程結束，沒有人會再回來。
+- Subagent 一律在前景執行（不要使用背景執行）；彼此獨立的 Subagent 可以在同一則訊息中同時派發
+- 先等 `news-scout`、`advisory-scout` 回報，再把結果交給 `incident-analyst`、`stack-impact-analyst`
+- 寫出 `out/intel-daily.json` 之後才能結束；任何 Subagent 失敗時，用已取得的結果寫出，沒有結果就寫空陣列
+
 規則：
 - 只搜尋近 48 小時的公開資訊；來源可信度見 `references/sources.md`。
 - 每項判斷必附來源網址與原文語言的逐字引用；只寫來源中出現的內容，不推測。

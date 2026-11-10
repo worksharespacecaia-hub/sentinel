@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.2 — 2026-11-10（hotfix：每日情資的 Subagent 在背景被中斷）
+
+- 0.4.1 的診斷找到原因：Claude 把 news-scout、advisory-scout 放到背景執行後結束回合；GitHub 上是無人值守的單次執行，主 Agent 結束回合就整個結束，背景 Subagent 被中斷，沒有寫出結果
+- 三層防護，Subagent 一律在前景執行：daily-intel 設定 `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1`（Agent 工具不再提供背景參數）；hook 拒絕 `run_in_background`；Skill 寫明等全部回報、寫出結果後才結束
+- 本機以相同參數驗證：明確要求背景派發時，Agent 工具沒有背景參數，改為前景執行並等到回覆
+- 新增 hook 測試（允許與拒絕的工具、背景 Subagent、設定檔）
+
 ## 0.4.1 — 2026-11-10（hotfix：每日情資診斷補完整）
 
 - 0.3.2 後 daily-intel 不再被權限擋下，但 Claude 7 個回合、9 秒就結束且沒有寫出結果；當時的診斷只列權限拒絕，看不出原因
