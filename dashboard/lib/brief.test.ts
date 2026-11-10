@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import type { Risk } from "./data";
-import { groupDecisions, openRisks, riskHeadline, riskTags, suggestedDeadline, topRisks } from "./brief.ts";
+import { groupDecisions, linkSummary, openRisks, riskHeadline, riskTags, suggestedDeadline, summaryFacts, topRisks } from "./brief.ts";
 
 const risk = (over: Partial<Risk>): Risk => ({
   id: "x", asset_id: "asset", title: "標題", category: "config", level: "high", score: 7, raw_score: 7, score_level: "high",
@@ -42,4 +42,19 @@ test("riskTags 只依已計算的因子與攻擊路徑；suggestedDeadline＝第
   assert.deepEqual(riskTags(risk({})), []);
   assert.equal(suggestedDeadline(r)?.toISOString(), "2026-11-10T01:00:00.000Z");
   assert.equal(suggestedDeadline(risk({ first_seen: "bad" })), null);
+});
+
+test("summaryFacts／linkSummary：摘要數字對應到程式結果；同值數字依後面的字區分；對不上的數字標 null", () => {
+  const risks = [risk({ id: "a", attack_path: ["internet", "x", "db"] }), risk({ id: "b", category: "shadow_it", asset_id: "nas" }),
+    risk({ id: "c", level: "low", score: 2 }), risk({ id: "d", level: "low", score: 1 })];
+  const events = [{ id: "e1", kind: "archive", title: "一", affected_count: 1, max_level: "high" as const, status: "open", demo: false },
+                  { id: "e2", kind: "live", title: "二", affected_count: 0, max_level: null, status: "not_affected", demo: false }];
+  const facts = summaryFacts({ risks, events, intel_summary: { checked: 2, affected: 1, by_kind: {} } });
+  assert.equal(facts.high.count, 2);
+  assert.deepEqual(facts.chained.risks.map((r) => r.id), ["a"]);
+  assert.equal(facts.shadow_it.count, 1);
+  const parts = linkSummary("今天 2 個高風險、2 個低風險；檢查 2 件外部資安事件，其中 1 件與我們有關，另有 9 個問題。", facts);
+  const keys = parts.filter((p) => typeof p !== "string").map((p) => (p as { key: string | null }).key);
+  assert.deepEqual(keys, ["high", "low", "checked", "affected", null]);
+  assert.equal(parts.map((p) => (typeof p === "string" ? p : p.text)).join(""), "今天 2 個高風險、2 個低風險；檢查 2 件外部資安事件，其中 1 件與我們有關，另有 9 個問題。");
 });

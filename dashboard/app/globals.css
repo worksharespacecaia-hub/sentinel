@@ -195,3 +195,13 @@ a.button.primary { background: var(--accent); color: #fff; }
   .event-item { break-inside: avoid; }
   a.src-link::after { content: " " attr(href); font-size: 9pt; color: #444; word-break: break-all; }
 }
+
+/* 摘要數字的來源 */
+.fact-link { color: inherit; font-weight: 700; text-decoration: underline; text-decoration-style: dotted; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.fact-link:hover, .fact-link:focus-visible { color: var(--accent); }
+.fact-bad { color: var(--yellow); font-weight: 700; }
+.fact { border-top: 1px solid var(--line); padding: 6px 0; scroll-margin-top: 16px; }
+.fact summary { cursor: pointer; }
+.fact ul { margin: 6px 0; padding-left: 1.2em; font-size: 15px; }
+.fact:target, .fact[open] { background: color-mix(in srgb, var(--accent) 6%, transparent); }
+@media print { .fact-link { text-decoration: none; } }
