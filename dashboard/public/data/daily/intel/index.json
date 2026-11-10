@@ -61,5 +61,41 @@
     "max_level": "high",
     "status": "open",
     "demo": false
+  },
+  {
+    "id": "live-cyberbiz-ecommerce-outsourced-2026-11",
+    "kind": "live",
+    "title": "順立智慧（Cyberbiz）委外電商平台資料庫遭異常存取，多家品牌商城受波及",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "not_affected",
+    "demo": false
+  },
+  {
+    "id": "live-eztravel-member-center-2026-11",
+    "kind": "live",
+    "title": "易遊網會員中心遭攻擊，逾 69 萬人歷史訂單聯絡資料受影響",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "not_affected",
+    "demo": false
+  },
+  {
+    "id": "live-neticrm-nonprofit-donor-2026-11",
+    "kind": "live",
+    "title": "netiCRM 服務商遭駭，逾 20 個非營利組織捐款人個資恐外洩",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "not_affected",
+    "demo": false
+  },
+  {
+    "id": "live-sega-arara-mail-service-2026-11",
+    "kind": "live",
+    "title": "日本郵件發送服務商 Arara 遭未授權存取，SEGA 外洩近 220 萬筆資料",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "not_affected",
+    "demo": false
   }
 ]

@@ -1,0 +1,153 @@
+{
+  "event": {
+    "id": "live-cyberbiz-ecommerce-outsourced-2026-11",
+    "kind": "live",
+    "title": "順立智慧（Cyberbiz）委外電商平台資料庫遭異常存取，多家品牌商城受波及",
+    "date": "2026-11-10",
+    "industry": "電商",
+    "attack_chain": [
+      "電商平台委外服務廠商順立智慧的資料庫遭未經授權的異常存取",
+      "涉及下游商城的訂單及消費者個人資料",
+      "順立智慧通知下游商家，各商家啟動應變並清查受影響範圍"
+    ],
+    "attck": [],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180358",
+        "title": "台灣櫻花購物商城的委外廠商資料庫遭異常存取，訂單及消費者個資恐受影響",
+        "quote": "台灣櫻花購物商城的委外廠商資料庫遭異常存取，訂單及消費者個資恐受影響",
+        "published": "2026-11-10",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-10T12:22:28Z",
+        "content_hash": "sha256:04083af62958090ec754c51920d4510dc13694868c22062507d518c8f9f10573",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://www.ithome.com.tw/news/180352",
+        "title": "曜亞子公司線上購物平臺遭委外廠商資安事件波及，訂單資料遭異常存取",
+        "quote": "曜亞子公司線上購物平臺遭委外廠商資安事件波及，訂單資料遭異常存取",
+        "published": "2026-11-10",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-10T12:22:28Z",
+        "content_hash": "sha256:b100d015b8b0ff9bafc84d6343f50dcbaf203ce7069a38b73bf3f4f5b67396ff",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://www.ithome.com.tw/news/180356",
+        "title": "美吾華購物網站疑似個資外洩，茅頭指向委外的電商服務系統",
+        "quote": "美吾華購物網站疑似個資外洩，茅頭指向委外的電商服務系統",
+        "published": "2026-11-10",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-10T12:22:28Z",
+        "content_hash": "sha256:b29e5b392bf3958bec94f4e41d2a3e73a8a45440b4023477030aa1efc5a301c8",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://www.ithome.com.tw/news/180351",
+        "title": "崇越子公司安永生活電商委外服務商發生異常資料存取，清查受影響範圍",
+        "quote": "崇越子公司安永生活電商委外服務商發生異常資料存取，清查受影響範圍",
+        "published": "2026-11-10",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-10T12:22:28Z",
+        "content_hash": "sha256:5a69da40d32bffc16a26287ce40881d0c8c1779993c50b58fdbf76f3442ea089",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "不受影響：沒有符合的資產。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [],
+  "solutions": [],
+  "notice": null,
+  "status": "not_affected",
+  "evaluated_asset_ids": [],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "櫻花接獲電商委外服務廠商順立智慧通知，其資料庫遭未經授權的異常存取，涉及購物商城訂單及消費者個人資料。曜亞子公司曜胜生技的 DR CYJ 購物網、崇越子公司安永生活也因同一委外廠商事件受影響，美吾華則指出事件與委外電商平台服務廠商系統有關。各公司表示原因與影響範圍仍在調查中。",
+  "blocks": {
+    "1_summary": {
+      "title": "順立智慧（Cyberbiz）委外電商平台資料庫遭異常存取，多家品牌商城受波及",
+      "date": "2026-11-10",
+      "industry": "電商",
+      "attack_chain": [
+        "電商平台委外服務廠商順立智慧的資料庫遭未經授權的異常存取",
+        "涉及下游商城的訂單及消費者個人資料",
+        "順立智慧通知下游商家，各商家啟動應變並清查受影響範圍"
+      ],
+      "attck": [],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180358",
+          "title": "台灣櫻花購物商城的委外廠商資料庫遭異常存取，訂單及消費者個資恐受影響",
+          "quote": "台灣櫻花購物商城的委外廠商資料庫遭異常存取，訂單及消費者個資恐受影響",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-10T12:22:28Z"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/180352",
+          "title": "曜亞子公司線上購物平臺遭委外廠商資安事件波及，訂單資料遭異常存取",
+          "quote": "曜亞子公司線上購物平臺遭委外廠商資安事件波及，訂單資料遭異常存取",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-10T12:22:28Z"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/180356",
+          "title": "美吾華購物網站疑似個資外洩，茅頭指向委外的電商服務系統",
+          "quote": "美吾華購物網站疑似個資外洩，茅頭指向委外的電商服務系統",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-10T12:22:28Z"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/180351",
+          "title": "崇越子公司安永生活電商委外服務商發生異常資料存取，清查受影響範圍",
+          "quote": "崇越子公司安永生活電商委外服務商發生異常資料存取，清查受影響範圍",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-10T12:22:28Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "櫻花接獲電商委外服務廠商順立智慧通知，其資料庫遭未經授權的異常存取，涉及購物商城訂單及消費者個人資料。曜亞子公司曜胜生技的 DR CYJ 購物網、崇越子公司安永生活也因同一委外廠商事件受影響，美吾華則指出事件與委外電商平台服務廠商系統有關。各公司表示原因與影響範圍仍在調查中。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "不受影響：沒有符合的資產。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": []
+    },
+    "7_status": {
+      "status": "not_affected",
+      "label": "不受影響"
+    }
+  }
+}

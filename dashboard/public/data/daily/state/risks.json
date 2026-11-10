@@ -55,7 +55,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -64,7 +64,10 @@
       "我們的狀況：opsbuilder 1.88，對外"
     ],
     "demo_fixture": true,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "此項為高風險：帳號接管漏洞基礎 3 分（CVSS 9.8）、已遭實際利用 +2、可從 internet 連到 +2、同業事件（evt-91app-2026-10）命中 +1，且位於 internet → internal-tool → gitlab → order-db-prod 的完整攻擊鏈必要一步 +3。",
+    "explanation_source": "live"
   },
   "brand-app:C-SECRET-IN-GIT": {
     "id": "brand-app:C-SECRET-IN-GIT",
@@ -125,7 +128,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": "C-SECRET-IN-GIT",
     "credential_id": "app-api-key",
@@ -133,7 +136,10 @@
       "services/brand-app/src/config.ts:3"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "此項為高風險：控制項不符基礎 2 分，商店上架 App 對外暴露 +2，涉及個資 +1，平台層影響所有品牌 +1，同業事件命中 +1，且為 brand-app → app-api-key → api-gateway → member-db-prod 攻擊鏈的必要一步 +3。",
+    "explanation_source": "live"
   },
   "marketing-site:php:vuln": {
     "id": "marketing-site:php:vuln",
@@ -183,7 +189,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -192,7 +198,10 @@
       "我們的狀況：php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "此項為高風險：PHP2Shell 基礎 3 分（CVSS 9.2）、已遭實際利用 +2、可從 internet 連到 +2、同業事件命中 +1，且版本已停止支援、無修補可用 +1；此項不在完整攻擊鏈內。",
+    "explanation_source": "live"
   },
   "gitlab:C-SECRET-IN-GIT": {
     "id": "gitlab:C-SECRET-IN-GIT",
@@ -249,7 +258,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": "C-SECRET-IN-GIT",
     "credential_id": "order-db-prod-cred",
@@ -257,7 +266,10 @@
       "config/db.yml:4"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "此項為高風險：控制項不符基礎 2 分，涉及訂單與個資 +1，平台層影響所有品牌 +1，同業事件命中 +1，且為 internet → internal-tool → gitlab → order-db-prod 攻擊鏈的必要一步 +3。",
+    "explanation_source": "live"
   },
   "internal-tool:C-INTERNAL-TOOL-EXPOSED": {
     "id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
@@ -309,7 +321,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": "C-INTERNAL-TOOL-EXPOSED",
     "credential_id": null,
@@ -317,7 +329,10 @@
       "network.json: internet → internal-tool:443"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "此項為高風險：控制項不符基礎 2 分，可從 internet 連到 +2，同業事件（evt-91app-2026-10）命中 +1，且是通往 order-db-prod 攻擊鏈的第一個入口 +3。",
+    "explanation_source": "live"
   },
   "storefront:next:vuln": {
     "id": "storefront:next:vuln",
@@ -367,7 +382,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -378,7 +393,10 @@
       "我們的狀況：next 14.1.0，對外"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "此項為高風險：漏洞基礎 3 分（CVSS 9.1），可從 internet 連到 +2，涉及訂單與個資 +1，平台層影響所有品牌 +1，同業事件命中 +1；此項不在完整攻擊鏈內。",
+    "explanation_source": "live"
   },
   "firebase-brand-app-storage:C-CLOUD-STORAGE-PUBLIC": {
     "id": "firebase-brand-app-storage:C-CLOUD-STORAGE-PUBLIC",
@@ -421,7 +439,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": "C-CLOUD-STORAGE-PUBLIC",
     "credential_id": null,
@@ -430,7 +448,10 @@
       "external-scan.json: storage.shopsaas-demo.example 可匿名列出內容"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "此項為高風險：控制項不符基礎 3 分，可從 internet 連到 +2，涉及訂單與個資 +1，平台層影響所有品牌 +1；任何人都能讀取其中內容。",
+    "explanation_source": "live"
   },
   "laptop-eng-07:C-DEV-DEVICE-TOKEN": {
     "id": "laptop-eng-07:C-DEV-DEVICE-TOKEN",
@@ -479,7 +500,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": "C-DEV-DEVICE-TOKEN",
     "credential_id": "deploy-token-eng07",
@@ -488,7 +509,10 @@
       "secrets.json: deploy-token-eng07 → deploy-pipeline"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "此項為高風險：控制項不符基礎 2 分，平台層影響所有品牌 +1，同業事件（evt-binance-2026-10）命中 +1，且為 laptop-eng-07 → deploy-token-eng07 → deploy-pipeline 攻擊鏈的必要一步 +3。",
+    "explanation_source": "live"
   },
   "order-exports-bucket:C-CLOUD-STORAGE-PUBLIC": {
     "id": "order-exports-bucket:C-CLOUD-STORAGE-PUBLIC",
@@ -531,7 +555,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": "C-CLOUD-STORAGE-PUBLIC",
     "credential_id": null,
@@ -540,7 +564,10 @@
       "infra/terraform/main.tf: aws_s3_bucket_acl acl = \"public-read\""
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "此項為高風險：控制項不符基礎 3 分，可從 internet 連到 +2，涉及訂單與個資 +1，平台層影響所有品牌 +1；匯出的訂單資料可被匿名列出。",
+    "explanation_source": "live"
   },
   "storefront:postcss:vuln": {
     "id": "storefront:postcss:vuln",
@@ -583,7 +610,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -592,7 +619,10 @@
       "修補版本：8.5.12"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "此項為高風險：漏洞基礎 3 分（CVSS 9.1），可從 internet 連到 +2，涉及訂單與個資 +1，平台層影響所有品牌 +1；此項不在完整攻擊鏈內。",
+    "explanation_source": "live"
   },
   "internal-tool:shadow_it": {
     "id": "internal-tool:shadow_it",
@@ -625,7 +655,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -633,7 +663,10 @@
       "對帳：清冊無、部署紀錄無、實際觀察有（external-scan, runtime）"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": "high",
+    "explanation": "internal-tool 不在資產清冊與部署紀錄中，卻被外部掃描與執行環境觀察到，屬於未登記資產，沒有人被指定負責更新與管理。",
+    "explanation_source": "live"
   },
   "marketing-site:shadow_it": {
     "id": "marketing-site:shadow_it",
@@ -666,7 +699,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -674,7 +707,10 @@
       "對帳：清冊無、部署紀錄無、實際觀察有（external-scan, runtime）"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": "high",
+    "explanation": "marketing-site 不在資產清冊與部署紀錄中，卻被外部掃描與執行環境觀察到，屬於未登記資產，需確認負責單位。",
+    "explanation_source": "live"
   },
   "nas-office-01:shadow_it": {
     "id": "nas-office-01:shadow_it",
@@ -707,7 +743,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -715,7 +751,10 @@
       "對帳：未出現在任何清冊，但在 external-scan, lan-scan 被觀察到"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": "high",
+    "explanation": "nas-office-01 沒有出現在任何清冊，但外部掃描與內網掃描都看得到它，屬於未登記設備。",
+    "explanation_source": "live"
   },
   "saas-quicksite-builder:shadow_it": {
     "id": "saas-quicksite-builder:shadow_it",
@@ -743,7 +782,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -751,7 +790,10 @@
       "對帳：QuickSite Builder 出現在 payments, sso，但不在第三方清冊"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": "high",
+    "explanation": "QuickSite Builder 出現在 payments 與 sso 的使用紀錄中，但沒有列入第三方清冊，代表未經登記的外部服務已接觸付款與登入流程。",
+    "explanation_source": "live"
   },
   "nas-office-01:synology-dsm:vuln": {
     "id": "nas-office-01:synology-dsm:vuln",
@@ -797,7 +839,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -806,7 +848,8 @@
       "我們的狀況：synology-dsm 7.2.1-69057 Update 5，對外"
     ],
     "demo_fixture": false,
-    "provisional_basis": true
+    "provisional_basis": true,
+    "level_floor": null
   },
   "api-gateway:GET /internal/v1/members/export:shadow_api": {
     "id": "api-gateway:GET /internal/v1/members/export:shadow_api",
@@ -849,7 +892,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -857,7 +900,10 @@
       "api-inventory.json: Gateway 實際流量中有，但未列在 OpenAPI 規格"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "Gateway 實際流量中，7 天內有 95 次呼叫 GET /internal/v1/members/export，但此 API 並未列在 OpenAPI 規格中，屬於影子 API，且路徑名稱顯示與會員資料匯出有關，需確認用途與呼叫來源。",
+    "explanation_source": "live"
   },
   "brand-app:android-debuggable": {
     "id": "brand-app:android-debuggable",
@@ -900,7 +946,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -908,7 +954,10 @@
       "AndroidManifest.xml: android:debuggable=\"true\""
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "正式版 App 的 AndroidManifest 設定 android:debuggable=\"true\"，可被除錯工具附加並讀取 App 內部資料。",
+    "explanation_source": "live"
   },
   "mail-api-key:C-THIRD-PARTY-KEY-ROTATION": {
     "id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
@@ -953,7 +1002,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": "C-THIRD-PARTY-KEY-ROTATION",
     "credential_id": "mail-api-key",
@@ -961,7 +1010,10 @@
       "secrets.json: mail-api-key：457 天未輪替、無 IP 白名單"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "mail-api-key 為第三方服務 API 金鑰，已 457 天未輪替且沒有 IP 白名單，任何來源取得金鑰都能使用。",
+    "explanation_source": "live"
   },
   "brand-app:android-cleartext": {
     "id": "brand-app:android-cleartext",
@@ -1004,7 +1056,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1012,7 +1064,10 @@
       "AndroidManifest.xml: android:usesCleartextTraffic=\"true\""
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "App 設定 usesCleartextTraffic=\"true\"，允許未加密的連線，傳輸內容在不安全網路上可能被竊聽或竄改。",
+    "explanation_source": "live"
   },
   "brand-app:android-exported-component": {
     "id": "brand-app:android-exported-component",
@@ -1055,7 +1110,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1063,7 +1118,10 @@
       "AndroidManifest.xml: activity .DeepLinkOrderActivity、receiver .PushCommandReceiver"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "DeepLinkOrderActivity 與 PushCommandReceiver 對外開放且沒有權限保護，其他 App 可能直接呼叫；需確認這兩個元件實際能觸發哪些行為。",
+    "explanation_source": "live"
   },
   "brand-app:target-sdk-outdated": {
     "id": "brand-app:target-sdk-outdated",
@@ -1106,7 +1164,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1114,7 +1172,10 @@
       "build.gradle: targetSdkVersion 31（政策 2025-08-31 起最低 35）"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "build.gradle 的 targetSdkVersion 為 31，商店政策自 2025-08-31 起最低要求 35，目前已低於要求，可能影響上架與更新。",
+    "explanation_source": "live"
   },
   "member-api:lodash:vuln": {
     "id": "member-api:lodash:vuln",
@@ -1152,7 +1213,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1161,7 +1222,10 @@
       "修補版本：4.18.0"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "lodash 4.17.20 有 4 個已知漏洞，最高 CVSS 9.8（CVE-2026-4800），為此批最嚴重者之一；升級到 4.18.0 可修補。",
+    "explanation_source": "live"
   },
   "nas-office-01:C-BACKUP-ISOLATION": {
     "id": "nas-office-01:C-BACKUP-ISOLATION",
@@ -1201,7 +1265,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": "C-BACKUP-ISOLATION",
     "credential_id": null,
@@ -1209,7 +1273,10 @@
       "backups.json: nas-office-01：備份與來源未隔離（usb:attached-to-nas-office-01）、從未做過還原測試"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "nas-office-01 的備份碟（USB）直接接在同一台設備上，沒有與來源隔離；設備若被加密或破壞，備份可能一起受損。另外從未做過還原測試，無法確認備份真的能用。",
+    "explanation_source": "live"
   },
   "nas-office-01:C-INTERNAL-TOOL-EXPOSED": {
     "id": "nas-office-01:C-INTERNAL-TOOL-EXPOSED",
@@ -1250,7 +1317,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": "C-INTERNAL-TOOL-EXPOSED",
     "credential_id": null,
@@ -1258,7 +1325,10 @@
       "network.json: internet → nas-office-01:5001"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "網路設定顯示 internet 可直接連到 nas-office-01 的 5001 埠，違反內部工具不得對外開放的規定。",
+    "explanation_source": "live"
   },
   "order-db-prod:C-NET-SEGMENT": {
     "id": "order-db-prod:C-NET-SEGMENT",
@@ -1303,7 +1373,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": "C-NET-SEGMENT",
     "credential_id": null,
@@ -1311,7 +1381,10 @@
       "network.json: order-db-test（test）→ order-db-prod:5432"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "網路設定顯示測試環境的 order-db-test 可連到正式資料庫 order-db-prod 的 5432 埠，違反非正式環境不得連線正式資料庫的規定。",
+    "explanation_source": "live"
   },
   "ai-code-assistant:C-NON-CI-DEPLOY": {
     "id": "ai-code-assistant:C-NON-CI-DEPLOY",
@@ -1351,7 +1424,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": "C-NON-CI-DEPLOY",
     "credential_id": "ai-assistant-token",
@@ -1359,7 +1432,10 @@
       "secrets.json: ai-assistant-token 存放於 ai-code-assistant，可直接觸發 deploy-pipeline（繞過 Pipeline 審核）"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "ai-code-assistant 內存放的 ai-assistant-token 可直接觸發 deploy-pipeline，等於繞過 Pipeline 的審核流程進行正式部署。",
+    "explanation_source": "live"
   },
   "clone:app.bloomrewards.example": {
     "id": "clone:app.bloomrewards.example",
@@ -1392,7 +1468,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1400,7 +1476,10 @@
       "app-store-scan.json: google_play app.bloomrewards.example（開發者 Bloom Rewards Studio，圖示相似度 0.93）"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "Google Play 上有開發者為 Bloom Rewards Studio 的 App（app.bloomrewards.example），圖示相似度 0.93，冒用「花漾美妝（虛構）」；是否為詐騙仍需人工確認並通報商店下架。",
+    "explanation_source": "live"
   },
   "marketing-site:php:eol": {
     "id": "marketing-site:php:eol",
@@ -1433,7 +1512,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1442,7 +1521,10 @@
       "eol.json: 8.1 支援至 2025-12-31"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "marketing-site 使用 php 8.1.27，8.1 版的支援期限為 2025-12-31，依今天日期已過期，官方不再提供更新；是否有可用修補是各漏洞的屬性，另行判斷。",
+    "explanation_source": "live"
   },
   "member-api:body-parser:vuln": {
     "id": "member-api:body-parser:vuln",
@@ -1480,7 +1562,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1489,7 +1571,10 @@
       "修補版本：1.20.3"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "body-parser 1.20.1 有 3 個已知漏洞，最高 CVSS 7.5（CVE-2024-45590）；升級到 1.20.3 可修補。",
+    "explanation_source": "live"
   },
   "member-api:path-to-regexp:vuln": {
     "id": "member-api:path-to-regexp:vuln",
@@ -1527,7 +1612,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1536,7 +1621,10 @@
       "修補版本：1.9.0, 0.1.10, 8.0.0, 3.3.0, 6.3.0"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "path-to-regexp 0.1.7 有 3 個已知漏洞，最高 CVSS 7.5（CVE-2024-45296）；同系列可升級到 0.1.10，其他主版本修補版本為 1.9.0、3.3.0、6.3.0、8.0.0。",
+    "explanation_source": "live"
   },
   "member-api:qs:vuln": {
     "id": "member-api:qs:vuln",
@@ -1574,7 +1662,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1583,7 +1671,10 @@
       "修補版本：6.14.1"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "qs 6.11.0 有 4 個已知漏洞，最高 CVSS 7.5（CVE-2025-15284）；升級到 6.14.1 可修補。",
+    "explanation_source": "live"
   },
   "phpmyadmin:php:vuln": {
     "id": "phpmyadmin:php:vuln",
@@ -1633,7 +1724,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1642,7 +1733,8 @@
       "我們的狀況：php 8.3.20（fpm-fcgi），session.upload_progress.enabled=On"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null
   },
   "member-api:express:vuln": {
     "id": "member-api:express:vuln",
@@ -1680,7 +1772,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1689,7 +1781,10 @@
       "修補版本：4.19.2, 5.0.0-beta.3"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "express 4.18.2 有 2 個已知漏洞，最高 CVSS 6.1（CVE-2024-29041）；升級到 4.19.2（或 5.0.0-beta.3）可修補。",
+    "explanation_source": "live"
   },
   "member-api:send:vuln": {
     "id": "member-api:send:vuln",
@@ -1727,7 +1822,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1736,7 +1831,10 @@
       "修補版本：0.19.0"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "send 0.18.0 有 1 個已知漏洞，最高 CVSS 5.0（CVE-2024-43799）；升級到 0.19.0 可修補。",
+    "explanation_source": "live"
   },
   "member-api:serve-static:vuln": {
     "id": "member-api:serve-static:vuln",
@@ -1774,7 +1872,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1783,7 +1881,10 @@
       "修補版本：1.16.0, 2.1.0"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "serve-static 1.15.0 有 1 個已知漏洞，最高 CVSS 5.0（CVE-2024-43800）；升級到 1.16.0（或 2.1.0）可修補。",
+    "explanation_source": "live"
   },
   "cache-redis:C-CACHE-TLS": {
     "id": "cache-redis:C-CACHE-TLS",
@@ -1816,7 +1917,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": "C-CACHE-TLS",
     "credential_id": null,
@@ -1824,7 +1925,10 @@
       "runtime.json: cache-redis tls=false"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "執行環境紀錄顯示 cache-redis 的 TLS 為關閉（tls=false），連線內容未加密。",
+    "explanation_source": "live"
   },
   "member-api:cookie:vuln": {
     "id": "member-api:cookie:vuln",
@@ -1862,7 +1966,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1871,7 +1975,10 @@
       "修補版本：0.7.0"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "cookie 0.5.0 有 1 個已知漏洞，最高 CVSS 3.7（CVE-2024-47764），分數較低；升級到 0.7.0 可修補。",
+    "explanation_source": "live"
   },
   "push-key-fcm-apns:shared-storage": {
     "id": "push-key-fcm-apns:shared-storage",
@@ -1899,7 +2006,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": "push-key-fcm-apns",
@@ -1907,7 +2014,10 @@
       "mobile-keys.json: push-key-fcm-apns stored_in share:fileserver-01/mobile/push-keys；accessible_by all-office-staff"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "push-key-fcm-apns 存放在 fileserver-01 的共用資料夾，所有辦公室人員都能取用，金鑰一旦被複製就可能被用來冒用推播；需確認是否已被存取過。",
+    "explanation_source": "live"
   },
   "order-db-test-cred:test-secret-in-git": {
     "id": "order-db-test-cred:test-secret-in-git",
@@ -1935,7 +2045,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-10T08:07:52Z",
+    "last_evaluated": "2026-11-10T12:22:28Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": "order-db-test-cred",
@@ -1943,6 +2053,9 @@
       "config/db.yml:7"
     ],
     "demo_fixture": false,
-    "provisional_basis": false
+    "provisional_basis": false,
+    "level_floor": null,
+    "explanation": "config/db.yml 第 7 行有測試環境的資料庫金鑰；環境依檔案區段判斷為測試，風險較正式金鑰低，但仍不應放在 Git。",
+    "explanation_source": "live"
   }
 }

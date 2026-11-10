@@ -1,0 +1,100 @@
+{
+  "event": {
+    "id": "live-neticrm-nonprofit-donor-2026-11",
+    "kind": "live",
+    "title": "netiCRM 服務商遭駭，逾 20 個非營利組織捐款人個資恐外洩",
+    "date": "2026-11-10",
+    "industry": "SaaS",
+    "attack_chain": [
+      "攻擊者取得服務商內部程式碼管理系統的一組帳號密碼",
+      "利用系統漏洞取得一臺伺服器的管理權限並入侵",
+      "服務商切斷連線、修補漏洞並更新伺服器金鑰與系統密碼"
+    ],
+    "attck": [
+      "T1078"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180384",
+        "title": "捐款人個資恐外洩！netiCRM服務商遭駭，公督盟、司改會等超過20個非營利組織接連示警",
+        "quote": "其中，公督盟已預防性暫停線上捐款及活動報名服務，至於是否涉及捐款人個資外洩，目前仍在調查中。",
+        "published": "2026-11-10",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-10T12:22:28Z",
+        "content_hash": "sha256:3cc5c8406a5c872e2f7bfc942cf885729d1fc0cdbefd3ebe85afc1e02986bcde",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "不受影響：沒有符合的資產。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [],
+  "solutions": [],
+  "notice": null,
+  "status": "not_affected",
+  "evaluated_asset_ids": [],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "netiCRM 服務商網絡行動科技部分伺服器遭外部攻擊者入侵，超過 20 個非營利組織發布示警，公督盟預防性暫停線上捐款及活動報名服務。是否涉及捐款人個資外洩仍在調查中。服務商說明攻擊者取得內部程式碼管理系統的一組帳號密碼，並利用系統漏洞取得一臺伺服器的管理權限。",
+  "blocks": {
+    "1_summary": {
+      "title": "netiCRM 服務商遭駭，逾 20 個非營利組織捐款人個資恐外洩",
+      "date": "2026-11-10",
+      "industry": "SaaS",
+      "attack_chain": [
+        "攻擊者取得服務商內部程式碼管理系統的一組帳號密碼",
+        "利用系統漏洞取得一臺伺服器的管理權限並入侵",
+        "服務商切斷連線、修補漏洞並更新伺服器金鑰與系統密碼"
+      ],
+      "attck": [
+        "T1078"
+      ],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180384",
+          "title": "捐款人個資恐外洩！netiCRM服務商遭駭，公督盟、司改會等超過20個非營利組織接連示警",
+          "quote": "其中，公督盟已預防性暫停線上捐款及活動報名服務，至於是否涉及捐款人個資外洩，目前仍在調查中。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-10T12:22:28Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "netiCRM 服務商網絡行動科技部分伺服器遭外部攻擊者入侵，超過 20 個非營利組織發布示警，公督盟預防性暫停線上捐款及活動報名服務。是否涉及捐款人個資外洩仍在調查中。服務商說明攻擊者取得內部程式碼管理系統的一組帳號密碼，並利用系統漏洞取得一臺伺服器的管理權限。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "不受影響：沒有符合的資產。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": []
+    },
+    "7_status": {
+      "status": "not_affected",
+      "label": "不受影響"
+    }
+  }
+}
