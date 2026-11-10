@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 """daily-intel 失敗時，從 claude-code-action 的執行紀錄只列出錯誤原因（公開 Repo 的 log 是公開的）。
 
-只印：模型、驗證來源、結果類型、回合數、錯誤代碼與錯誤訊息（截斷並遮蔽疑似金鑰）。不印對話內容、工具輸入或網頁內容。
+只印：模型、驗證來源、結果類型、回合數、錯誤代碼與錯誤訊息（截斷並遮蔽疑似金鑰），以及被拒絕的工具
+（只列工具名稱、工作目錄內的相對路徑或網址的主機名稱）。不印對話內容、工具輸入內容或網頁內容。
 用法：python3 scripts/claude-error-summary.py <execution_file>
 """
 from __future__ import annotations
 
 import json
+import os
 import re
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
+from urllib.parse import urlsplit
 
 SECRET_RE = re.compile(r"sk-ant-[A-Za-z0-9_-]+|[A-Za-z0-9_-]{40,}")
 LIMIT = 300
@@ -18,6 +21,28 @@ LIMIT = 300
 def clean(value) -> str:
     text = " ".join(str(value).split())
     return SECRET_RE.sub("[REDACTED]", text)[:LIMIT]
+
+
+def denial_target(tool_input) -> str:
+    if not isinstance(tool_input, dict):
+        return ""
+    if tool_input.get("url"):
+        return urlsplit(str(tool_input["url"])).hostname or "?"
+    raw = tool_input.get("file_path") or tool_input.get("path")
+    if raw:
+        cwd = os.getcwd().replace("\\", "/").rstrip("/") + "/"
+        path = str(raw).replace("\\", "/")
+        if path.startswith(cwd):
+            return path[len(cwd):]
+        if not (path.startswith("/") or re.match(r"^[A-Za-z]:/", path)):
+            return path                                   # 相對路徑（相對工作目錄）
+        name = (PureWindowsPath if "\\" in str(raw) else PurePosixPath)(str(raw)).name
+        return f"（工作目錄外）…/{name}"
+    if tool_input.get("subagent_type"):
+        return f"subagent={tool_input['subagent_type']}"
+    if tool_input.get("skill"):
+        return f"skill={tool_input['skill']}"
+    return ""
 
 
 def load_messages(path: Path) -> list[dict]:
@@ -49,6 +74,12 @@ def summarize(messages: list[dict]) -> list[str]:
             lines.append(f"錯誤訊息：{clean(result['result'])}")
         for e in (result.get("errors") or [])[:5]:
             lines.append(f"錯誤：{clean(e)}")
+        denials = result.get("permission_denials") or []
+        for d in denials[:10]:
+            if isinstance(d, dict):
+                lines.append(f"權限拒絕：{clean(d.get('tool_name', '?'))} {clean(denial_target(d.get('tool_input')))}".rstrip())
+        if len(denials) > 10:
+            lines.append(f"權限拒絕：另有 {len(denials) - 10} 筆")
     return lines or ["執行紀錄中沒有可辨識的訊息"]
 
 

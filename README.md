@@ -88,7 +88,7 @@ python agents/run_agent.py a0 --replay            # 產生 out/stack.json、out/
 # 與 Actions 相同的限制；只會寫出 out/intel-daily.json
 claude -p "/daily-intel" --model sonnet --max-turns 40 --settings .claude/daily-intel-settings.json \
   --tools "Read,Write,Agent,Skill,WebSearch,WebFetch" --disallowedTools "Bash,Edit,NotebookEdit" \
-  --allowedTools "Read(./out/**),Read(./.claude/**),Write(./out/**),Agent,WebSearch,WebFetch" \
+  --allowedTools "Read(./out/**),Read(./.claude/**),Edit(./out/**),Agent,WebSearch,WebFetch" \
   --permission-mode dontAsk --strict-mcp-config
 python agents/run_agent.py all --replay           # A1 會清理格式並實際抓來源頁面確認引用
 ```
