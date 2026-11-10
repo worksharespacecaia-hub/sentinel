@@ -180,3 +180,18 @@ a.button.primary { background: var(--accent); color: #fff; }
 .weights-preview h3 { font-size: 16px; margin: 0 0 6px; }
 .weights-save { display: grid; gap: 8px; max-width: 520px; margin-top: 12px; }
 .weights-save label { display: grid; gap: 2px; font-size: 14px; }
+
+/* 外部事件與來源 */
+.event-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.event-item { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; background: var(--bg); overflow-wrap: anywhere; scroll-margin-top: 16px; }
+.event-item:target { outline: 2px solid var(--accent); }
+.event-sources { margin: 6px 0 0; padding-left: 1.2em; font-size: 15px; }
+.event-sources li { margin: 4px 0; }
+.event-sources blockquote { margin: 2px 0 0; font-size: 13px; }
+.tag.src-ok { border-color: var(--green); color: var(--green); }
+.tag.src-warn { border-color: var(--yellow); color: var(--yellow); }
+.item-events { font-size: 14px; margin: 4px 0; }
+@media print {
+  .event-item { break-inside: avoid; }
+  a.src-link::after { content: " " attr(href); font-size: 9pt; color: #444; word-break: break-all; }
+}

@@ -44,7 +44,7 @@ test("siteUrl 只接受 HTTPS origin", () => {
 });
 
 const item: ActionItem = {
-  id: "internal-tool:opsbuilder:vuln", level: "high", score: 11, need_check: false, asset_id: "internal-tool",
+  id: "internal-tool:opsbuilder:vuln", level: "high", score: 11, need_check: false, asset_id: "internal-tool", events: [],
   headline: "internal-tool 有可被入侵的漏洞", detail: null, tags: [], temporary: "關閉對外入口", permanent: null, owner: "devops-team",
   suggested_due: "2026-11-11T00:00:00Z", track_state: "overdue", beyond_suggested: false,
   tracking: { risk_id: "internal-tool:opsbuilder:vuln", status: "in_progress", owner: "devops", due_at: "2026-11-10T00:00:00Z", note: "",
