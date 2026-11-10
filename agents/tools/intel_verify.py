@@ -75,6 +75,14 @@ def verify_event(raw: dict, *, as_of: datetime, online: bool = False, transport=
     if ev["demo"] and not ev["title"].startswith("示範："):
         raise ValueError(f"示範事件 {ev['id']} 的標題必須以「示範：」開頭")
 
+    if ev["kind"] == "advisory" and raw.get("generated_by") == "kev-nvd" and ev["id"].startswith("kev-cve-"):
+        # intel-watch 以程式直接從 CISA KEV 與 NVD API 取得的結構化資料（不是 LLM 抽取、也沒有轉述）：來源即官方資料本身
+        for s in ev["sources"]:
+            s.update(fetch_status="ok", verified=True, verification_basis="official_api",
+                     verified_at=raw.get("generated_at") or iso(as_of))
+        return {"event": {**ev, **extras},
+                "verification": {"status": "ok", "issues": [], "max_level": None, "note": "程式取自 CISA KEV 與 NVD API"}}
+
     issues: list[str] = []
     is_fixture = ev["demo"] or ev["kind"] == "advisory" and raw.get("demo_fixture")
     if is_fixture:

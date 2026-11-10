@@ -135,10 +135,12 @@ jobs:
     if: ${{ !cancelled() && needs.orchestrator.result == 'success' && fromJSON(needs.orchestrator.outputs.plan || '{}').scanners == true }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # kev／nvd 是輔助資料（CISA KEV 全集、NVD 依 CPE 查執行環境與設備的 CVE）：失敗時報告註明涵蓋不足，不讓整個流程顯示失敗
+    continue-on-error: ${{ matrix.tool == 'kev' || matrix.tool == 'nvd' }}
     strategy:
       fail-fast: false
       matrix:
-        tool: [trivy, gitleaks, checkov]
+        tool: [trivy, gitleaks, checkov, kev, nvd]
     steps:
       - uses: actions/checkout@v4
         with: { persist-credentials: false }
@@ -156,6 +158,7 @@ jobs:
       - name: 執行掃描工具（只解析檔案，不安裝或執行 Repo ① 的套件與腳本）
         env:
           TOOL: ${{ matrix.tool }}
+          NVD_API_KEY: ${{ matrix.tool == 'nvd' && secrets.NVD_API_KEY || '' }}   # 選用；沒有時放慢查詢速度
         run: |
           mkdir -p raw
           case "$TOOL" in
@@ -172,6 +175,10 @@ jobs:
             checkov)
               pip install --quiet checkov==3.2.0
               checkov -d target/infra/terraform --quiet --compact -o json > raw/checkov.json || [[ -s raw/checkov.json ]] ;;
+            kev)
+              python agents/tools/vulndb.py kev raw ;;                    # CISA KEV 全集（已遭實際利用）
+            nvd)
+              python agents/tools/vulndb.py nvd raw --target target ;;    # 只讀 Repo ① 的快照建圖譜，不執行其中的程式
           esac
       - name: 正規化與遮蔽
         env:

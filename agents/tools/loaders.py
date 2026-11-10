@@ -125,7 +125,7 @@ def load_target(root: Path, *, as_of: datetime, target_sha: str | None = None,
             data.data_issues.append(issue)
     data.deployments = [*expand_github_deployments(deployments), *snap_deploys]
 
-    data.scanners = load_scanners(scanners_dir) if scanners_dir else {}
+    data.scanners = load_scanners(scanners_dir, as_of) if scanners_dir else {}
     return data
 
 
@@ -184,10 +184,21 @@ def expand_github_deployments(deployments: list[dict]) -> list[dict]:
     return out
 
 
-def load_scanners(directory: Path) -> dict:
-    """讀取已遮蔽的掃描結果；缺檔記錄 missing，不轉成零發現。"""
+def load_scanners(directory: Path, as_of: datetime | None = None) -> dict:
+    """讀取已遮蔽的掃描結果；缺檔記錄 missing，不轉成零發現。
+
+    有 manifest 時一併檢查：工具失敗（沿用目錄中可能留著前一次的結果檔）記為 failed；超過 valid_until 記為 stale。
+    """
     result = {}
-    for tool in ("gitleaks", "trivy", "checkov"):
+    for tool in ("gitleaks", "trivy", "checkov", "kev", "nvd"):
         path = Path(directory) / f"{tool}.json"
+        manifest = read_json(Path(directory) / f"{tool}.manifest.json")
+        if manifest and manifest.get("status") != "ok":
+            result[tool] = {"status": "failed", "data": None, "reason": manifest.get("reason")}
+            continue
+        until = parse_time((manifest or {}).get("valid_until"))
+        if manifest and as_of is not None and until is not None and until < as_of:
+            result[tool] = {"status": "stale", "data": None}
+            continue
         result[tool] = {"status": "ok", "data": read_json(path)} if path.is_file() else {"status": "missing", "data": None}
     return result

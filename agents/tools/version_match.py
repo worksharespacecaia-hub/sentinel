@@ -4,6 +4,7 @@
 - php：數字三段，`{introduced, fixed}` 區間；fixed 為 null 表示該分支無修補
 - synology-dsm：`7.2.1-69057 Update 5` → (7, 2, 1, 69057, 5)
 - generic：數字分段（1.9 < 1.10）；含無法解析字元時回傳 unknown
+- NVD 範圍（vulndb 由 cpeMatch 轉出）：`{start_including|start_excluding, end_including|end_excluding}` 或 `{exact}`
 
 回傳 "affected" | "not_affected" | "unknown"。版本未知、範圍無法解析或 backport 不明時一律 unknown。
 """
@@ -50,8 +51,36 @@ def _cmp(a: tuple[int, ...], b: tuple[int, ...]) -> int:
     return (a > b) - (a < b)
 
 
+NVD_KEYS = ("exact", "start_including", "start_excluding", "end_including", "end_excluding")
+
+
+def is_nvd_interval(iv: dict) -> bool:
+    return isinstance(iv, dict) and any(k in iv for k in NVD_KEYS)
+
+
+def _nvd_interval(v: tuple[int, ...], iv: dict, parse) -> str:
+    """NVD cpeMatch 語意：上下界各自標明含或不含；沒有上界就是之後所有版本。只有 `exact` 時比對單一版本。"""
+    def bound(key):
+        raw = iv.get(key)
+        return None if raw is None else parse(str(raw))
+    checks = [("exact", lambda c: c == 0), ("start_including", lambda c: c >= 0), ("start_excluding", lambda c: c > 0),
+              ("end_including", lambda c: c <= 0), ("end_excluding", lambda c: c < 0)]
+    for key, ok in checks:
+        if iv.get(key) is None:
+            continue
+        b = bound(key)
+        if b is None:
+            return UNKNOWN
+        if not ok(_cmp(v, b)):
+            return NOT_AFFECTED
+    return AFFECTED
+
+
 def in_intervals(version: str, intervals: Iterable[dict], ecosystem: str) -> str:
-    """OSV 風格區間：[introduced, fixed)；fixed 為 None 代表沒有修補（仍受影響）。"""
+    """OSV 風格區間：[introduced, fixed)；fixed 為 None 代表沒有修補（仍受影響）。
+
+    含 NVD 鍵（exact／start_*／end_*）的區間改用 NVD 語意，不套用「fixed 為 null 只涵蓋同一分支」的規則。
+    """
     parse = _parser(ecosystem)
     v = parse(version) if version else None
     if v is None:
@@ -59,7 +88,14 @@ def in_intervals(version: str, intervals: Iterable[dict], ecosystem: str) -> str
     intervals = list(intervals)
     if not intervals:
         return UNKNOWN
+    unknown = False
     for iv in intervals:
+        if is_nvd_interval(iv):
+            r = _nvd_interval(v, iv, parse)
+            if r == AFFECTED:
+                return AFFECTED
+            unknown = unknown or r == UNKNOWN
+            continue
         lo = parse(str(iv.get("introduced"))) if iv.get("introduced") not in (None, "0") else (0,)
         if lo is None:
             return UNKNOWN
@@ -69,7 +105,7 @@ def in_intervals(version: str, intervals: Iterable[dict], ecosystem: str) -> str
             return UNKNOWN
         if _cmp(v, lo) >= 0 and (hi is None or _cmp(v, hi) < 0):
             return AFFECTED
-    return NOT_AFFECTED
+    return UNKNOWN if unknown else NOT_AFFECTED
 
 
 def _branch_end(lo: tuple[int, ...]) -> tuple[int, ...] | None:
@@ -86,6 +122,10 @@ def fixed_available(version: str, intervals: Iterable[dict], ecosystem: str) -> 
     if v is None:
         return None
     for iv in intervals:
+        if is_nvd_interval(iv):
+            if _nvd_interval(v, iv, parse) == AFFECTED:
+                return True if iv.get("end_excluding") is not None else None   # 只有「不含上界」才代表上界就是修補版
+            continue
         lo = parse(str(iv.get("introduced"))) if iv.get("introduced") not in (None, "0") else (0,)
         if lo is None:
             return None
@@ -118,6 +158,8 @@ def match(version: str | None, affected, ecosystem: str = "generic") -> str:
             v = semantic_version.Version(version)
         except ValueError:
             return UNKNOWN
+        if any(is_nvd_interval(iv) for iv in affected):
+            return UNKNOWN      # NVD 範圍只用於非 npm 元件；npm 由 Trivy 與 npm 範圍字串處理
         for iv in affected:
             lo = semantic_version.Version(iv.get("introduced") or "0.0.0")
             hi = semantic_version.Version(iv["fixed"]) if iv.get("fixed") else None

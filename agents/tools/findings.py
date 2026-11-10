@@ -9,11 +9,13 @@ import re
 
 import networkx as nx
 
+from tools.aliases import normalize
 from tools.common import iso, stable_id
 from tools.controls import CATEGORY, ControlContext, run_controls
 from tools.eol import eol_status
 from tools.loaders import TargetData
 from tools.mobile_rules import check_gradle, check_manifest, detect_clone_apps
+from tools.vulndb import assess, fixed_version, kev_ids
 
 SECRET_VALUE_RE = re.compile(r"DEMO-FAKE-[A-Z0-9-]{4,}|(?i:(password|secret|token|key)\s*[:=]\s*\S{8,})")
 
@@ -101,6 +103,87 @@ def trivy_findings(data: TargetData, kev: set[str]) -> list[dict]:
     return out
 
 
+def kev_catalog(data: TargetData) -> set[str]:
+    """CISA KEV 全集（scanners 的 kev 工具）。沒有取得時為空集合，報告另外註明涵蓋不足。"""
+    kv = data.scanners.get("kev") or {}
+    return kev_ids(kv.get("data")) if kv.get("status") == "ok" else set()
+
+
+def nvd_findings(data: TargetData, graph: nx.MultiDiGraph, kev: set[str]) -> list[dict]:
+    """NVD 候選 CVE 在本地重新比對版本後的發現。確定受影響 → confirmed；只有平台條件或版本無法判斷 → 暫定且待確認。"""
+    nv = data.scanners.get("nvd") or {}
+    if nv.get("status") != "ok":
+        return []
+    out = []
+    for res in (nv.get("data") or {}).get("results", []):
+        if res.get("status") != "ok":
+            continue
+        name, ver, eco, templates = res["name"], res["version"], res["ecosystem"], res.get("templates") or []
+        rows = []
+        for c in res.get("cves") or []:
+            a = assess(c, templates, ver, eco)
+            if a:
+                rows.append({**c, **a})
+        if not rows:
+            continue
+        rows.sort(key=lambda r: (-(r.get("cvss") or 0), r["id"]))
+        sure = [r for r in rows if r["verdict"] == "affected" and not r["conditional"]]
+        maybe = [r for r in rows if r not in sure]
+        exploited = [r["id"] for r in sure if r["id"] in kev or r.get("kev_added")]
+        primary = (sure or maybe)[0]
+        fix = fixed_version([r["interval"] for r in sure], eco) if sure else None
+        if sure:
+            title = f"{name} {ver} 有 {len(sure)} 個已知漏洞（NVD，最高 CVSS {primary.get('cvss')}，{primary['id']}）"
+        else:
+            title = f"{name} {ver} 有 {len(maybe)} 個漏洞需確認執行環境或版本（NVD）"
+        evidence = [f"nvd: {name}@{ver} 依 CPE 取得候選後，本地重新比對版本（{len(sure)} 確定、{len(maybe)} 需確認）",
+                    f"修補版本：{fix or '無法確定（部分漏洞沒有修補版本或範圍不明）'}"]
+        if exploited:
+            evidence.append(f"已遭實際利用（CISA KEV）：{'、'.join(exploited[:5])}")
+        for r in maybe[:5]:
+            why = f"需在 {'、'.join(r['platforms'])} 上執行" if r["conditional"] else "NVD 版本範圍無法判斷"
+            evidence.append(f"需確認：{r['id']}（{why}{'；已列入 KEV' if r['id'] in kev or r.get('kev_added') else ''}）")
+        for asset in res.get("asset_ids") or []:
+            node = graph.nodes[asset] if asset in graph else None
+            if not node or not any(normalize(c.get("name")) == name and c.get("version") == ver for c in node.get("components", [])):
+                continue                               # 圖譜已不是這個版本（例如掃描後又更新），不沿用
+            out.append(_finding(
+                data, id=stable_id(asset, name, "vuln"), asset_id=asset, category="vuln", title=title, evidence=evidence,
+                source="nvd", cvss=primary.get("cvss"), vuln_id=primary["id"], component=name,
+                known_exploited=bool(exploited), advisory_ids=[r["id"] for r in rows], version=ver, fixed_version=fix,
+                status="confirmed" if sure else "provisional", exploit_conditions=None if sure else "unknown"))
+    return out
+
+
+def coverage_issues(data: TargetData) -> list[dict]:
+    """KEV／NVD 涵蓋不足：列在報告的資料問題中，但不影響完整性與燈號（required=False）。"""
+    issues = []
+    kv = data.scanners.get("kev") or {}
+    if kv.get("status") != "ok":
+        issues.append({"source": "scanner/kev", "status": kv.get("status", "missing"), "required": False,
+                       "impact": "「已遭實際利用」只依已收錄的事件與公告標記，CISA KEV 新列入的漏洞不會加分"})
+    nv = data.scanners.get("nvd") or {}
+    if nv.get("status") != "ok":
+        issues.append({"source": "scanner/nvd", "status": nv.get("status", "missing"), "required": False,
+                       "impact": "執行環境與設備（PHP、NAS、資料庫等）的 CVE 只能靠情資事件比對"})
+        return issues
+    d = nv.get("data") or {}
+    failed = [f"{r['name']} {r['version']}" for r in d.get("results", []) if r.get("status") != "ok"]
+    if failed:
+        issues.append({"source": "scanner/nvd", "status": "failed", "required": False,
+                       "impact": f"NVD 查詢失敗：{'、'.join(failed[:8])}；這些元件的 CVE 只能靠情資事件比對"})
+    truncated = [f"{r['name']} {r['version']}" for r in d.get("results", [])
+                 if any(q.get("truncated") for q in r.get("queries") or [])]
+    if truncated:
+        issues.append({"source": "scanner/nvd", "status": "partial", "required": False,
+                       "impact": f"NVD 結果過多被截斷：{'、'.join(truncated[:8])}"})
+    uncovered = [f"{u['name']} {u.get('version') or '版本未知'}" for u in d.get("uncovered", [])]
+    if uncovered:
+        issues.append({"source": "scanner/nvd", "status": "uncovered", "required": False,
+                       "impact": f"NVD 未涵蓋（沒有 CPE 對照或版本未知）：{'、'.join(uncovered[:10])}；只能靠情資事件比對"})
+    return issues
+
+
 def eol_findings(data: TargetData, graph: nx.MultiDiGraph) -> list[dict]:
     out = []
     for nid, node in graph.nodes(data=True):
@@ -179,7 +262,8 @@ def build_findings(data: TargetData, graph: nx.MultiDiGraph, recon: dict, *, kev
     ctx = ControlContext(data=data, graph=graph, recon=recon, secret_findings=secrets, as_of=data.as_of,
                          sdk_advisories=sdk_advisories or [])
     controls = run_controls(ctx)
-    findings = [*trivy_findings(data, kev), *eol_findings(data, graph), *mobile_findings(data),
+    kev = set(kev) | kev_catalog(data)
+    findings = [*trivy_findings(data, kev), *nvd_findings(data, graph, kev), *eol_findings(data, graph), *mobile_findings(data),
                 *reconcile_findings(data, recon), *control_findings(data, controls)]
     for s in secrets or []:
         if s["env"] == "test":
@@ -190,4 +274,5 @@ def build_findings(data: TargetData, graph: nx.MultiDiGraph, recon: dict, *, kev
     for tool in ("gitleaks", "trivy"):
         if (data.scanners.get(tool) or {}).get("status") != "ok":
             data_issues.append({"source": f"scanner/{tool}", "status": "missing", "impact": "相關控制項為待確認，不視為零發現"})
-    return {"findings": findings, "secret_findings": secrets, "controls": controls, "data_issues": data_issues}
+    return {"findings": findings, "secret_findings": secrets, "controls": controls, "data_issues": data_issues,
+            "coverage_issues": coverage_issues(data), "kev": kev}

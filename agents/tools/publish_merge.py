@@ -12,6 +12,7 @@ import argparse
 import json
 import shutil
 import sys
+from datetime import timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -21,11 +22,17 @@ from tools.common import parse_time, read_json, write_json  # noqa: E402
 
 DATA = Path("dashboard/public/data")
 ALLOWED_PREFIXES = ("daily", "advisories/", "scenarios/", "failures/", "intel-watch")
-STATUS_RANK = {"done": 4, "running": 3, "pending": 2, "failed": 1, "checked": 0}
+STATUS_RANK = {"done": 4, "running": 3, "pending": 2, "failed": 1, "queued": 1, "checked": 0}
+AUTO_WINDOW = timedelta(days=30)          # 與 intel_watch.AUTO_WINDOW 相同：自動公告保留 30 天
+CHECKED_KEEP = timedelta(days=7)          # 查過的 KEV CVE 在窗口內每天重查；7 天沒更新代表已移出窗口
 
 
 def merge_watch(cand: dict | None, cur: dict | None) -> dict | None:
-    """intel-watch.json：依 input_hash 合併；done 不會被較舊的 pending／failed 覆蓋。"""
+    """intel-watch.json：依 input_hash 合併；done 不會被較舊的 pending／failed 覆蓋。
+
+    auto_advisories 依 ID 合併、kev_checked 依 CVE 合併，各取較新者：A5 發布時帶的是較早 checkout 的副本，
+    不能因此蓋掉 intel-watch 之後才產生的自動公告。
+    """
     if not cand:
         return cur
     items = {i.get("input_hash") or i["advisory_id"]: i for i in (cur or {}).get("items", [])}
@@ -35,7 +42,31 @@ def merge_watch(cand: dict | None, cur: dict | None) -> dict | None:
         if old is None or STATUS_RANK.get(i.get("status"), 0) >= STATUS_RANK.get(old.get("status"), 0):
             items[key] = i
     newest = cand if _newer({"generated_at": cand.get("checked_at")}, {"generated_at": (cur or {}).get("checked_at")}) else (cur or cand)
-    return {**newest, "items": list(items.values())}
+    out = {**newest, "items": list(items.values())}
+    # 聯集之後依日期清除：否則 intel-watch 已刪除的過期項目會被 main 上的舊副本加回來，永遠刪不掉
+    now = parse_time(out.get("checked_at"))
+    adv_cutoff = (now - AUTO_WINDOW).date().isoformat() if now else ""
+    checked_cutoff = now - CHECKED_KEEP if now else None
+    advs = {a["id"]: a for a in (cur or {}).get("auto_advisories") or [] if isinstance(a, dict) and a.get("id")}
+    for a in cand.get("auto_advisories") or []:
+        if isinstance(a, dict) and a.get("id") and _newer(a, advs.get(a["id"])):
+            advs[a["id"]] = a
+    advs = {k: a for k, a in advs.items() if (a.get("date") or "") >= adv_cutoff}
+    if advs:
+        out["auto_advisories"] = sorted(advs.values(), key=lambda a: a["id"])
+    else:
+        out.pop("auto_advisories", None)
+    checked = dict((cur or {}).get("kev_checked") or {})
+    for k, v in (cand.get("kev_checked") or {}).items():
+        if _newer({"generated_at": (v or {}).get("checked_at")}, {"generated_at": (checked.get(k) or {}).get("checked_at")}):
+            checked[k] = v
+    checked = {k: v for k, v in checked.items()
+               if checked_cutoff is None or (parse_time((v or {}).get("checked_at")) or checked_cutoff) > checked_cutoff}
+    if checked:
+        out["kev_checked"] = dict(sorted(checked.items()))
+    else:
+        out.pop("kev_checked", None)
+    return out
 
 
 def _newer(a: dict | None, b: dict | None) -> bool:
