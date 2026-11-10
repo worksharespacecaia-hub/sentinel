@@ -109,13 +109,23 @@ def build_graph_server(gq: GraphQuery):
 class LLMRunner:
     def __init__(self, *, agent: str, mode: str, scope: str, target_sha: str, advisory_revision: str | None,
                  tracer: Tracer, cache: LLMCache, replay: ReplayStore, budget=None, cost: dict | None = None,
-                 timeout_s: float | None = None):
+                 timeout_s: float | None = None, collected: dict | None = None, plan: list | None = None):
         self.agent, self.mode, self.scope = agent, mode, scope
         self.timeout_s = timeout_s   # LLM 本身的逾時（例如 incident 比 Job timeout 短）；逾時以範本降級
         self.target_sha, self.advisory_revision = target_sha, advisory_revision
         self.tracer, self.cache, self.replay, self.budget = tracer, cache, replay, budget
         self.spec = AGENTS[agent]
         self.cost = cost if cost is not None else {"total_usd": 0.0, "per_agent": {}}
+        # collected：claude-analysis Job（訂閱方案）事先撰寫、已通過程式驗證的結果（cache key → output）
+        # plan：replay 時記下改用範本的任務，交給 claude-analysis Job 撰寫
+        self.collected, self.plan = collected, plan
+
+    def describe(self, task: Task, key: str) -> dict:
+        """交給 claude-analysis Job 的任務說明：Subagent 的指示、Skill、輸出格式與輸入資料（已去敏）。"""
+        sub = self.spec.subagents[task.subagent]
+        return {"key": key, "agent": self.agent, "subagent": task.subagent, "task_id": task.id, "ids": sorted(_ids(task)),
+                "output": sub.output, "description": sub.description, "instructions": sub.prompt, "skills": list(sub.skills),
+                "payload": task.payload}
 
     def key(self, task: Task) -> str:
         sub = self.spec.subagents[task.subagent]
@@ -130,6 +140,16 @@ class LLMRunner:
         for t in tasks:
             k = self.key(t)
             kind = self.spec.subagents[t.subagent].output
+            written = (self.collected or {}).get(k)
+            if written is not None:
+                try:
+                    results[t.id] = {"output": _validate(kind, written, _ids(t)), "source": "live", "subagent": t.subagent}
+                    self.tracer.emit("subagent", f"{t.subagent} 採用 Claude（訂閱方案）撰寫的結果（{t.id}）", subagent=t.subagent,
+                                     source="live")
+                    continue
+                except ValueError as exc:
+                    self.tracer.emit("error", f"{t.subagent} 的 Claude 結果未通過驗證，改用範本：{exc}"[:200], subagent=t.subagent,
+                                     source="template")
             hit = self.replay.get(self.agent, t.subagent, k) if self.mode == "replay" else None
             if hit is None:
                 hit = self.cache.get(k)
@@ -145,6 +165,8 @@ class LLMRunner:
             if self.mode == "replay":
                 results[t.id] = {"output": None, "source": "template", "subagent": t.subagent}
                 self.tracer.emit("subagent", f"{t.subagent} 未錄製，改用程式範本（{t.id}）", subagent=t.subagent, source="template")
+                if self.plan is not None and written is None:
+                    self.plan.append(self.describe(t, k))
                 continue
             pending.append((t, k))
         if pending:

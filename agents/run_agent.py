@@ -1,6 +1,7 @@
 """入口：python agents/run_agent.py <agent-name> [--replay | --record | --live] [--scenario NAME]
 
 agent-name：orchestrator、a0、a1、a2、a3、a4、a5、incident，或 all（本機依序執行 orchestrator → a5）。
+llm-plan／llm-validate：claude-analysis Job（訂閱方案）撰寫前整理任務、撰寫後驗證結果（純程式）。
 模式優先順序：CLI 指定 > 環境變數 EXECUTION_MODE > replay。replay 不呼叫任何 LLM 網路服務。
 """
 from __future__ import annotations
@@ -26,12 +27,18 @@ def _module(name: str):
     if name == "incident":
         from agents import incident
         return incident
+    if name in ("llm-plan", "llm-validate"):
+        from agents import llm_plan
+
+        class _Step:
+            run = staticmethod(llm_plan.plan if name == "llm-plan" else llm_plan.validate)
+        return _Step
     return mods[name]
 
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("agent", choices=[*ORDER, "incident", "all"])
+    ap.add_argument("agent", choices=[*ORDER, "incident", "llm-plan", "llm-validate", "all"])
     g = ap.add_mutually_exclusive_group()
     g.add_argument("--replay", dest="mode", action="store_const", const="replay")
     g.add_argument("--record", dest="mode", action="store_const", const="record")

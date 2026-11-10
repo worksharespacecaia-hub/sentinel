@@ -5,7 +5,7 @@ import RunConsole from "@/components/RunConsole";
 
 export const dynamic = "force-dynamic";
 
-const ORDER = ["orchestrator", "a0", "daily-intel", "a1", "a2", "a3", "a4", "a5", "incident"];
+const ORDER = ["orchestrator", "a0", "daily-intel", "a1", "a2", "a3", "a4", "claude-analysis", "a5", "incident"];
 
 export default async function Runs({ searchParams }: { searchParams: Promise<Record<string, string | string[]>> }) {
   const source = await resolveSource((await searchParams).source);
@@ -47,7 +47,7 @@ export default async function Runs({ searchParams }: { searchParams: Promise<Rec
               <li key={agent}>
                 <details open>
                   <summary><strong>{AGENT_TEXT[agent] ?? agent}</strong>
-                    <span className="muted">{agent === "daily-intel" ? "（訂閱方案，不計 API 費用）" : `（成本 US$${(cost ?? 0).toFixed(3)}）`}
+                    <span className="muted">{agent === "daily-intel" || agent === "claude-analysis" ? "（訂閱方案，不計 API 費用）" : `（成本 US$${(cost ?? 0).toFixed(3)}）`}
                       {result ? `｜${result.detail}` : ""}</span></summary>
                   <ul>
                     {tools.map((e, i) => <li key={`t${i}`}>{e.kind === "skill" ? "Skill" : "工具"}：{e.detail}</li>)}

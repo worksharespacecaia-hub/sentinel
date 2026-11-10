@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.8.0 — 2026-11-10（A2、A4、A5 的說明文字改由 Claude 訂閱方案撰寫）
+
+- 使用者決定用訂閱方案而不是 API Key。官方文件：Agent SDK 產品應使用 API Key 認證；claude-code-action 支援以 `CLAUDE_CODE_OAUTH_TOKEN` 使用訂閱方案。因此改為比照每日情資，以 claude-code-action 撰寫，不在 Agent SDK 中使用訂閱 Token（另查證 GitHub Models 已於 2026-07-30 停止服務）
+- 新增 `claude-analysis` Job（A4 之後、A5 之前，只在預設分支的排程與手動 daily）：
+  - A2、A4 改用範本的任務存成 `llm-tasks.json`；`run_agent.py llm-plan` 再依 A5 的流程算出 A5 的任務，寫成 `out/llm/tasks.json`
+  - Claude（`/analysis-writer` Skill）只讀 `out/`、`.claude/`，只寫 `out/llm/results.json`；不上網、不派發 Subagent（hook 參數化）
+  - 程式確認只寫了 `out/`、任務檔雜湊不變，`llm-validate` 以各 Subagent 原本的範圍與格式驗證（分數、等級、狀態不得改動，不得含金鑰）
+  - A5 採用通過驗證的結果，A2、A4 的說明再以原任務驗證一次；其餘用範本。執行樹新增「Claude 撰寫說明（訂閱方案）」節點
+- 同一次執行的所有 Job 使用 Orchestrator 決定的同一個邏輯時間（`AS_OF`）：修正各 Job 各自取現在時間，造成規劃與 A5 的任務鍵不同（情資摘要的 `observed_at`）
+- 本機端到端驗證：29 個任務（A2 5、A4 10、A5 14）由 Claude 撰寫，程式驗證 29／29 通過；A5 的 20 筆執行紀錄全部為即時呼叫，37 項風險說明、12 項修補建議、CEO 摘要與 7 份情資摘要採用 Claude 的文字
+- `dl/` 加入 .gitignore（`claude-analysis` Job 的「只寫了 out/」檢查不會被下載的掃描結果誤判）
+
 ## 0.7.0 — 2026-11-10（Agent 執行頁顯示真實的 Claude 判讀；A1～A5 可啟用 live）
 
 - 使用者回報「Agent 執行」頁全是程式範本：A0～A5 在 replay 模式下沒有任何錄製檔（29 筆 Subagent 結果都是範本），而真的有呼叫 Claude 的每日情資沒有出現在執行樹

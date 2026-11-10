@@ -24,9 +24,9 @@ test("流程：依 workflow 的 Job 名稱分到各階段，缺少的 Job 顯示
     { name: "daily-intel", status: "completed", conclusion: "skipped", started_at: "2026-11-10T07:00:25Z", completed_at: "2026-11-10T07:00:25Z" },
     { name: "unknown-job", status: "completed", conclusion: "success" },
   ], now);
-  assert.deepEqual(stages.map((s) => s.title), ["規劃", "資產", "掃描與蒐集", "分析", "風險", "發布"]);
+  assert.deepEqual(stages.map((s) => s.title), ["規劃", "資產", "掃描與蒐集", "分析", "風險", "撰寫", "發布"]);
   const nodes = Object.fromEntries(stages.flatMap((s) => s.nodes).map((n) => [n.key, n]));
-  assert.equal(Object.keys(nodes).length, 11);
+  assert.equal(Object.keys(nodes).length, 12);
   assert.equal(nodes["orchestrator"].status, "success");
   assert.equal(nodes["orchestrator"].seconds, 20);
   assert.equal(nodes["orchestrator"].url, "https://github.com/o/sentinel/actions/runs/1/job/2");

@@ -68,6 +68,15 @@ class RunCtx:
     cost: dict = field(default_factory=lambda: {"total_usd": 0.0, "per_agent": {}})
     cache: LLMCache = field(default_factory=LLMCache)
     replay: ReplayStore = field(default_factory=ReplayStore)
+    llm_plan: list = field(default_factory=list)          # replay 時改用範本的任務（交給 claude-analysis Job 撰寫）
+    _llm_results: dict | None = field(default=None, repr=False)
+
+    def llm_results(self) -> dict:
+        """claude-analysis Job（訂閱方案）撰寫且通過程式驗證的結果；只用在 daily（排程或手動）。"""
+        if self._llm_results is None:
+            path = self.out / "llm" / "validated.json"
+            self._llm_results = (read_json(path, {}) or {}) if self.scenario == "daily" else {}
+        return self._llm_results
 
     @property
     def scenario_dir(self) -> Path:
@@ -84,7 +93,8 @@ class RunCtx:
     def runner(self, agent: str) -> LLMRunner:
         return LLMRunner(agent=agent, mode=self.mode, scope=self.scope, target_sha=self.target_sha,
                          advisory_revision=self.advisory_revision, tracer=self.tracer(agent), cache=self.cache,
-                         replay=self.replay, budget=budget_for(self.mode, f"{self.run_id}-{os.environ.get('GITHUB_RUN_ATTEMPT', '1')}/{agent}"), cost=self.cost)
+                         replay=self.replay, budget=budget_for(self.mode, f"{self.run_id}-{os.environ.get('GITHUB_RUN_ATTEMPT', '1')}/{agent}"),
+                         cost=self.cost, collected=self.llm_results(), plan=self.llm_plan)
 
     def eval_input(self, **kw) -> EvalInput:
         cfg = self.scenario_cfg

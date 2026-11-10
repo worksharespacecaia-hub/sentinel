@@ -45,7 +45,8 @@ def test_downstream_conditions_use_not_cancelled(sentinel):
         assert "always()" not in job["if"], name
     a5 = d["jobs"]["a5-report"]
     assert a5["if"] == "${{ !cancelled() }}"
-    assert set(a5["needs"]) == {"orchestrator", "a0-assets", "scanners", "daily-intel", "a1-intel", "a2-scan", "a3-signals", "a4-risk"}
+    assert set(a5["needs"]) == {"orchestrator", "a0-assets", "scanners", "daily-intel", "a1-intel", "a2-scan", "a3-signals", "a4-risk",
+                                "claude-analysis"}
 
 
 def test_only_a5_can_write_contents(sentinel):
@@ -60,10 +61,11 @@ def test_only_a5_can_write_contents(sentinel):
 
 
 def test_subscription_token_only_in_daily_intel(sentinel):
+    """訂閱方案只用在 claude-code-action 的 Job（daily-intel、claude-analysis），而且只在預設分支的排程或手動 daily。"""
     _, d = sentinel
     for name, job in d["jobs"].items():
         body = yaml.safe_dump(job, allow_unicode=True)
-        if name == "daily-intel":
+        if name in ("daily-intel", "claude-analysis"):
             assert "CLAUDE_CODE_OAUTH_TOKEN" in body and "ANTHROPIC_API_KEY" not in body
             cond = job["if"]
             for clause in ("daily_intel == 'true'", "github.event_name == 'schedule'",

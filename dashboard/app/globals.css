@@ -51,7 +51,7 @@ pre { overflow-x: auto; white-space: pre; background: var(--bg); border: 1px sol
 button:disabled { opacity: .6; cursor: progress; }
 a.button { display: inline-block; text-decoration: none; padding: 6px 12px; border-radius: 8px; }
 a.button.primary { background: var(--accent); color: #fff; }
-.flow { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin: 8px 0; }
+.flow { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; margin: 8px 0; }
 .flow-stage { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .flow-node { display: flex; flex-direction: column; border: 1px solid var(--line); border-left-width: 4px; border-radius: 8px;
   padding: 6px 8px; background: var(--bg); color: var(--text); text-decoration: none; font-size: 14px; }
