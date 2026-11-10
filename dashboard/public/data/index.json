@@ -41,7 +41,7 @@
   },
   "latest_daily": {
     "run_id": "42774303348",
-    "generated_at": "2026-11-10T07:20:36Z",
+    "generated_at": "2026-11-10T07:29:33Z",
     "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
     "completeness": "complete",
     "path": "daily",
@@ -50,13 +50,13 @@
   },
   "latest_complete_daily": {
     "run_id": "42774303348",
-    "generated_at": "2026-11-10T07:20:36Z",
+    "generated_at": "2026-11-10T07:29:33Z",
     "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
     "completeness": "complete",
     "path": "daily",
     "light": "red",
     "execution_mode": "replay"
   },
-  "updated_at": "2026-11-10T07:20:36Z",
+  "updated_at": "2026-11-10T07:29:33Z",
   "failures": {}
 }

@@ -4,8 +4,8 @@
   "job": "scanners-gitleaks",
   "scope": "scanner",
   "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
-  "observed_at": "2026-11-10T07:19:03Z",
-  "valid_until": "2026-11-11T07:19:03Z",
+  "observed_at": "2026-11-10T07:27:43Z",
+  "valid_until": "2026-11-11T07:27:43Z",
   "tool_version": {
     "gitleaks": null
   },

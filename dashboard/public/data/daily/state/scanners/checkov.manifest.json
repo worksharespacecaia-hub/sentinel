@@ -4,8 +4,8 @@
   "job": "scanners-checkov",
   "scope": "scanner",
   "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
-  "observed_at": "2026-11-10T07:19:29Z",
-  "valid_until": "2026-11-11T07:19:29Z",
+  "observed_at": "2026-11-10T07:28:02Z",
+  "valid_until": "2026-11-11T07:28:02Z",
   "tool_version": {
     "checkov": null
   },
@@ -13,7 +13,7 @@
     "checkov": null
   },
   "files": {
-    "checkov.json": "ecc3af06636cc55be022f0f0648081f626355f2188327cc05f8b3be2a9be6693"
+    "checkov.json": "0e2ba38cea82d5b99b1e71bd5d7ce384a2f3fae74dded58c8a3d250ccae75ece"
   },
   "status": "ok"
 }
