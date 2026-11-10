@@ -67,7 +67,8 @@ def stack_complete(data: TargetData, coverage: dict) -> bool:
 
 
 def match_event(ev: dict, *, data: TargetData, g: nx.MultiDiGraph, control_results: dict, findings: list[dict],
-                coverage: dict) -> dict:
+                coverage: dict, kev: set[str] | frozenset = frozenset()) -> dict:
+    """kev：CISA KEV 全集。事件的 CVE 列入 KEV 時，產生的發現標為已遭利用（daily-intel 的宣稱不採用，以 KEV 為準）。"""
     impacts: list[dict] = []
     new_findings: list[dict] = []
     notes: list[str] = []
@@ -139,7 +140,8 @@ def match_event(ev: dict, *, data: TargetData, g: nx.MultiDiGraph, control_resul
                 "source": f"intel:{ev['id']}", "cvss": p.get("cvss"), "base_points": None, "credential_id": None,
                 "level_floor": None, "observed_at": iso(data.as_of), "source_sha": data.target_sha,
                 "vuln_id": (ev.get("cves") or [ev["id"]])[0], "component": name,
-                "known_exploited": bool(p.get("known_exploited")), "eol_no_fix": bool(eol["eol"] and no_fix),
+                "known_exploited": bool(p.get("known_exploited")) or any(c in kev for c in ev.get("cves", [])),
+                "eol_no_fix": bool(eol["eol"] and no_fix),
                 "impact": p.get("impact"), "advisory_ids": [ev["id"], *ev.get("cves", [])],
                 "exploit_conditions": cstate, "grants_foothold": p.get("impact") in FOOTHOLD_IMPACTS and cstate == "met",
                 "demo_fixture": bool(ev.get("demo_fixture") or ev.get("demo")),
@@ -244,6 +246,46 @@ def _package_json(data: TargetData) -> dict:
     return json.loads(text) if text else {}
 
 
+INHERITED_KEYS = ("match_scope", "match_finding_categories", "requires_manual_check", "notice_required")
+
+
+def inherit_updates(events: list[dict]) -> dict[str, list[str]]:
+    """事件新進度（is_update_of）繼承原事件的比對依據，回傳 {原事件 ID: [新進度 ID…]}。
+
+    新進度通常只寫了新消息（例如受影響範圍擴大），沒有重寫產品、利用條件與控制項；直接比對會變成「沒東西可比」。
+    - 產品：沿用原事件的產品與利用條件；新進度有同名產品時，版本範圍取聯集，CVSS 等以新進度覆蓋
+    - 控制項、CVE：取聯集；其餘比對設定（match_scope 等）新進度沒寫時沿用
+    原事件不改：新進度的可信度與驗證結果各自計算，未驗證的新消息不會改掉已確認事件的結論。
+    """
+    by_id = {e["id"]: e for e in events}
+    updates: dict[str, list[str]] = {}
+    for e in events:
+        orig = by_id.get(e.get("is_update_of") or "")
+        if orig is None or orig is e:
+            continue
+        updates.setdefault(orig["id"], []).append(e["id"])
+        new = {normalize(p.get("name")): p for p in e.get("products", [])}
+        merged = []
+        for p in orig.get("products", []):
+            q = new.pop(normalize(p.get("name")), None)
+            if q is None:
+                merged.append(dict(p))
+                continue
+            m = {**p, **{k: v for k, v in q.items() if v not in (None, [], "")}}
+            if isinstance(p.get("affected"), list) and isinstance(q.get("affected"), list):
+                # 新進度常只寫新增的範圍：取聯集，不讓原本的範圍消失（偏保守）
+                m["affected"] = [*p["affected"], *[iv for iv in q["affected"] if iv not in p["affected"]]]
+            merged.append(m)
+        e["products"] = [*merged, *new.values()]
+        e["controls"] = list(dict.fromkeys([*orig.get("controls", []), *e.get("controls", [])]))
+        e["cves"] = list(dict.fromkeys([*orig.get("cves", []), *e.get("cves", [])]))
+        for k in INHERITED_KEYS:
+            if k in orig and not e.get(k):
+                e[k] = orig[k]
+        e["inherited_from"] = orig["id"]
+    return updates
+
+
 def merge_findings(base: list[dict], extra: list[dict]) -> list[dict]:
     """同一 ID 只保留一筆：合併情資來源、CVSS 取大、已利用取 OR。"""
     by_id = {f["id"]: dict(f) for f in base}
@@ -253,7 +295,7 @@ def merge_findings(base: list[dict], extra: list[dict]) -> list[dict]:
             continue
         cur = by_id[f["id"]]
         cur["advisory_ids"] = sorted(set(cur.get("advisory_ids", [])) | set(f.get("advisory_ids", [])))
-        if (f.get("cvss") or 0) > (cur.get("cvss") or 0) and cur.get("source") != "trivy":
+        if (f.get("cvss") or 0) > (cur.get("cvss") or 0) and cur.get("source") not in ("trivy", "nvd"):
             cur["cvss"] = f["cvss"]
         cur["known_exploited"] = bool(cur.get("known_exploited")) or bool(f.get("known_exploited"))
         cur["eol_no_fix"] = cur.get("eol_no_fix") or f.get("eol_no_fix")

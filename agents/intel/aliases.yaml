@@ -1,8 +1,14 @@
 # 產品名稱正規化（purl／CPE 別名）。正規化只換名稱，SAPI、OS、套件來源等利用條件另外保留。
+#
+# nvd：程式查 NVD（vulndb.py）時用的 CPE 範本與版本比較器。{version} 由圖譜中的元件版本代入。
+#   - 同一產品在 NVD 有多個 CPE 名稱時全部列出（每個名稱各查一次）
+#   - ecosystem 決定本地重新比對版本時用的比較器（version_match）；NVD 回傳的候選一律在本地重新確認
+#   - 沒有 nvd 的元件（npm 套件由 Trivy 涵蓋；虛構產品沒有 CPE）列為「NVD 未涵蓋」
 php:
   aliases: [php, php-fpm, php-cli, php-cgi, mod_php, "php:apache", "php:fpm"]
   purl: [pkg:generic/php, pkg:docker/library/php]
   cpe: ["cpe:2.3:a:php:php"]
+  nvd: {ecosystem: php, cpe: ["cpe:2.3:a:php:php:{version}:*:*:*:*:*:*:*"]}
 next:
   aliases: [next, nextjs, next.js]
   purl: [pkg:npm/next]
@@ -14,18 +20,38 @@ express:
   purl: [pkg:npm/express]
 node:
   aliases: [node, nodejs, node.js]
+  nvd: {ecosystem: generic, cpe: ["cpe:2.3:a:nodejs:node.js:{version}:*:*:*:*:*:*:*"]}
 synology-dsm:
   aliases: [synology-dsm, dsm, "synology dsm", "diskstation manager"]
+  nvd: {ecosystem: synology-dsm, cpe: ["cpe:2.3:o:synology:diskstation_manager:{version}:*:*:*:*:*:*:*"]}
 opsbuilder:
   aliases: [opsbuilder, "ops builder"]
 wordpress:
   aliases: [wordpress, wp]
+  nvd: {ecosystem: generic, cpe: ["cpe:2.3:a:wordpress:wordpress:{version}:*:*:*:*:*:*:*"]}
 phpmyadmin:
   aliases: [phpmyadmin]
+  nvd: {ecosystem: generic, cpe: ["cpe:2.3:a:phpmyadmin:phpmyadmin:{version}:*:*:*:*:*:*:*"]}
 postgresql:
   aliases: [postgresql, postgres, pg]
+  nvd: {ecosystem: generic, cpe: ["cpe:2.3:a:postgresql:postgresql:{version}:*:*:*:*:*:*:*"]}
 redis:
   aliases: [redis]
+  nvd: {ecosystem: generic, cpe: ["cpe:2.3:a:redis:redis:{version}:*:*:*:*:*:*:*"]}
+nginx:
+  aliases: [nginx]
+  nvd: {ecosystem: generic, cpe: ["cpe:2.3:a:f5:nginx_open_source:{version}:*:*:*:*:*:*:*",
+                                  "cpe:2.3:a:f5:nginx:{version}:*:*:*:*:*:*:*",
+                                  "cpe:2.3:a:nginx:nginx:{version}:*:*:*:*:*:*:*"]}
+apache-httpd:
+  aliases: [apache-httpd, httpd, apache2, "apache http server"]
+  nvd: {ecosystem: generic, cpe: ["cpe:2.3:a:apache:http_server:{version}:*:*:*:*:*:*:*"]}
+gitlab-ce:
+  aliases: [gitlab-ce, "gitlab community edition"]
+  nvd: {ecosystem: generic, cpe: ["cpe:2.3:a:gitlab:gitlab:{version}:*:*:*:community:*:*:*"]}
+openjdk:
+  aliases: [openjdk]
+  nvd: {ecosystem: generic, cpe: ["cpe:2.3:a:oracle:openjdk:{version}:*:*:*:*:*:*:*"]}
 "@demo-vendor/push-sdk":
   aliases: ["@demo-vendor/push-sdk", "demo-vendor push sdk"]
   purl: [pkg:npm/%40demo-vendor/push-sdk]

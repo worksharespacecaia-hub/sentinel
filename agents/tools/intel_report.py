@@ -100,6 +100,14 @@ def to_markdown(rep: dict) -> str:
     lines += ["## 事件摘要", s1["summary"], ""]
     if s1.get("summary_note"):
         lines += [f"_{s1['summary_note']}_", ""]
+    up = rep.get("update_of")
+    if up:
+        lines += [f"> 這是「{up.get('title') or up['id']}」（{up['id']}）的新進度；比對時沿用原事件的產品、利用條件與控制項。", ""]
+    if rep.get("updates"):
+        lines.append("## 事件進度")
+        lines += [f"- {u['date']} {u['title']}（{STATUS_ZH.get(u['status'], u['status'])}）：{u['conclusion']}"
+                  for u in rep["updates"]]
+        lines.append("")
     if "3_affected" in b:
         lines += ["## 受影響項目", "| 資產 | 我們的狀況 | 比對依據 | 結論 | 風險 |", "|------|----------|---------|------|------|"]
         for r in b["3_affected"]:

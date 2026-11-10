@@ -17,6 +17,21 @@ PUBLIC_RISK_KEYS = ("id", "finding_ids", "asset_id", "title", "category", "level
                     "level_floor", "provisional_basis")
 
 
+def link_updates(intel_reports: list[dict], event_updates: dict[str, list[str]]) -> None:
+    """原事件報告列出新進度與其比對結論；新進度報告標示是哪個事件的後續（新進度已沿用原事件的比對依據）。"""
+    by_id = {r["event"]["id"]: r for r in intel_reports}
+    for orig_id, ids in event_updates.items():
+        orig = by_id.get(orig_id)
+        ups = [by_id[i] for i in ids if i in by_id]
+        if orig is not None:
+            orig["updates"] = [{"id": u["event"]["id"], "title": u["event"]["title"], "date": u["event"]["date"],
+                                "status": u["status"], "conclusion": u["conclusion"], "confidence": u["event"]["confidence"]}
+                               for u in ups]
+        for u in ups:
+            u["update_of"] = {"id": orig_id, "title": orig["event"]["title"] if orig else None,
+                              "status": orig["status"] if orig else None}
+
+
 def assemble(result: dict, *, run_id: str, scenario: str, trigger_source: str, scope: str, generated_at,
              execution_mode: str = "template", daily_intel_status: str = "skipped", llm: dict | None = None,
              cost: dict | None = None, open_alerts: list[dict] | None = None) -> dict:
@@ -36,6 +51,7 @@ def assemble(result: dict, *, run_id: str, scenario: str, trigger_source: str, s
         rep = build_report(m, risks_by_id, nodes, verification=result["verification"].get(m["event"]["id"]),
                            observed_at=observed, llm_text=(llm.get("intel") or {}).get(m["event"]["id"]))
         intel_reports.append(rep)
+    link_updates(intel_reports, result.get("event_updates") or {})
     real = [r for r in intel_reports if r["event"]["kind"] in ("archive", "live")]
     intel_summary = {
         "checked": len(intel_reports), "affected": sum(1 for r in intel_reports if r["affected_count"] > 0),
@@ -54,7 +70,8 @@ def assemble(result: dict, *, run_id: str, scenario: str, trigger_source: str, s
         "risks": risks,
         "events": [{"id": r["event"]["id"], "kind": r["event"]["kind"], "title": r["event"]["title"],
                     "affected_count": r["affected_count"], "max_level": r["max_level"], "status": r["status"],
-                    "demo": bool(r["event"].get("demo"))} for r in intel_reports],
+                    "demo": bool(r["event"].get("demo")), "updates": [u["id"] for u in r.get("updates", [])],
+                    "update_of": (r.get("update_of") or {}).get("id")} for r in intel_reports],
         "proposed_controls": [pc for e in result["events"] for pc in e.get("proposed_controls", [])],
         "open_alerts": open_alerts or [], "intel_summary": intel_summary, "daily_intel_status": daily_intel_status,
         "cost": cost or {"total_usd": 0.0, "per_agent": {}, "cache_hit_rate": None},

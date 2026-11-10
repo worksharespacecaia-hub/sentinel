@@ -76,40 +76,49 @@ def validate_url(url: str, allowlist: list[str], resolver: Resolver = default_re
     return url
 
 
-def fetch(url: str, allowlist: list[str], *, transport=None, resolver: Resolver = default_resolver) -> FetchResult:
-    """transport(url) → (status, headers: dict, body: bytes)。預設使用 httpx（不跟隨 redirect，由本函式逐次驗證）。"""
+def fetch(url: str, allowlist: list[str], *, transport=None, resolver: Resolver = default_resolver,
+          max_bytes: int = MAX_BYTES, headers: dict[str, str] | None = None,
+          timeout: float = TIMEOUT_SECONDS) -> FetchResult:
+    """transport(url) → (status, headers: dict, body: bytes)。預設使用 httpx（不跟隨 redirect，由本函式逐次驗證）。
+
+    max_bytes／timeout：個別官方資料集（CISA KEV 全集、回應較慢的 NVD API）可放寬；其餘限制不變。
+    headers：只給預設 transport（例如 NVD apiKey）；redirect 一樣只能到 allowlist 內的網域，呼叫端應只給該 API 的網域。
+    """
+    request_headers = dict(headers or {})
     if transport is None:
-        transport = _httpx_transport
+        def transport(u: str):
+            return _httpx_transport(u, max_bytes=max_bytes, headers=request_headers, timeout=timeout)
     current = url
     for _ in range(MAX_REDIRECTS + 1):
         validate_url(current, allowlist, resolver)
-        status, headers, body = transport(current)
-        headers = {k.lower(): v for k, v in headers.items()}
+        status, resp_headers, body = transport(current)
+        resp_headers = {k.lower(): v for k, v in resp_headers.items()}
         if status in (301, 302, 303, 307, 308):
-            location = headers.get("location")
+            location = resp_headers.get("location")
             if not location:
                 raise FetchRejected("redirect 缺少 Location")
             current = urljoin(current, location)
             continue
-        ctype = headers.get("content-type", "").split(";")[0].strip().lower()
+        ctype = resp_headers.get("content-type", "").split(";")[0].strip().lower()
         if ctype and ctype not in TEXT_TYPES:
             raise FetchRejected(f"不接受的內容型態 {ctype}")
-        if len(body) > MAX_BYTES:
-            raise FetchRejected("回應超過 2 MB")
+        if len(body) > max_bytes:
+            raise FetchRejected(f"回應超過 {max_bytes // (1024 * 1024)} MB")
         return FetchResult(url=current, status=status, text=body.decode("utf-8", errors="replace"), content_type=ctype)
     raise FetchRejected("redirect 超過 3 次")
 
 
-def _httpx_transport(url: str):
+def _httpx_transport(url: str, *, max_bytes: int = MAX_BYTES, headers: dict[str, str] | None = None,
+                     timeout: float = TIMEOUT_SECONDS):
     import httpx
 
-    with httpx.Client(timeout=TIMEOUT_SECONDS, follow_redirects=False,
-                      headers={"User-Agent": "sentinel-demo-intel/0.1"}) as client:
+    with httpx.Client(timeout=timeout, follow_redirects=False,
+                      headers={"User-Agent": "sentinel-demo-intel/0.1", **(headers or {})}) as client:
         with client.stream("GET", url) as resp:
             chunks, size = [], 0
             for chunk in resp.iter_bytes():
                 size += len(chunk)
-                if size > MAX_BYTES:
-                    raise FetchRejected("回應超過 2 MB")
+                if size > max_bytes:
+                    raise FetchRejected(f"回應超過 {max_bytes // (1024 * 1024)} MB")
                 chunks.append(chunk)
             return resp.status_code, dict(resp.headers), b"".join(chunks)

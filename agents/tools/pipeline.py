@@ -12,7 +12,7 @@ from tools.attack_path import find_paths
 from tools.common import INTEL_DIR, iso
 from tools.findings import build_findings
 from tools.graph_builder import build_graph, graph_to_json
-from tools.intel_match import match_event, merge_findings, stack_complete
+from tools.intel_match import inherit_updates, match_event, merge_findings, stack_complete
 from tools.intel_verify import load_events, verify_event
 from tools.lights import LABEL, compute_light
 from tools.loaders import TargetData, load_target
@@ -30,6 +30,7 @@ class EvalInput:
     intel_kinds: tuple[str, ...] = ("archive", "advisory")      # daily：真實已收錄事件＋已知公告
     extra_event_dirs: list[Path] = field(default_factory=list)
     live_events: list[dict] = field(default_factory=list)
+    auto_advisories: list[dict] = field(default_factory=list)   # intel-watch 由 CISA KEV＋NVD 產生的公告（正式執行才帶入）
     deployments: list[dict] | None = None
     deployments_file: Path | None = None       # A0 Job 抓的 GitHub Deployments；沒有時用離線 fixture
     prev_risks: dict[str, dict] = field(default_factory=dict)
@@ -46,6 +47,7 @@ def event_sources(inp: EvalInput) -> list[dict]:
         raw += load_events(INTEL_DIR / "archive")
     if "advisory" in inp.intel_kinds:
         raw += load_events(INTEL_DIR / "advisories")
+        raw += inp.auto_advisories
     if "demo" in inp.intel_kinds:
         raw += load_events(INTEL_DIR / "demo-events")
     for d in inp.extra_event_dirs:
@@ -71,18 +73,22 @@ def evaluate(inp: EvalInput) -> dict:
     events = [v["event"] for v in verified]
     verification = {v["event"]["id"]: v["verification"] for v in verified}
     sdk_advisories = [{**p, "event_id": e["id"]} for e in events for p in e.get("products", []) if p.get("target") == "app_sdk"]
+    # 事件新進度沿用原事件的產品、利用條件與控制項（原事件本身不改）
+    event_updates = inherit_updates(events)
     kev = {c for e in events for p in e.get("products", []) if p.get("known_exploited") for c in e.get("cves", [])}
 
     a2 = build_findings(data, g, recon, kev=kev, sdk_advisories=[])
+    kev = a2["kev"]                                            # 已收錄事件宣告的 ∪ CISA KEV 全集
     findings = a2["findings"]
     matches = []
     for ev in events:
-        m = match_event(ev, data=data, g=g, control_results=a2["controls"], findings=findings, coverage=recon["coverage"])
+        m = match_event(ev, data=data, g=g, control_results=a2["controls"], findings=findings, coverage=recon["coverage"],
+                        kev=kev)
         findings = merge_findings(findings, m["findings"])
         matches.append(m)
     # 第二輪：控制項／類別命中需要看到所有 finding（例如 clone_app）
     matches = [match_event(m["event"], data=data, g=g, control_results=a2["controls"], findings=findings,
-                           coverage=recon["coverage"]) for m in matches]
+                           coverage=recon["coverage"], kev=kev) for m in matches]
     for m in matches:
         mx = verification.get(m["event"]["id"], {}).get("max_level")
         if mx:
@@ -109,7 +115,8 @@ def evaluate(inp: EvalInput) -> dict:
                 "deadline_hours": 24, "solution": None, "status": "open", "first_seen": iso(inp.as_of),
                 "last_evaluated": iso(inp.as_of), "verification_evidence": [], "evidence": s["evidence"]})
 
-    data_issues = [*data.data_issues, *a2["data_issues"], *([scoring_issue] if scoring_issue else [])]
+    # coverage_issues（KEV／NVD 涵蓋不足）只是註記：required=False，不影響完整性與燈號
+    data_issues = [*data.data_issues, *a2["data_issues"], *a2["coverage_issues"], *([scoring_issue] if scoring_issue else [])]
     complete = not any(i.get("required") and i["status"] in ("missing", "stale") for i in data.data_issues) and not a2["data_issues"]
     evaluated = set(g.nodes) | set(recon.get("saas_registered", []))
     risks += mark_fixed(risks, inp.prev_risks, complete=complete, evaluated_assets=evaluated, as_of=inp.as_of)
@@ -121,5 +128,5 @@ def evaluate(inp: EvalInput) -> dict:
         "verification": verification, "matches": matches, "paths": paths, "risks": risks, "signals": signals,
         "light": light, "light_reasons": reasons, "light_label": LABEL[light], "data_issues": data_issues,
         "complete": complete, "stack_complete": stack_complete(data, recon["coverage"]), "sdk_advisories": sdk_advisories,
-        "scoring": scoring,
+        "scoring": scoring, "event_updates": event_updates,
     }

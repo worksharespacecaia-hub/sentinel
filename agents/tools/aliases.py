@@ -39,6 +39,22 @@ def normalize(name: str | None, *, path: Path | None = None) -> str | None:
     return key
 
 
+@lru_cache(maxsize=4)
+def _nvd(path: str) -> dict[str, dict]:
+    data = yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
+    out = {}
+    for canonical, spec in data.items():
+        nvd = (spec or {}).get("nvd")
+        if isinstance(nvd, dict) and nvd.get("cpe"):
+            out[canonical] = {"ecosystem": nvd.get("ecosystem") or "generic", "cpe": [str(c) for c in nvd["cpe"]]}
+    return out
+
+
+def nvd_products(*, path: Path | None = None) -> dict[str, dict]:
+    """正規名稱 → {ecosystem, cpe: [含 {version} 的 CPE 2.3 範本]}；沒有列 nvd 的產品不查 NVD。"""
+    return dict(_nvd(str(path or INTEL_DIR / "aliases.yaml")))
+
+
 _IMAGE_RE = re.compile(r"^(?P<repo>[a-z0-9./_-]+):(?P<tag>[A-Za-z0-9._-]+)$")
 
 

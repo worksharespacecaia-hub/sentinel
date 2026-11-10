@@ -177,7 +177,7 @@ class Source(_Model):
     verified: bool = False
     verified_at: str | None = None
     content_hash: str | None = None
-    verification_basis: Literal["live", "archived", "demo", "unverified"] = "unverified"
+    verification_basis: Literal["live", "archived", "demo", "unverified", "official_api"] = "unverified"
 
 
 class IntelEvent(_Model):

@@ -17,6 +17,7 @@ from tools.budget import budget_for
 from tools.cache import LLMCache, ReplayStore
 from tools.common import AGENTS_DIR, SENTINEL_ROOT, parse_time, read_json
 from tools.daily_intel import load_daily_intel
+from tools.intel_watch import load_auto_advisories
 from tools.loaders import FIXTURE_SCANNERS, FIXTURE_TARGET
 from tools.pipeline import EvalInput
 from tools.trace import Tracer
@@ -108,8 +109,12 @@ class RunCtx:
         # daily-intel（LLM）的輸出不可信：先清理、驗證格式，強制為 live 事件
         live = load_daily_intel(self.out / "intel-daily.json")[0] if self.scenario == "daily" else []
         prev = read_json(self.data_dir / "daily" / "state" / "risks.json", {}) if self.scope == "daily" else {}
+        # intel-watch 由 CISA KEV＋NVD 產生的公告只在正式執行帶入；情境使用凍結資料，不混入當下的真實公告
+        auto = load_auto_advisories(self.data_dir / "intel-watch.json") \
+            if self.scope in ("daily", "advisory") and "advisory" in kinds else []
         return EvalInput(target_root=self.target_root, as_of=self.as_of, scanners_dir=self.scanners_dir,
                          intel_kinds=kinds, extra_event_dirs=extra, live_events=live, prev_risks=prev or {},
+                         auto_advisories=auto,
                          signal_overrides=overrides or None, target_sha=self.target_sha,
                          deployments_file=self.deployments_file, **kw)
 
@@ -160,12 +165,17 @@ def build_ctx(*, mode: str | None = None, scenario: str | None = None) -> RunCtx
 
 
 def reusable_scanners(target_sha: str | None, as_of: datetime) -> Path | None:
-    """沿用 daily/state/scanners：只有 manifest 的 target_sha 相同、狀態 ok 且未過期才可沿用；否則回傳 None（記為 missing）。"""
+    """沿用 daily/state/scanners：只有 manifest 的 target_sha 相同、狀態 ok 且未過期才可沿用；否則回傳 None（記為 missing）。
+
+    kev／nvd 是輔助資料，失敗或過期不影響其他掃描結果的沿用（缺少時報告註明涵蓋不足）。
+    """
+    from tools.scan_normalize import OPTIONAL_TOOLS
     d = DATA_DIR / "daily" / "state" / "scanners"
     manifests = [read_json(p) for p in d.glob("*.manifest.json")] if d.is_dir() else []
-    if not manifests:
+    required = [m for m in manifests if (m or {}).get("job") not in {f"scanners-{t}" for t in OPTIONAL_TOOLS}]
+    if not required:
         return None
-    for m in manifests:
+    for m in required:
         until = parse_time(m.get("valid_until"))
         if m.get("status") != "ok" or m.get("target_sha") != target_sha or until is None or until < as_of:
             return None

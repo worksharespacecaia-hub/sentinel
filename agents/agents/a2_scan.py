@@ -14,12 +14,12 @@ def run(ctx: RunCtx) -> dict:
     tr.emit("start", "弱點掃描解讀")
     data = load_target(ctx.target_root, as_of=ctx.as_of, scanners_dir=ctx.scanners_dir, target_sha=ctx.target_sha,
                        deployments_file=ctx.deployments_file)
-    for tool in ("gitleaks", "trivy", "checkov"):
+    for tool in ("gitleaks", "trivy", "checkov", "kev", "nvd"):
         st = (data.scanners.get(tool) or {}).get("status", "missing")
         tr.emit("tool", f"{tool}：{st}")
     recon = reconcile(data)
     g = build_graph(data, recon)
-    a2 = build_findings(data, g, recon, kev=set())
+    a2 = build_findings(data, g, recon, kev=set())   # CISA KEV 全集由 build_findings 從 kev 掃描結果併入
     tasks = explanation_tasks(a2["findings"], lambda f: CATEGORY_SUBAGENT.get(f["category"]))
     results = ctx.runner("a2").run(tasks)
     expl = flatten_explanations(results)
