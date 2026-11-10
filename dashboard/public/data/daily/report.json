@@ -1,19 +1,13 @@
 {
-  "run_id": "42777737520",
+  "run_id": "42778339841",
   "scenario": "daily",
   "trigger_source": "manual",
   "scope": "daily",
   "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
   "completeness": "complete",
-  "data_issues": [
-    {
-      "source": "daily-intel",
-      "status": "failed",
-      "impact": "今日新聞情資未更新"
-    }
-  ],
-  "generated_at": "2026-11-10T07:50:14Z",
-  "as_of": "2026-11-10T07:50:14Z",
+  "data_issues": [],
+  "generated_at": "2026-11-10T07:55:20Z",
+  "as_of": "2026-11-10T07:55:20Z",
   "light": "red",
   "light_reasons": [
     "14 個未處理的高風險"
@@ -141,7 +135,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -220,7 +214,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -300,7 +294,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -375,7 +369,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -445,7 +439,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -519,7 +513,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -580,7 +574,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -647,7 +641,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -708,7 +702,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -775,7 +769,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -832,7 +826,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -889,7 +883,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -946,7 +940,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -998,7 +992,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1068,7 +1062,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1129,7 +1123,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1190,7 +1184,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1253,7 +1247,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1314,7 +1308,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1375,7 +1369,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1436,7 +1430,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1498,7 +1492,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1556,7 +1550,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1615,7 +1609,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1678,7 +1672,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1736,7 +1730,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1787,7 +1781,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1838,7 +1832,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1900,7 +1894,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1962,7 +1956,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -2024,7 +2018,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -2098,7 +2092,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -2139,7 +2133,7 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -2180,7 +2174,7 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -2221,7 +2215,7 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -2257,7 +2251,7 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -2298,7 +2292,7 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -2329,7 +2323,7 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -2360,7 +2354,7 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-10T07:50:14Z",
+      "last_evaluated": "2026-11-10T07:55:20Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -2445,7 +2439,7 @@
     "real_checked": 6,
     "real_affected": 6
   },
-  "daily_intel_status": "failed",
+  "daily_intel_status": "ok",
   "cost": {
     "total_usd": 0.0,
     "per_agent": {
