@@ -12,7 +12,8 @@ from tools.signals import ORDER_INFO_RE, evaluate
 def run(ctx: RunCtx) -> dict:
     tr = ctx.tracer("a3")
     tr.emit("start", "早期訊號")
-    data = load_target(ctx.target_root, as_of=ctx.as_of, scanners_dir=None, target_sha=ctx.target_sha)
+    data = load_target(ctx.target_root, as_of=ctx.as_of, scanners_dir=None, target_sha=ctx.target_sha,
+                       deployments_file=ctx.deployments_file)
     inp = ctx.eval_input()
     for k, v in (inp.signal_overrides or {}).items():
         data.signals[k] = [*data.signals.get(k, []), *v]

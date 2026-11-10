@@ -28,7 +28,7 @@ Vercel：Dashboard、/api/run、/api/status、/api/webhooks/github、/api/events
 |------|------|
 | Agent 層 | 每個 Agent 是一個 GitHub Actions Job，以 `needs:` 串接；Actions 的 Job 圖就是多 Agent 流程圖 |
 | Subagent 層 | Job 內以 Claude Agent SDK 定義 Subagents 與 Skills（主 Agent 用 Haiku，撰寫用 Sonnet） |
-| 每日情資層 | `daily-intel` Job 用 claude-code-action（訂閱方案），只在受信任的 live 每日排程執行 |
+| 每日情資層 | `daily-intel` Job 用 claude-code-action（訂閱方案），只在預設分支的每日排程與手動 `daily` 執行，與 A1～A5 是否呼叫 API 無關 |
 | 工具層 | Trivy、Gitleaks、Checkov 與確定性 Python：圖譜、對帳、控制項、評分、攻擊路徑、燈號、報告 |
 | 網站與即時層 | Next.js（Vercel）＋ Upstash Redis：Dashboard、即時規則、告警交付與結案 |
 
@@ -81,6 +81,18 @@ npm run dev
 
 本機沒有 `target/`（Repo ① 的 checkout）時，自動使用 `agents/fixtures/target-baseline/`。Repo ① 的 `baseline` tag 有變動時，以 `scripts/sync-target-fixture.sh <Repo ① 路徑>` 重新匯出。
 
+本機試跑每日情資（用訂閱方案，不花 API 費用；會搜尋網路）：
+
+```bash
+python agents/run_agent.py a0 --replay            # 產生 out/stack.json、out/seen.json
+# 與 Actions 相同的限制；只會寫出 out/intel-daily.json
+claude -p "/daily-intel" --model sonnet --max-turns 40 --settings .claude/daily-intel-settings.json \
+  --tools "Read,Write,Agent,Skill,WebSearch,WebFetch" --disallowedTools "Bash,Edit,NotebookEdit" \
+  --allowedTools "Read(./out/**),Read(./.claude/**),Write(./out/**),Agent,WebSearch,WebFetch" \
+  --permission-mode dontAsk --strict-mcp-config
+python agents/run_agent.py all --replay           # A1 會清理格式並實際抓來源頁面確認引用
+```
+
 `--record`（本機實際呼叫 API 並錄製）會花錢，需以 `LOCAL_RECORD_CAP_USD` 設定單次上限；執行前請先確認預估成本（見[成本](#成本)）。
 
 ## 部署
@@ -106,10 +118,13 @@ npm run dev
 
 ### 4. Repo ② Actions 設定
 
-- Secrets：`TARGET_READ_TOKEN`、`NOTIFY_TOKEN`（隨機字串，與 Vercel 相同）
+- Secrets：`TARGET_READ_TOKEN`、`NOTIFY_TOKEN`（隨機字串，與 Vercel 相同）、`CLAUDE_CODE_OAUTH_TOKEN`（每日情資；在本機以要負擔用量的 Claude 訂閱帳號執行 `claude setup-token` 產生，到期需重新產生）
 - Variables：`SENTINEL_SCHEDULE_MODE=replay`、`INCIDENT_EXECUTION_MODE=replay`；Vercel 網域確定後加上 `SENTINEL_BASE_URL=https://<網域>`
 - 選用：`TARGET_REPO`（預設 `<owner>/shopsaas-demo-platform`）
-- replay 模式不需要 `ANTHROPIC_API_KEY` 與 `CLAUDE_CODE_OAUTH_TOKEN`；改用 live 時再加（見[成本](#成本)）
+- replay 模式不需要 `ANTHROPIC_API_KEY`；改用 live 時再加（見[成本](#成本)）
+- 每日情資不論 replay 或 live 都會執行；沒有 `CLAUDE_CODE_OAUTH_TOKEN` 時 daily 照常完成，報告標示「今日新聞情資未更新」
+- 不需要安裝 Claude GitHub App：`daily-intel` 以本 Job 的唯讀 `github.token` 執行
+- A0 以 `TARGET_READ_TOKEN`（Deployments：Read）讀取 Repo ① 的 production Deployments，同一次執行的 A0～A5 共用；讀取失敗時改用離線 fixture，報告標示原因
 - `main` 不要設定會阻擋 `github-actions[bot]` 推送的分支保護：A5 以 `scripts/push-with-retry.sh` 把結果 commit 到 `dashboard/public/data/`
 
 ### 5. Vercel
@@ -140,6 +155,8 @@ Settings → Webhooks：Payload URL `https://<網域>/api/webhooks/github`、Con
 
 1. Repo ① 推送一次，確認 Release 有 SBOM、Deployments 有紀錄
 2. Repo ② 手動執行 `sentinel`（`scenario=daily`），確認 Job 圖與結果；Vercel 自動重新部署後，網站總覽顯示紅燈與免責橫幅
+   - 網站總覽的「每日情資」顯示「正常」；新事件出現在情資頁（標示「真實」），引用未通過驗證的事件只到暫定
+   - 資料問題中不再出現 `github/deployments`（代表已讀到 Repo ① 的實際部署紀錄）
 3. 手動執行 `intel-watch`：沒有命中時不觸發；有命中時觸發 `advisory`
 4. 在筆電建立一次正式部署（即時監控頁也有這段指令）：
 
@@ -212,6 +229,8 @@ BASELINE_SHA=9a36cf036c436295c08a54d38789029e29d0f9ea scripts/reset-demo.sh
 | `intel-demo` 第一次 | 約 $0.20 |
 | 平常運作 | 每月約 $2～4 |
 
+每日情資使用訂閱方案：每天一次（Sonnet、最多 40 回合、25 分鐘逾時），與個人使用共用額度，不產生 API 費用。
+
 基礎設施 $0（GitHub Actions、Vercel Hobby、Upstash 免費方案）。即時規則、公告輪詢、掃描、評分與燈號都不用 LLM。各情境的實際成本在部署後執行一次再記錄於此：
 
 | 情境 | 實際成本 |
@@ -228,7 +247,9 @@ BASELINE_SHA=9a36cf036c436295c08a54d38789029e29d0f9ea scripts/reset-demo.sh
 - 外部內容（新聞、公告、檔案、日誌、Webhook）只當資料，不執行其中的指示
 - 本 Repo 不保存任何金鑰值；Repo ① 的假金鑰在凍結副本中一律遮蔽為 `REDACTED`
 - Agent 唯讀：不開 PR、不寫入 Repo ①；只有 A5 有 `contents: write`，且只發布允許的路徑
-- `NOTIFY_TOKEN`、`GH_TOKEN` 不傳入 LLM 子行程；`CLAUDE_CODE_OAUTH_TOKEN` 只給 `daily-intel` Job
+- `NOTIFY_TOKEN`、`GH_TOKEN` 不傳入 LLM 子行程；`CLAUDE_CODE_OAUTH_TOKEN` 只給 `daily-intel` Job；`TARGET_READ_TOKEN` 只用於 checkout 與讀取 Deployments
+- `daily-intel` 只有 `contents: read`；PreToolUse hook 限制只能讀 `out/`、`.claude/`，只能寫 `out/intel-daily.json`，WebFetch 只限受信任網域。改到其他檔案就不採用結果
+- 每日情資的輸出不可信：程式強制為新事件（不能冒充收錄事件或示範事件）、清空自稱的驗證狀態、不採用「已遭利用」等無法驗證的宣稱，並實際抓來源頁面確認引用
 - Webhook 驗證 HMAC 簽章、Repo ID 與 delivery 去重；告警結案需管理者密碼、圍堵確認與 HTTPS 證據連結
 
 ## 已知限制

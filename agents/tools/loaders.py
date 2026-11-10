@@ -7,6 +7,7 @@ from __future__ import annotations
 import csv
 import io
 import json
+import re
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -70,7 +71,7 @@ def _jsonl(text: str) -> list[dict]:
 
 def load_target(root: Path, *, as_of: datetime, target_sha: str | None = None,
                 deployments: list[dict] | None = None, scanners_dir: Path | None = None,
-                max_age_days: int = DEFAULT_MAX_AGE_DAYS) -> TargetData:
+                deployments_file: Path | None = None, max_age_days: int = DEFAULT_MAX_AGE_DAYS) -> TargetData:
     root = Path(root)
     fixture_info = read_json(root / ".fixture.json", {}) or {}
     data = TargetData(root=root, target_sha=target_sha or fixture_info.get("target_sha") or "unknown", as_of=as_of)
@@ -119,10 +120,9 @@ def load_target(root: Path, *, as_of: datetime, target_sha: str | None = None,
 
     snap_deploys = (data.snapshots.get("deployments.json") or {}).get("deployments", [])
     if deployments is None:
-        gh = read_json(FIXTURE_GITHUB / "deployments.json", {"deployments": []})
-        deployments = gh.get("deployments", [])
-        data.data_issues.append({"source": "github/deployments", "status": "reused",
-                                 "impact": "使用離線部署紀錄 fixture（未連 GitHub API）"})
+        deployments, issue = github_deployments(deployments_file)
+        if issue:
+            data.data_issues.append(issue)
     data.deployments = [*expand_github_deployments(deployments), *snap_deploys]
 
     data.scanners = load_scanners(scanners_dir) if scanners_dir else {}
@@ -142,8 +142,28 @@ def _require_revocation_evidence(data: TargetData) -> None:
                                      "impact": "宣稱已撤銷但沒有撤銷證據，仍視為有效金鑰"})
 
 
+def github_deployments(path: Path | None) -> tuple[list[dict], dict | None]:
+    """A0 Job 由 GitHub API 抓到的部署紀錄（scripts/fetch-deployments.py）；沒有或失敗時改用離線 fixture 並記錄原因。"""
+    fetched = read_json(path) if path else None
+    if isinstance(fetched, dict) and fetched.get("status") == "ok" and isinstance(fetched.get("deployments"), list):
+        return fetched["deployments"], None
+    fixture = (read_json(FIXTURE_GITHUB / "deployments.json", {"deployments": []}) or {}).get("deployments", [])
+    if isinstance(fetched, dict) and fetched.get("status") == "failed":
+        reason = str(fetched.get("error") or "未知錯誤")[:80]
+        return fixture, {"source": "github/deployments", "status": "reused",
+                         "impact": f"GitHub Deployments API 讀取失敗（{reason}），改用離線部署紀錄 fixture"}
+    return fixture, {"source": "github/deployments", "status": "reused",
+                     "impact": "使用離線部署紀錄 fixture（未連 GitHub API）"}
+
+
+SERVICE_ID_RE = re.compile(r"^[a-z0-9][a-z0-9._-]{1,80}$")
+
+
 def expand_github_deployments(deployments: list[dict]) -> list[dict]:
-    """GitHub Deployment → 每個 service_id 一筆；只採用 production + success 且 payload 明確列出的服務。"""
+    """GitHub Deployment → 每個 service_id 一筆；只採用 production + success 且 payload 明確列出的服務。
+
+    payload 由受評估的 Repo 寫入，只當資料：service_id 必須是合法 ID，其他欄位不採用。
+    """
     out = []
     for d in deployments:
         payload = d.get("payload") or {}
@@ -154,7 +174,10 @@ def expand_github_deployments(deployments: list[dict]) -> list[dict]:
                 payload = {}
         if d.get("environment") != "production" or d.get("state") != "success":
             continue
-        for sid in payload.get("service_ids") or []:
+        sids = payload.get("service_ids") if isinstance(payload, dict) else None
+        for sid in sids if isinstance(sids, list) else []:
+            if not isinstance(sid, str) or not SERVICE_ID_RE.match(sid):
+                continue
             out.append({"service_id": sid, "environment": "production", "state": "success",
                         "source_sha": payload.get("source_sha"), "created_at": d.get("created_at"),
                         "creator": d.get("creator"), "source_repo": "shopsaas-demo-platform"})

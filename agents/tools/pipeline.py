@@ -30,6 +30,7 @@ class EvalInput:
     extra_event_dirs: list[Path] = field(default_factory=list)
     live_events: list[dict] = field(default_factory=list)
     deployments: list[dict] | None = None
+    deployments_file: Path | None = None       # A0 Job 抓的 GitHub Deployments；沒有時用離線 fixture
     prev_risks: dict[str, dict] = field(default_factory=dict)
     open_alerts: list[dict] = field(default_factory=list)
     online_verify: bool = False
@@ -54,7 +55,8 @@ def event_sources(inp: EvalInput) -> list[dict]:
 
 def evaluate(inp: EvalInput) -> dict:
     data: TargetData = load_target(inp.target_root, as_of=inp.as_of, scanners_dir=inp.scanners_dir,
-                                   deployments=inp.deployments, target_sha=inp.target_sha)
+                                   deployments=inp.deployments, deployments_file=inp.deployments_file,
+                                   target_sha=inp.target_sha)
     if inp.signal_overrides:
         for k, v in inp.signal_overrides.items():
             data.signals[k] = [*data.signals.get(k, []), *v]
