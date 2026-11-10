@@ -27,6 +27,20 @@ export default async function IntelDetail({ params, searchParams }: {
       <p>{[s1.label, s1.confidence, ...s1.cves].map((t: string) => <span key={t} className="tag">{t}</span>)}</p>
       {s1.fixture_note && <div className="panel sim">{s1.fixture_note}</div>}
       <div className="panel"><strong>比對結論：</strong>{b["2_conclusion"].text}</div>
+      {rep.update_of && (
+        <div className="panel">
+          這是 <Link href={`/intel/${encodeURIComponent(rep.update_of.id)}${source.simulated ? `?source=${encodeURIComponent(source.key)}` : ""}`}>{rep.update_of.title ?? rep.update_of.id}</Link> 的新進度；比對時沿用原事件的產品、利用條件與控制項。
+        </div>
+      )}
+      {(rep.updates ?? []).length > 0 && (
+        <div className="panel">
+          <h2 style={{ marginTop: 0 }}>事件進度</h2>
+          <ul>{rep.updates.map((u: any) => (
+            <li key={u.id}>{u.date}{" "}
+              <Link href={`/intel/${encodeURIComponent(u.id)}${source.simulated ? `?source=${encodeURIComponent(source.key)}` : ""}`}>{u.title}</Link>
+              （{STATUS_TEXT[u.status] ?? u.status}）：{u.conclusion}</li>))}</ul>
+        </div>
+      )}
 
       <div className="panel">
         <h2 style={{ marginTop: 0 }}>事件摘要</h2>

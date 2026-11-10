@@ -29,7 +29,7 @@ Vercel：Dashboard、/api/run、/api/status、/api/webhooks/github、/api/events
 | Agent 層 | 每個 Agent 是一個 GitHub Actions Job，以 `needs:` 串接；Actions 的 Job 圖就是多 Agent 流程圖 |
 | Subagent 層 | Job 內以 Claude Agent SDK 定義 Subagents 與 Skills（主 Agent 用 Haiku，撰寫用 Sonnet）；每日排程與手動 daily 時，A2、A4、A5 的說明文字由 `claude-analysis` Job（claude-code-action，訂閱方案）撰寫 |
 | 每日情資層 | `daily-intel` Job：程式先從可信資安網站的 RSS 與 CISA KEV 抓近 72 小時文章（`news_collect.py`），再由 claude-code-action（訂閱方案）判讀；只在預設分支的每日排程與手動 `daily` 執行 |
-| 工具層 | Trivy、Gitleaks、Checkov 與確定性 Python：圖譜、對帳、控制項、評分、攻擊路徑、燈號、報告 |
+| 工具層 | Trivy、Gitleaks、Checkov、CISA KEV 全集、NVD（依 CPE 查執行環境與設備的 CVE，本地重新比對版本）與確定性 Python：圖譜、對帳、控制項、評分、攻擊路徑、燈號、報告 |
 | 網站與即時層 | Next.js（Vercel）＋ Upstash Redis：Dashboard、即時規則、告警交付與結案 |
 
 ## 四種觸發時機
@@ -37,7 +37,7 @@ Vercel：Dashboard、/api/run、/api/status、/api/webhooks/github、/api/events
 | 觸發 | 時機 | 做什麼 | 是否用 LLM |
 |------|------|-------|-----------|
 | ① CI/CD 把關 | 每次 PR、每次部署（Repo ①） | 掃描變更，新增金鑰等高風險擋下 PR；部署時產出 SBOM | 否 |
-| ② 事件觸發 | 每小時輪詢公告（`intel-watch.yml`） | 新公告比對已存的 SBOM 與圖譜，命中才觸發 `sentinel.yml`（`scenario=advisory`）只調查受影響資產 | 第 1 層否；命中後才用 |
+| ② 事件觸發 | 每小時輪詢公告（`intel-watch.yml`） | 手寫公告，以及 CISA KEV 近 30 天新列入、經 NVD 查到涉及我們產品的 CVE（程式自動產生公告）；比對已存的 SBOM 與圖譜，命中才觸發 `sentinel.yml`（`scenario=advisory`）只調查受影響資產 | 第 1 層否；命中後才用 |
 | ③ 每日例行 | 每天台灣時間 08:00（`sentinel.yml`） | 全部資產重新評估：影子 IT、金鑰輪替、設定漂移、備份、App 版本分布 | 只處理差異 |
 | ④ 即時規則 | 事件一出現（Vercel） | 非 Pipeline 部署（RT-001）、凌晨大量讀取（RT-002）、多品牌詐騙回報（RT-003）→ 告警、建立 Issue、觸發 `incident.yml` | 規則判斷不用；告警後才產生圍堵建議 |
 
@@ -121,7 +121,7 @@ python agents/run_agent.py all --replay           # A1 清理格式，引用比�
 
 - Secrets：`TARGET_READ_TOKEN`、`NOTIFY_TOKEN`（隨機字串，與 Vercel 相同）、`CLAUDE_CODE_OAUTH_TOKEN`（每日情資；在本機以要負擔用量的 Claude 訂閱帳號執行 `claude setup-token` 產生，到期需重新產生）
 - Variables：`SENTINEL_SCHEDULE_MODE=replay`、`INCIDENT_EXECUTION_MODE=replay`；Vercel 網域確定後加上 `SENTINEL_BASE_URL=https://<網域>`
-- 選用：`TARGET_REPO`（預設 `<owner>/shopsaas-demo-platform`）
+- 選用：`TARGET_REPO`（預設 `<owner>/shopsaas-demo-platform`）；`NVD_API_KEY`（NVD 免費申請；沒有時查詢放慢為每 30 秒 5 次，daily 的 NVD 掃描約 2 分鐘）
 - replay 模式不需要 `ANTHROPIC_API_KEY`；要讓 A1～A5 實際呼叫 Claude，見下方「啟用 live」
 - 每日情資不論 replay 或 live 都會執行；沒有 `CLAUDE_CODE_OAUTH_TOKEN` 時 daily 照常完成，報告標示「今日新聞情資未更新」
 - 不需要安裝 Claude GitHub App：`daily-intel` 以本 Job 的唯讀 `github.token` 執行

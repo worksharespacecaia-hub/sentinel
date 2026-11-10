@@ -1,7 +1,7 @@
 """把掃描工具的原始輸出轉成已遮蔽的正規化格式（與 fixtures/scanners 相同），並附 manifest。
 
 工具「發現弱點」與「工具本身失敗」分開：原始輸出缺失或無法解析 → status=failed，不轉成零發現。
-用法：python agents/tools/scan_normalize.py <gitleaks|trivy|checkov> <raw-dir> <out-dir> --target-sha SHA --run-id ID
+用法：python agents/tools/scan_normalize.py <gitleaks|trivy|checkov|kev|nvd> <raw-dir> <out-dir> --target-sha SHA --run-id ID
 """
 from __future__ import annotations
 
@@ -54,7 +54,30 @@ def norm_checkov(raw_dir: Path) -> dict:
     return {"tool": "checkov", "failed_checks": failed}
 
 
-NORMALIZERS = {"gitleaks": norm_gitleaks, "trivy": norm_trivy, "checkov": norm_checkov}
+def norm_kev(raw_dir: Path) -> dict:
+    from tools.vulndb import normalize_kev
+    return normalize_kev(json.loads((raw_dir / "kev.json").read_text(encoding="utf-8")))
+
+
+def norm_nvd(raw_dir: Path) -> dict:
+    """vulndb.py 已只保留比對需要的欄位；這裡再確認格式，全部查詢失敗時視為工具失敗（不轉成零發現）。"""
+    raw = json.loads((raw_dir / "nvd.json").read_text(encoding="utf-8"))
+    results = raw.get("results")
+    if not isinstance(results, list):
+        raise ValueError("nvd.json 缺少 results")
+    keep = ("name", "version", "ecosystem", "templates", "asset_ids", "status", "queries", "cves")
+    results = [{k: r.get(k) for k in keep} for r in results if isinstance(r, dict) and r.get("name")]
+    if not results and not raw.get("uncovered"):
+        raise ValueError("nvd.json 沒有任何元件（資產清單可能缺失），不轉成零發現")
+    if results and not any(r["status"] == "ok" for r in results):
+        raise RuntimeError("NVD 查詢全部失敗")
+    return {"tool": "nvd", "tool_version": "NVD CVE API 2.0", "database_revision": raw.get("queried_at"),
+            "api_key": bool(raw.get("api_key")), "results": results, "uncovered": raw.get("uncovered") or []}
+
+
+NORMALIZERS = {"gitleaks": norm_gitleaks, "trivy": norm_trivy, "checkov": norm_checkov, "kev": norm_kev, "nvd": norm_nvd}
+# kev／nvd 是輔助資料：失敗時報告註明涵蓋不足，但不影響 gitleaks／trivy／checkov 的沿用與完整性判斷
+OPTIONAL_TOOLS = ("kev", "nvd")
 
 
 def main(argv=None) -> int:
