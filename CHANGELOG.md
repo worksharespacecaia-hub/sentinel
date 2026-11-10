@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.9.5 — 2026-11-10（異常行為偵測與偵測規則設定）
+
+- 「即時告警」頁改名「異常行為偵測」（網址 `/live` 不變；單則「告警」名詞不變）
+- 新增「偵測規則」頁 `/rules`（在「工程細節」）：管理者可調整啟用／停用、等級、燈號、去重時間、偵測時段、時間窗、倍數、門檻、允許的部署者；需管理者密碼、操作人與理由
+- 儲存寫回 `rules/realtime-settings.json` 一個 commit（base_sha 併發檢查）並同步 Redis，數秒內生效、不必重新部署；Redis 沒有設定時先用預設規則，並自動從 GitHub 修復
+- 正規表示式、資料表、資料來源與新的規則類型仍需改 `rules/realtime.yaml` 並經過審查
+- 尚未驗證：線上寫入 GitHub 與 Redis 的流程只有整合測試（本機 Docker Redis、假 GitHub API）
+
+## 0.9.4 — 2026-11-10（CVE 改由程式直接比對：CISA KEV、NVD、事件新進度、自動公告）
+
+- **KEV**：每日掃描新增 `kev`（CISA KEV 全集）；Trivy、NVD 與情資事件的 CVE 列入 KEV 即標為已遭實際利用並加分（daily-intel 的 LLM 宣稱仍不採用）
+- **NVD**：每日掃描新增 `nvd`；執行環境與設備（PHP、Node、nginx、Apache、PostgreSQL、Redis、GitLab、phpMyAdmin、WordPress、OpenJDK、Synology DSM）依 CPE 取候選 CVE，一律在本地重新比對版本（實測 NVD 會忽略 DSM 的 Update 編號，9 個候選中 4 個其實已修補）；只影響特定平台（例如 Windows）或「所有版本」的列為暫定、需確認
+- **事件新進度**：`is_update_of` 沿用原事件的產品、利用條件與控制項，版本範圍取聯集，原事件不改；原事件報告列出「事件進度」，網站與 Markdown 互相連結
+- **intel-watch**：每小時由 KEV 近 30 天新列入的 CVE 查 NVD，涉及我們產品的才產生公告（存在 `intel-watch.json`）；每 24 小時重查，NVD 更新就重新比對；命中先排入 queued，發布狀態後才派工，被派工的執行才讀得到公告
+- KEV／NVD 失敗或未涵蓋只是註記（`required=False`），不影響完整性、燈號與其他掃描結果的沿用；manifest 失敗或過期的掃描結果不再被載入；資產清單缺失時 NVD 不輸出零結果
+- intel-watch 第一次產生 `intel-watch.json` 時也會發布：原本以 `git diff` 判斷，看不到尚未追蹤的新檔案，狀態永遠不會 commit，自動公告也到不了 main
+- 選用 Secret：`NVD_API_KEY`（沒有時每 30 秒 5 次，daily 的 NVD 掃描約 2 分鐘）
+- 影響：以 demo 技術棧與真實 NVD 資料實測，每日報告新增 5 個高風險（3 個 Node 22.11.0、nginx、Apache）、NAS 由中升高，另新增 5 個中風險、3 個低風險；實際數字依當天 NVD 資料而定
+- 尚未驗證：新的 workflow 步驟（scanners 的 kev／nvd、intel-watch 發布後派工）還沒在 GitHub Actions 上實際執行
+
+## 0.9.3 — 2026-11-10（沒有比對依據的事件不再顯示「不受影響」）
+
+- 新聞事件沒有產品、CVE，也對應不到有檢查結果的控制項時，程式等於沒有比對任何資產；原本只要資產清單完整就判為不受影響（例如 2026-11-10 易遊網等 4 則新聞），改為「需確認」，結論寫明「無法自動判定」與原因
+- 待確認事項列出要人工判斷的內容與建議新增的控制項；daily-intel 保留 LLM 輸出的 `proposed_controls`（只留標題與理由文字，不能帶入既有控制項 ID），技能說明要求對應不到控制項時填寫
+- 已發布的報告不回溯修改，下一次每日評估起套用
+
 ## 0.9.2 — 2026-11-10（摘要數字可帶出來源）
 
 - 今日重點與行動報告的 CEO 摘要、決策中「N 個／件」可點，跳到行動報告「數字從哪來」並展開對應的風險或事件清單；對不上程式結果的數字標示警告
