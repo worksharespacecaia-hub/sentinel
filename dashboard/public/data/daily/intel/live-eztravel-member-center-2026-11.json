@@ -1,0 +1,115 @@
+{
+  "event": {
+    "id": "live-eztravel-member-center-2026-11",
+    "kind": "live",
+    "title": "易遊網會員中心遭攻擊，逾 69 萬人歷史訂單聯絡資料受影響",
+    "date": "2026-11-09",
+    "industry": "電商",
+    "attack_chain": [
+      "11 月 7 日會員中心出現外部異常網路攻擊",
+      "部分歷史訂單聯絡資料（姓名、電子郵件、聯絡電話、商品訂購資訊）遭不當取得",
+      "業者完成異常流量攔截與阻斷，並委請第三方資安團隊鑑識"
+    ],
+    "attck": [],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "confirmed",
+    "sources": [
+      {
+        "url": "https://www.inside.com.tw/article/42862-eztravel-member-center-breach-690k-order-contact-data",
+        "title": "易遊網遭駭，逾 69 萬人訂單聯絡資料外洩，業者稱不含信用卡與身分證字號",
+        "quote": "旅遊平台 易遊網 在 2026 年 11 月 9 日發布公告，表示 11 月 7 日偵測到會員中心出現外部異常網路攻擊，部分歷史訂單的聯絡資料遭不當取得，受影響人數超過 69 萬人。",
+        "published": "2026-11-10",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-10T12:22:28Z",
+        "content_hash": "sha256:8a4fd891c42df5bd6551a7bcf659319bde0984d5c0787f4539225e53df143fd2",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://www.ithome.com.tw/news/180354",
+        "title": "易遊網會員中心遭網路攻擊，逾69萬人歷史訂單聯絡資料受影響",
+        "quote": "易遊網會員中心遭網路攻擊，逾69萬人歷史訂單聯絡資料受影響",
+        "published": "2026-11-10",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-10T12:22:28Z",
+        "content_hash": "sha256:f98a7d3124992c64b87ccc26336ec997cd0aba0a94b59bee4e5ba8827b5cb017",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "不受影響：沒有符合的資產。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [],
+  "solutions": [],
+  "notice": null,
+  "status": "not_affected",
+  "evaluated_asset_ids": [],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "易遊網於 11 月 7 日偵測到會員中心出現外部異常網路攻擊，部分歷史訂單聯絡資料遭不當取得，受影響人數超過 69 萬人。業者表示不含信用卡卡號、安全碼、帳號登入密碼、身分證字號及護照號碼，並已通報主管機關及警政單位、委請第三方資安團隊調查。公告未說明攻擊手法與攻擊者身分。",
+  "blocks": {
+    "1_summary": {
+      "title": "易遊網會員中心遭攻擊，逾 69 萬人歷史訂單聯絡資料受影響",
+      "date": "2026-11-09",
+      "industry": "電商",
+      "attack_chain": [
+        "11 月 7 日會員中心出現外部異常網路攻擊",
+        "部分歷史訂單聯絡資料（姓名、電子郵件、聯絡電話、商品訂購資訊）遭不當取得",
+        "業者完成異常流量攔截與阻斷，並委請第三方資安團隊鑑識"
+      ],
+      "attck": [],
+      "cves": [],
+      "confidence": "已確認",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.inside.com.tw/article/42862-eztravel-member-center-breach-690k-order-contact-data",
+          "title": "易遊網遭駭，逾 69 萬人訂單聯絡資料外洩，業者稱不含信用卡與身分證字號",
+          "quote": "旅遊平台 易遊網 在 2026 年 11 月 9 日發布公告，表示 11 月 7 日偵測到會員中心出現外部異常網路攻擊，部分歷史訂單的聯絡資料遭不當取得，受影響人數超過 69 萬人。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-10T12:22:28Z"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/180354",
+          "title": "易遊網會員中心遭網路攻擊，逾69萬人歷史訂單聯絡資料受影響",
+          "quote": "易遊網會員中心遭網路攻擊，逾69萬人歷史訂單聯絡資料受影響",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-10T12:22:28Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "易遊網於 11 月 7 日偵測到會員中心出現外部異常網路攻擊，部分歷史訂單聯絡資料遭不當取得，受影響人數超過 69 萬人。業者表示不含信用卡卡號、安全碼、帳號登入密碼、身分證字號及護照號碼，並已通報主管機關及警政單位、委請第三方資安團隊調查。公告未說明攻擊手法與攻擊者身分。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "不受影響：沒有符合的資產。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": []
+    },
+    "7_status": {
+      "status": "not_affected",
+      "label": "不受影響"
+    }
+  }
+}

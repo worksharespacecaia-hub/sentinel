@@ -1,0 +1,115 @@
+{
+  "event": {
+    "id": "live-sega-arara-mail-service-2026-11",
+    "kind": "live",
+    "title": "日本郵件發送服務商 Arara 遭未授權存取，SEGA 外洩近 220 萬筆資料",
+    "date": "2026-11-10",
+    "industry": "SaaS",
+    "attack_chain": [
+      "Arara 郵件發送系統遭第三方未授權存取",
+      "電子報訂戶電子郵件地址及部分個資外洩",
+      "影響使用該服務的超過 380 家企業客戶"
+    ],
+    "attck": [],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180353",
+        "title": "SEGA集團因日本Arara資安事件外洩資料220萬筆",
+        "quote": "這次事件影響超過380家企業電子報發送客戶服務的客戶。",
+        "published": "2026-11-10",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-10T12:22:28Z",
+        "content_hash": "sha256:12427bb124ce06706a45543bb7c94400bea67ab5b77423705aee1b8c601bcb60",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://www.ithome.com.tw/news/180375",
+        "title": "【資安日報】11月10日，甫揭露的OpenSSH漏洞SSHole出現嘗試利用活動",
+        "quote": "Arara於10月底發生資安事件，可能造成超過8,100萬筆客戶資料外洩，影響逾380家企業，包括小學館、BIC Camera及摩斯漢堡等。",
+        "published": "2026-11-09",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-10T12:22:28Z",
+        "content_hash": "sha256:cf3ab0adc74b382dad55b21ce9d0ed5777caab0fcca744ad0b1b32c7020379c1",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "不受影響：沒有符合的資產。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [],
+  "solutions": [],
+  "notice": null,
+  "status": "not_affected",
+  "evaluated_asset_ids": [],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "委外郵件發送服務商 Arara 的系統遭第三方未授權存取，SEGA 及 SEGA FAVE 外洩電子報訂戶電子郵件地址 2,196,044 筆及隨信發送的個人資訊 92,273 筆。Arara 事件可能造成超過 8,100 萬筆客戶資料外洩，影響逾 380 家企業。",
+  "blocks": {
+    "1_summary": {
+      "title": "日本郵件發送服務商 Arara 遭未授權存取，SEGA 外洩近 220 萬筆資料",
+      "date": "2026-11-10",
+      "industry": "SaaS",
+      "attack_chain": [
+        "Arara 郵件發送系統遭第三方未授權存取",
+        "電子報訂戶電子郵件地址及部分個資外洩",
+        "影響使用該服務的超過 380 家企業客戶"
+      ],
+      "attck": [],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180353",
+          "title": "SEGA集團因日本Arara資安事件外洩資料220萬筆",
+          "quote": "這次事件影響超過380家企業電子報發送客戶服務的客戶。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-10T12:22:28Z"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/180375",
+          "title": "【資安日報】11月10日，甫揭露的OpenSSH漏洞SSHole出現嘗試利用活動",
+          "quote": "Arara於10月底發生資安事件，可能造成超過8,100萬筆客戶資料外洩，影響逾380家企業，包括小學館、BIC Camera及摩斯漢堡等。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-10T12:22:28Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "委外郵件發送服務商 Arara 的系統遭第三方未授權存取，SEGA 及 SEGA FAVE 外洩電子報訂戶電子郵件地址 2,196,044 筆及隨信發送的個人資訊 92,273 筆。Arara 事件可能造成超過 8,100 萬筆客戶資料外洩，影響逾 380 家企業。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "不受影響：沒有符合的資產。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": []
+    },
+    "7_status": {
+      "status": "not_affected",
+      "label": "不受影響"
+    }
+  }
+}
