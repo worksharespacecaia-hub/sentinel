@@ -228,7 +228,8 @@ jobs:
         run: |
           if [[ -s out/intel-daily.json ]]; then echo "已寫出 out/intel-daily.json（$(wc -c < out/intel-daily.json) bytes）"; exit 0; fi
           echo "::error::Claude 執行結束但沒有寫出 out/intel-daily.json"
-          python3 scripts/claude-error-summary.py "$EXEC_FILE"
+          find out -maxdepth 1 -type f -printf '%f %s bytes\n' | head -20
+          python3 scripts/claude-error-summary.py --with-result "$EXEC_FILE"
           exit 1
       - name: 確認 Claude 只寫了 out/
         run: |
