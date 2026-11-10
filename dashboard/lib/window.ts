@@ -7,6 +7,7 @@ import { createHash } from "node:crypto";
 import { CREATE_ALERT_LUA, K, SIM_ALERT_TTL, newStep, type Alert } from "./alertstore.ts";
 import { initialLineStep } from "./line.ts";
 import { evalLua, redis } from "./redis.ts";
+import { activeRules } from "./rule-store.ts";
 import {
   BASELINES, baselineFor, maskText, namespaceOf, rulesFor, staticMatch, timeCheck, validateEvent, windowMs,
   type Rule, type RtEvent,
@@ -128,6 +129,8 @@ export interface RuleResult { rule_id: string; outcome: Outcome; reason: string;
 export interface ProcessResult {
   event_id: string; namespace: string; rejected: string | null; results: RuleResult[]; alerts: string[];
   timeline: { event_received: string; rule_evaluated: string };
+  /** 這次判斷用的偵測規則版本（「偵測規則」頁的設定）；missing 代表 Redis 沒有設定、暫用預設規則，呼叫端應在回應後同步 */
+  rules: { version: number; source: "settings" | "default"; missing: boolean };
 }
 
 function h16(s: string): string {
@@ -260,8 +263,10 @@ export async function readFeed(limit = 50): Promise<unknown[]> {
 export async function processEvent(ev: RtEvent, now = Date.now()): Promise<ProcessResult> {
   const received = ev.received_at;
   const ns = namespaceOf(ev);
+  const active = await activeRules();          // 快取用實際時間；now 可能是模擬時間
   const base: ProcessResult = { event_id: ev.id, namespace: ns, rejected: null, results: [], alerts: [],
-                                timeline: { event_received: received, rule_evaluated: received } };
+                                timeline: { event_received: received, rule_evaluated: received },
+                                rules: { version: active.version, source: active.source, missing: active.missing } };
   const invalid = validateEvent(ev) ?? timeCheck(ev, now);
   if (invalid) {
     base.rejected = invalid;
@@ -269,7 +274,7 @@ export async function processEvent(ev: RtEvent, now = Date.now()): Promise<Proce
     return base;
   }
   await observeIp(ns, ev);
-  for (const rule of rulesFor(ev.source)) {
+  for (const rule of rulesFor(ev.source, active.rules)) {
     const r = await evaluateRule(rule, ev, ns, received);
     base.results.push(r);
     if (r.outcome === "alert" && r.alert_id) base.alerts.push(r.alert_id);

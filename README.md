@@ -181,7 +181,7 @@ Settings → Webhooks：Payload URL `https://<網域>/api/webhooks/github`、Con
    - 網站總覽的「每日情資」顯示「正常」；新事件出現在情資頁（標示「真實」），引用未通過驗證的事件只到暫定
    - 資料問題中不再出現 `github/deployments`（代表已讀到 Repo ① 的實際部署紀錄）
 3. 手動執行 `intel-watch`：沒有命中時不觸發；有命中時觸發 `advisory`
-4. 在筆電建立一次正式部署（即時告警頁也有這段指令）：
+4. 在筆電建立一次正式部署（異常行為偵測頁也有這段指令）：
 
    ```bash
    gh api -X POST repos/<owner>/shopsaas-demo-platform/deployments --input - <<'EOF'
@@ -198,6 +198,7 @@ Settings → Webhooks：Payload URL `https://<網域>/api/webhooks/github`、Con
 - Demo 請從 `/brief`（今日重點）開始：三顆燈、三句摘要、今天要決定的事、最需要處理的 3 件事；可加 `?source=<情境>`
 - `/report`（行動報告）：按「匯出 PDF」後在列印視窗選「另存為 PDF」；管理者可把項目設為處理中（期限必填），到期前 24 小時與逾期時以 LINE 提醒（`reminders.yml` 每小時執行，GitHub 排程可能延遲）
 - `/weights`（燈號權重，在「工程細節」）：調整加分因子與高／中門檻，需 `ADMIN_PASSCODE`；以 `GH_DISPATCH_TOKEN`（Contents 讀寫）把 `rules/scoring.json` 寫回預設分支，下一次評估起生效
+- `/rules`（偵測規則，在「工程細節」）：調整異常行為偵測的參數（啟用／停用、等級、偵測時段、時間窗、門檻、允許的部署者），需 `ADMIN_PASSCODE`；寫回 `rules/realtime-settings.json` 一個 commit（使用 `GH_DISPATCH_TOKEN`）並同步到 Redis，數秒內生效，不必重新部署。正規表示式、資料表與新的規則類型仍需改 `rules/realtime.yaml` 並經過審查
 - LINE：依規格 14.2 建立官方帳號後，Webhook URL 設為 `https://<網域>/api/webhooks/line`，Vercel 設定 `LINE_CHANNEL_SECRET`、`LINE_CHANNEL_ACCESS_TOKEN`、`LINE_BIND_CODE`、`LINE_MAX_ADMINS`、`LINE_PUSH_SIMULATED`；圖文選單三個按鈕送出文字「今日燈號」「最新告警」「行動報告」。未設定時 LINE 功能略過，不影響其他功能
 
 ## 執行情境
@@ -215,8 +216,8 @@ Settings → Webhooks：Payload URL `https://<網域>/api/webhooks/github`、Con
 | `intel-demo` | 網站／手動 | 5 份示範比對報告：2 高、1 中（含通知草稿）、1 不受影響、1 需確認 |
 | `advisory` | `intel-watch` 自動 | 只調查公告影響的資產；版本或條件未知為需確認，只有確認高風險才提高有效燈號 |
 | 即時：非 Pipeline 部署 | 筆電執行上方 `gh api` 指令 | RT-001 告警、Issue、圍堵建議 |
-| 即時：凌晨大量讀取 | 即時告警頁模擬器 | RT-002 告警（白天排練也能命中；模擬告警與真實告警完全隔離） |
-| 即時：多品牌詐騙 | 即時告警頁模擬器 | RT-003 告警，對應 91APP 事件 |
+| 即時：凌晨大量讀取 | 異常行為偵測頁模擬器 | RT-002 告警（白天排練也能命中；模擬告警與真實告警完全隔離） |
+| 即時：多品牌詐騙 | 異常行為偵測頁模擬器 | RT-003 告警，對應 91APP 事件 |
 | 修復後 | 依建議修正 Repo ①，再跑 `daily` | 對應攻擊鏈斷開、風險標為已修復；只修部分時其他高風險仍紅 |
 
 `nas`、`insider-path`、`mobile-sdk` 屬 P2，尚未提供輸入資料：網站按鈕標示「P2 未啟用」，手動執行會明確失敗，不會產出看似完成的報告。

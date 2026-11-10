@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.9.5 — 2026-11-10（異常行為偵測與偵測規則設定）
+
+- 「即時告警」頁改名「異常行為偵測」（網址 `/live` 不變；單則「告警」名詞不變）
+- 新增「偵測規則」頁 `/rules`（在「工程細節」）：管理者可調整啟用／停用、等級、燈號、去重時間、偵測時段、時間窗、倍數、門檻、允許的部署者；需管理者密碼、操作人與理由
+- 儲存寫回 `rules/realtime-settings.json` 一個 commit（base_sha 併發檢查）並同步 Redis，數秒內生效、不必重新部署；Redis 沒有設定時先用預設規則，並自動從 GitHub 修復
+- 正規表示式、資料表、資料來源與新的規則類型仍需改 `rules/realtime.yaml` 並經過審查
+- 尚未驗證：線上寫入 GitHub 與 Redis 的流程只有整合測試（本機 Docker Redis、假 GitHub API）
+
 ## 0.9.4 — 2026-11-10（CVE 改由程式直接比對：CISA KEV、NVD、事件新進度、自動公告）
 
 - **KEV**：每日掃描新增 `kev`（CISA KEV 全集）；Trivy、NVD 與情資事件的 CVE 列入 KEV 即標為已遭實際利用並加分（daily-intel 的 LLM 宣稱仍不採用）

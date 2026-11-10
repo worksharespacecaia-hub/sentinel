@@ -7,6 +7,7 @@ import { deliver } from "./delivery.ts";
 import { buildPreset, newSimulationId } from "./presets.ts";
 import { redis } from "./redis.ts";
 import type { RtEvent } from "./rules.ts";
+import { RULES_KEY, SettingsConflict, invalidateRuleCache, saveRuleSettings, syncRulesFromGitHub } from "./rule-store.ts";
 import { processEvent } from "./window.ts";
 
 process.env.GH_OWNER = "demo-owner";
@@ -20,6 +21,8 @@ type GhCall = { method: string; path: string; body: any };
 let ghCalls: GhCall[] = [];
 let ghMode: "ok" | "fail" | "timeout_after_create" = "ok";
 let issues: { number: number; html_url: string; state: string; body: string; labels: { name: string }[] }[] = [];
+let files: Record<string, { text: string; sha: string }> = {};        // 假的 contents API（偵測規則設定檔）
+let putCount = 0;
 globalThis.fetch = (async (input: any, init?: any) => {
   const url = String(input instanceof Request ? input.url : input);
   if (!url.startsWith("https://api.github.com")) return realFetch(input, init);
@@ -29,6 +32,17 @@ globalThis.fetch = (async (input: any, init?: any) => {
   ghCalls.push({ method, path, body });
   const res = (status: number, data?: unknown) => new Response(data === undefined ? null : JSON.stringify(data), { status });
   if (ghMode === "fail") return res(500, { message: "boom" });
+  if (path.startsWith("/repos/demo-owner/sentinel/contents/")) {
+    const fp = decodeURIComponent(path.slice("/repos/demo-owner/sentinel/contents/".length).split("?")[0]);
+    const cur = files[fp];
+    if (method === "GET") return cur ? res(200, { content: Buffer.from(cur.text).toString("base64"), encoding: "base64", sha: cur.sha })
+                                     : res(404, { message: "Not Found" });
+    if (method === "PUT") {
+      if ((cur?.sha ?? undefined) !== body.sha) return res(409, { message: "sha mismatch" });
+      files[fp] = { text: Buffer.from(body.content, "base64").toString("utf8"), sha: String(++putCount).padStart(40, "0") };
+      return res(201, { content: { sha: files[fp].sha }, commit: { sha: "c".repeat(40), html_url: "https://github.com/demo-owner/sentinel/commit/c" } });
+    }
+  }
   if (method === "POST" && path === "/repos/demo-owner/sentinel/issues") {
     const n = issues.length + 1;
     const issue = { number: n, html_url: `https://github.com/demo-owner/sentinel/issues/${n}`, state: "open", body: body.body,
@@ -57,6 +71,8 @@ beforeEach(async () => {
   ghCalls = [];
   ghMode = "ok";
   issues = [];
+  files = {};
+  invalidateRuleCache();
 });
 after(() => {
   globalThis.fetch = realFetch;
@@ -280,4 +296,42 @@ test("狀態同步：結案後同步 Issue 標籤與留言；Issue 只在管理�
   await deliver(id, ["sync"]);
   assert.equal(issues[0].state, "closed");
   assert.ok(ghCalls.some((c) => c.method === "POST" && c.path.endsWith("/comments") && /closed/.test(c.body.body)));
+});
+
+
+// ---------------------------------------------------------------- 偵測規則設定（「偵測規則」頁）
+
+test("偵測規則：Redis 沒有設定時用預設並回報 missing；同步後不再 missing", async () => {
+  const a = await processEvent(deploy(60, "release-bot[bot]"));
+  assert.equal(a.rules.missing, true);
+  assert.equal(a.rules.source, "default");
+  assert.equal(a.results[0].outcome, "alert");                     // 預設只允許 github-actions[bot]
+  await syncRulesFromGitHub();                                     // GitHub 上還沒有設定檔：記下「用預設」
+  const b = await processEvent(deploy(61, "github-actions[bot]"));
+  assert.equal(b.rules.missing, false);
+  assert.equal(b.rules.version, 0);
+});
+
+test("偵測規則：儲存後下一筆事件就用新設定；停用的規則不判斷；舊版本不能覆蓋新設定", async () => {
+  const saved = await saveRuleSettings({ "RT-001": { creator_not_in: ["github-actions[bot]", "release-bot[bot]"] },
+                                         "RT-003": { enabled: false } }, "itest", "加入發版機器人", null);
+  assert.equal(saved.version, 1);
+  assert.equal(saved.redis_synced, true);
+  const e = await processEvent(deploy(70, "release-bot[bot]"));
+  assert.equal(e.rules.version, 1);
+  assert.equal(e.results[0].outcome, "no_match");
+  assert.equal((await processEvent(deploy(71, "mallory"))).results[0].outcome, "alert");
+  const sid = newSimulationId();
+  for (const ev of buildPreset("multi-brand-fraud", sid)) assert.deepEqual((await processEvent(ev)).results, []);
+  await assert.rejects(saveRuleSettings({}, "itest", "用舊版本覆蓋", null), SettingsConflict);
+  const put = ghCalls.find((c) => c.method === "PUT")!;
+  assert.match(put.body.message, /理由：加入發版機器人/);
+
+  await redis("DEL", RULES_KEY);                                   // Redis 被清掉
+  invalidateRuleCache();
+  assert.equal((await processEvent(deploy(72, "ci-bot"))).rules.missing, true);
+  await syncRulesFromGitHub();                                     // 從 GitHub 修復
+  const f = await processEvent(deploy(73, "release-bot[bot]"));
+  assert.equal(f.rules.version, 1);
+  assert.equal(f.results[0].outcome, "no_match");
 });

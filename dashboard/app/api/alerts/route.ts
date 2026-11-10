@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 const PAGE = 20;
 
 export async function GET(req: Request): Promise<Response> {
-  if (!redisConfigured()) return json({ degraded: "即時告警服務（Redis）未設定", available: false }, 503);
+  if (!redisConfigured()) return json({ degraded: "異常行為偵測服務（Redis）未設定", available: false }, 503);
   try {
     const page = Math.max(0, Math.min(1000, Number(new URL(req.url).searchParams.get("open_page") ?? 0) || 0));
     const idx = await indexState();
@@ -34,6 +34,6 @@ export async function GET(req: Request): Promise<Response> {
       line,
     });
   } catch (e) {
-    return json({ available: false, degraded: `即時告警狀態無法取得（${(e as Error).message.slice(0, 80)}）` }, 503);
+    return json({ available: false, degraded: `異常行為偵測的告警狀態無法取得（${(e as Error).message.slice(0, 80)}）` }, 503);
   }
 }

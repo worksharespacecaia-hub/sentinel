@@ -37,7 +37,7 @@ export function combineLight(daily: DailyInfo | null, advisories: AdvisoryInfo[]
   if (alerts.realHighOpen > 0) bump("red", `${alerts.realHighOpen} 個未結案的即時高風險告警`);
   if (alerts.degraded) {
     degraded.push(alerts.degraded);
-    bump("yellow", "資料不足：即時告警狀態無法取得");
+    bump("yellow", "資料不足：異常行為偵測的告警狀態無法取得");
   }
   return { light, reasons, degraded };
 }
