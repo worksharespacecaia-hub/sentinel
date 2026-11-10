@@ -1,9 +1,21 @@
 // Upstash Redis REST 用戶端（伺服器端專用；Token 不可出現在前端程式）。
 export class RedisUnavailable extends Error {}
 
+type Env = Record<string, string | undefined>;
+
+/**
+ * 取得 REST 端點與 Token。優先使用 UPSTASH_REDIS_REST_*；Vercel Marketplace 的 Upstash 整合注入的是
+ * KV_REST_API_*，兩組都接受，但網址與 Token 必須來自同一組。只用可寫入的 Token，不使用 KV_REST_API_READ_ONLY_TOKEN。
+ */
+export function redisEnv(env: Env = process.env): { url?: string; token?: string } {
+  if (env.UPSTASH_REDIS_REST_URL || env.UPSTASH_REDIS_REST_TOKEN) {
+    return { url: env.UPSTASH_REDIS_REST_URL, token: env.UPSTASH_REDIS_REST_TOKEN };
+  }
+  return { url: env.KV_REST_API_URL, token: env.KV_REST_API_TOKEN };
+}
+
 function config() {
-  const url = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  const { url, token } = redisEnv();
   // 正式環境只接受 HTTPS；本機整合測試（NODE_ENV 非 production）可連 127.0.0.1 的 Upstash 相容代理
   const local = process.env.NODE_ENV !== "production" && /^http:\/\/(127\.0\.0\.1|localhost):\d+$/.test(url ?? "");
   if (!url || !token || !(url.startsWith("https://") || local)) throw new RedisUnavailable("Redis 未設定");
