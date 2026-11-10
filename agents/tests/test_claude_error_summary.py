@@ -116,3 +116,26 @@ def test_blocked_webfetch_hosts_aggregated(tmp_path, capsys):
     assert "WebFetch 被擋的網站（不在信任清單）：focustaiwan.tw×2、newtalk.tw×1" in out
     assert "工具錯誤：WebFetch www.ithome.com.tw：HTTP 403" in out
     assert "secret" not in out and "/a" not in out
+
+
+def test_activity_log_outcomes_without_content(tmp_path, capsys, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    page = "<html>機密網頁內容 HTTP 403 出現在內文</html>"
+    calls = [("w1", "WebFetch", {"url": "https://www.ithome.com.tw/news/1"}, "The server returned HTTP 403 Forbidden.", False),
+             ("w2", "WebFetch", {"url": "https://infosecu.technews.tw/x"}, "REDIRECT DETECTED: ...", False),
+             ("w3", "WebFetch", {"url": "https://nextjs.org/blog"}, "--- title: Release ---\n" + "x" * 400 + page, False),
+             ("w4", "WebFetch", {"url": "https://newtalk.tw/x"}, "PreToolUse:WebFetch hook error: WebFetch 只允許受信任來源的 HTTPS 網址", True),
+             ("s1", "WebSearch", {"query": "台灣 電商 個資外洩"}, 'Links: [{"title":"a","url":"u1"},{"title":"b","url":"u2"}]', False),
+             ("a1", "Agent", {"subagent_type": "news-scout", "prompt": "秘密指示"}, "report", False)]
+    msgs = [{"type": "assistant", "message": {"content": [{"type": "tool_use", "id": i, "name": n, "input": inp}]}} for i, n, inp, _, _ in calls]
+    msgs.append({"type": "user", "message": {"content": [{"type": "tool_result", "tool_use_id": i, "is_error": e, "content": body}
+                                                          for i, _, _, body, e in calls]}})
+    p = tmp_path / "exec.json"
+    p.write_text(json.dumps(msgs, ensure_ascii=False), encoding="utf-8")
+    assert ces.main(["x", "--activity", str(p)]) == 0
+    out = capsys.readouterr().out
+    for line in ("[主 Agent] WebFetch www.ithome.com.tw → HTTP 403（網站擋機器人）", "[主 Agent] WebFetch infosecu.technews.tw → 轉址（未跟隨）",
+                 "[主 Agent] WebFetch nextjs.org → 成功", "[主 Agent] WebFetch newtalk.tw → 被擋（不在信任清單）",
+                 "[主 Agent] WebSearch 「台灣 電商 個資外洩」 → 2 筆結果", "[主 Agent] Agent (news-scout) → 完成"):
+        assert line in out
+    assert "機密網頁內容" not in out and "秘密指示" not in out and "/news/1" not in out

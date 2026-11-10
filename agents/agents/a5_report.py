@@ -100,7 +100,7 @@ def run(ctx: RunCtx) -> dict:
     skipped = load(ctx, "a1", "daily-intel-issues.json") or []
     if daily_intel == "ok" and skipped:
         built["report"]["data_issues"].append({"source": "daily-intel", "status": "partial",
-                                               "impact": f"每日情資有 {len(skipped)} 項格式不符已略過（詳見 A1 執行紀錄）"})
+                                               "impact": f"每日情資有 {len(skipped)} 項問題（格式不符略過或來源抓取失敗，詳見 A1 執行紀錄）"})
 
     out_dir = ctx.data_dir / output_dir
     scope_dir = ctx.scope if ctx.scope != "scenario" else f"scenario/{ctx.scenario}"   # 情境之間也不互相覆蓋

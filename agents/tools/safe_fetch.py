@@ -1,4 +1,4 @@
-"""受限的公開來源抓取（intel_verify 使用）。URL 一律視為不受信任輸入。
+"""受限的公開來源抓取（intel_verify 與 news_collect 使用）。URL 一律視為不受信任輸入。
 
 - 只接受 HTTPS 與受信任來源網域清單；拒絕 userinfo、IP literal、localhost、私有／link-local／保留位址
 - 每次 redirect 都重新驗證 URL 與 DNS 解析結果；最多 3 次 redirect、10 秒、2 MB、只接受文字型態
@@ -15,7 +15,8 @@ from urllib.parse import urljoin, urlsplit
 MAX_REDIRECTS = 3
 TIMEOUT_SECONDS = 10
 MAX_BYTES = 2 * 1024 * 1024
-TEXT_TYPES = ("text/html", "text/plain", "application/xhtml+xml", "application/json", "application/rss+xml", "application/xml")
+TEXT_TYPES = ("text/html", "text/plain", "application/xhtml+xml", "application/json", "application/rss+xml", "application/xml",
+              "text/xml", "application/atom+xml")
 
 
 class FetchRejected(Exception):

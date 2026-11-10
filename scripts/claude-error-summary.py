@@ -4,8 +4,9 @@
 只印：模型、驗證來源、結果類型、回合數、錯誤代碼與錯誤訊息（截斷並遮蔽疑似金鑰），以及被拒絕的工具
 （只列工具名稱、工作目錄內的相對路徑或網址的主機名稱）、各工具呼叫次數與工具錯誤（截斷）。
 不印對話內容、工具輸入內容或網頁內容。
---with-result：Claude 結束卻沒有寫出結果時，另外印出它最後的說明（截斷、遮蔽疑似金鑰），用來判斷它為什麼停下來。
-用法：python3 scripts/claude-error-summary.py [--with-result] <execution_file>
+--with-result：另外印出 Claude 最後的說明（截斷、遮蔽疑似金鑰），用來判斷它為什麼停下來、為什麼沒列入事件。
+--activity：逐筆列出工具呼叫（工具、查詢字詞或網站主機、結果類型：成功／HTTP 403／轉址／被擋），不含網頁內容。
+用法：python3 scripts/claude-error-summary.py [--with-result] [--activity] <execution_file>
 """
 from __future__ import annotations
 
@@ -108,7 +109,58 @@ def tool_activity(messages: list[dict]) -> list[str]:
     return lines
 
 
-def summarize(messages: list[dict], with_result: bool = False) -> list[str]:
+def _result_text(c: dict) -> str:
+    body = c.get("content")
+    if isinstance(body, list):
+        body = " ".join(str(x.get("text", "")) for x in body if isinstance(x, dict))
+    return str(body or "")
+
+
+def _outcome(name: str, c: dict | None) -> str:
+    if c is None:
+        return "沒有結果"
+    text = _result_text(c)
+    if c.get("is_error"):
+        return "被擋（不在信任清單）" if "受信任" in text else "被 hook 擋下" if "hook" in text else "錯誤"
+    if name == "WebFetch":
+        m = re.search(r"\bHTTP (\d{3})\b", text[:300])        # 只看開頭的狀態說明，不誤判內文中的數字
+        if m and m.group(1) == "403":
+            return "HTTP 403（網站擋機器人）"
+        if m and m.group(1) != "200":
+            return f"HTTP {m.group(1)}"
+        return "轉址（未跟隨）" if "REDIRECT" in text[:300] else "成功"
+    if name == "WebSearch":
+        n = text.count('"url"')
+        return f"{n} 筆結果"
+    return "完成" if name in ("Agent", "Task") else "成功"
+
+
+def activity_log(messages: list[dict], limit: int = 80) -> list[str]:
+    """逐筆工具呼叫：只列工具、查詢字詞（截斷）或網址主機、相對路徑與結果類型。"""
+    results = {c.get("tool_use_id"): c for m in messages if m.get("type") == "user" for c in _blocks(m)
+               if c.get("type") == "tool_result"}
+    lines = []
+    for m in messages:
+        if m.get("type") != "assistant":
+            continue
+        who = "Subagent" if m.get("parent_tool_use_id") else "主 Agent"
+        for c in _blocks(m):
+            if c.get("type") != "tool_use":
+                continue
+            name, inp = str(c.get("name", "?")), c.get("input") if isinstance(c.get("input"), dict) else {}
+            if inp.get("query"):
+                target = f"「{clean(inp['query'])[:60]}」"
+            elif inp.get("subagent_type"):
+                target = f"({clean(inp['subagent_type'])})"
+            else:
+                target = clean(denial_target(inp))
+            lines.append(f"  [{who}] {clean(name)} {target} → {_outcome(name, results.get(c.get('id')))}")
+    if len(lines) > limit:
+        lines = lines[:limit] + [f"  另有 {len(lines) - limit} 筆"]
+    return ["工具呼叫紀錄：", *lines] if lines else []
+
+
+def summarize(messages: list[dict], with_result: bool = False, activity: bool = False) -> list[str]:
     lines = []
     init = next((m for m in messages if m.get("type") == "system" and m.get("subtype") == "init"), None)
     if init:
@@ -134,6 +186,8 @@ def summarize(messages: list[dict], with_result: bool = False) -> list[str]:
             lines.append(f"權限拒絕：另有 {len(denials) - 10} 筆")
     if messages:
         lines += tool_activity(messages)
+    if activity and messages:
+        lines += activity_log(messages)
     if with_result and result and not result.get("is_error") and result.get("result"):
         lines.append(f"Claude 最後的說明：{clean(result['result'])}")
     return lines or ["執行紀錄中沒有可辨識的訊息"]
@@ -141,8 +195,8 @@ def summarize(messages: list[dict], with_result: bool = False) -> list[str]:
 
 def main(argv: list[str]) -> int:
     args = argv[1:]
-    with_result = "--with-result" in args
-    args = [a for a in args if a != "--with-result"]
+    with_result, activity = "--with-result" in args, "--activity" in args
+    args = [a for a in args if a not in ("--with-result", "--activity")]
     if len(args) != 1:
         print("用法：claude-error-summary.py [--with-result] <execution_file>", file=sys.stderr)
         return 2
@@ -150,7 +204,7 @@ def main(argv: list[str]) -> int:
     if not path.is_file():
         print(f"找不到執行紀錄：{path.name}")
         return 0
-    for line in summarize(load_messages(path), with_result=with_result):
+    for line in summarize(load_messages(path), with_result=with_result, activity=activity):
         print(line)
     return 0
 

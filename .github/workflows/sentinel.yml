@@ -194,6 +194,13 @@ jobs:
         with: { persist-credentials: false }
       - uses: actions/download-artifact@v4
         with: { name: "${{ github.run_id }}-a0", path: out/ }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip, cache-dependency-path: agents/requirements.txt }
+      - run: pip install -r agents/requirements.txt
+      - name: 程式抓取資安新聞（RSS 與 CISA KEV；Claude 不上網抓網頁）
+        run: |
+          python agents/tools/news_collect.py --out out/news.json --stack out/stack.json
+          sha256sum out/news.json > "$RUNNER_TEMP/news.sha256"
       - name: 檢查訂閱 Token 格式（不印出 Token）
         env:
           TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -211,9 +218,9 @@ jobs:
           claude_args: |
             --model sonnet
             --max-turns 40
-            --tools "Read,Write,Agent,Skill,WebSearch,WebFetch"
-            --allowedTools "Read(./out/**),Read(./.claude/**),Edit(./out/**),Agent,WebSearch,WebFetch"
-            --disallowedTools "Bash,Edit,NotebookEdit"
+            --tools "Read,Write,Agent,Skill,WebSearch"
+            --allowedTools "Read(./out/**),Read(./.claude/**),Edit(./out/**),Agent,WebSearch"
+            --disallowedTools "Bash,Edit,NotebookEdit,WebFetch"
             --permission-mode dontAsk
             --strict-mcp-config
             --settings .claude/daily-intel-settings.json
@@ -229,19 +236,25 @@ jobs:
           if [[ -s out/intel-daily.json ]]; then
             events="$(python3 -c 'import json; d = json.load(open("out/intel-daily.json", encoding="utf-8")); print(len(d.get("events", [])))' 2>/dev/null || echo "無法解析")"
             echo "已寫出 out/intel-daily.json（$(wc -c < out/intel-daily.json) bytes，事件 ${events} 件）"
-            python3 scripts/claude-error-summary.py "$EXEC_FILE"     # 每日統計：工具呼叫次數、被擋的網站（不含對話內容）
+            python3 scripts/claude-error-summary.py --with-result --activity "$EXEC_FILE"   # 每日紀錄：工具呼叫、被擋的網站、Claude 的說明（不含網頁內容）
             exit 0
           fi
           echo "::error::Claude 執行結束但沒有寫出 out/intel-daily.json"
           find out -maxdepth 1 -type f -printf '%f %s bytes\n' | head -20
-          python3 scripts/claude-error-summary.py --with-result "$EXEC_FILE"
+          python3 scripts/claude-error-summary.py --with-result --activity "$EXEC_FILE"
           exit 1
       - name: 確認 Claude 只寫了 out/
         run: |
           changed="$(git status --porcelain -- . ':!out')"
           if [[ -n "$changed" ]]; then echo "::error::out/ 以外的檔案被改動，不採用本次結果"; echo "$changed"; exit 1; fi
+          sha256sum -c --quiet "$RUNNER_TEMP/news.sha256" || { echo "::error::out/news.json 在 Claude 執行後被改動，不採用本次結果"; exit 1; }
       - uses: actions/upload-artifact@v4        # 只有上面的檢查通過才上傳；失敗時報告標示「今日新聞情資未更新」
-        with: { name: "${{ github.run_id }}-intel-daily", path: out/intel-daily.json, if-no-files-found: ignore }
+        with:
+          name: "${{ github.run_id }}-intel-daily"
+          path: |
+            out/intel-daily.json
+            out/news.json
+          if-no-files-found: ignore
 
   a1-intel:
     needs: [orchestrator, a0-assets, daily-intel]
