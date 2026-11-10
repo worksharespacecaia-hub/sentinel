@@ -4,7 +4,9 @@
 set -euo pipefail
 
 STATE=dashboard/public/data/intel-watch.json
-if git diff --quiet -- "$STATE"; then
+[[ -f "$STATE" ]] || { echo "沒有 $STATE，不 commit"; exit 0; }
+# git diff 看不到未追蹤的檔案：第一次產生的 intel-watch.json 必須直接進入比對，否則永遠不會被 commit
+if git ls-files --error-unmatch -- "$STATE" >/dev/null 2>&1 && git diff --quiet -- "$STATE"; then
   echo "狀態沒有變化，不 commit"; exit 0
 fi
 changed="$(python - "$STATE" <<'PY'
