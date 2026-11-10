@@ -251,17 +251,51 @@ def trace_events(messages: list[dict], news: dict | None, intel: dict | None, no
     return out
 
 
+def analysis_trace_events(messages: list[dict], tasks_doc: dict | None, validated: dict | None, now: str) -> list[dict]:
+    """claude-analysis Job 的執行紀錄：各 Agent 交給 Claude 的任務數、通過程式驗證的數量與工具次數；不含任何撰寫內容。"""
+    def ev(kind, detail, subagent=None, source=None):
+        return {"ts": now, "agent": "claude-analysis", "subagent": subagent, "kind": kind, "detail": clean(detail)[:500],
+                "source": source, "cost_usd": None}
+    tasks = (tasks_doc or {}).get("tasks") or []
+    by = Counter(f"{t.get('agent')}/{t.get('subagent')}" for t in tasks if isinstance(t, dict))
+    out = [ev("start", f"程式整理 {len(tasks)} 個要請 Claude（訂閱方案）撰寫的任務；分數、等級與燈號已由程式算好")]
+    if not messages:
+        out.append(ev("error", "Claude 沒有執行（Token 檢查失敗或設定錯誤），A5 改用程式範本"))
+        return out
+    out.append(ev("skill", "載入 analysis-writer Skill"))
+    ok_keys = set((validated or {}).keys())
+    for name, n in sorted(by.items()):
+        passed = sum(1 for t in tasks if isinstance(t, dict) and f"{t.get('agent')}/{t.get('subagent')}" == name and t.get("key") in ok_keys)
+        agent, sub = name.split("/", 1)
+        out.append(ev("subagent", f"{agent} 的 {sub}：撰寫 {n} 個任務，程式驗證通過 {passed} 個", subagent=sub,
+                      source="live" if passed else "template"))
+    tools = Counter(str(c.get("name", "?")) for m in messages if m.get("type") == "assistant" and not m.get("parent_tool_use_id")
+                    for c in _blocks(m) if c.get("type") == "tool_use")
+    if tools:
+        out.append(ev("tool", "工具：" + "、".join(f"{k}×{v}" for k, v in sorted(tools.items()))))
+    result = next((m for m in reversed(messages) if m.get("type") == "result"), None) or {}
+    secs = round((result.get("duration_ms") or 0) / 1000)
+    out.append(ev("result", f"通過驗證 {len(ok_keys)}／{len(tasks)} 個任務（{result.get('num_turns', '?')} 回合、{secs} 秒）；"
+                            "未通過或未撰寫的項目由 A5 改用程式範本"))
+    return out
+
+
 def main(argv: list[str]) -> int:
     args = argv[1:]
     with_result, activity = "--with-result" in args, "--activity" in args
-    trace_out = None
+    trace_out, job = None, "daily-intel"
     if "--trace" in args:                       # --trace <輸出檔>：寫出給「Agent 執行」頁的執行紀錄
         i = args.index("--trace")
         trace_out = Path(args[i + 1]) if i + 1 < len(args) else None
         args = args[:i] + args[i + 2:]
+    if "--job" in args:                         # --job daily-intel｜claude-analysis
+        i = args.index("--job")
+        job = args[i + 1] if i + 1 < len(args) else ""
+        args = args[:i] + args[i + 2:]
     args = [a for a in args if a not in ("--with-result", "--activity")]
-    if len(args) != 1 or ("--trace" in argv and trace_out is None):
-        print("用法：claude-error-summary.py [--with-result] [--activity] [--trace <輸出檔>] <execution_file>", file=sys.stderr)
+    if len(args) != 1 or ("--trace" in argv and trace_out is None) or job not in ("daily-intel", "claude-analysis"):
+        print("用法：claude-error-summary.py [--with-result] [--activity] [--trace <輸出檔> [--job daily-intel|claude-analysis]] "
+              "<execution_file>", file=sys.stderr)
         return 2
     path = Path(args[0])
     messages = load_messages(path) if path.is_file() else []
@@ -273,7 +307,10 @@ def main(argv: list[str]) -> int:
                 return None
         from datetime import datetime, timezone
         now = datetime.now(timezone.utc).isoformat(timespec="seconds")
-        evs = trace_events(messages, read(Path("out/news.json")), read(Path("out/intel-daily.json")), now)
+        if job == "claude-analysis":
+            evs = analysis_trace_events(messages, read(Path("out/llm/tasks.json")), read(Path("out/llm/validated.json")), now)
+        else:
+            evs = trace_events(messages, read(Path("out/news.json")), read(Path("out/intel-daily.json")), now)
         trace_out.parent.mkdir(parents=True, exist_ok=True)
         trace_out.write_text("".join(json.dumps(e, ensure_ascii=False) + "\n" for e in evs), encoding="utf-8", newline="\n")
         print(f"寫出 {len(evs)} 筆執行紀錄：{trace_out}")

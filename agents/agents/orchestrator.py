@@ -5,6 +5,7 @@ import json
 import os
 
 from agents.common import save
+from tools.common import iso
 from context import RunCtx
 
 
@@ -37,5 +38,7 @@ def run(ctx: RunCtx) -> dict:
             for k in ("execution_mode", "output_dir", "target_sha", "run_id", "scope"):
                 f.write(f"{k}={d[k]}\n")
             f.write(f"daily_intel={'true' if d['daily_intel'] else 'false'}\n")
+            # 同一次執行的所有 Job 使用同一個邏輯時間：報告時間一致，交給 claude-analysis 的任務鍵也一致
+            f.write(f"as_of={iso(ctx.as_of)}\n")
     tr.emit("result", json.dumps(d["plan"]))
     return d

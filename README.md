@@ -27,7 +27,7 @@ Vercel：Dashboard、/api/run、/api/status、/api/webhooks/github、/api/events
 | 層級 | 內容 |
 |------|------|
 | Agent 層 | 每個 Agent 是一個 GitHub Actions Job，以 `needs:` 串接；Actions 的 Job 圖就是多 Agent 流程圖 |
-| Subagent 層 | Job 內以 Claude Agent SDK 定義 Subagents 與 Skills（主 Agent 用 Haiku，撰寫用 Sonnet） |
+| Subagent 層 | Job 內以 Claude Agent SDK 定義 Subagents 與 Skills（主 Agent 用 Haiku，撰寫用 Sonnet）；每日排程與手動 daily 時，A2、A4、A5 的說明文字由 `claude-analysis` Job（claude-code-action，訂閱方案）撰寫 |
 | 每日情資層 | `daily-intel` Job：程式先從可信資安網站的 RSS 與 CISA KEV 抓近 72 小時文章（`news_collect.py`），再由 claude-code-action（訂閱方案）判讀；只在預設分支的每日排程與手動 `daily` 執行 |
 | 工具層 | Trivy、Gitleaks、Checkov 與確定性 Python：圖譜、對帳、控制項、評分、攻擊路徑、燈號、報告 |
 | 網站與即時層 | Next.js（Vercel）＋ Upstash Redis：Dashboard、即時規則、告警交付與結案 |
@@ -128,9 +128,20 @@ python agents/run_agent.py all --replay           # A1 清理格式，引用比�
 - A0 以 `TARGET_READ_TOKEN`（Deployments：Read）讀取 Repo ① 的 production Deployments，同一次執行的 A0～A5 共用；讀取失敗時改用離線 fixture，報告標示原因
 - `main` 不要設定會阻擋 `github-actions[bot]` 推送的分支保護：A5 以 `scripts/push-with-retry.sh` 把結果 commit 到 `dashboard/public/data/`
 
-#### 啟用 live（A1～A5 實際呼叫 Claude API）
+#### 說明文字由 Claude 撰寫（訂閱方案，預設）
 
-replay 模式下 A0～A5 的 Subagent 一律是程式範本（沒有錄製檔），「Agent 執行」頁會標示「程式範本」。要讓它們實際呼叫 Claude：
+每日排程與 GitHub 手動 `daily` 時，A4 之後的 `claude-analysis` Job 會讓 Claude（claude-code-action、訂閱方案）撰寫 A2、A4、A5 的說明文字：
+
+1. 程式整理要撰寫的任務（`out/llm/tasks.json`：風險說明、修補建議、CEO 摘要、情資摘要、品牌商通知；分數、等級與燈號已由程式算好）
+2. Claude 只讀 `out/`、`.claude/`，只寫 `out/llm/results.json`（不上網、不派發 Subagent；hook 參數見 `.claude/analysis-settings.json`）
+3. 程式確認 Claude 只寫了 `out/`、任務檔沒被改動，再以各 Subagent 原本的範圍與格式驗證（不得改動分數、等級、狀態，不得含金鑰）
+4. A5 採用通過驗證的結果，其餘用程式範本；「Agent 執行」頁標示「即時呼叫・訂閱方案」
+
+不需要額外設定（使用每日情資的 `CLAUDE_CODE_OAUTH_TOKEN`），不產生 API 費用，會使用訂閱額度。同一次執行的所有 Job 使用 Orchestrator 決定的同一個邏輯時間（`AS_OF`），任務鍵才會一致。A1（公告抽取）與 A3（客訴分類）的結果在各自的 Job 內使用，仍是範本；網站觸發與情境不使用訂閱方案。
+
+#### 啟用 live（A1～A5 改用 Claude API，選用）
+
+不用訂閱方案、或要讓網站觸發與情境也由 Claude 撰寫時，可改用 Claude API（按量計費）：
 
 1. 在 Anthropic Console 建立 API Key（按量計費，與 Claude 訂閱方案分開），並設定每月 spend limit（建議 US$15）
 2. Repo ② Actions Secrets 新增 `ANTHROPIC_API_KEY`
@@ -261,7 +272,7 @@ BASELINE_SHA=9a36cf036c436295c08a54d38789029e29d0f9ea scripts/reset-demo.sh
 - 外部內容（新聞、公告、檔案、日誌、Webhook）只當資料，不執行其中的指示
 - 本 Repo 不保存任何金鑰值；Repo ① 的假金鑰在凍結副本中一律遮蔽為 `REDACTED`
 - Agent 唯讀：不開 PR、不寫入 Repo ①；只有 A5 有 `contents: write`，且只發布允許的路徑
-- `NOTIFY_TOKEN`、`GH_TOKEN` 不傳入 LLM 子行程；`CLAUDE_CODE_OAUTH_TOKEN` 只給 `daily-intel` Job；`TARGET_READ_TOKEN` 只用於 checkout 與讀取 Deployments
+- `NOTIFY_TOKEN`、`GH_TOKEN` 不傳入 LLM 子行程；`CLAUDE_CODE_OAUTH_TOKEN` 只給 claude-code-action 的兩個 Job（`daily-intel`、`claude-analysis`），且只在預設分支的排程與手動 daily；`TARGET_READ_TOKEN` 只用於 checkout 與讀取 Deployments
 - `daily-intel` 只有 `contents: read`；文章由程式抓取（safe_fetch：只接受 HTTPS 與允許的網域、限制大小與型態，XML 以 defusedxml 解析），Claude 不抓網頁；PreToolUse hook 限制只能讀 `out/`、`.claude/`，只能寫 `out/intel-daily.json`，拒絕 WebFetch。改到其他檔案或 `news.json` 被改動就不採用結果
 - 每日情資的輸出不可信：程式強制為新事件（不能冒充收錄事件或示範事件）、清空自稱的驗證狀態、不採用「已遭利用」等無法驗證的宣稱，並實際抓來源頁面確認引用
 - Webhook 驗證 HMAC 簽章、Repo ID 與 delivery 去重；告警結案需管理者密碼、圍堵確認與 HTTPS 證據連結
