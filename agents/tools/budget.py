@@ -35,10 +35,13 @@ class LocalBudget:
 
 
 class RemoteBudget:
+    """冪等鍵：<run_id>-<attempt>/<agent>/<agent>/<序號>。重跑（新的 attempt）是新的預留；同一次重送網路請求不重複扣額。"""
+
     def __init__(self, base_url: str, token: str, run_key: str):
         if not base_url.startswith("https://"):
             raise ValueError("SENTINEL_BASE_URL 必須是 HTTPS")
         self.base, self.token, self.run_key = base_url.rstrip("/"), token, run_key
+        self.seq = 0
 
     def _post(self, body: dict):
         req = urllib.request.Request(f"{self.base}/api/budget", data=json.dumps(body).encode(), method="POST",
@@ -47,8 +50,9 @@ class RemoteBudget:
             return json.loads(resp.read().decode() or "{}")
 
     def reserve(self, agent: str, amount: float):
+        self.seq += 1
         try:
-            res = self._post({"action": "reserve", "key": f"{self.run_key}/{agent}", "amount_usd": amount})
+            res = self._post({"action": "reserve", "key": f"{self.run_key}/{agent}/{self.seq}", "amount_usd": amount})
         except Exception:
             return None
         return res if res.get("ok") else None

@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.7.0 — 2026-11-10（Agent 執行頁顯示真實的 Claude 判讀；A1～A5 可啟用 live）
+
+- 使用者回報「Agent 執行」頁全是程式範本：A0～A5 在 replay 模式下沒有任何錄製檔（29 筆 Subagent 結果都是範本），而真的有呼叫 Claude 的每日情資沒有出現在執行樹
+- **每日情資放進執行樹**：daily-intel Job 以程式把 Claude 的執行紀錄整理成 `trace.jsonl`（抓了幾篇、派了哪些 Subagent、各用了哪些工具、寫出幾件事件；不含網頁與對話內容），Claude 失敗也會留下紀錄；A5 合併進執行樹，網站標示「即時呼叫・訂閱方案，不計 API 費用」
+- **月預算 API（`/api/budget`，規格 v2 第 11.2 節）**：live 模式的 Agent 呼叫 Claude API 前先預留、完成後依實際用量結算
+  - `NOTIFY_TOKEN` 保護；金額以微美元整數計算；每月額度（預設 US$15、保留 10% 超支緩衝）與單筆上限（US$0.5）由伺服器設定
+  - 冪等鍵 `<run>-<attempt>/<agent>/<agent>/<序號>`：同一筆重送不重複扣額，已結算的鍵不能再預留
+  - 未結算的預留保守地一直佔用額度（由用量對帳釋放）；並行租約 30 分鐘逾時，避免中斷的 Job 永久卡住
+  - 月份依帳務時區（`BUDGET_TZ`，預設 UTC）；跨月結算計入預留當月
+  - 整合測試（本機 Redis）：預留與結算、冪等、額度不足、單筆上限、租約逾時、跨月、30 筆同時預留不超額
+- 修正：結算原本用 Agent 的累計花費，同一個 Agent 呼叫多次時會重複計入；改為只結算本次用量
+- Workflow：live 時 A1～A5 才取得 `NOTIFY_TOKEN` 與 `SENTINEL_BASE_URL`（SDK 子行程仍由 `scrubbed_environ` 清除）
+- README：啟用 live 的步驟（Anthropic API Key、`SENTINEL_SCHEDULE_MODE=live`、預算設定）
+
 ## 0.6.0 — 2026-11-10（每日情資改為程式抓新聞、Claude 判讀）
 
 - **架構調整**（使用者決定）：資安新聞改由程式從可信網站的 RSS 與 CISA KEV 抓取（`agents/tools/news_collect.py`、`agents/intel/news_feeds.yaml`），Claude 只做判讀；不再使用 WebFetch，WebSearch 只用來補充 RSS 沒涵蓋的事件

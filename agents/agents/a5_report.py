@@ -107,7 +107,8 @@ def run(ctx: RunCtx) -> dict:
     md_dir = ctx.reports_dir / "intel" / scope_dir / ctx.as_of.strftime("%Y-%m-%d") / ctx.run_id
     tr.emit("result", f"燈號 {built['report']['light']}；{len(built['intel_reports'])} 份情資比對報告")
     manifest = write_outputs(out_dir, built, res, reports_md_dir=md_dir, run_id=ctx.run_id)
-    merge_traces([ctx.out / up / "trace.jsonl" for up in [*UPSTREAM, "a5"]], out_dir / "trace.jsonl")
+    # daily-intel（訂閱方案的 Claude 判讀）的執行紀錄由該 Job 以程式整理，有執行時一併放進執行樹
+    merge_traces([ctx.out / up / "trace.jsonl" for up in [*UPSTREAM, "daily-intel", "a5"]], out_dir / "trace.jsonl")
     if ctx.scope == "daily" and ctx.scanners_dir and ctx.scanners_dir.is_dir() and "fixtures" not in ctx.scanners_dir.parts:
         import shutil
         dest = out_dir / "state" / "scanners"

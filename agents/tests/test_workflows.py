@@ -194,3 +194,18 @@ def test_daily_intel_diagnostics(sentinel):
     assert diag["if"] == "${{ failure() && steps.claude.conclusion == 'failure' }}"
     assert steps.index(diag) == idx["claude"] + 1
     assert "secrets." not in yaml.safe_dump(diag)             # 診斷步驟拿不到任何 Secret
+
+
+def test_budget_credentials_only_passed_in_live(sentinel):
+    """live 時 A1～A5 需要向 /api/budget 預留；replay 不傳 NOTIFY_TOKEN。只有發布後的通知步驟例外。"""
+    _, d = sentinel
+    agent_steps = 0
+    for name, job in d["jobs"].items():
+        for step in job.get("steps", []):
+            env = step.get("env") or {}
+            if "run_agent.py" in str(step.get("run", "")) and "ANTHROPIC_API_KEY" in env:
+                agent_steps += 1
+                assert "execution_mode == 'live'" in env["NOTIFY_TOKEN"] and "execution_mode == 'live'" in env["SENTINEL_BASE_URL"], name
+            elif "NOTIFY_TOKEN" in env:
+                assert "/api/notify/light" in str(step.get("run", "")), name
+    assert agent_steps == 5

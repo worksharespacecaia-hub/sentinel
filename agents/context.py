@@ -84,7 +84,7 @@ class RunCtx:
     def runner(self, agent: str) -> LLMRunner:
         return LLMRunner(agent=agent, mode=self.mode, scope=self.scope, target_sha=self.target_sha,
                          advisory_revision=self.advisory_revision, tracer=self.tracer(agent), cache=self.cache,
-                         replay=self.replay, budget=budget_for(self.mode, f"{self.run_id}/{agent}"), cost=self.cost)
+                         replay=self.replay, budget=budget_for(self.mode, f"{self.run_id}-{os.environ.get('GITHUB_RUN_ATTEMPT', '1')}/{agent}"), cost=self.cost)
 
     def eval_input(self, **kw) -> EvalInput:
         cfg = self.scenario_cfg
