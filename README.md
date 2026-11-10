@@ -28,7 +28,7 @@ Vercel：Dashboard、/api/run、/api/status、/api/webhooks/github、/api/events
 |------|------|
 | Agent 層 | 每個 Agent 是一個 GitHub Actions Job，以 `needs:` 串接；Actions 的 Job 圖就是多 Agent 流程圖 |
 | Subagent 層 | Job 內以 Claude Agent SDK 定義 Subagents 與 Skills（主 Agent 用 Haiku，撰寫用 Sonnet） |
-| 每日情資層 | `daily-intel` Job 用 claude-code-action（訂閱方案），只在預設分支的每日排程與手動 `daily` 執行，與 A1～A5 是否呼叫 API 無關 |
+| 每日情資層 | `daily-intel` Job：程式先從可信資安網站的 RSS 與 CISA KEV 抓近 72 小時文章（`news_collect.py`），再由 claude-code-action（訂閱方案）判讀；只在預設分支的每日排程與手動 `daily` 執行 |
 | 工具層 | Trivy、Gitleaks、Checkov 與確定性 Python：圖譜、對帳、控制項、評分、攻擊路徑、燈號、報告 |
 | 網站與即時層 | Next.js（Vercel）＋ Upstash Redis：Dashboard、即時規則、告警交付與結案 |
 
@@ -81,16 +81,17 @@ npm run dev
 
 本機沒有 `target/`（Repo ① 的 checkout）時，自動使用 `agents/fixtures/target-baseline/`。Repo ① 的 `baseline` tag 有變動時，以 `scripts/sync-target-fixture.sh <Repo ① 路徑>` 重新匯出。
 
-本機試跑每日情資（用訂閱方案，不花 API 費用；會搜尋網路）：
+本機試跑每日情資（用訂閱方案，不花 API 費用）：
 
 ```bash
 python agents/run_agent.py a0 --replay            # 產生 out/stack.json、out/seen.json
-# 與 Actions 相同的限制；只會寫出 out/intel-daily.json
+python agents/tools/news_collect.py --out out/news.json --stack out/stack.json   # 程式抓資安新聞（RSS、CISA KEV）
+# 與 Actions 相同的限制：Claude 只讀 out/ 與 .claude/、只寫 out/intel-daily.json，不抓網頁（WebSearch 只用來補充）
 claude -p "/daily-intel" --model sonnet --max-turns 40 --settings .claude/daily-intel-settings.json \
-  --tools "Read,Write,Agent,Skill,WebSearch,WebFetch" --disallowedTools "Bash,Edit,NotebookEdit" \
-  --allowedTools "Read(./out/**),Read(./.claude/**),Edit(./out/**),Agent,WebSearch,WebFetch" \
+  --tools "Read,Write,Agent,Skill,WebSearch" --disallowedTools "Bash,Edit,NotebookEdit,WebFetch" \
+  --allowedTools "Read(./out/**),Read(./.claude/**),Edit(./out/**),Agent,WebSearch" \
   --permission-mode dontAsk --strict-mcp-config
-python agents/run_agent.py all --replay           # A1 會清理格式並實際抓來源頁面確認引用
+python agents/run_agent.py all --replay           # A1 清理格式，引用比對同一份原文（news.json）
 ```
 
 `--record`（本機實際呼叫 API 並錄製）會花錢，需以 `LOCAL_RECORD_CAP_USD` 設定單次上限；執行前請先確認預估成本（見[成本](#成本)）。
@@ -231,7 +232,7 @@ BASELINE_SHA=9a36cf036c436295c08a54d38789029e29d0f9ea scripts/reset-demo.sh
 | `intel-demo` 第一次 | 約 $0.20 |
 | 平常運作 | 每月約 $2～4 |
 
-每日情資使用訂閱方案：每天一次（Sonnet、最多 40 回合、25 分鐘逾時），與個人使用共用額度，不產生 API 費用。
+每日情資使用訂閱方案：每天一次（Sonnet、最多 40 回合、25 分鐘逾時），文章由程式事先抓好，Claude 只做判讀；與個人使用共用額度，不產生 API 費用。新聞來源在 `agents/intel/news_feeds.yaml`，可信網域在 `agents/intel/sources.yaml`。
 
 基礎設施 $0（GitHub Actions、Vercel Hobby、Upstash 免費方案）。即時規則、公告輪詢、掃描、評分與燈號都不用 LLM。各情境的實際成本在部署後執行一次再記錄於此：
 
@@ -250,7 +251,7 @@ BASELINE_SHA=9a36cf036c436295c08a54d38789029e29d0f9ea scripts/reset-demo.sh
 - 本 Repo 不保存任何金鑰值；Repo ① 的假金鑰在凍結副本中一律遮蔽為 `REDACTED`
 - Agent 唯讀：不開 PR、不寫入 Repo ①；只有 A5 有 `contents: write`，且只發布允許的路徑
 - `NOTIFY_TOKEN`、`GH_TOKEN` 不傳入 LLM 子行程；`CLAUDE_CODE_OAUTH_TOKEN` 只給 `daily-intel` Job；`TARGET_READ_TOKEN` 只用於 checkout 與讀取 Deployments
-- `daily-intel` 只有 `contents: read`；PreToolUse hook 限制只能讀 `out/`、`.claude/`，只能寫 `out/intel-daily.json`，WebFetch 只限受信任網域。改到其他檔案就不採用結果
+- `daily-intel` 只有 `contents: read`；文章由程式抓取（safe_fetch：只接受 HTTPS 與允許的網域、限制大小與型態，XML 以 defusedxml 解析），Claude 不抓網頁；PreToolUse hook 限制只能讀 `out/`、`.claude/`，只能寫 `out/intel-daily.json`，拒絕 WebFetch。改到其他檔案或 `news.json` 被改動就不採用結果
 - 每日情資的輸出不可信：程式強制為新事件（不能冒充收錄事件或示範事件）、清空自稱的驗證狀態、不採用「已遭利用」等無法驗證的宣稱，並實際抓來源頁面確認引用
 - Webhook 驗證 HMAC 簽章、Repo ID 與 delivery 去重；告警結案需管理者密碼、圍堵確認與 HTTPS 證據連結
 

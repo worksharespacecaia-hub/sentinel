@@ -60,8 +60,12 @@ def _domain_tier(url: str | None, tiers: dict[str, str]) -> str | None:
 
 
 def verify_event(raw: dict, *, as_of: datetime, online: bool = False, transport=None, resolver=None,
-                 tiers: dict[str, str] | None = None) -> dict:
-    """回傳 {event, verification}。event 已通過 pydantic 驗證並正規化產品名稱。"""
+                 tiers: dict[str, str] | None = None, collected: dict[str, list[str]] | None = None) -> dict:
+    """回傳 {event, verification}。event 已通過 pydantic 驗證並正規化產品名稱。
+
+    collected：同一次執行由 news_collect 從可信網域抓到的原文（網址 → [標題, 句子…]）。來源網址在其中時直接比對，
+    不再抓一次；只接受可信網域的網址（tiers 中的網域）。
+    """
     tiers = tiers if tiers is not None else load_source_tiers()
     allow = list(tiers)
     ev = IntelEvent.model_validate({k: v for k, v in raw.items() if k in IntelEvent.model_fields}).model_dump()
@@ -81,6 +85,16 @@ def verify_event(raw: dict, *, as_of: datetime, online: bool = False, transport=
     for s in ev["sources"]:
         if not s.get("url"):
             s.update(fetch_status="skipped", verified=False, verification_basis="unverified")
+            continue
+        texts = (collected or {}).get(s["url"]) if ev["kind"] == "live" else None
+        if texts and _domain_tier(s["url"], tiers):
+            joined = " ".join(texts)
+            new_hash = "sha256:" + hashlib.sha256(joined.encode("utf-8")).hexdigest()
+            if s.get("quote") and any(quote_in(t, s["quote"]) for t in [*texts, joined]):
+                s.update(fetch_status="ok", verified=True, verified_at=iso(as_of), verification_basis="live", content_hash=new_hash)
+            else:
+                s.update(fetch_status="quote_mismatch", verified=False, verification_basis="live", content_hash=new_hash)
+                issues.append(f"{s['url']}：抓取的原文中找不到引用")
             continue
         if not online:
             if ev["kind"] == "archive" and s.get("verified"):
