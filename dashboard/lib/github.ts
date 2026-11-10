@@ -79,9 +79,12 @@ export async function findRunByRequest(requestId: string): Promise<RunInfo | nul
 
 export async function listJobs(runId: number) {
   const { owner, name } = repo();
-  const body = await gh<{ jobs: { name: string; status: string; conclusion: string | null }[] }>("GET",
+  const body = await gh<{ jobs: { name: string; status: string; conclusion: string | null; started_at: string | null;
+    completed_at: string | null; html_url: string | null }[] }>("GET",
     `/repos/${owner}/${name}/actions/runs/${runId}/jobs?per_page=50`, process.env.GH_DISPATCH_TOKEN);
-  return body.jobs.map((j) => ({ name: j.name, status: j.status, conclusion: j.conclusion }));
+  // 只回傳顯示進度需要的欄位（不含 runner、步驟 log 等）
+  return body.jobs.map((j) => ({ name: j.name, status: j.status, conclusion: j.conclusion, started_at: j.started_at,
+                                 completed_at: j.completed_at, html_url: j.html_url }));
 }
 
 // ------------------------------------------------------------------ 即時告警：Issue（Repo ②）

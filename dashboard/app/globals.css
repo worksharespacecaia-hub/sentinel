@@ -46,3 +46,28 @@ input { font: inherit; padding: 6px 10px; border-radius: 8px; border: 1px solid 
 .tree li { margin: 2px 0; }
 @media (max-width: 640px) { h1 { font-size: 21px; } .stat { font-size: 24px; } }
 pre { overflow-x: auto; white-space: pre; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 13px; }
+.run-form { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.run-form details { display: inline-block; }
+button:disabled { opacity: .6; cursor: progress; }
+a.button { display: inline-block; text-decoration: none; padding: 6px 12px; border-radius: 8px; }
+a.button.primary { background: var(--accent); color: #fff; }
+.flow { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin: 8px 0; }
+.flow-stage { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.flow-node { display: flex; flex-direction: column; border: 1px solid var(--line); border-left-width: 4px; border-radius: 8px;
+  padding: 6px 8px; background: var(--bg); color: var(--text); text-decoration: none; font-size: 14px; }
+.flow-label { font-weight: 600; overflow-wrap: anywhere; }
+.flow-status { font-size: 13px; color: var(--muted); }
+.flow-note { font-size: 12px; color: var(--muted); }
+.flow-node.st-running { border-color: var(--accent); }
+.flow-node.st-running .flow-status { color: var(--accent); font-weight: 600; }
+.flow-node.st-success { border-left-color: var(--green); }
+.flow-node.st-success .flow-status { color: var(--green); }
+.flow-node.st-failure { border-left-color: var(--red); background: var(--red-bg); }
+.flow-node.st-failure .flow-status { color: var(--red); font-weight: 600; }
+.flow-node.st-skipped, .flow-node.st-cancelled { border-style: dashed; opacity: .75; }
+@media (prefers-reduced-motion: no-preference) {
+  .flow-node.st-running { animation: flow-pulse 1.6s ease-in-out infinite; }
+  @keyframes flow-pulse { 50% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); } }
+}
+@media (max-width: 900px) { .flow { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .flow { grid-template-columns: 1fr; } }
