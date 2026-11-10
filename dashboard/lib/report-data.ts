@@ -1,5 +1,5 @@
 // 伺服器端：組出行動報告需要的全部資料（報告、有效燈號、處理中追蹤、通知草稿）。網頁、LINE 推播與提醒共用。
-import { buildActionReport, type ActionReport, type Notice, type Tracking } from "./actions.ts";
+import { buildActionReport, eventDetailFrom, type ActionReport, type EventDetail, type Notice, type Tracking } from "./actions.ts";
 import { openAlertsInfo } from "./alerts.ts";
 import { getIntelReport, getReport, type Report, type Source } from "./data.ts";
 import { redisConfigured } from "./redis.ts";
@@ -21,23 +21,28 @@ export async function loadTrackingSafe(): Promise<{ tracking: Record<string, Tra
   }
 }
 
-export async function noticesFor(source: Source, report: Report): Promise<Notice[]> {
+/** 受影響事件的通知草稿與來源（讀各事件的情資比對報告）。 */
+export async function eventInfoFor(source: Source, report: Report): Promise<{ notices: Notice[]; details: Record<string, EventDetail> }> {
   const affected = report.events.filter((e) => e.affected_count > 0);
   const reps = await Promise.all(affected.map((e) => getIntelReport(source, e.id)));
-  return reps.flatMap((rep, i) => {
+  const details: Record<string, EventDetail> = {};
+  const notices = reps.flatMap((rep, i) => {
+    details[affected[i].id] = eventDetailFrom(rep);
     const n = rep?.blocks?.["6_notice"];
     return n?.needed && typeof n.draft === "string" ? [{ event_id: affected[i].id, title: affected[i].title, draft: n.draft }] : [];
   });
+  return { notices, details };
 }
 
 export async function loadActionReport(source: Source, now = Date.now()): Promise<LoadedActionReport | null> {
   const report = await getReport(source);
   if (!report) return null;
-  const [summary, track, notices] = await Promise.all([
+  const [summary, track, info] = await Promise.all([
     source.simulated ? Promise.resolve(null) : computeSummary(await openAlertsInfo()),
     source.simulated ? Promise.resolve({ tracking: {}, degraded: null }) : loadTrackingSafe(),
-    noticesFor(source, report),
+    eventInfoFor(source, report),
   ]);
-  const action = buildActionReport(report, { light: summary?.light ?? report.light, tracking: track.tracking, notices, now });
+  const action = buildActionReport(report, { light: summary?.light ?? report.light, tracking: track.tracking,
+                                             notices: info.notices, eventDetails: info.details, now });
   return { report, action, trackingDegraded: track.degraded };
 }
