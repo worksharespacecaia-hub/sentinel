@@ -122,11 +122,22 @@ python agents/run_agent.py all --replay           # A1 清理格式，引用比�
 - Secrets：`TARGET_READ_TOKEN`、`NOTIFY_TOKEN`（隨機字串，與 Vercel 相同）、`CLAUDE_CODE_OAUTH_TOKEN`（每日情資；在本機以要負擔用量的 Claude 訂閱帳號執行 `claude setup-token` 產生，到期需重新產生）
 - Variables：`SENTINEL_SCHEDULE_MODE=replay`、`INCIDENT_EXECUTION_MODE=replay`；Vercel 網域確定後加上 `SENTINEL_BASE_URL=https://<網域>`
 - 選用：`TARGET_REPO`（預設 `<owner>/shopsaas-demo-platform`）
-- replay 模式不需要 `ANTHROPIC_API_KEY`；改用 live 時再加（見[成本](#成本)）
+- replay 模式不需要 `ANTHROPIC_API_KEY`；要讓 A1～A5 實際呼叫 Claude，見下方「啟用 live」
 - 每日情資不論 replay 或 live 都會執行；沒有 `CLAUDE_CODE_OAUTH_TOKEN` 時 daily 照常完成，報告標示「今日新聞情資未更新」
 - 不需要安裝 Claude GitHub App：`daily-intel` 以本 Job 的唯讀 `github.token` 執行
 - A0 以 `TARGET_READ_TOKEN`（Deployments：Read）讀取 Repo ① 的 production Deployments，同一次執行的 A0～A5 共用；讀取失敗時改用離線 fixture，報告標示原因
 - `main` 不要設定會阻擋 `github-actions[bot]` 推送的分支保護：A5 以 `scripts/push-with-retry.sh` 把結果 commit 到 `dashboard/public/data/`
+
+#### 啟用 live（A1～A5 實際呼叫 Claude API）
+
+replay 模式下 A0～A5 的 Subagent 一律是程式範本（沒有錄製檔），「Agent 執行」頁會標示「程式範本」。要讓它們實際呼叫 Claude：
+
+1. 在 Anthropic Console 建立 API Key（按量計費，與 Claude 訂閱方案分開），並設定每月 spend limit（建議 US$15）
+2. Repo ② Actions Secrets 新增 `ANTHROPIC_API_KEY`
+3. Repo ② Actions Variables 把 `SENTINEL_SCHEDULE_MODE` 改為 `live`（排程與 GitHub 手動 daily）；`SENTINEL_BASE_URL` 必須已設定
+4. 選用（Vercel）：`BUDGET_MONTHLY_USD`（預設 15）、`BUDGET_BUFFER`（超支緩衝比例，預設 0.1）、`BUDGET_TZ`（帳務時區，預設 UTC）、`BUDGET_MAX_RESERVATION_USD`（單筆上限，預設 0.5）
+
+每個 Agent 呼叫 API 前先向 `/api/budget` 預留（以 `NOTIFY_TOKEN` 保護、冪等鍵含 run／attempt／agent／序號），完成後依實際用量結算；本月額度不足或服務無法連線時改用程式範本，報告照常產出。網站觸發（`WEB_EXECUTION_MODE`）與圍堵建議（`INCIDENT_EXECUTION_MODE`）維持 replay，需要時另外設定。
 
 ### 5. Vercel
 
@@ -219,7 +230,7 @@ BASELINE_SHA=9a36cf036c436295c08a54d38789029e29d0f9ea scripts/reset-demo.sh
 |------|------|
 | `replay`（預設） | 不呼叫 LLM，重播已錄製結果或使用程式範本；$0 |
 | `record` | 只限本機，實際呼叫 API 並錄製；以 `LOCAL_RECORD_CAP_USD` 限制單次上限 |
-| `live` | Workflow 實際呼叫 API。**目前 `/api/budget` 尚未實作，live 會因預算預留失敗而一律退回範本**；要啟用需先完成 budget API，並在 Anthropic Console 設定每月上限（建議 US$15） |
+| `live` | Workflow 實際呼叫 Claude API。呼叫前先向 `/api/budget` 預留月預算（預設 US$15、保留 10% 緩衝、單筆上限 US$0.5），不足或服務無法連線時改用範本；另在 Anthropic Console 設定每月上限 |
 
 規格估算（Claude API，不含訂閱方案；誤差約 ±50%，以報告中的 `total_cost_usd` 為準）：
 
@@ -261,4 +272,4 @@ BASELINE_SHA=9a36cf036c436295c08a54d38789029e29d0f9ea scripts/reset-demo.sh
 - 只有「非 Pipeline 部署」接真實 Webhook，其他即時事件以模擬器代替
 - 圍堵建議的完成時間取決於 GitHub Actions 排隊，目標約 3 分鐘；GitHub 排程也可能延遲
 - 執行層資料是快照；正式導入需串接雲端 API、裝置管理與 SIEM
-- 尚未實作：budget API（live 模式）、LINE 通知與 App 頁（P2）、`nas`／`insider-path`／`mobile-sdk` 情境（P2）、Neon 趨勢圖（選配）
+- 尚未實作：LINE 通知與 App 頁（P2）、`nas`／`insider-path`／`mobile-sdk` 情境（P2）、Neon 趨勢圖（選配）

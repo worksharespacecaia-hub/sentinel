@@ -193,18 +193,95 @@ def summarize(messages: list[dict], with_result: bool = False, activity: bool = 
     return lines or ["執行紀錄中沒有可辨識的訊息"]
 
 
+def trace_events(messages: list[dict], news: dict | None, intel: dict | None, now: str) -> list[dict]:
+    """給「Agent 執行」頁的 daily-intel 執行紀錄（格式同 agents/tools/trace.py）。只含工具名稱、次數與數量，不含網頁或對話內容。"""
+    def ev(kind, detail, subagent=None, source=None):
+        return {"ts": now, "agent": "daily-intel", "subagent": subagent, "kind": kind, "detail": clean(detail)[:500],
+                "source": source, "cost_usd": None}
+    out = []
+    if news:
+        srcs = news.get("sources") or []
+        ok = sum(1 for s in srcs if s.get("status") == "ok")
+        out.append(ev("start", f"程式抓取近 {news.get('window_hours', 72)} 小時資安新聞：{len(news.get('items') or [])} 篇"
+                                f"（{ok}/{len(srcs)} 個來源成功），交給 Claude（訂閱方案）判讀"))
+        kept = "、".join(f"{s.get('name')} {s.get('kept')}" for s in srcs if s.get("kept"))
+        if kept:
+            out.append(ev("tool", f"news_collect：{kept}"))
+    else:
+        out.append(ev("start", "Claude（訂閱方案）判讀今日資安新聞"))
+    if not messages:
+        out.append(ev("error", "Claude 沒有執行（Token 檢查失敗或設定錯誤）"))
+        return out
+    out.append(ev("skill", "載入 daily-intel Skill"))
+    results = {c.get("tool_use_id"): c for m in messages if m.get("type") == "user" for c in _blocks(m)
+               if c.get("type") == "tool_result"}
+    sub_tools: dict[str, Counter] = {}
+    for m in messages:
+        parent = m.get("parent_tool_use_id")
+        if m.get("type") == "assistant" and parent:
+            for c in _blocks(m):
+                if c.get("type") == "tool_use":
+                    sub_tools.setdefault(parent, Counter())[str(c.get("name", "?"))] += 1
+    main_tools = Counter()
+    for m in messages:
+        if m.get("type") != "assistant" or m.get("parent_tool_use_id"):
+            continue
+        for c in _blocks(m):
+            if c.get("type") != "tool_use":
+                continue
+            name, inp = str(c.get("name", "?")), c.get("input") if isinstance(c.get("input"), dict) else {}
+            if name in ("Agent", "Task") and inp.get("subagent_type"):
+                res = results.get(c.get("id"))
+                used = "、".join(f"{k}×{v}" for k, v in sorted((sub_tools.get(c.get("id")) or {}).items())) or "沒有使用工具"
+                if res is not None and res.get("is_error"):
+                    out.append(ev("error", f"{inp['subagent_type']} 被拒絕或失敗", subagent=str(inp["subagent_type"])))
+                else:
+                    out.append(ev("subagent", f"{inp['subagent_type']} 完成（{used}）", subagent=str(inp["subagent_type"]), source="live"))
+            else:
+                main_tools[name] += 1
+    if main_tools:
+        out.append(ev("tool", "主 Agent 工具：" + "、".join(f"{k}×{v}" for k, v in sorted(main_tools.items()))))
+    result = next((m for m in reversed(messages) if m.get("type") == "result"), None) or {}
+    events = (intel or {}).get("events") if isinstance(intel, dict) else None
+    secs = round((result.get("duration_ms") or 0) / 1000)
+    if isinstance(events, list):
+        out.append(ev("result", f"寫出 {len(events)} 件事件（{result.get('num_turns', '?')} 回合、{secs} 秒）；A1 以抓取的原文確認引用"))
+    else:
+        out.append(ev("error", f"沒有寫出結果（{result.get('num_turns', '?')} 回合、{secs} 秒）"))
+    return out
+
+
 def main(argv: list[str]) -> int:
     args = argv[1:]
     with_result, activity = "--with-result" in args, "--activity" in args
+    trace_out = None
+    if "--trace" in args:                       # --trace <輸出檔>：寫出給「Agent 執行」頁的執行紀錄
+        i = args.index("--trace")
+        trace_out = Path(args[i + 1]) if i + 1 < len(args) else None
+        args = args[:i] + args[i + 2:]
     args = [a for a in args if a not in ("--with-result", "--activity")]
-    if len(args) != 1:
-        print("用法：claude-error-summary.py [--with-result] <execution_file>", file=sys.stderr)
+    if len(args) != 1 or ("--trace" in argv and trace_out is None):
+        print("用法：claude-error-summary.py [--with-result] [--activity] [--trace <輸出檔>] <execution_file>", file=sys.stderr)
         return 2
     path = Path(args[0])
+    messages = load_messages(path) if path.is_file() else []
+    if trace_out is not None:
+        def read(p):
+            try:
+                return json.loads(p.read_text(encoding="utf-8")) if p.is_file() else None
+            except ValueError:
+                return None
+        from datetime import datetime, timezone
+        now = datetime.now(timezone.utc).isoformat(timespec="seconds")
+        evs = trace_events(messages, read(Path("out/news.json")), read(Path("out/intel-daily.json")), now)
+        trace_out.parent.mkdir(parents=True, exist_ok=True)
+        trace_out.write_text("".join(json.dumps(e, ensure_ascii=False) + "\n" for e in evs), encoding="utf-8", newline="\n")
+        print(f"寫出 {len(evs)} 筆執行紀錄：{trace_out}")
+        return 0
     if not path.is_file():
         print(f"找不到執行紀錄：{path.name}")
         return 0
-    for line in summarize(load_messages(path), with_result=with_result, activity=activity):
+    for line in summarize(messages, with_result=with_result, activity=activity):
         print(line)
     return 0
 

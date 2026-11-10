@@ -255,6 +255,14 @@ jobs:
             out/intel-daily.json
             out/news.json
           if-no-files-found: ignore
+      - name: 整理每日情資執行紀錄（給 Agent 執行頁；只含工具名稱與次數）
+        if: ${{ !cancelled() }}
+        env:
+          EXEC_FILE: ${{ steps.claude.outputs.execution_file || format('{0}/claude-execution-output.json', runner.temp) }}
+        run: python3 scripts/claude-error-summary.py --trace out/daily-intel/trace.jsonl "$EXEC_FILE"
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with: { name: "${{ github.run_id }}-daily-intel-trace", path: out/daily-intel/trace.jsonl, if-no-files-found: ignore }
 
   a1-intel:
     needs: [orchestrator, a0-assets, daily-intel]
@@ -287,6 +295,9 @@ jobs:
           ASSETS: ${{ inputs.assets }}
           TARGET_DIR: target
           ANTHROPIC_API_KEY: ${{ needs.orchestrator.outputs.execution_mode == 'live' && secrets.ANTHROPIC_API_KEY || '' }}
+          # live 時先向 /api/budget 預留月預算（SDK 子行程會清除這兩個變數，見 llm.scrubbed_environ）
+          NOTIFY_TOKEN: ${{ needs.orchestrator.outputs.execution_mode == 'live' && secrets.NOTIFY_TOKEN || '' }}
+          SENTINEL_BASE_URL: ${{ needs.orchestrator.outputs.execution_mode == 'live' && vars.SENTINEL_BASE_URL || '' }}
         run: python agents/run_agent.py a1
       - uses: actions/upload-artifact@v4
         with: { name: "${{ github.run_id }}-a1", path: out/, if-no-files-found: error }
@@ -325,6 +336,9 @@ jobs:
           TARGET_DIR: target
           SCANNERS_DIR: dl/scanners
           ANTHROPIC_API_KEY: ${{ needs.orchestrator.outputs.execution_mode == 'live' && secrets.ANTHROPIC_API_KEY || '' }}
+          # live 時先向 /api/budget 預留月預算（SDK 子行程會清除這兩個變數，見 llm.scrubbed_environ）
+          NOTIFY_TOKEN: ${{ needs.orchestrator.outputs.execution_mode == 'live' && secrets.NOTIFY_TOKEN || '' }}
+          SENTINEL_BASE_URL: ${{ needs.orchestrator.outputs.execution_mode == 'live' && vars.SENTINEL_BASE_URL || '' }}
         run: python agents/run_agent.py a2
       - uses: actions/upload-artifact@v4
         with: { name: "${{ github.run_id }}-a2", path: out/, if-no-files-found: error }
@@ -359,6 +373,9 @@ jobs:
           ASSETS: ${{ inputs.assets }}
           TARGET_DIR: target
           ANTHROPIC_API_KEY: ${{ needs.orchestrator.outputs.execution_mode == 'live' && secrets.ANTHROPIC_API_KEY || '' }}
+          # live 時先向 /api/budget 預留月預算（SDK 子行程會清除這兩個變數，見 llm.scrubbed_environ）
+          NOTIFY_TOKEN: ${{ needs.orchestrator.outputs.execution_mode == 'live' && secrets.NOTIFY_TOKEN || '' }}
+          SENTINEL_BASE_URL: ${{ needs.orchestrator.outputs.execution_mode == 'live' && vars.SENTINEL_BASE_URL || '' }}
         run: python agents/run_agent.py a3
       - uses: actions/upload-artifact@v4
         with: { name: "${{ github.run_id }}-a3", path: out/, if-no-files-found: error }
@@ -400,6 +417,9 @@ jobs:
           TARGET_DIR: target
           SCANNERS_DIR: dl/scanners
           ANTHROPIC_API_KEY: ${{ needs.orchestrator.outputs.execution_mode == 'live' && secrets.ANTHROPIC_API_KEY || '' }}
+          # live 時先向 /api/budget 預留月預算（SDK 子行程會清除這兩個變數，見 llm.scrubbed_environ）
+          NOTIFY_TOKEN: ${{ needs.orchestrator.outputs.execution_mode == 'live' && secrets.NOTIFY_TOKEN || '' }}
+          SENTINEL_BASE_URL: ${{ needs.orchestrator.outputs.execution_mode == 'live' && vars.SENTINEL_BASE_URL || '' }}
         run: python agents/run_agent.py a4
       - uses: actions/upload-artifact@v4
         with: { name: "${{ github.run_id }}-a4", path: out/, if-no-files-found: error }
@@ -426,6 +446,9 @@ jobs:
         continue-on-error: true
         with: { pattern: "${{ github.run_id }}-{orchestrator,a0,a1,a2,a3,a4,intel-daily}", path: out/, merge-multiple: true }
       - uses: actions/download-artifact@v4
+        continue-on-error: true            # 每日情資沒執行（網站觸發、情境）時沒有這個 artifact
+        with: { name: "${{ github.run_id }}-daily-intel-trace", path: out/daily-intel/ }
+      - uses: actions/download-artifact@v4
         continue-on-error: true
         with: { pattern: "${{ github.run_id }}-scanner-*", path: dl/, merge-multiple: true }
       - uses: actions/download-artifact@v4
@@ -446,6 +469,9 @@ jobs:
           TARGET_DIR: target
           SCANNERS_DIR: dl/scanners
           ANTHROPIC_API_KEY: ${{ needs.orchestrator.outputs.execution_mode == 'live' && secrets.ANTHROPIC_API_KEY || '' }}
+          # live 時先向 /api/budget 預留月預算（SDK 子行程會清除這兩個變數，見 llm.scrubbed_environ）
+          NOTIFY_TOKEN: ${{ needs.orchestrator.outputs.execution_mode == 'live' && secrets.NOTIFY_TOKEN || '' }}
+          SENTINEL_BASE_URL: ${{ needs.orchestrator.outputs.execution_mode == 'live' && vars.SENTINEL_BASE_URL || '' }}
         run: python agents/run_agent.py a5
       - uses: actions/upload-artifact@v4
         if: always()
