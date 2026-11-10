@@ -1,0 +1,160 @@
+{
+  "event": {
+    "id": "live-arara-mail-provider-breach-2026-11",
+    "kind": "live",
+    "title": "日本郵件發送服務商 Arara 遭入侵，SEGA 集團外洩資料 220 萬筆",
+    "date": "2026-11-10",
+    "industry": "零售",
+    "attack_chain": [
+      "委外郵件發送服務商 Arara 的系統遭第三方未授權存取",
+      "電子報訂戶電子郵件地址及隨信發送的部分個資外洩",
+      "逾 380 家客戶企業受影響，SEGA 為其中之一"
+    ],
+    "attck": [
+      "T1199"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180353",
+        "title": "SEGA集團因日本Arara資安事件外洩資料220萬筆",
+        "quote": "SEGA集團因日本Arara資安事件外洩資料220萬筆",
+        "published": "2026-11-10",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-10T16:09:21Z",
+        "content_hash": "sha256:8b942faa14d0f8c6031f5bd6b00d184aa3ef484907606051e24c10fa467e8481",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://www.ithome.com.tw/news/180375",
+        "title": "【資安日報】11月10日，甫揭露的OpenSSH漏洞SSHole出現嘗試利用活動",
+        "quote": "SEGA表示，外洩資料不包含姓名、出生日期、住址、電話、信用卡資訊及登入密碼，目前正與Arara合作調查。",
+        "published": "2026-11-09",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-10T16:09:21Z",
+        "content_hash": "sha256:cf3ab0adc74b382dad55b21ce9d0ed5777caab0fcca744ad0b1b32c7020379c1",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "委外郵件發送商的個資傳遞最小化與事件通報機制",
+        "reason": "SEGA 的外洩資料來自委外郵件服務商，除電子郵件地址外隨信發送的個資也外流，現有控制項沒有涵蓋。"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-arara-mail-provider-breach-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：委外郵件發送商的個資傳遞最小化與事件通報機制"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產"
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "Arara 的郵件發送系統遭第三方未授權存取，可能造成超過 8,100 萬筆客戶資訊外洩，影響逾 380 家企業。SEGA 確認外流電子報訂戶電子郵件地址 2,196,044 筆及隨信發送的個人資訊 92,273 筆，不含姓名、電話、信用卡資訊與登入密碼。",
+  "blocks": {
+    "1_summary": {
+      "title": "日本郵件發送服務商 Arara 遭入侵，SEGA 集團外洩資料 220 萬筆",
+      "date": "2026-11-10",
+      "industry": "零售",
+      "attack_chain": [
+        "委外郵件發送服務商 Arara 的系統遭第三方未授權存取",
+        "電子報訂戶電子郵件地址及隨信發送的部分個資外洩",
+        "逾 380 家客戶企業受影響，SEGA 為其中之一"
+      ],
+      "attck": [
+        "T1199"
+      ],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180353",
+          "title": "SEGA集團因日本Arara資安事件外洩資料220萬筆",
+          "quote": "SEGA集團因日本Arara資安事件外洩資料220萬筆",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-10T16:09:21Z"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/180375",
+          "title": "【資安日報】11月10日，甫揭露的OpenSSH漏洞SSHole出現嘗試利用活動",
+          "quote": "SEGA表示，外洩資料不包含姓名、出生日期、住址、電話、信用卡資訊及登入密碼，目前正與Arara合作調查。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-10T16:09:21Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "Arara 的郵件發送系統遭第三方未授權存取，可能造成超過 8,100 萬筆客戶資訊外洩，影響逾 380 家企業。SEGA 確認外流電子報訂戶電子郵件地址 2,196,044 筆及隨信發送的個人資訊 92,273 筆，不含姓名、電話、信用卡資訊與登入密碼。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：委外郵件發送商的個資傳遞最小化與事件通報機制"
+          ],
+          "observed_at": "2026-11-10T16:09:21Z"
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  }
+}

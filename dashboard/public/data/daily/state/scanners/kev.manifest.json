@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "run_id": "42851613388",
+  "job": "scanners-kev",
+  "scope": "scanner",
+  "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
+  "observed_at": "2026-11-10T16:10:07Z",
+  "valid_until": "2026-11-11T16:10:07Z",
+  "tool_version": {
+    "kev": "2026.11.09"
+  },
+  "database_revision": {
+    "kev": "2026-11-09T19:54:37.4945Z"
+  },
+  "files": {
+    "kev.json": "dc6e529978bf2fb392abf8408f1674ec0fca0b2d3c2b47bcf6c72db4176b2920"
+  },
+  "status": "ok"
+}

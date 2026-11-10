@@ -1073,18 +1073,20 @@
       "demo_fixture": true
     },
     {
-      "id": "live-cyberbiz-ecommerce-outsourced-2026-11",
+      "id": "live-cyberbiz-ecommerce-supplier-breach-2026-11",
       "kind": "live",
       "is_update_of": null,
-      "title": "順立智慧（Cyberbiz）委外電商平台資料庫遭異常存取，多家品牌商城受波及",
+      "title": "委外電商平台廠商順立智慧（Cyberbiz）資料庫遭異常存取，多家品牌商城受波及",
       "date": "2026-11-10",
       "industry": "電商",
       "attack_chain": [
-        "電商平台委外服務廠商順立智慧的資料庫遭未經授權的異常存取",
-        "涉及下游商城的訂單及消費者個人資料",
-        "順立智慧通知下游商家，各商家啟動應變並清查受影響範圍"
+        "順立智慧（Cyberbiz）資料庫遭未經授權的異常存取（來源未說明手法）",
+        "委外客戶的購物商城訂單資料與消費者個資受波及",
+        "各公司接獲通知後啟動應變並提醒會員防詐騙"
       ],
-      "attck": [],
+      "attck": [
+        "T1199"
+      ],
       "cves": [],
       "products": [],
       "revision": "1",
@@ -1098,8 +1100,8 @@
           "published": "2026-11-10",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-10T12:22:28Z",
-          "content_hash": "sha256:04083af62958090ec754c51920d4510dc13694868c22062507d518c8f9f10573",
+          "verified_at": "2026-11-10T16:09:21Z",
+          "content_hash": "sha256:30784b0a1556a6fdc596c5a5fe36c7d544c701b2231e9a53b1c0d2d2bbb7f227",
           "verification_basis": "live"
         },
         {
@@ -1109,8 +1111,8 @@
           "published": "2026-11-10",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-10T12:22:28Z",
-          "content_hash": "sha256:b100d015b8b0ff9bafc84d6343f50dcbaf203ce7069a38b73bf3f4f5b67396ff",
+          "verified_at": "2026-11-10T16:09:21Z",
+          "content_hash": "sha256:8b856d44a19a743cf996c704589c3daa75b8843140c452187d562b5e928a3047",
           "verification_basis": "live"
         },
         {
@@ -1120,8 +1122,8 @@
           "published": "2026-11-10",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-10T12:22:28Z",
-          "content_hash": "sha256:b29e5b392bf3958bec94f4e41d2a3e73a8a45440b4023477030aa1efc5a301c8",
+          "verified_at": "2026-11-10T16:09:21Z",
+          "content_hash": "sha256:e444ea85dcdabfd5668ede463a62327a76ddd52e0bcaadd5a439d8f2adf0f2c0",
           "verification_basis": "live"
         },
         {
@@ -1131,44 +1133,49 @@
           "published": "2026-11-10",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-10T12:22:28Z",
-          "content_hash": "sha256:5a69da40d32bffc16a26287ce40881d0c8c1779993c50b58fdbf76f3442ea089",
+          "verified_at": "2026-11-10T16:09:21Z",
+          "content_hash": "sha256:cb016e6ac781e33b7acc1427d2d605d16418c91fcdf07b30a1011289e2e9ed59",
           "verification_basis": "live"
         }
       ],
-      "proposed_controls": [],
+      "proposed_controls": [
+        {
+          "title": "委外電商平台商須有資安事件通報時限與客戶資料存取稽核",
+          "reason": "多家企業是接獲順立智慧通知後才得知事件，現有控制項沒有涵蓋委外商的通報時限、客戶資料隔離與存取稽核。"
+        }
+      ],
       "demo": false,
       "facts": [],
-      "summary": "櫻花接獲電商委外服務廠商順立智慧通知，其資料庫遭未經授權的異常存取，涉及購物商城訂單及消費者個人資料。曜亞子公司曜胜生技的 DR CYJ 購物網、崇越子公司安永生活也因同一委外廠商事件受影響，美吾華則指出事件與委外電商平台服務廠商系統有關。各公司表示原因與影響範圍仍在調查中。",
+      "summary": "櫻花、曜亞、崇越等公司發布重大訊息，指出委外電商服務商順立智慧（Cyberbiz）的資料庫遭未經授權的異常存取，涉及訂單與消費者個資；美吾華則表示事件與其委外的電商平台廠商系統有關，原因與範圍仍在調查中。各公司均稱對財務與業務無重大影響。",
       "fixture_note": null
     },
     {
-      "id": "live-eztravel-member-center-2026-11",
+      "id": "live-eztravel-member-center-breach-2026-11",
       "kind": "live",
       "is_update_of": null,
-      "title": "易遊網會員中心遭攻擊，逾 69 萬人歷史訂單聯絡資料受影響",
+      "title": "易遊網會員中心遭外部攻擊，逾 69 萬人歷史訂單聯絡資料受影響",
       "date": "2026-11-09",
       "industry": "電商",
       "attack_chain": [
-        "11 月 7 日會員中心出現外部異常網路攻擊",
-        "部分歷史訂單聯絡資料（姓名、電子郵件、聯絡電話、商品訂購資訊）遭不當取得",
-        "業者完成異常流量攔截與阻斷，並委請第三方資安團隊鑑識"
+        "會員中心遭外部異常網路攻擊（手法未說明）",
+        "部分歷史訂單聯絡資料（姓名、電子郵件、電話、訂購資訊）遭不當取得",
+        "業者攔截異常流量、委請第三方鑑識並通報主管機關"
       ],
       "attck": [],
       "cves": [],
       "products": [],
       "revision": "1",
       "controls": [],
-      "confidence": "confirmed",
+      "confidence": "provisional",
       "sources": [
         {
           "url": "https://www.inside.com.tw/article/42862-eztravel-member-center-breach-690k-order-contact-data",
           "title": "易遊網遭駭，逾 69 萬人訂單聯絡資料外洩，業者稱不含信用卡與身分證字號",
-          "quote": "旅遊平台 易遊網 在 2026 年 11 月 9 日發布公告，表示 11 月 7 日偵測到會員中心出現外部異常網路攻擊，部分歷史訂單的聯絡資料遭不當取得，受影響人數超過 69 萬人。",
+          "quote": "易遊網遭駭，逾 69 萬人訂單聯絡資料外洩，業者稱不含信用卡與身分證字號",
           "published": "2026-11-10",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-10T12:22:28Z",
+          "verified_at": "2026-11-10T16:09:21Z",
           "content_hash": "sha256:8a4fd891c42df5bd6551a7bcf659319bde0984d5c0787f4539225e53df143fd2",
           "verification_basis": "live"
         },
@@ -1179,31 +1186,36 @@
           "published": "2026-11-10",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-10T12:22:28Z",
-          "content_hash": "sha256:f98a7d3124992c64b87ccc26336ec997cd0aba0a94b59bee4e5ba8827b5cb017",
+          "verified_at": "2026-11-10T16:09:21Z",
+          "content_hash": "sha256:6e2d8a4fc2380221c8ab180720ed880f6e2e2c58c51fc0ae528285a12981ab75",
           "verification_basis": "live"
         }
       ],
-      "proposed_controls": [],
+      "proposed_controls": [
+        {
+          "title": "會員中心的訂單查詢需有存取控制與大量讀取偵測",
+          "reason": "來源指出攻擊者從會員中心取得歷史訂單聯絡資料，業者也將檢視資料存取權限與異常流量監控，現有控制項沒有涵蓋。"
+        }
+      ],
       "demo": false,
       "facts": [],
-      "summary": "易遊網於 11 月 7 日偵測到會員中心出現外部異常網路攻擊，部分歷史訂單聯絡資料遭不當取得，受影響人數超過 69 萬人。業者表示不含信用卡卡號、安全碼、帳號登入密碼、身分證字號及護照號碼，並已通報主管機關及警政單位、委請第三方資安團隊調查。公告未說明攻擊手法與攻擊者身分。",
+      "summary": "易遊網於 11 月 7 日偵測到會員中心出現外部異常網路攻擊，部分歷史訂單聯絡資料遭不當取得，受影響人數超過 69 萬人。業者稱未涉及信用卡卡號、帳號登入密碼與身分證字號；公告未說明攻擊手法與攻擊者。",
       "fixture_note": null
     },
     {
-      "id": "live-neticrm-nonprofit-donor-2026-11",
+      "id": "live-neticrm-provider-breach-2026-11",
       "kind": "live",
       "is_update_of": null,
-      "title": "netiCRM 服務商遭駭，逾 20 個非營利組織捐款人個資恐外洩",
-      "date": "2026-11-10",
+      "title": "netiCRM 服務商網絡行動科技伺服器遭入侵，逾 30 個非營利組織示警",
+      "date": "2026-11-09",
       "industry": "SaaS",
       "attack_chain": [
-        "攻擊者取得服務商內部程式碼管理系統的一組帳號密碼",
-        "利用系統漏洞取得一臺伺服器的管理權限並入侵",
-        "服務商切斷連線、修補漏洞並更新伺服器金鑰與系統密碼"
+        "服務商部分伺服器遭外部攻擊者入侵",
+        "業者切斷攻擊者連線、完成漏洞修補並更新金鑰與密碼",
+        "使用該系統的非營利組織陸續發布公告並更換後臺密碼"
       ],
       "attck": [
-        "T1078"
+        "T1199"
       ],
       "cves": [],
       "products": [],
@@ -1213,35 +1225,42 @@
       "sources": [
         {
           "url": "https://www.ithome.com.tw/news/180384",
-          "title": "捐款人個資恐外洩！netiCRM服務商遭駭，公督盟、司改會等超過20個非營利組織接連示警",
+          "title": "捐款人個資恐外洩！netiCRM服務商遭駭，公督盟、司改會等超過30個非營利組織接連示警",
           "quote": "其中，公督盟已預防性暫停線上捐款及活動報名服務，至於是否涉及捐款人個資外洩，目前仍在調查中。",
-          "published": "2026-11-10",
+          "published": "2026-11-09",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-10T12:22:28Z",
-          "content_hash": "sha256:3cc5c8406a5c872e2f7bfc942cf885729d1fc0cdbefd3ebe85afc1e02986bcde",
+          "verified_at": "2026-11-10T16:09:21Z",
+          "content_hash": "sha256:e40b84df11310195226604aca12cfccbb6511d4a085e98e47ad2da46e42f7043",
           "verification_basis": "live"
         }
       ],
-      "proposed_controls": [],
+      "proposed_controls": [
+        {
+          "title": "多租戶 SaaS 服務商遭入侵時的客戶端應變（後臺密碼更換與服務暫停）",
+          "reason": "多個組織各自更換後臺密碼或暫停服務，現有控制項沒有涵蓋 SaaS 供應商事件的客戶端處置流程。"
+        }
+      ],
       "demo": false,
       "facts": [],
-      "summary": "netiCRM 服務商網絡行動科技部分伺服器遭外部攻擊者入侵，超過 20 個非營利組織發布示警，公督盟預防性暫停線上捐款及活動報名服務。是否涉及捐款人個資外洩仍在調查中。服務商說明攻擊者取得內部程式碼管理系統的一組帳號密碼，並利用系統漏洞取得一臺伺服器的管理權限。",
+      "summary": "網絡行動科技部分伺服器於 11 月 8 日晚間至 9 日凌晨遭外部攻擊者入侵，業者已切斷連線、修補漏洞並更新伺服器金鑰與系統密碼。公督盟預防性暫停線上捐款及活動報名，捐款人個資是否外洩仍在調查中。",
       "fixture_note": null
     },
     {
-      "id": "live-sega-arara-mail-service-2026-11",
+      "id": "live-arara-mail-provider-breach-2026-11",
       "kind": "live",
       "is_update_of": null,
-      "title": "日本郵件發送服務商 Arara 遭未授權存取，SEGA 外洩近 220 萬筆資料",
+      "title": "日本郵件發送服務商 Arara 遭入侵，SEGA 集團外洩資料 220 萬筆",
       "date": "2026-11-10",
-      "industry": "SaaS",
+      "industry": "零售",
       "attack_chain": [
-        "Arara 郵件發送系統遭第三方未授權存取",
-        "電子報訂戶電子郵件地址及部分個資外洩",
-        "影響使用該服務的超過 380 家企業客戶"
+        "委外郵件發送服務商 Arara 的系統遭第三方未授權存取",
+        "電子報訂戶電子郵件地址及隨信發送的部分個資外洩",
+        "逾 380 家客戶企業受影響，SEGA 為其中之一"
       ],
-      "attck": [],
+      "attck": [
+        "T1199"
+      ],
       "cves": [],
       "products": [],
       "revision": "1",
@@ -1251,30 +1270,35 @@
         {
           "url": "https://www.ithome.com.tw/news/180353",
           "title": "SEGA集團因日本Arara資安事件外洩資料220萬筆",
-          "quote": "這次事件影響超過380家企業電子報發送客戶服務的客戶。",
+          "quote": "SEGA集團因日本Arara資安事件外洩資料220萬筆",
           "published": "2026-11-10",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-10T12:22:28Z",
-          "content_hash": "sha256:12427bb124ce06706a45543bb7c94400bea67ab5b77423705aee1b8c601bcb60",
+          "verified_at": "2026-11-10T16:09:21Z",
+          "content_hash": "sha256:8b942faa14d0f8c6031f5bd6b00d184aa3ef484907606051e24c10fa467e8481",
           "verification_basis": "live"
         },
         {
           "url": "https://www.ithome.com.tw/news/180375",
           "title": "【資安日報】11月10日，甫揭露的OpenSSH漏洞SSHole出現嘗試利用活動",
-          "quote": "Arara於10月底發生資安事件，可能造成超過8,100萬筆客戶資料外洩，影響逾380家企業，包括小學館、BIC Camera及摩斯漢堡等。",
+          "quote": "SEGA表示，外洩資料不包含姓名、出生日期、住址、電話、信用卡資訊及登入密碼，目前正與Arara合作調查。",
           "published": "2026-11-09",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-10T12:22:28Z",
+          "verified_at": "2026-11-10T16:09:21Z",
           "content_hash": "sha256:cf3ab0adc74b382dad55b21ce9d0ed5777caab0fcca744ad0b1b32c7020379c1",
           "verification_basis": "live"
         }
       ],
-      "proposed_controls": [],
+      "proposed_controls": [
+        {
+          "title": "委外郵件發送商的個資傳遞最小化與事件通報機制",
+          "reason": "SEGA 的外洩資料來自委外郵件服務商，除電子郵件地址外隨信發送的個資也外流，現有控制項沒有涵蓋。"
+        }
+      ],
       "demo": false,
       "facts": [],
-      "summary": "委外郵件發送服務商 Arara 的系統遭第三方未授權存取，SEGA 及 SEGA FAVE 外洩電子報訂戶電子郵件地址 2,196,044 筆及隨信發送的個人資訊 92,273 筆。Arara 事件可能造成超過 8,100 萬筆客戶資料外洩，影響逾 380 家企業。",
+      "summary": "Arara 的郵件發送系統遭第三方未授權存取，可能造成超過 8,100 萬筆客戶資訊外洩，影響逾 380 家企業。SEGA 確認外流電子報訂戶電子郵件地址 2,196,044 筆及隨信發送的個人資訊 92,273 筆，不含姓名、電話、信用卡資訊與登入密碼。",
       "fixture_note": null
     }
   ],
@@ -1320,25 +1344,25 @@
       "issues": [],
       "max_level": null
     },
-    "live-cyberbiz-ecommerce-outsourced-2026-11": {
+    "live-cyberbiz-ecommerce-supplier-breach-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-eztravel-member-center-2026-11": {
+    "live-eztravel-member-center-breach-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-neticrm-nonprofit-donor-2026-11": {
+    "live-neticrm-provider-breach-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-sega-arara-mail-service-2026-11": {
+    "live-arara-mail-provider-breach-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,

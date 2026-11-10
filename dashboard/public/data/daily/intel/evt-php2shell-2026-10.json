@@ -218,7 +218,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "事件：PHP2Shell，PHP 核心兩個免驗證遠端程式碼執行漏洞。比對結果 2 項受影響、最高為高風險：marketing-site（php 8.1.27，對外，9 分，已停止支援且無修補）；phpmyadmin 為中風險（4 分），因只允許 corp-vpn 連入而扣 3 分。",
+  "summary": "事件：PHP2Shell，PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619）。2 項受影響：marketing-site（php 8.1.27、對外、已停止支援且無修補）為高（9 分）；phpmyadmin（php 8.3.20）因只允許 corp-vpn 連入，有補償措施，為中（4 分）。",
   "blocks": {
     "1_summary": {
       "title": "PHP2Shell：PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619）",
@@ -270,7 +270,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "事件：PHP2Shell，PHP 核心兩個免驗證遠端程式碼執行漏洞。比對結果 2 項受影響、最高為高風險：marketing-site（php 8.1.27，對外，9 分，已停止支援且無修補）；phpmyadmin 為中風險（4 分），因只允許 corp-vpn 連入而扣 3 分。",
+      "summary": "事件：PHP2Shell，PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619）。2 項受影響：marketing-site（php 8.1.27、對外、已停止支援且無修補）為高（9 分）；phpmyadmin（php 8.3.20）因只允許 corp-vpn 連入，有補償措施，為中（4 分）。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -293,7 +293,7 @@
           {
             "factor": "基礎分：漏洞",
             "points": 3,
-            "reason": "CVSS 9.2"
+            "reason": "CVSS 9.8"
           },
           {
             "factor": "已遭實際利用",
@@ -318,7 +318,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-10T12:22:28Z"
+        "observed_at": "2026-11-10T16:09:21Z"
       },
       {
         "asset_id": "phpmyadmin",
@@ -333,7 +333,7 @@
           {
             "factor": "基礎分：漏洞",
             "points": 3,
-            "reason": "CVSS 9.2"
+            "reason": "CVSS 9.8"
           },
           {
             "factor": "已遭實際利用",
@@ -358,7 +358,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-10T12:22:28Z"
+        "observed_at": "2026-11-10T16:09:21Z"
       }
     ],
     "4_unaffected_and_check": {

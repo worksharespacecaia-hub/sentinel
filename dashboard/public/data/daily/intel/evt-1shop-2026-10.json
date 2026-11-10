@@ -89,7 +89,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "事件：1shop 一頁購物疑 Mailgun API 金鑰遭取得，詐騙信內容吻合真實訂單。比對結果 1 項受影響（中風險，6 分）：mail-api-key 已 457 天未輪替且無 IP 白名單；建議輪替金鑰並加上 IP 白名單。",
+  "summary": "事件：1shop 疑似 Mailgun API 金鑰遭取得，詐騙信內容吻合真實訂單。比對結果 1 項受影響、最高為中（6 分）：mail-api-key 已 457 天未輪替且無 IP 白名單；建議輪替金鑰並加白名單。",
   "blocks": {
     "1_summary": {
       "title": "1shop 一頁購物疑 Mailgun API 金鑰遭取得，詐騙信內容吻合真實訂單",
@@ -129,7 +129,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "事件：1shop 一頁購物疑 Mailgun API 金鑰遭取得，詐騙信內容吻合真實訂單。比對結果 1 項受影響（中風險，6 分）：mail-api-key 已 457 天未輪替且無 IP 白名單；建議輪替金鑰並加上 IP 白名單。",
+      "summary": "事件：1shop 疑似 Mailgun API 金鑰遭取得，詐騙信內容吻合真實訂單。比對結果 1 項受影響、最高為中（6 分）：mail-api-key 已 457 天未輪替且無 IP 白名單；建議輪替金鑰並加白名單。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -172,7 +172,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-10T12:22:28Z"
+        "observed_at": "2026-11-10T16:09:21Z"
       }
     ],
     "4_unaffected_and_check": {
