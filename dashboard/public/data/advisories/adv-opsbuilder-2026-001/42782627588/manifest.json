@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "run_id": "42782627588",
+  "job": "a5-report",
+  "scope": "advisory",
+  "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
+  "input_hash": "ff23e4e9ab4b973db7c84406e60dacaa0e4947917207d2f9a32c1bda3b3ad4d7",
+  "observed_at": "2026-11-10T08:28:13Z",
+  "valid_until": "2026-11-11T08:28:13Z",
+  "tool_version": {},
+  "database_revision": {},
+  "status": "ok",
+  "reason": null,
+  "files": {
+    "attack_paths.json": "7e930d7cb23d394a6f2f8a8016ea6f181b6459658f23f72e3592f868dbde5f7d",
+    "coverage.json": "877b0c4ca195f069564dff829ec5bb326ec082d09e8d6543292c1c560baa89ff",
+    "engineer_report.md": "a085ea32e372a23cee167f03a978b811c4e9b909936d36b2722a70be407c672b",
+    "graph.json": "cd3d92f481222a77a7f6e46c6e6ef4fe3a152b3269e1532fce24644e6bd4b019",
+    "intel/adv-opsbuilder-2026-001.json": "6f846778a258ec286ade1eab5858dda5267637725bed2e24f237de123f51301d",
+    "intel/evt-1shop-2026-10.json": "d2d0055ff08780a676e1a693bfe318c9f0492dd56c32ed4ef619055d934e91b7",
+    "intel/evt-91app-2026-10.json": "af1dedcb9f4f914ca9bd36b4a5e0232b1032fd4ae501a37f040fc2e6ece0fcbd",
+    "intel/evt-binance-2026-10.json": "cbb4869f1cb98b37034c98dfb22a59908b768a7e871c15f2f481067b0e5973f9",
+    "intel/evt-nextjs-cve-2025-29927.json": "21c8d22847b4dccdeed6db234109991696a8994c523141c47c81665f029cdd28",
+    "intel/evt-php2shell-2026-10.json": "3ba2d676ebc2202465c5e6ccf9c0ae4604f822974f100d07893282bf08722eb5",
+    "intel/evt-synology-2026-10.json": "2c4e1014e275ffe955b101c982803deedcfb4c0b85d752749c866c936ad77ae9",
+    "intel/index.json": "a5f17a9df8433c0745bc27ed0c2f3e29f445cb839654b89ec9ca634105924165",
+    "report.json": "a1e3e8256b149794f8d61b8568bfff98c0ca4829f01c1d355626e5f50cda332a",
+    "state/findings.json": "8b62fd5ca3ef21df381429554788c023552b9fe35ca3253e82eee63ec95a36ca",
+    "state/intel.json": "f15d3bef45c5f7b69b8ea5aa8bee3772ba19405162748fa2c0a81b167f3355a0",
+    "state/risks.json": "5fbdde3bbddb35f7feb9a2f95179ccc0fe3ad5b2269716e33da97e4019290a14",
+    "state/signals.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  }
+}

@@ -1,6 +1,16 @@
 {
   "schema_version": 1,
-  "advisories": {},
+  "advisories": {
+    "adv-opsbuilder-2026-001": {
+      "run_id": "42782627588",
+      "generated_at": "2026-11-10T08:28:13Z",
+      "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
+      "completeness": "complete",
+      "path": "advisories/adv-opsbuilder-2026-001/42782627588",
+      "light": "red",
+      "execution_mode": "replay"
+    }
+  },
   "scenarios": {
     "intel-demo": {
       "run_id": "offline-p0",
@@ -40,8 +50,8 @@
     }
   },
   "latest_daily": {
-    "run_id": "42778339841",
-    "generated_at": "2026-11-10T07:55:20Z",
+    "run_id": "42779838559",
+    "generated_at": "2026-11-10T08:07:52Z",
     "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
     "completeness": "complete",
     "path": "daily",
@@ -49,14 +59,14 @@
     "execution_mode": "replay"
   },
   "latest_complete_daily": {
-    "run_id": "42778339841",
-    "generated_at": "2026-11-10T07:55:20Z",
+    "run_id": "42779838559",
+    "generated_at": "2026-11-10T08:07:52Z",
     "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
     "completeness": "complete",
     "path": "daily",
     "light": "red",
     "execution_mode": "replay"
   },
-  "updated_at": "2026-11-10T07:55:20Z",
+  "updated_at": "2026-11-10T08:28:13Z",
   "failures": {}
 }

@@ -1,0 +1,1119 @@
+{
+  "events": [
+    {
+      "id": "evt-1shop-2026-10",
+      "kind": "archive",
+      "is_update_of": null,
+      "title": "1shop 一頁購物疑 Mailgun API 金鑰遭取得，詐騙信內容吻合真實訂單",
+      "date": "2026-10-28",
+      "industry": "電商",
+      "attack_chain": [
+        "疑似取得 1shop 寄送訂單通知信所用的 Mailgun API 金鑰（業者懷疑，尚待存取紀錄釐清）",
+        "讀取「訂單成立通知信」內容",
+        "冒用真實訂單資訊寄送「定期購／分 12 期扣款」詐騙信",
+        "誘導消費者加入假冒的 LINE 客服或點擊連結"
+      ],
+      "attck": [],
+      "cves": [],
+      "products": [],
+      "revision": "2026-11-09.1",
+      "controls": [
+        "C-THIRD-PARTY-KEY-ROTATION"
+      ],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180209",
+          "title": "繼91APP遭駭後，1shop、Cyberbiz與meepShop等電商技術服務業者接連傳出資安警訊 | iThome",
+          "quote": "1shop懷疑原有的第三方郵件服務Mailgun API金鑰可能遭他人取得，進而讀取訂單通知信內容",
+          "published": "2026-11-04",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-09T05:59:24Z",
+          "content_hash": "sha256:3091038451f748ddf370d57009e6ae55f516b4c56078b0ab4e72a0307165ddb1",
+          "verification_basis": "archived"
+        },
+        {
+          "url": "https://cyberq.tw/2026/11/02/91app-data-breach-involving-cyber-security/",
+          "title": "91APP 資安事件後續：從第三方工具漏洞到資料庫金鑰，多家電商開店平台的資安防線出了什麼問題？ – CyberQ 賽博客",
+          "quote": "當晚立即替換掉原本用來發送訂單通知信的 Mailgun 金鑰，並陸續完成相關資安處置。",
+          "published": "2026-11-02",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-09T05:59:24Z",
+          "content_hash": "sha256:6dccfde4d69250c0c2a48cc6088d43c4030134d28ff44cd966eb6d05aaecbec9",
+          "verification_basis": "archived"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [
+        {
+          "field": "date",
+          "source_ref": 0,
+          "quote": "指出10月28日晚間接獲商家及消費者通報，有人冒用訂單資訊寄送詐騙郵件"
+        },
+        {
+          "field": "timeline.announced",
+          "source_ref": 0,
+          "quote": "電商開店服務業者1shop於10月30日發布公告"
+        },
+        {
+          "field": "attack_chain[0]",
+          "source_ref": 0,
+          "quote": "1shop懷疑原有的第三方郵件服務Mailgun API金鑰可能遭他人取得，進而讀取訂單通知信內容"
+        },
+        {
+          "field": "attack_chain[1]",
+          "source_ref": 0,
+          "quote": "初步研判不法人士可能取得「訂單成立通知信」內容"
+        },
+        {
+          "field": "attack_chain[2]",
+          "source_ref": 0,
+          "quote": "聲稱消費者已訂閱定期購服務，將分12期扣款"
+        },
+        {
+          "field": "attack_chain[3]",
+          "source_ref": 0,
+          "quote": "並誘導加入假冒的LINE客服或點擊連結取消訂閱"
+        },
+        {
+          "field": "evidence.order_match",
+          "source_ref": 1,
+          "quote": "比對後發現信中的姓名、品項、金額與顧客訂單大致吻合，信中的收件地址則是假的"
+        },
+        {
+          "field": "evidence.timestamp",
+          "source_ref": 0,
+          "quote": "信中標示的「首次訂購日期」，並非實際訂單成立時間，而是晚了幾秒的訂單通知信寄送時間"
+        },
+        {
+          "field": "controls[C-THIRD-PARTY-KEY-ROTATION]",
+          "source_ref": 1,
+          "quote": "當晚立即替換掉原本用來發送訂單通知信的 Mailgun 金鑰"
+        },
+        {
+          "field": "remediation",
+          "source_ref": 0,
+          "quote": "業者也已更換金鑰，將原本保存7天的通知信內容改為不再保存"
+        },
+        {
+          "field": "confidence",
+          "source_ref": 0,
+          "quote": "目前已向Mailgun申請相關存取紀錄，以釐清實際原因"
+        }
+      ],
+      "summary": null,
+      "fixture_note": null
+    },
+    {
+      "id": "evt-91app-2026-10",
+      "kind": "archive",
+      "is_update_of": null,
+      "title": "91APP 訂單資料庫遭入侵：未更新的內部工具 Appsmith 成破口，自內部 GitLab 取得資料庫金鑰",
+      "date": "2026-10-03",
+      "industry": "電商",
+      "attack_chain": [
+        "利用未及時修補的內部效率工具 Appsmith 漏洞進入內部網路",
+        "自內部 GitLab 取得訂單資料庫金鑰",
+        "以金鑰入侵 Commerce Cloud 訂單資料庫並讀走訂單資料",
+        "消費者收到冒用訂單資料的詐騙訊息"
+      ],
+      "attck": [
+        "T1190",
+        "T1552",
+        "T1078"
+      ],
+      "cves": [],
+      "products": [],
+      "revision": "2026-11-09.1",
+      "controls": [
+        "C-INTERNAL-TOOL-EXPOSED",
+        "C-SECRET-IN-GIT",
+        "C-NET-SEGMENT"
+      ],
+      "confidence": "confirmed",
+      "sources": [
+        {
+          "url": "https://technews.tw/2026/10/23/91app-ky-20261022/",
+          "title": "91APP 階段性調查結果還原資安事件經過，向品牌客戶與消費者致歉 | TechNews 科技新報",
+          "quote": "攻擊者透過 91APP 一項未更新套件的內部效率工具（Appsmith）進入內部網路，自 GitLab 取得資料庫金鑰後入侵訂單資料庫。",
+          "published": "2026-10-23",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-09T05:59:24Z",
+          "content_hash": "sha256:e21866580d782bb4b3df1cd4871ad6b2f9be1f2ddf1525db1b56c6e355bdb800",
+          "verification_basis": "archived"
+        },
+        {
+          "url": "https://cyberq.tw/2026/11/02/91app-data-breach-involving-cyber-security/",
+          "title": "91APP 資安事件後續：從第三方工具漏洞到資料庫金鑰，多家電商開店平台的資安防線出了什麼問題？ – CyberQ 賽博客",
+          "quote": "攻擊者利用一套未及時套用修補更新的第三方工具 Appsmith 的漏洞進入內部網路，接著從內部 GitLab 系統上取得其中一座訂單資料庫的金鑰，直接讀走訂單資料。",
+          "published": "2026-11-02",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-09T05:59:24Z",
+          "content_hash": "sha256:6dccfde4d69250c0c2a48cc6088d43c4030134d28ff44cd966eb6d05aaecbec9",
+          "verification_basis": "archived"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [
+        {
+          "field": "date",
+          "source_ref": 0,
+          "quote": "Commerce Cloud 其中一個訂單資料庫在 10 月 3 日 11 時遭受 AI 自動化滲透工具攻擊而被非法存取"
+        },
+        {
+          "field": "attack_chain[0]",
+          "source_ref": 0,
+          "quote": "攻擊者透過 91APP 一項未更新套件的內部效率工具（Appsmith）進入內部網路"
+        },
+        {
+          "field": "attack_chain[0]",
+          "source_ref": 1,
+          "quote": "攻擊者利用一套未及時套用修補更新的第三方工具 Appsmith 的漏洞進入內部網路"
+        },
+        {
+          "field": "attack_chain[1]",
+          "source_ref": 0,
+          "quote": "自 GitLab 取得資料庫金鑰後入侵訂單資料庫"
+        },
+        {
+          "field": "attack_chain[1]",
+          "source_ref": 1,
+          "quote": "接著從內部 GitLab 系統上取得其中一座訂單資料庫的金鑰，直接讀走訂單資料"
+        },
+        {
+          "field": "attack_chain[3]",
+          "source_ref": 0,
+          "quote": "91APP 在 10 月 4 日首次接獲客戶通報消費者收到詐騙訊息"
+        },
+        {
+          "field": "attack_chain.tooling",
+          "source_ref": 0,
+          "quote": "攻擊者使用 AI 自動化工具攻擊，系統內發現 ARTEX 等工具痕跡"
+        },
+        {
+          "field": "attck[T1078]",
+          "source_ref": 1,
+          "quote": "停用遭冒用帳號並重建 GitLab 權限"
+        },
+        {
+          "field": "timeline.detected",
+          "source_ref": 1,
+          "quote": "在內部 CI 主機發現 10/3 有一支未授權執行緒的執行紀錄"
+        },
+        {
+          "field": "timeline.blocked",
+          "source_ref": 0,
+          "quote": "入侵行為在 10 月 14 日晚間 11 時完全阻斷"
+        },
+        {
+          "field": "timeline.disclosed",
+          "source_ref": 0,
+          "quote": "91APP 在 10 月 15 日依規定向主管機關通報並向客戶說明，接著 10 月 16 日清晨進一步發布重大訊息對外說明"
+        },
+        {
+          "field": "timeline.report_published",
+          "source_ref": 0,
+          "quote": "上櫃公司 91APP（91APP*-KY）22 日在官網公布《91APP 2026 遭受駭客攻擊事件 18 天調查報告》"
+        },
+        {
+          "field": "impact.max_scope",
+          "source_ref": 1,
+          "quote": "若依最大可能影響範圍認定，波及 1,329 家品牌、479 萬 8,255 名消費者"
+        },
+        {
+          "field": "impact.data_fields",
+          "source_ref": 1,
+          "quote": "可能遭存取的欄位包含姓名、電話號碼、配送地址（超商取貨者無地址）、電子郵件與訂單紀錄，不含密碼、信用卡與任何支付資料"
+        },
+        {
+          "field": "impact.systems",
+          "source_ref": 0,
+          "quote": "這起事件僅涉及 Commerce Cloud 的訂單資料庫，其他如 Marketing Cloud、91APP Payments 及 iCHEF 均不受影響"
+        },
+        {
+          "field": "remediation",
+          "source_ref": 0,
+          "quote": "91APP 已移除這項工具、更換所有內部系統權杖及資料庫帳密、重建 GitLab 權限、隔離測試與正式環境、限制主機與資料庫網段連線"
+        },
+        {
+          "field": "remediation",
+          "source_ref": 1,
+          "quote": "限制 CI 主機與資料庫網段連線"
+        }
+      ],
+      "summary": null,
+      "fixture_note": null
+    },
+    {
+      "id": "evt-binance-2026-10",
+      "kind": "archive",
+      "is_update_of": null,
+      "title": "幣安 63.4 億美元駭案：假面試惡意程式入侵開發者電腦，取得容器部署憑證後攻陷錢包簽章服務",
+      "date": "2026-10-30",
+      "industry": "加密貨幣",
+      "attack_chain": [
+        "6 月工程師 A 經搜尋引擎下載遭竄改的 Homebrew 安裝檔，團隊角色曝光",
+        "9 月以假求職面試要求工程師 B 在工作電腦下載並安裝含惡意程式的「作業」",
+        "惡意程式替換開發工具元件（pyenv）並連線外部伺服器，端點防護未偵測",
+        "10 月 20 日經 B 的電腦利用內部 AI 工具取得工程師 A、C 電腦的控制權",
+        "在 A 的電腦上發現具容器部署權限的存取憑證（token）",
+        "從 C 的電腦以 A 的憑證部署容器並觸發惡意腳本",
+        "存取內部錢包簽章服務，在正常提款流程外發起交易並濫用 EIP-7702 委託授權"
+      ],
+      "attck": [
+        "T1566.003",
+        "T1204.002",
+        "T1554",
+        "T1552",
+        "T1550.001",
+        "T1610"
+      ],
+      "cves": [],
+      "products": [],
+      "revision": "2026-11-09.1",
+      "controls": [
+        "C-DEV-DEVICE-TOKEN",
+        "C-NON-CI-DEPLOY"
+      ],
+      "confidence": "confirmed",
+      "sources": [
+        {
+          "url": "https://www.bnext.com.tw/article/92910/binance-hack-initial-findings-north-korea",
+          "title": "幣安63.4億美元資安案調查出爐：北韓駭客如何用「假面試、內部AI」層層攻陷錢包？|數位時代 BusinessNext",
+          "quote": "攻擊者從6月起布局，先用遭竄改的開發工具安裝檔、假求職面試植入惡意程式，再以內部AI工具為跳板，一路取得錢包簽章服務的存取權。",
+          "published": "2026-11-04",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-09T05:59:24Z",
+          "content_hash": "sha256:39172b69b0fd7d80e9bf6008cd197f4ed10b53ac46f938c3f4dca5dd5644f44c",
+          "verification_basis": "archived"
+        },
+        {
+          "url": "https://www.stepsecurity.io/blog/binance-hack-developer-machine-security",
+          "title": "Binance’s $6.34 Billion Hack: Developer Machines, AI Tooling, and Wallet Signing - StepSecurity",
+          "quote": "The attacker replaced a developer-tool component, used an internal AI tool to reach other engineers’ computers, and obtained credentials with container deployment permissions.",
+          "published": "2026-10-30",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-09T05:59:24Z",
+          "content_hash": "sha256:3aacd33f51a61bf095f3212d66a76da23248d39d43ec65acd1a799cb4a762d07",
+          "verification_basis": "archived"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [
+        {
+          "field": "date",
+          "source_ref": 0,
+          "quote": "到了台灣時間10月30日凌晨1時15分至3時56分，駭客登入C的電腦，用A的憑證部署容器並觸發惡意腳本，正式發動攻擊。"
+        },
+        {
+          "field": "attack_chain[0]",
+          "source_ref": 1,
+          "quote": "A Wallet DevOps engineer, identified as Engineer A, downloaded a tampered Homebrew installation while trying to install an AI coding tool found through a search engine."
+        },
+        {
+          "field": "attack_chain[0].uncertainty",
+          "source_ref": 1,
+          "quote": "Binance says team roles were exposed; continuous access from June is not established."
+        },
+        {
+          "field": "attack_chain[1]",
+          "source_ref": 1,
+          "quote": "Engineer B was approached through a legitimate recruitment platform."
+        },
+        {
+          "field": "attack_chain[1]",
+          "source_ref": 0,
+          "quote": "第二輪面試尾聲，對方要求B把一份「作業」下載到工作電腦，裡頭藏著惡意程式碼，一安裝就會執行。"
+        },
+        {
+          "field": "attack_chain[2]",
+          "source_ref": 1,
+          "quote": "A malicious pyenv component executes commands and contacts an external server."
+        },
+        {
+          "field": "attack_chain[2]",
+          "source_ref": 1,
+          "quote": "The malware communicated with an attacker-controlled external server and was not detected by the endpoint protection tools in place at the time."
+        },
+        {
+          "field": "attack_chain[3]",
+          "source_ref": 1,
+          "quote": "On October 20, the attacker used B’s compromised computer and an internal AI tool to gain control over the computers of A and another wallet engineer, C."
+        },
+        {
+          "field": "attack_chain[3].uncertainty",
+          "source_ref": 1,
+          "quote": "Binance has not named the internal AI tool or explained how the attacker used it to reach other machines."
+        },
+        {
+          "field": "attack_chain[4]",
+          "source_ref": 1,
+          "quote": "The attacker found a container deployment permission token on A’s computer."
+        },
+        {
+          "field": "attack_chain[5]",
+          "source_ref": 1,
+          "quote": "On October 29, between 17:15 and 19:56 UTC, the attacker accessed C’s computer, used credentials stolen from A, deployed a container, and triggered a malicious script."
+        },
+        {
+          "field": "controls[C-NON-CI-DEPLOY]",
+          "source_ref": 1,
+          "quote": "Binance says the attacker used C’s computer with A’s credentials."
+        },
+        {
+          "field": "attack_chain[6]",
+          "source_ref": 1,
+          "quote": "Binance reports unauthorized access to an internal wallet signing service that initiated transactions outside the normal withdrawal process."
+        },
+        {
+          "field": "attack_chain[6]",
+          "source_ref": 0,
+          "quote": "攻擊者透過簽章服務送出50筆簽章交易，濫用這套機制建立惡意授權"
+        },
+        {
+          "field": "impact.assets",
+          "source_ref": 1,
+          "quote": "Binance now estimates approximately $6.34 billion in impacted assets."
+        },
+        {
+          "field": "impact.frozen",
+          "source_ref": 1,
+          "quote": "Binance reports approximately $2.85 billion frozen or intercepted, subject to reconciliation and market prices."
+        },
+        {
+          "field": "impact.replenished",
+          "source_ref": 0,
+          "quote": "截至10月31日，98%受影響的代幣資產已補足"
+        },
+        {
+          "field": "attribution",
+          "source_ref": 1,
+          "quote": "The FBI has attributed the theft to North Korea’s TraderTraitor activity."
+        },
+        {
+          "field": "remediation",
+          "source_ref": 0,
+          "quote": "幣安已在新環境重建錢包系統與內部AI工具、更換受影響裝置並註銷相關憑證"
+        }
+      ],
+      "summary": null,
+      "fixture_note": null
+    },
+    {
+      "id": "evt-nextjs-cve-2025-29927",
+      "kind": "archive",
+      "is_update_of": null,
+      "title": "Next.js Middleware 授權繞過（CVE-2025-29927）",
+      "date": "2025-03-21",
+      "industry": null,
+      "attack_chain": [
+        "外部請求直達自行部署的 Next.js 應用（官方緩解為阻擋帶 x-middleware-subrequest 標頭的外部請求）",
+        "繞過在 middleware 中執行的授權檢查"
+      ],
+      "attck": [
+        "T1190"
+      ],
+      "cves": [
+        "CVE-2025-29927"
+      ],
+      "products": [
+        {
+          "name": "next",
+          "ecosystem": "npm",
+          "affected": [
+            {
+              "introduced": "11.1.4",
+              "fixed": "12.3.5"
+            },
+            {
+              "introduced": "13.0.0",
+              "fixed": "13.5.9"
+            },
+            {
+              "introduced": "14.0.0",
+              "fixed": "14.2.25"
+            },
+            {
+              "introduced": "15.0.0",
+              "fixed": "15.2.3"
+            }
+          ],
+          "conditions": [
+            {
+              "key": "middleware_auth",
+              "equals": true,
+              "source_ref": 0
+            },
+            {
+              "key": "hosting",
+              "equals": "self-hosted",
+              "source_ref": 0
+            }
+          ],
+          "cvss": 9.1,
+          "known_exploited": null,
+          "impact": "authorization_bypass",
+          "confirmed": true,
+          "source_refs": [
+            0
+          ]
+        }
+      ],
+      "revision": "2026-11-09.1",
+      "controls": [],
+      "confidence": "confirmed",
+      "sources": [
+        {
+          "url": "https://github.com/vercel/next.js/security/advisories/GHSA-f82v-jwr5-mffw",
+          "title": "Authorization Bypass in Next.js Middleware · Advisory · vercel/next.js · GitHub",
+          "quote": "It is possible to bypass authorization checks within a Next.js application, if the authorization check occurs in middleware.",
+          "published": "2025-03-21",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-09T05:59:24Z",
+          "content_hash": "sha256:345336f3580d2f1eaa20a364df2ee48ef55ee89a35d829a86f261860acaba265",
+          "verification_basis": "archived"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [
+        {
+          "field": "date",
+          "source_ref": 0,
+          "quote": "published GHSA-f82v-jwr5-mffw Mar 21, 2025"
+        },
+        {
+          "field": "cves[0]",
+          "source_ref": 0,
+          "quote": "CVE ID CVE-2025-29927"
+        },
+        {
+          "field": "products[0].affected",
+          "source_ref": 0,
+          "quote": "Affected versions => 11.1.4 < 12.3.5 =>14.0 <14.2.25 =>15.0 <15.2.3 >= 13.0.0, < 13.5.9"
+        },
+        {
+          "field": "products[0].affected[3]",
+          "source_ref": 0,
+          "quote": "For Next.js 15.x, this issue is fixed in 15.2.3"
+        },
+        {
+          "field": "products[0].affected[2]",
+          "source_ref": 0,
+          "quote": "For Next.js 14.x, this issue is fixed in 14.2.25"
+        },
+        {
+          "field": "products[0].affected[1]",
+          "source_ref": 0,
+          "quote": "For Next.js 13.x, this issue is fixed in 13.5.9"
+        },
+        {
+          "field": "products[0].affected[0]",
+          "source_ref": 0,
+          "quote": "For Next.js 12.x, this issue is fixed in 12.3.5"
+        },
+        {
+          "field": "products[0].affected[0].11x",
+          "source_ref": 0,
+          "quote": "For Next.js 11.x, consult the below workaround."
+        },
+        {
+          "field": "products[0].conditions[0]",
+          "source_ref": 0,
+          "quote": "if the authorization check occurs in middleware"
+        },
+        {
+          "field": "products[0].conditions[1]",
+          "source_ref": 0,
+          "quote": "Note: Next.js deployments hosted on Vercel are automatically protected against this vulnerability."
+        },
+        {
+          "field": "attack_chain[0]",
+          "source_ref": 0,
+          "quote": "we recommend that you prevent external user requests which contain the x-middleware-subrequest header from reaching your Next.js application"
+        },
+        {
+          "field": "products[0].cvss",
+          "source_ref": 0,
+          "quote": "Critical 9.1 CVSS overall score"
+        },
+        {
+          "field": "products[0].cvss.vector",
+          "source_ref": 0,
+          "quote": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N"
+        },
+        {
+          "field": "products[0].impact",
+          "source_ref": 0,
+          "quote": "CWE-285 Improper Authorization"
+        }
+      ],
+      "summary": null,
+      "fixture_note": null
+    },
+    {
+      "id": "evt-php2shell-2026-10",
+      "kind": "archive",
+      "is_update_of": null,
+      "title": "PHP2Shell：PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619）",
+      "date": "2026-10-21",
+      "industry": null,
+      "attack_chain": [
+        "攻擊者向 PHP 網站伺服器送出特製請求（例如 multipart 請求）",
+        "觸發記憶體耗盡（OOM）處理時的記憶體損壞，或跨請求的釋放後使用",
+        "在應用程式驗證邏輯執行前，以 web worker 權限遠端執行任意程式碼"
+      ],
+      "attck": [
+        "T1190"
+      ],
+      "cves": [
+        "CVE-2026-109618",
+        "CVE-2026-109619"
+      ],
+      "products": [
+        {
+          "name": "php",
+          "ecosystem": "php",
+          "affected": [
+            {
+              "introduced": "8.2.0",
+              "fixed": "8.2.35"
+            },
+            {
+              "introduced": "8.3.0",
+              "fixed": "8.3.36"
+            },
+            {
+              "introduced": "8.4.0",
+              "fixed": "8.4.27"
+            },
+            {
+              "introduced": "8.5.0",
+              "fixed": "8.5.12"
+            },
+            {
+              "introduced": "8.1.0",
+              "fixed": null
+            },
+            {
+              "introduced": "8.0.0",
+              "fixed": null
+            },
+            {
+              "introduced": "7.4.0",
+              "fixed": null
+            }
+          ],
+          "conditions": [
+            {
+              "key": "serves_web_requests",
+              "equals": true,
+              "source_ref": 0
+            }
+          ],
+          "unknown_below": "7.4.0",
+          "aggravating_conditions": [
+            {
+              "key": "session.upload_progress.enabled",
+              "equals": "On",
+              "source_ref": 0,
+              "applies_to": "CVE-2026-109619"
+            }
+          ],
+          "cvss": 9.2,
+          "known_exploited": true,
+          "impact": "remote_code_execution",
+          "confirmed": true,
+          "source_refs": [
+            0,
+            1,
+            2
+          ]
+        }
+      ],
+      "revision": "2026-11-09.1",
+      "controls": [],
+      "confidence": "confirmed",
+      "sources": [
+        {
+          "url": "https://www.rapid7.com/blog/post/etr-cve-2026-109618-and-cve-2026-109619-critical-unauthenticated-remote-code-execution-in-php/",
+          "title": "CVE-2026-109618 and CVE-2026-109619: Critical Unauthenticated Remote Code Execution in PHP",
+          "quote": "Both have a CVSSv4 score of 9.2 and both can allow for unauthenticated remote code execution (RCE) with the web worker's privileges.",
+          "published": "2026-10-21",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-09T05:59:24Z",
+          "content_hash": "sha256:6ff4928171b0a43763bfcf513f7a955c8f29dbbebdb3d0f12cc2e172779fa7c8",
+          "verification_basis": "archived"
+        },
+        {
+          "url": "https://www.heatalk.com/20261104/17170/",
+          "title": "十月PHP風暴全紀錄：AI撬開潛伏十四年的漏洞 全球政府連夜「拔網線」的48小時 | 閒聊",
+          "quote": "這次事件的核心，是兩個編號分別為CVE-2026-109618及CVE-2026-109619的漏洞，合稱「PHP2Shell」，CVSS評分高達9.2分，部分安全機構甚至給出滿分10.0。",
+          "published": "2026-11-04",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-09T05:59:24Z",
+          "content_hash": "sha256:3be200bbf1df80b4a1970175dcd7a0f145a98852a1e4201c97ce37dd2c87009f",
+          "verification_basis": "archived"
+        },
+        {
+          "url": "https://cyberq.tw/2026/10/30/synology-nas-c3rb3r-ransomware/",
+          "title": "Synology NAS 接連遭勒索、PHP2Shell 漏洞波及套件，用戶自保與各家 NAS 因應之道 – CyberQ 賽博客",
+          "quote": "PHP 官方於 10 月 21 日發布緊急修補版 8.2.35、8.3.36、8.4.27 與 8.5.12，更舊的分支已終止支援，不會有官方修補。",
+          "published": "2026-10-30",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-09T05:59:24Z",
+          "content_hash": "sha256:2cc7b704e1d317d22f4a67d2d3b9b97602dafd774468c1d135156a789234c8d6",
+          "verification_basis": "archived"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [
+        {
+          "field": "date",
+          "source_ref": 0,
+          "quote": "On October 21, 2026, the PHP project announced security releases for two critical vulnerabilities in PHP."
+        },
+        {
+          "field": "products[0].affected[0]",
+          "source_ref": 0,
+          "quote": "PHP 8.2 releases before 8.2.35: Update to 8.2.35"
+        },
+        {
+          "field": "products[0].affected[1]",
+          "source_ref": 0,
+          "quote": "PHP 8.3 releases before 8.3.36: Update to 8.3.36"
+        },
+        {
+          "field": "products[0].affected[2]",
+          "source_ref": 0,
+          "quote": "PHP 8.4 releases before 8.4.27: Update to 8.4.27"
+        },
+        {
+          "field": "products[0].affected[3]",
+          "source_ref": 0,
+          "quote": "PHP 8.5 releases before 8.5.12: Update to 8.5.12"
+        },
+        {
+          "field": "products[0].affected",
+          "source_ref": 2,
+          "quote": "PHP 官方於 10 月 21 日發布緊急修補版 8.2.35、8.3.36、8.4.27 與 8.5.12，更舊的分支已終止支援，不會有官方修補。"
+        },
+        {
+          "field": "products[0].affected[4..6]",
+          "source_ref": 0,
+          "quote": "PHP 8.1 and older no longer receive routine upstream updates."
+        },
+        {
+          "field": "products[0].affected[4..6].backports",
+          "source_ref": 0,
+          "quote": "For this incident, PHP has supplied limited source backports for PHP 7.4, 8.0, and 8.1."
+        },
+        {
+          "field": "products[0].affected[4..6]",
+          "source_ref": 1,
+          "quote": "PHP官方此次發布的補丁僅覆蓋8.2、8.3、8.4及8.5版本，而PHP 8.1及更早版本早已停止官方支援"
+        },
+        {
+          "field": "products[0].affected.origin",
+          "source_ref": 1,
+          "quote": "漏洞的根源可追溯至2012年發布的PHP 5.4版本"
+        },
+        {
+          "field": "products[0].conditions[0]",
+          "source_ref": 0,
+          "quote": "All installations serving web requests are at risk, including PHP-FPM, Apache mod_php, php-cgi, FrankenPHP, and LiteSpeed."
+        },
+        {
+          "field": "products[0].conditions.sapi",
+          "source_ref": 0,
+          "quote": "The vendor considers mod_php the highest risk because exploitation can succeed before any application code runs."
+        },
+        {
+          "field": "products[0].conditions[1]",
+          "source_ref": 0,
+          "quote": "Session upload progress, PHP's upload-tracking feature, is enabled by default and can act as an early consumer of stale session or decoder state before normal initialization"
+        },
+        {
+          "field": "products[0].conditions[1].scope",
+          "source_ref": 0,
+          "quote": "This addresses the confirmed session paths only."
+        },
+        {
+          "field": "products[0].conditions[1].scope",
+          "source_ref": 0,
+          "quote": "Note that an update containing both complete fixes is the only complete remediation."
+        },
+        {
+          "field": "products[0].cvss",
+          "source_ref": 0,
+          "quote": "Both have a CVSSv4 score of 9.2"
+        },
+        {
+          "field": "products[0].impact",
+          "source_ref": 0,
+          "quote": "both can allow for unauthenticated remote code execution (RCE) with the web worker's privileges"
+        },
+        {
+          "field": "products[0].known_exploited",
+          "source_ref": 0,
+          "quote": "On October 26, 2026, CVE-2026-109618 and CVE-2026-109619 were added to the U.S. Cybersecurity and Infrastructure Security Agency's (CISA) list of known exploited vulnerabilities (KEV)"
+        },
+        {
+          "field": "products[0].known_exploited",
+          "source_ref": 2,
+          "quote": "watchTowr 已觀察到實際攻擊"
+        },
+        {
+          "field": "products[0].known_exploited.nuance",
+          "source_ref": 0,
+          "quote": "Rapid7 has not observed exploitation in the wild, though there are multiple reports of exploitation attempts"
+        },
+        {
+          "field": "timeline.leak",
+          "source_ref": 1,
+          "quote": "PHP官方原定10月22日發布修復補丁，但消息在20日便已在網上洩露，迫使官方將發布時間提前至21日。"
+        },
+        {
+          "field": "timeline.exploitation",
+          "source_ref": 1,
+          "quote": "消息發布後45分鐘內，攻擊嘗試增至數萬起；兩小時內增至數十萬起；累計達到數百萬次。"
+        },
+        {
+          "field": "timeline.probing",
+          "source_ref": 1,
+          "quote": "亞馬遜威脅情報更發現，在漏洞公開前4天，已出現秘密探測活動。"
+        },
+        {
+          "field": "attack_chain[0]",
+          "source_ref": 0,
+          "quote": "Crafted multipart requests, used for forms and file uploads, can exhaust memory even when their size appears to meet PHP's configured limits."
+        },
+        {
+          "field": "attack_chain[1]",
+          "source_ref": 1,
+          "quote": "只要向伺服器發送一條特製請求，便可能觸發記憶體耗盡或釋放後使用的缺陷，進而遠端執行任意程式碼，接管整台伺服器"
+        },
+        {
+          "field": "attack_chain[2]",
+          "source_ref": 2,
+          "quote": "兩者都在應用程式驗證邏輯執行之前觸發，所以網站本身有登入保護也擋不住。"
+        },
+        {
+          "field": "impact.exposed_instances",
+          "source_ref": 2,
+          "quote": "Unit 42 的 Cortex Xpanse 遙測則找到超過 2,260 萬個可能受影響的對外暴露實例"
+        }
+      ],
+      "summary": null,
+      "fixture_note": null
+    },
+    {
+      "id": "evt-synology-2026-10",
+      "kind": "archive",
+      "is_update_of": null,
+      "title": "Synology NAS 遭 C3RB3R 勒索軟體加密：DSM 登入頁對外暴露，常駐連接的備份碟一併被加密",
+      "date": "2026-10-28",
+      "industry": null,
+      "attack_chain": [
+        "DSM 登入頁經 UPnP、連接埠轉發、QuickConnect 或反向代理暴露於網際網路",
+        "疑利用 DSM 舊漏洞（360 歸因 CVE-2026-13639、CVE-2026-13684，9/18 已修補）免帳密遠端讀寫任意檔案",
+        "刪除快照",
+        "加密檔案（副檔名 .L0CK3D），常駐連接的 Hyper Backup USB 硬碟／備份碟一併被加密",
+        "每個資料夾留下 read-me3.txt 勒索信，要求透過 Tor 網站購買解密器"
+      ],
+      "attck": [
+        "T1190",
+        "T1490",
+        "T1486"
+      ],
+      "cves": [
+        "CVE-2026-13639",
+        "CVE-2026-13684",
+        "CVE-2024-10441"
+      ],
+      "products": [
+        {
+          "name": "synology-dsm",
+          "ecosystem": "synology-dsm",
+          "affected": [
+            {
+              "introduced": "7.4",
+              "fixed": "7.4-90075"
+            },
+            {
+              "introduced": "7.3",
+              "fixed": "7.3.2-86009-4"
+            },
+            {
+              "introduced": "7.2.2",
+              "fixed": "7.2.2-72806-9"
+            },
+            {
+              "introduced": "7.2.1",
+              "fixed": "7.2.1-69057-12"
+            }
+          ],
+          "conditions": [
+            {
+              "key": "management_interface_internet_exposed",
+              "equals": true,
+              "source_ref": 0
+            }
+          ],
+          "cvss": 9.8,
+          "known_exploited": true,
+          "impact": "other",
+          "confirmed": false,
+          "source_refs": [
+            0
+          ]
+        }
+      ],
+      "revision": "2026-11-09.1",
+      "controls": [
+        "C-BACKUP-ISOLATION",
+        "C-INTERNAL-TOOL-EXPOSED"
+      ],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://cyberq.tw/2026/10/30/synology-nas-c3rb3r-ransomware/",
+          "title": "Synology NAS 接連遭勒索、PHP2Shell 漏洞波及套件，用戶自保與各家 NAS 因應之道 – CyberQ 賽博客",
+          "quote": "被加密的檔案會被加上 .L0CK3D 副檔名（注意是數字 0），每個資料夾留下名為 read-me3.txt 的勒索信，要求受害者透過 Tor 網站購買「C3rb3r Decryptor」。",
+          "published": "2026-10-30",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-09T05:59:24Z",
+          "content_hash": "sha256:2cc7b704e1d317d22f4a67d2d3b9b97602dafd774468c1d135156a789234c8d6",
+          "verification_basis": "archived"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [
+        {
+          "field": "date",
+          "source_ref": 0,
+          "quote": "10 月 28 日與 29 日一天內連續出現四位 Synology 用戶"
+        },
+        {
+          "field": "timeline.onset",
+          "source_ref": 0,
+          "quote": "10 月 17 日起才密集出現 NAS 受害者"
+        },
+        {
+          "field": "cves[0..1]",
+          "source_ref": 0,
+          "quote": "攻擊者利用的是 CVE-2026-13639（DSM 登入邏輯的亂數熵不足）與 CVE-2026-13684（DSM SCGI 元件輸出編碼不當）"
+        },
+        {
+          "field": "cves[0..1].attribution",
+          "source_ref": 0,
+          "quote": "pwn.watch 轉述 360 反勒索團隊的分析指出，自 2026 年 10 月起已處理多起 Synology NAS 遭 C3RB3R 攻擊的案件"
+        },
+        {
+          "field": "products[0].cvss",
+          "source_ref": 0,
+          "quote": "這兩個漏洞均為 CVSS 9.8，無需帳號密碼即可遠端讀寫任意檔案"
+        },
+        {
+          "field": "products[0].affected",
+          "source_ref": 0,
+          "quote": "Synology 已於 9 月 18 日在 Synology-SA-26:13 公告修補，該公告共修補 8 個 DSM 漏洞，官方未提供任何緩解措施，唯一解法是更新。"
+        },
+        {
+          "field": "products[0].affected",
+          "source_ref": 0,
+          "quote": "DSM 7.4 7.4-90075 或更新 DSM 7.3 7.3.2-86009-4 或更新 DSM 7.2.2 7.2.2-72806-9 或更新 DSM 7.2.1 7.2.1-69057-12 或更新"
+        },
+        {
+          "field": "products[0].affected[2]",
+          "source_ref": 0,
+          "quote": "7.2.2-72806 本身不夠，要到 Update 9"
+        },
+        {
+          "field": "products[0].affected.uncertainty",
+          "source_ref": 0,
+          "quote": "受害 NAS 已經是較新的 DSM 7.4.1 版本"
+        },
+        {
+          "field": "cves[2]",
+          "source_ref": 0,
+          "quote": "認為攻擊者利用的是 CVE-2024-10441，這是 2024 年 Pwn2Own Ireland 揭露、Synology-SA-24:20 於 2024 年底修補的 synoplugind 未授權遠端程式碼執行漏洞"
+        },
+        {
+          "field": "confidence",
+          "source_ref": 0,
+          "quote": "目前攻擊入口尚未完全釐清"
+        },
+        {
+          "field": "products[0].conditions[0]",
+          "source_ref": 0,
+          "quote": "受害者真正的共同點是 DSM 登入頁可以從網際網路連到，途徑包括路由器 UPnP 自動開埠、為 Plex 或串流開的連接埠轉發、QuickConnect 以及反向代理。"
+        },
+        {
+          "field": "attack_chain[1]",
+          "source_ref": 0,
+          "quote": "密碼與兩步驟驗證對這個漏洞毫無作用"
+        },
+        {
+          "field": "attack_chain[2]",
+          "source_ref": 0,
+          "quote": "注意攻擊者會刪快照，avebelle 的資料夾原有 36 個快照，事後只剩 1 個"
+        },
+        {
+          "field": "attack_chain[3]",
+          "source_ref": 0,
+          "quote": "Reddit 兩位受害者接在 NAS 上的 Hyper Backup USB 硬碟與備份碟都被一併加密"
+        },
+        {
+          "field": "attack_chain[4]",
+          "source_ref": 0,
+          "quote": "每個資料夾留下名為 read-me3.txt 的勒索信，要求受害者透過 Tor 網站購買「C3rb3r Decryptor」"
+        },
+        {
+          "field": "controls[C-BACKUP-ISOLATION]",
+          "source_ref": 0,
+          "quote": "有 3-2-1 備份，資料未損失"
+        },
+        {
+          "field": "impact.recovery",
+          "source_ref": 0,
+          "quote": "目前沒有任何公開可用的 C3RB3R 解密工具"
+        },
+        {
+          "field": "cves.excluded_php2shell",
+          "source_ref": 0,
+          "quote": "PHP2Shell 是否已被用於 NAS 勒索攻擊，截至本文撰寫時沒有公開證據"
+        }
+      ],
+      "summary": null,
+      "fixture_note": null,
+      "match_scope": {
+        "asset_types": [
+          "device"
+        ]
+      }
+    },
+    {
+      "id": "adv-opsbuilder-2026-001",
+      "kind": "advisory",
+      "is_update_of": null,
+      "title": "示範公告：OpsBuilder 1.90 以前版本的帳號接管漏洞（虛構產品）",
+      "date": "2026-09-30",
+      "industry": null,
+      "attack_chain": [
+        "未登入者可重設管理者密碼",
+        "以管理者身分使用工具內設定的整合與資料來源"
+      ],
+      "attck": [
+        "T1190",
+        "T1078"
+      ],
+      "cves": [
+        "DEMO-2026-0001"
+      ],
+      "products": [
+        {
+          "name": "opsbuilder",
+          "ecosystem": "generic",
+          "affected": [
+            {
+              "introduced": "0",
+              "fixed": "1.90"
+            }
+          ],
+          "conditions": [
+            {
+              "key": "login_reachable",
+              "equals": true
+            }
+          ],
+          "cvss": 9.8,
+          "known_exploited": true,
+          "impact": "account_takeover",
+          "confirmed": true
+        }
+      ],
+      "revision": "2026-09-30.1",
+      "controls": [],
+      "confidence": "confirmed",
+      "sources": [
+        {
+          "url": null,
+          "title": "虛構示範公告（模擬 fixture），非真實報導",
+          "quote": null,
+          "published": "2026-09-30",
+          "fetch_status": "skipped",
+          "verified": false,
+          "verified_at": null,
+          "content_hash": null,
+          "verification_basis": "demo"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [],
+      "summary": null,
+      "fixture_note": "虛構產品 OpsBuilder 的示範公告；CVSS 與已利用旗標為明確標示的模擬 fixture 值（規格第 7.4 節）",
+      "demo_fixture": true
+    }
+  ],
+  "verification": {
+    "evt-1shop-2026-10": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "evt-91app-2026-10": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "evt-binance-2026-10": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "evt-nextjs-cve-2025-29927": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "evt-php2shell-2026-10": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "evt-synology-2026-10": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "adv-opsbuilder-2026-001": {
+      "status": "skipped",
+      "issues": [],
+      "max_level": null
+    }
+  }
+}
