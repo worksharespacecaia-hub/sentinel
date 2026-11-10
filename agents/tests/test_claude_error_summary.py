@@ -98,3 +98,21 @@ def test_tool_activity_errors_and_final_message(tmp_path, capsys):
         assert leaked not in out
     assert ces.main(["x", str(p)]) == 0                       # 沒有 --with-result 時不印最後的說明
     assert "Claude 最後的說明" not in capsys.readouterr().out
+
+
+def test_blocked_webfetch_hosts_aggregated(tmp_path, capsys):
+    msgs = [
+        {"type": "assistant", "parent_tool_use_id": "a1", "message": {"content": [
+            {"type": "tool_use", "id": f"w{i}", "name": "WebFetch", "input": {"url": u, "prompt": "p"}}
+            for i, u in enumerate(["https://focustaiwan.tw/a?secret=1", "https://focustaiwan.tw/b", "https://newtalk.tw/c",
+                                   "https://www.ithome.com.tw/d"])]}},
+        {"type": "user", "message": {"content": [
+            {"type": "tool_result", "tool_use_id": "w0", "is_error": True, "content": "PreToolUse:WebFetch hook error: WebFetch 只允許受信任來源的 HTTPS 網址"},
+            {"type": "tool_result", "tool_use_id": "w1", "is_error": True, "content": "PreToolUse:WebFetch hook error: WebFetch 只允許受信任來源的 HTTPS 網址"},
+            {"type": "tool_result", "tool_use_id": "w2", "is_error": True, "content": "PreToolUse:WebFetch hook error: WebFetch 只允許受信任來源的 HTTPS 網址"},
+            {"type": "tool_result", "tool_use_id": "w3", "is_error": True, "content": "HTTP 403"}]}},
+    ]
+    out = run(tmp_path, capsys, msgs)
+    assert "WebFetch 被擋的網站（不在信任清單）：focustaiwan.tw×2、newtalk.tw×1" in out
+    assert "工具錯誤：WebFetch www.ithome.com.tw：HTTP 403" in out
+    assert "secret" not in out and "/a" not in out

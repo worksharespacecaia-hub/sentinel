@@ -66,7 +66,7 @@ def _blocks(m: dict) -> list:
 
 def tool_activity(messages: list[dict]) -> list[str]:
     """各工具呼叫次數（主 Agent／Subagent 分開）與工具錯誤；只列工具名稱與 Subagent 類型。"""
-    labels, counts = {}, {"主 Agent": Counter(), "Subagent": Counter()}
+    labels, hosts, counts = {}, {}, {"主 Agent": Counter(), "Subagent": Counter()}
     for m in messages:
         if m.get("type") != "assistant":
             continue
@@ -78,12 +78,14 @@ def tool_activity(messages: list[dict]) -> list[str]:
                 if inp.get("subagent_type"):
                     label += f"({inp['subagent_type']})"
                 labels[c.get("id")] = label
+                if inp.get("url"):
+                    hosts[c.get("id")] = urlsplit(str(inp["url"])).hostname or "?"
                 counts[scope][label] += 1
     lines = [f"工具呼叫（{scope}）：" + "、".join(f"{clean(k)}×{v}" for k, v in sorted(cnt.items()))
              for scope, cnt in counts.items() if cnt]
     if not lines:
         lines.append("工具呼叫：無")
-    errors = []
+    errors, blocked = [], Counter()
     for m in messages:
         if m.get("type") != "user":
             continue
@@ -92,7 +94,14 @@ def tool_activity(messages: list[dict]) -> list[str]:
                 body = c.get("content")
                 if isinstance(body, list):
                     body = " ".join(str(x.get("text", "")) for x in body if isinstance(x, dict))
-                errors.append(f"工具錯誤：{clean(labels.get(c.get('tool_use_id'), '?'))}：{clean(body)[:150]}")
+                tid = c.get("tool_use_id")
+                where = f"{labels.get(tid, '?')} {hosts[tid]}" if tid in hosts else labels.get(tid, "?")
+                if tid in hosts and "受信任" in str(body):
+                    blocked[hosts[tid]] += 1            # hook 擋下的清單外網站：調整信任清單的依據
+                    continue
+                errors.append(f"工具錯誤：{clean(where)}：{clean(body)[:150]}")
+    if blocked:
+        lines.append("WebFetch 被擋的網站（不在信任清單）：" + "、".join(f"{clean(h)}×{n}" for h, n in blocked.most_common(15)))
     lines += errors[:8]
     if len(errors) > 8:
         lines.append(f"工具錯誤：另有 {len(errors) - 8} 筆")

@@ -60,3 +60,37 @@ def test_settings_disable_background_tasks():
     cfg = json.loads((SENTINEL_ROOT / ".claude" / "daily-intel-settings.json").read_text(encoding="utf-8"))
     assert cfg["env"]["CLAUDE_CODE_DISABLE_BACKGROUND_TASKS"] == "1"
     assert cfg["hooks"]["PreToolUse"][0]["hooks"][0]["command"] == "python3 .claude/hooks/daily_intel_guard.py"
+
+
+def test_hook_domains_match_sources_yaml_and_skill_reference():
+    """hook 以簡易方式解析 sources.yaml（Job 中的 python3 不保證有 PyYAML）；結果必須與 YAML 解析一致，
+    Skill 參考檔也必須列出相同網域（Job 中 Claude 只能讀 .claude/，讀不到 agents/intel/sources.yaml）。"""
+    import importlib.util
+    import os
+
+    import yaml
+    expected = [d["domain"] for d in yaml.safe_load((SENTINEL_ROOT / "agents" / "intel" / "sources.yaml").read_text(encoding="utf-8"))["domains"]]
+    spec = importlib.util.spec_from_file_location("guard", HOOK)
+    guard = importlib.util.module_from_spec(spec)
+    cwd = os.getcwd()
+    try:
+        os.chdir(SENTINEL_ROOT)
+        spec.loader.exec_module(guard)
+        assert guard.trusted_domains() == expected
+    finally:
+        os.chdir(cwd)
+    ref = (SENTINEL_ROOT / ".claude" / "skills" / "daily-intel" / "references" / "sources.md").read_text(encoding="utf-8")
+    listed = __import__("re").findall(r"`([a-z0-9.-]+\.[a-z]+)`", ref)
+    assert sorted(listed) == sorted(expected)
+
+
+@pytest.mark.parametrize("url", ["https://www.cna.com.tw/news/1", "https://www.twcert.org.tw/tw/cp-104-1.html",
+                                 "https://www.bleepingcomputer.com/news/x/", "https://therecord.media/x"])
+def test_new_trusted_domains_allowed(url):
+    assert decide("WebFetch", {"url": url})[0] == "allow"
+
+
+def test_scouts_can_read_source_list():
+    for name in ("news-scout", "advisory-scout"):
+        text = (SENTINEL_ROOT / ".claude" / "agents" / f"{name}.md").read_text(encoding="utf-8")
+        assert "tools: Read, WebSearch, WebFetch" in text and "references/sources.md" in text
