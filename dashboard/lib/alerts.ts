@@ -4,12 +4,12 @@ import { redisConfigured } from "./redis.ts";
 import type { OpenAlertsInfo } from "./summary";
 
 export async function openAlertsInfo(): Promise<OpenAlertsInfo> {
-  if (!redisConfigured()) return { realHighOpen: 0, simulatedOpen: 0, degraded: "即時告警服務（Redis）未設定" };
+  if (!redisConfigured()) return { realHighOpen: 0, simulatedOpen: 0, degraded: "異常行為偵測服務（Redis）未設定" };
   try {
     const idx = await indexState();
     const c = await openCounts();
     return { realHighOpen: c.realHigh, simulatedOpen: c.sim, degraded: idx.degraded };
   } catch (e) {
-    return { realHighOpen: 0, simulatedOpen: 0, degraded: `即時告警狀態無法取得（${(e as Error).message}）` };
+    return { realHighOpen: 0, simulatedOpen: 0, degraded: `異常行為偵測的告警狀態無法取得（${(e as Error).message}）` };
   }
 }

@@ -80,7 +80,7 @@ export default function WeightsEditor({ saved, baseSha, risks, current }: Props)
           <TrafficLight light={p.light} size="small" />
           <p>高風險 {current.counts.high} → <strong>{p.counts.high}</strong>｜中風險 {current.counts.medium} → <strong>{p.counts.medium}</strong>｜
             低風險 {current.counts.low} → <strong>{p.counts.low}</strong></p>
-          <p className="muted">只看風險分數；早期訊號、可見度不足、即時告警等其他原因可能讓實際燈號更高（目前實際燈號為
+          <p className="muted">只看風險分數；早期訊號、可見度不足、異常行為告警等其他原因可能讓實際燈號更高（目前實際燈號為
             {current.light === "red" ? "紅燈" : current.light === "yellow" ? "黃燈" : "綠燈"}）。規則下限（例如影子 IT）與暫定情資上限不受權重影響。</p>
           {p.changed.length > 0 && <details><summary>{p.changed.length} 項風險的等級會改變</summary>
             <ul>{p.changed.slice(0, 30).map((c) => <li key={c.id}>{c.title}：{LEVEL_TEXT[c.from]} → {LEVEL_TEXT[c.to]}</li>)}</ul></details>}

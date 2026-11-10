@@ -6,6 +6,7 @@ import { PRESETS, buildPreset, newSimulationId, type Preset } from "@/lib/preset
 import { redisConfigured } from "@/lib/redis";
 import { HttpError, clientKey, json, passcodeMatches, rateLimit, readJsonBody } from "@/lib/security";
 import { processEvent } from "@/lib/window";
+import { syncRulesFromGitHub } from "@/lib/rule-store";
 
 export const dynamic = "force-dynamic";
 
@@ -23,12 +24,15 @@ export async function POST(req: Request): Promise<Response> {
     const events = buildPreset(preset as Preset, simulationId);
     const results = [];
     const alerts: string[] = [];
+    let rulesMissing = false;
     for (const ev of events) {
       const pr = await processEvent(ev);
       results.push({ event_id: pr.event_id, results: pr.results.map((r) => ({ rule_id: r.rule_id, outcome: r.outcome, metric: r.metric })) });
       alerts.push(...pr.alerts);
+      rulesMissing = rulesMissing || pr.rules.missing;
     }
     for (const id of alerts) after(() => deliver(id).then(() => undefined, () => undefined));
+    if (rulesMissing) after(() => syncRulesFromGitHub().then(() => undefined, () => undefined));   // Redis 沒有規則設定：回應後修復
     return json({ simulation_id: simulationId, simulated: true, events: events.length, alerts, results });
   } catch (e) {
     if (e instanceof HttpError) return json({ error: e.message }, e.status);

@@ -14,7 +14,7 @@ export default function Architecture() {
           <li>A4 攻擊鏈與風險（圖搜尋＋規則評分）</li>
           <li>A5 報告與建議（燈號、建議解法、CEO 摘要、情資比對報告）→ 發布到網站</li>
         </ol>
-        <p>即時告警走獨立的 incident 流程：規則命中 → GitHub Issue → A3 關聯 → A4 從告警資產出發的路徑 → 圍堵建議留言。</p>
+        <p>異常行為偵測的告警走獨立的 incident 流程：規則命中 → GitHub Issue → A3 關聯 → A4 從告警資產出發的路徑 → 圍堵建議留言。</p>
       </div>
       <div className="panel">
         <h2 style={{ marginTop: 0 }}>設計理由</h2>
@@ -22,7 +22,7 @@ export default function Architecture() {
           <li><strong>工具找、程式算、LLM 說明</strong>：評分與攻擊路徑可重現、可稽核；LLM 不判斷版本大小、不自行計分。</li>
           <li><strong>多 Agent 與 Subagent</strong>：每個 Agent 是一個 GitHub Actions Job，Job 圖就是流程圖；每個 Job 內以 Agent SDK 派發 Subagents 與 Skills。</li>
           <li><strong>攻擊鏈推演</strong>：單一弱點可能只是中風險，串起來才是高風險。</li>
-          <li><strong>四種觸發時機</strong>：掃描只在變動時做，比對隨時做，全面評估每天做，已出事的訊號即時告警。</li>
+          <li><strong>四種觸發時機</strong>：掃描只在變動時做，比對隨時做，全面評估每天做，已出事的異常行為即時偵測、告警。</li>
           <li><strong>只讀、只建議</strong>：系統不持有能修改受評估系統的權杖，Agent 本身不能成為新破口。</li>
           <li><strong>多來源對帳與可見度指標</strong>：看不到的地方燈號再綠也沒意義。</li>
           <li><strong>不受影響也出報告</strong>：每天說明哪些事件與我們無關及原因。</li>

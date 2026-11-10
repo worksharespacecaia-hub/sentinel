@@ -6,7 +6,7 @@ export interface PageInfo { href: string; label: string }
 export const PAGES = {
   brief: { href: "/brief", label: "今日重點" },
   report: { href: "/report", label: "行動報告" },
-  live: { href: "/live", label: "即時告警" },
+  live: { href: "/live", label: "異常行為偵測" },
   overview: { href: "/", label: "詳細總覽" },
   risks: { href: "/risks", label: "風險明細" },
   intel: { href: "/intel", label: "外部事件" },
@@ -17,13 +17,14 @@ export const PAGES = {
   triggers: { href: "/triggers", label: "觸發紀錄" },
   architecture: { href: "/architecture", label: "運作原理" },
   weights: { href: "/weights", label: "燈號權重" },
+  rules: { href: "/rules", label: "偵測規則" },
 } as const satisfies Record<string, PageInfo>;
 
 export const PRIMARY: PageInfo[] = [PAGES.brief, PAGES.report, PAGES.live];
 
 export const ENGINEERING: PageInfo[] = [
   PAGES.overview, PAGES.risks, PAGES.intel, PAGES.attackPaths, PAGES.assets, PAGES.appRisk,
-  PAGES.runs, PAGES.triggers, PAGES.architecture, PAGES.weights,
+  PAGES.runs, PAGES.triggers, PAGES.architecture, PAGES.weights, PAGES.rules,
 ];
 
 export const ENGINEERING_LABEL = "工程細節";

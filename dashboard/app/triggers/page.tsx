@@ -33,8 +33,8 @@ export default async function Triggers() {
         </> : <p className="muted">尚未執行公告輪詢。</p>}
         <p className="muted">正式公告調查：{Object.keys(idx.advisories ?? {}).join("、") || "無"}</p>
       </div>
-      <div className="panel"><h2 style={{ marginTop: 0 }}>① PR 把關／④ 即時告警</h2>
-        <p className="muted">PR 把關結果在 Repo ① 的 Pull Request 頁面；即時告警見「{PAGES.live.label}」與 GitHub Issues。</p></div>
+      <div className="panel"><h2 style={{ marginTop: 0 }}>① PR 把關／④ 異常行為偵測</h2>
+        <p className="muted">PR 把關結果在 Repo ① 的 Pull Request 頁面；異常行為的告警見「{PAGES.live.label}」與 GitHub Issues。</p></div>
     </>
   );
 }

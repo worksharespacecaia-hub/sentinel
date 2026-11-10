@@ -1,3 +1,4 @@
+import Link from "next/link";
 import LiveMonitor from "@/components/LiveMonitor";
 import { PAGES } from "@/lib/nav";
 
@@ -12,6 +13,7 @@ export default function Live() {
           再建立 GitHub Issue 並觸發圍堵建議流程（只建議、不執行）。</p>
         <p className="muted">目標：規則判斷與告警保存 1 秒內；網站顯示 10 秒內；圍堵建議 3 分鐘內（GitHub 排隊與外部服務延遲不保證，超過 5 分鐘會標示原因）。
           告警只有管理者附理由與證據才能結案；關閉 Issue、時間到期或建議完成都不會自動結案。</p>
+        <p className="muted">偵測規則（時段、門檻、時間窗、允許的部署者等）可在「<Link href={PAGES.rules.href}>{PAGES.rules.label}</Link>」調整，需要管理者密碼。</p>
       </div>
       <details className="panel">
         <summary><strong>如何觸發「非 Pipeline 發起的正式部署」（RT-001，真實事件）</strong></summary>

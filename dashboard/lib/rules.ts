@@ -1,5 +1,6 @@
 // 即時規則（第 7.6 節）：純函式，判斷單一事件的靜態條件；時間窗與去重由 lib/window.ts 以 Redis Lua 原子完成。
 // 規則來源為 rules/realtime.yaml，建置時打包成 realtime-rules.json（scripts/build-rules.py）。刻意不用 LLM。
+// 這裡的 RULES 是預設值；網站「偵測規則」頁調整的參數由 lib/rule-store.ts 套用後才是實際判斷用的規則。
 import ruleset from "./realtime-rules.json" with { type: "json" };
 
 export type Source = "github.deployment" | "db.audit" | "support.complaint";
@@ -89,8 +90,9 @@ export function staticMatch(rule: Rule, ev: RtEvent): StaticResult {
   return { ok: true, reason: "靜態條件成立" };
 }
 
-export function rulesFor(source: Source): Rule[] {
-  return RULES.filter((r) => r.source === source);
+/** rules：套用網站設定後的實際規則（lib/rule-store.ts）；省略時用預設規則。停用的規則不判斷。 */
+export function rulesFor(source: Source, rules: (Rule & { enabled?: boolean })[] = RULES): Rule[] {
+  return rules.filter((r) => r.source === source && r.enabled !== false);
 }
 
 /** 真實事件拒絕未來超過 5 分鐘或延遲超過 24 小時；模擬時間只作用於該次 simulation_id，不套用。 */
