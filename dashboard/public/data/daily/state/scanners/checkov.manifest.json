@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "run_id": "42754636524",
+  "job": "scanners-checkov",
+  "scope": "scanner",
+  "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
+  "observed_at": "2026-11-10T04:16:53Z",
+  "valid_until": "2026-11-11T04:16:53Z",
+  "tool_version": {
+    "checkov": null
+  },
+  "database_revision": {
+    "checkov": null
+  },
+  "files": {
+    "checkov.json": "118885050fe6958d5e2ff9e2debc28459d5a5332123508df2e9ede10b8744a2b"
+  },
+  "status": "ok"
+}

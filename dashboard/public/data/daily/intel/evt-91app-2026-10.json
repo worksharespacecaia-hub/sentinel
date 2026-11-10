@@ -53,8 +53,8 @@
     "is_update_of": null,
     "proposed_controls": []
   },
-  "conclusion": "5 項受影響，最高風險為高。internal-tool：network.json: internet → internal-tool:443。",
-  "affected_count": 5,
+  "conclusion": "3 項受影響，最高風險為高。internal-tool：network.json: internet → internal-tool:443。",
+  "affected_count": 3,
   "max_level": "high",
   "impacts": [
     {
@@ -77,21 +77,15 @@
     },
     {
       "event_id": "evt-91app-2026-10",
-      "asset_id": "gitlab",
+      "asset_id": "*",
       "basis": "control",
-      "our_state": "config/db.yml:4",
-      "verdict": "affected",
-      "risk_id": "gitlab:C-SECRET-IN-GIT",
-      "reason": "不符合 C-SECRET-IN-GIT（Git 中不得有正式環境金鑰）"
-    },
-    {
-      "event_id": "evt-91app-2026-10",
-      "asset_id": "brand-app",
-      "basis": "control",
-      "our_state": "services/brand-app/src/config.ts:3",
-      "verdict": "affected",
-      "risk_id": "brand-app:C-SECRET-IN-GIT",
-      "reason": "不符合 C-SECRET-IN-GIT（Git 中不得有正式環境金鑰）"
+      "our_state": "金鑰掃描結果缺失，無法判斷",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "C-SECRET-IN-GIT：金鑰掃描結果缺失，無法判斷"
+      ],
+      "reason": "控制項資料不足"
     },
     {
       "event_id": "evt-91app-2026-10",
@@ -137,38 +131,6 @@
       "source": "template"
     },
     {
-      "risk_id": "gitlab:C-SECRET-IN-GIT",
-      "temporary": "撤銷並輪替 gitlab，確認撤銷後舊值無法使用",
-      "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
-      "options": [
-        {
-          "name": "緩解",
-          "action": "撤銷並輪替金鑰",
-          "cost": "使用該金鑰的服務需同步更新",
-          "timing": "今天"
-        }
-      ],
-      "suggested_owner": "devops-team",
-      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-      "source": "template"
-    },
-    {
-      "risk_id": "brand-app:C-SECRET-IN-GIT",
-      "temporary": "撤銷並輪替 brand-app，確認撤銷後舊值無法使用",
-      "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
-      "options": [
-        {
-          "name": "緩解",
-          "action": "撤銷並輪替金鑰",
-          "cost": "使用該金鑰的服務需同步更新",
-          "timing": "今天"
-        }
-      ],
-      "suggested_owner": "mobile-team",
-      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-      "source": "template"
-    },
-    {
       "risk_id": "order-db-prod:C-NET-SEGMENT",
       "temporary": "確認 order-db-prod 的狀況並限制存取",
       "permanent": "依控制項要求修正，並在下次掃描確認",
@@ -191,8 +153,7 @@
   },
   "status": "open",
   "evaluated_asset_ids": [
-    "brand-app",
-    "gitlab",
+    "*",
     "internal-tool",
     "nas-office-01",
     "order-db-prod"
@@ -248,8 +209,8 @@
       "fixture_note": null
     },
     "2_conclusion": {
-      "text": "5 項受影響，最高風險為高。internal-tool：network.json: internet → internal-tool:443。",
-      "affected_count": 5,
+      "text": "3 項受影響，最高風險為高。internal-tool：network.json: internet → internal-tool:443。",
+      "affected_count": 3,
       "max_level": "high"
     },
     "3_affected": [
@@ -286,7 +247,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-09T01:00:00Z"
+        "observed_at": "2026-11-10T04:18:09Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -316,92 +277,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-09T01:00:00Z"
-      },
-      {
-        "asset_id": "gitlab",
-        "our_state": "config/db.yml:4",
-        "basis": "control",
-        "verdict": "affected",
-        "reason": "不符合 C-SECRET-IN-GIT（Git 中不得有正式環境金鑰）",
-        "risk_id": "gitlab:C-SECRET-IN-GIT",
-        "level": "high",
-        "score": 8,
-        "breakdown": [
-          {
-            "factor": "基礎分：控制項不符",
-            "points": 2,
-            "reason": "controls.yaml base_points"
-          },
-          {
-            "factor": "資料敏感",
-            "points": 1,
-            "reason": "order、pii"
-          },
-          {
-            "factor": "影響範圍",
-            "points": 1,
-            "reason": "平台層，影響所有品牌"
-          },
-          {
-            "factor": "同業事件命中",
-            "points": 1,
-            "reason": "evt-91app-2026-10"
-          },
-          {
-            "factor": "位於完整攻擊鏈",
-            "points": 3,
-            "reason": "攻擊路徑前提的必要一步"
-          }
-        ],
-        "app_impact": null,
-        "to_verify": [],
-        "observed_at": "2026-11-09T01:00:00Z"
-      },
-      {
-        "asset_id": "brand-app",
-        "our_state": "services/brand-app/src/config.ts:3",
-        "basis": "control",
-        "verdict": "affected",
-        "reason": "不符合 C-SECRET-IN-GIT（Git 中不得有正式環境金鑰）",
-        "risk_id": "brand-app:C-SECRET-IN-GIT",
-        "level": "high",
-        "score": 10,
-        "breakdown": [
-          {
-            "factor": "基礎分：控制項不符",
-            "points": 2,
-            "reason": "controls.yaml base_points"
-          },
-          {
-            "factor": "對外暴露",
-            "points": 2,
-            "reason": "商店上架的 App"
-          },
-          {
-            "factor": "資料敏感",
-            "points": 1,
-            "reason": "pii"
-          },
-          {
-            "factor": "影響範圍",
-            "points": 1,
-            "reason": "平台層，影響所有品牌"
-          },
-          {
-            "factor": "同業事件命中",
-            "points": 1,
-            "reason": "evt-91app-2026-10"
-          },
-          {
-            "factor": "位於完整攻擊鏈",
-            "points": 3,
-            "reason": "攻擊路徑前提的必要一步"
-          }
-        ],
-        "app_impact": null,
-        "to_verify": [],
-        "observed_at": "2026-11-09T01:00:00Z"
+        "observed_at": "2026-11-10T04:18:09Z"
       },
       {
         "asset_id": "order-db-prod",
@@ -436,12 +312,29 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-09T01:00:00Z"
+        "observed_at": "2026-11-10T04:18:09Z"
       }
     ],
     "4_unaffected_and_check": {
       "not_affected": [],
-      "need_check": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "金鑰掃描結果缺失，無法判斷",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "控制項資料不足",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "C-SECRET-IN-GIT：金鑰掃描結果缺失，無法判斷"
+          ],
+          "observed_at": "2026-11-10T04:18:09Z"
+        }
+      ],
       "notes": []
     },
     "5_solutions": [
@@ -474,38 +367,6 @@
           }
         ],
         "suggested_owner": "it-team",
-        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
-      },
-      {
-        "risk_id": "gitlab:C-SECRET-IN-GIT",
-        "temporary": "撤銷並輪替 gitlab，確認撤銷後舊值無法使用",
-        "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
-        "options": [
-          {
-            "name": "緩解",
-            "action": "撤銷並輪替金鑰",
-            "cost": "使用該金鑰的服務需同步更新",
-            "timing": "今天"
-          }
-        ],
-        "suggested_owner": "devops-team",
-        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
-      },
-      {
-        "risk_id": "brand-app:C-SECRET-IN-GIT",
-        "temporary": "撤銷並輪替 brand-app，確認撤銷後舊值無法使用",
-        "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
-        "options": [
-          {
-            "name": "緩解",
-            "action": "撤銷並輪替金鑰",
-            "cost": "使用該金鑰的服務需同步更新",
-            "timing": "今天"
-          }
-        ],
-        "suggested_owner": "mobile-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
         "source": "template"
       },

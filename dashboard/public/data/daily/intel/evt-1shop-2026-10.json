@@ -47,7 +47,7 @@
     "is_update_of": null,
     "proposed_controls": []
   },
-  "conclusion": "1 項受影響，最高風險為中。mail-api-key：secrets.json: mail-api-key：456 天未輪替、無 IP 白名單。",
+  "conclusion": "1 項受影響，最高風險為中。mail-api-key：secrets.json: mail-api-key：457 天未輪替、無 IP 白名單。",
   "affected_count": 1,
   "max_level": "medium",
   "impacts": [
@@ -55,7 +55,7 @@
       "event_id": "evt-1shop-2026-10",
       "asset_id": "mail-api-key",
       "basis": "control",
-      "our_state": "secrets.json: mail-api-key：456 天未輪替、無 IP 白名單",
+      "our_state": "secrets.json: mail-api-key：457 天未輪替、無 IP 白名單",
       "verdict": "affected",
       "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
       "reason": "不符合 C-THIRD-PARTY-KEY-ROTATION（第三方服務金鑰 90 天內輪替且有 IP 白名單）"
@@ -134,14 +134,14 @@
       "fixture_note": null
     },
     "2_conclusion": {
-      "text": "1 項受影響，最高風險為中。mail-api-key：secrets.json: mail-api-key：456 天未輪替、無 IP 白名單。",
+      "text": "1 項受影響，最高風險為中。mail-api-key：secrets.json: mail-api-key：457 天未輪替、無 IP 白名單。",
       "affected_count": 1,
       "max_level": "medium"
     },
     "3_affected": [
       {
         "asset_id": "mail-api-key",
-        "our_state": "secrets.json: mail-api-key：456 天未輪替、無 IP 白名單",
+        "our_state": "secrets.json: mail-api-key：457 天未輪替、無 IP 白名單",
         "basis": "control",
         "verdict": "affected",
         "reason": "不符合 C-THIRD-PARTY-KEY-ROTATION（第三方服務金鑰 90 天內輪替且有 IP 白名單）",
@@ -172,7 +172,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-09T01:00:00Z"
+        "observed_at": "2026-11-10T04:18:09Z"
       }
     ],
     "4_unaffected_and_check": {

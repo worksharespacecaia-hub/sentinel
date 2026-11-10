@@ -12,7 +12,7 @@
     "id": "evt-91app-2026-10",
     "kind": "archive",
     "title": "91APP 訂單資料庫遭入侵：未更新的內部工具 Appsmith 成破口，自內部 GitLab 取得資料庫金鑰",
-    "affected_count": 5,
+    "affected_count": 3,
     "max_level": "high",
     "status": "open",
     "demo": false

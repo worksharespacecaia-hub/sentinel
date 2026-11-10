@@ -1,0 +1,608 @@
+{
+  "tool_version": "0.57.1",
+  "database_revision": null,
+  "results": [
+    {
+      "tool": "trivy",
+      "target": "services/member-api",
+      "vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2024-45590",
+          "PkgName": "body-parser",
+          "InstalledVersion": "1.20.1",
+          "FixedVersion": "1.20.3",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "body-parser: Denial of Service Vulnerability in body-parser",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-111181",
+          "PkgName": "body-parser",
+          "InstalledVersion": "1.20.1",
+          "FixedVersion": "2.4.0, 1.20.9",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "body-parser: body-parser: Denial of Service via unhandled decompression stream error",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-12590",
+          "PkgName": "body-parser",
+          "InstalledVersion": "1.20.1",
+          "FixedVersion": "1.20.6, 2.3.0",
+          "Severity": "LOW",
+          "CVSSv3": 5.9,
+          "Title": "body-parser: body-parser: Denial of Service via invalid limit option",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-47764",
+          "PkgName": "cookie",
+          "InstalledVersion": "0.5.0",
+          "FixedVersion": "0.7.0",
+          "Severity": "LOW",
+          "CVSSv3": 3.7,
+          "Title": "cookie: cookie accepts cookie name, path, and domain with out of bounds characters",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-29041",
+          "PkgName": "express",
+          "InstalledVersion": "4.18.2",
+          "FixedVersion": "4.19.2, 5.0.0-beta.3",
+          "Severity": "MEDIUM",
+          "CVSSv3": 6.1,
+          "Title": "express: cause malformed URLs to be evaluated",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-43796",
+          "PkgName": "express",
+          "InstalledVersion": "4.18.2",
+          "FixedVersion": "4.20.0, 5.0.0",
+          "Severity": "LOW",
+          "CVSSv3": 5.0,
+          "Title": "express: Improper Input Handling in Express Redirects",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-23337",
+          "PkgName": "lodash",
+          "InstalledVersion": "4.17.20",
+          "FixedVersion": "4.17.21",
+          "Severity": "HIGH",
+          "CVSSv3": 7.2,
+          "Title": "nodejs-lodash: command injection via template",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-4800",
+          "PkgName": "lodash",
+          "InstalledVersion": "4.17.20",
+          "FixedVersion": "4.18.0",
+          "Severity": "HIGH",
+          "CVSSv3": 9.8,
+          "Title": "lodash: lodash: Arbitrary code execution via untrusted input in template imports",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2020-28500",
+          "PkgName": "lodash",
+          "InstalledVersion": "4.17.20",
+          "FixedVersion": "4.17.21",
+          "Severity": "MEDIUM",
+          "CVSSv3": 5.3,
+          "Title": "nodejs-lodash: ReDoS via the toNumber, trim and trimEnd functions",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-13465",
+          "PkgName": "lodash",
+          "InstalledVersion": "4.17.20",
+          "FixedVersion": "4.17.23",
+          "Severity": "MEDIUM",
+          "CVSSv3": 8.2,
+          "Title": "lodash: prototype pollution in _.unset and _.omit functions",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-45296",
+          "PkgName": "path-to-regexp",
+          "InstalledVersion": "0.1.7",
+          "FixedVersion": "1.9.0, 0.1.10, 8.0.0, 3.3.0, 6.3.0",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "path-to-regexp: Backtracking regular expressions cause ReDoS",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-52798",
+          "PkgName": "path-to-regexp",
+          "InstalledVersion": "0.1.7",
+          "FixedVersion": "0.1.12",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "path-to-regexp: path-to-regexp Unpatched `path-to-regexp` ReDoS in 0.1.x",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-4867",
+          "PkgName": "path-to-regexp",
+          "InstalledVersion": "0.1.7",
+          "FixedVersion": "0.1.13",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "path-to-regexp: path-to-regexp: Denial of Service via catastrophic backtracking from malformed URL parameters",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-15284",
+          "PkgName": "qs",
+          "InstalledVersion": "6.11.0",
+          "FixedVersion": "6.14.1",
+          "Severity": "MEDIUM",
+          "CVSSv3": 7.5,
+          "Title": "qs: qs: Denial of Service via improper input validation in array parsing",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-110816",
+          "PkgName": "qs",
+          "InstalledVersion": "6.11.0",
+          "FixedVersion": "6.16.1",
+          "Severity": "MEDIUM",
+          "CVSSv3": 5.3,
+          "Title": "qs: qs: Denial of Service via unhandled exception during array serialization",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-82417",
+          "PkgName": "qs",
+          "InstalledVersion": "6.11.0",
+          "FixedVersion": "6.16.0",
+          "Severity": "MEDIUM",
+          "CVSSv3": 7.5,
+          "Title": "qs: qs: Denial of Service via improper validation in stringify function",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-2391",
+          "PkgName": "qs",
+          "InstalledVersion": "6.11.0",
+          "FixedVersion": "6.14.2",
+          "Severity": "LOW",
+          "CVSSv3": 7.5,
+          "Title": "qs: qs's arrayLimit bypass in comma parsing allows denial of service",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-43799",
+          "PkgName": "send",
+          "InstalledVersion": "0.18.0",
+          "FixedVersion": "0.19.0",
+          "Severity": "LOW",
+          "CVSSv3": 5.0,
+          "Title": "send: Code Execution Vulnerability in Send Library",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-43800",
+          "PkgName": "serve-static",
+          "InstalledVersion": "1.15.0",
+          "FixedVersion": "1.16.0, 2.1.0",
+          "Severity": "LOW",
+          "CVSSv3": 5.0,
+          "Title": "serve-static: Improper Sanitization in serve-static",
+          "Target": "package-lock.json"
+        }
+      ]
+    },
+    {
+      "tool": "trivy",
+      "target": "services/storefront",
+      "vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2025-29927",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "13.5.9, 14.2.25, 15.2.3, 12.3.5",
+          "Severity": "CRITICAL",
+          "CVSSv3": 9.1,
+          "Title": "nextjs: Authorization Bypass in Next.js Middleware",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-75604",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.5.24, 16.3.3",
+          "Severity": "CRITICAL",
+          "CVSSv3": 9.1,
+          "Title": "next: Next.js: Unauthenticated Remote Code Execution on windows-hosted servers",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "GHSA-2464-fhr4-w9xw",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.5.28, 16.4.1",
+          "Severity": "CRITICAL",
+          "CVSSv3": null,
+          "Title": "Next.js: Unauthenticated Remote Code Execution in Image Optimization API when SVG files are used",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "GHSA-2xp9-vwfh-vxw4",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.5.24, 16.3.3",
+          "Severity": "CRITICAL",
+          "CVSSv3": null,
+          "Title": "Next.js: Unauthenticated Remote Code Execution in Image Optimization API when AVIF files are used",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-34351",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "14.1.1",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "next: Next.js Server-Side Request Forgery in Server Actions",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-46982",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "13.5.7, 14.2.10",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "Next.js Cache Poisoning",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-51479",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "14.2.15",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "next.js: next: authorization bypass in Next.js",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-44573",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.5.16, 16.2.5",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "next.js: Next.js: Information disclosure due to middleware bypass in Pages Router with i18n",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-44578",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.5.16, 16.2.5",
+          "Severity": "HIGH",
+          "CVSSv3": 8.6,
+          "Title": "Next.js: Next.js: Server-Side Request Forgery via crafted WebSocket upgrade requests",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-64641",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.5.21, 16.2.11",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "next: Next.js: Denial of Service via crafted requests to App Router with Server Actions",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-64645",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.5.21, 16.2.11",
+          "Severity": "HIGH",
+          "CVSSv3": 8.2,
+          "Title": "next: Next.js: Server-Side Request Forgery vulnerability",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-94482",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.5.28, 16.4.1",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "next: Next.js: Denial of Service via crafted requests targeting Server Actions",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "GHSA-5j59-xgg2-r9c4",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "14.2.35, 15.0.7, 15.1.11, 15.2.8, 15.3.8, 15.4.10, 15.5.9, 15.6.0-canary.60, 16.0.10, 16.1.0-canary.19",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "Next has a Denial of Service with Server Components - Incomplete Fix Follow-Up",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "GHSA-8h8q-6873-q5fj",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.5.16, 16.2.5",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "Next.js Vulnerable to Denial of Service with Server Components",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "GHSA-h25m-26qc-wcjf",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.0.8, 15.1.12, 15.2.9, 15.3.9, 15.4.11, 15.5.10, 15.6.0-canary.61, 16.0.11, 16.1.5",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "Next.js HTTP request deserialization can lead to DoS when using insecure React Server Components",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "GHSA-mwv6-3258-q52c",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "14.2.34, 15.0.6, 15.1.10, 15.2.7, 15.3.7, 15.4.9, 15.5.8, 15.6.0-canary.59, 16.0.9, 16.1.0-canary.17",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "Next Vulnerable to Denial of Service with Server Components",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "GHSA-q4gf-8mx6-v5v3",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.5.15, 16.2.3",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "Next.js has a Denial of Service with Server Components",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-47831",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "14.2.7",
+          "Severity": "MEDIUM",
+          "CVSSv3": 7.5,
+          "Title": "next.js: Next.js image optimization has Denial of Service condition",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-56332",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "13.5.8, 14.2.21, 15.1.2",
+          "Severity": "MEDIUM",
+          "CVSSv3": 5.3,
+          "Title": "next.js: Next.js Vulnerable to Denial of Service (DoS) with Server Actions",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-55173",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "14.2.31, 15.4.5",
+          "Severity": "MEDIUM",
+          "CVSSv3": 4.3,
+          "Title": "nextjs: Next.js Content Injection Vulnerability for Image Optimization",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-57752",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "14.2.31, 15.4.5",
+          "Severity": "MEDIUM",
+          "CVSSv3": 6.2,
+          "Title": "nextjs: Next.js Affected by Cache Key Confusion for Image Optimization API Routes",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-57822",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "14.2.32, 15.4.7",
+          "Severity": "MEDIUM",
+          "CVSSv3": 8.2,
+          "Title": "Next.js Improper Middleware Redirect Handling Leads to SSRF",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-59471",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.5.10, 16.1.5",
+          "Severity": "MEDIUM",
+          "CVSSv3": 7.5,
+          "Title": "next: NextJS Denial of Service in Image Optimizer",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-27980",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "16.1.7, 15.5.14",
+          "Severity": "MEDIUM",
+          "CVSSv3": 7.5,
+          "Title": "next.js: Next.js: Unbounded next/image disk cache growth can exhaust storage",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-29057",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "16.1.7, 15.5.13",
+          "Severity": "MEDIUM",
+          "CVSSv3": 6.5,
+          "Title": "next.js: Next.js: HTTP request smuggling in rewrites",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-44577",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.5.16, 16.2.5",
+          "Severity": "MEDIUM",
+          "CVSSv3": 7.5,
+          "Title": "Next.js: Next.js: Denial of Service via Image Optimization API",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-44580",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.5.16, 16.2.5",
+          "Severity": "MEDIUM",
+          "CVSSv3": 6.1,
+          "Title": "next.js: Next.js: Cross-site scripting allows arbitrary code execution via untrusted script content",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-44581",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.5.16, 16.2.5",
+          "Severity": "MEDIUM",
+          "CVSSv3": 4.7,
+          "Title": "next.js: Next.js: Stored Cross-Site Scripting via malformed nonce values in cached responses",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-64643",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.5.21, 16.2.11",
+          "Severity": "MEDIUM",
+          "CVSSv3": 5.3,
+          "Title": "next: Next.js: Information disclosure via Server Action ID exposure",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-64646",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.5.21, 16.2.11",
+          "Severity": "MEDIUM",
+          "CVSSv3": 7.5,
+          "Title": "next: Next.js: Denial of Service via excessive memory consumption in Server Actions",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-64647",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.5.21, 16.2.11",
+          "Severity": "MEDIUM",
+          "CVSSv3": 5.4,
+          "Title": "next: Next.js: Information disclosure via server-side request caching",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-64648",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.5.21, 16.2.11",
+          "Severity": "MEDIUM",
+          "CVSSv3": 7.5,
+          "Title": "next: Next.js: Information disclosure via server-side fetch cache",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-32421",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "14.2.24, 15.1.6",
+          "Severity": "LOW",
+          "CVSSv3": 3.7,
+          "Title": "next.js: Next.js Race Condition to Cache Poisoning",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-48068",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.2.2, 14.2.30",
+          "Severity": "LOW",
+          "CVSSv3": 4.3,
+          "Title": "next.js: Information exposure in Next.js dev server due to lack of origin verification",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-44572",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.5.16, 16.2.5",
+          "Severity": "LOW",
+          "CVSSv3": 5.9,
+          "Title": "next.js: Next.js: Denial of Service due to improper handling of x-nextjs-data header with redirects",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-44582",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "15.5.16, 16.2.5",
+          "Severity": "LOW",
+          "CVSSv3": 3.7,
+          "Title": "Next.js: Next.js: Cache poisoning allows incorrect response delivery",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-45623",
+          "PkgName": "postcss",
+          "InstalledVersion": "8.4.31",
+          "FixedVersion": "8.5.12",
+          "Severity": "HIGH",
+          "CVSSv3": 9.1,
+          "Title": "postcss: PostCSS: Information disclosure and denial of service via crafted CSS input",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-73646",
+          "PkgName": "postcss",
+          "InstalledVersion": "8.4.31",
+          "FixedVersion": "8.5.18",
+          "Severity": "HIGH",
+          "CVSSv3": 7.5,
+          "Title": "postcss: PostCSS: Information disclosure via path traversal in source map auto-loading",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-41305",
+          "PkgName": "postcss",
+          "InstalledVersion": "8.4.31",
+          "FixedVersion": "8.5.10",
+          "Severity": "MEDIUM",
+          "CVSSv3": 6.1,
+          "Title": "postcss: PostCSS: Cross-Site Scripting (XSS) via improper escaping of style closing tags",
+          "Target": "package-lock.json"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-69153",
+          "PkgName": "postcss",
+          "InstalledVersion": "8.4.31",
+          "FixedVersion": "8.5.23",
+          "Severity": "MEDIUM",
+          "CVSSv3": 5.3,
+          "Title": "postcss: PostCSS: Information disclosure via crafted sourceMappingURL",
+          "Target": "package-lock.json"
+        }
+      ]
+    }
+  ]
+}
