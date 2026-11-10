@@ -1,0 +1,233 @@
+{
+  "event": {
+    "id": "adv-opsbuilder-2026-001",
+    "kind": "advisory",
+    "title": "示範公告：OpsBuilder 1.90 以前版本的帳號接管漏洞（虛構產品）",
+    "date": "2026-09-30",
+    "industry": null,
+    "attack_chain": [
+      "未登入者可重設管理者密碼",
+      "以管理者身分使用工具內設定的整合與資料來源"
+    ],
+    "attck": [
+      "T1190",
+      "T1078"
+    ],
+    "cves": [
+      "DEMO-2026-0001"
+    ],
+    "products": [
+      {
+        "name": "opsbuilder",
+        "ecosystem": "generic",
+        "affected": [
+          {
+            "introduced": "0",
+            "fixed": "1.90"
+          }
+        ],
+        "conditions": [
+          {
+            "key": "login_reachable",
+            "equals": true
+          }
+        ],
+        "cvss": 9.8,
+        "known_exploited": true,
+        "impact": "account_takeover",
+        "confirmed": true
+      }
+    ],
+    "revision": "2026-09-30.1",
+    "controls": [],
+    "confidence": "confirmed",
+    "sources": [
+      {
+        "url": null,
+        "title": "虛構示範公告（模擬 fixture），非真實報導",
+        "quote": null,
+        "published": "2026-09-30",
+        "fetch_status": "skipped",
+        "verified": false,
+        "verified_at": null,
+        "content_hash": null,
+        "verification_basis": "demo"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "1 項受影響，最高風險為高。internal-tool：opsbuilder 1.88，對外。",
+  "affected_count": 1,
+  "max_level": "high",
+  "impacts": [
+    {
+      "event_id": "adv-opsbuilder-2026-001",
+      "asset_id": "internal-tool",
+      "basis": "condition",
+      "our_state": "opsbuilder 1.88，對外",
+      "verdict": "affected",
+      "risk_id": "internal-tool:opsbuilder:vuln",
+      "to_verify": [],
+      "reason": "版本落在受影響範圍，利用條件成立：login_reachable=True"
+    }
+  ],
+  "solutions": [
+    {
+      "risk_id": "internal-tool:opsbuilder:vuln",
+      "temporary": "確認 internal-tool 的暴露範圍，先以 WAF 或存取限制降低風險",
+      "permanent": "將 internal-tool 的受影響元件升級到修補版本",
+      "options": [
+        {
+          "name": "修補",
+          "action": "升級到修補版本",
+          "cost": "需回歸測試",
+          "timing": "24 小時內"
+        },
+        {
+          "name": "緩解",
+          "action": "限制來源、關閉受影響功能",
+          "cost": "部分功能受限",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "devops-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template"
+    }
+  ],
+  "notice": {
+    "needed": false,
+    "draft": null
+  },
+  "status": "open",
+  "evaluated_asset_ids": [
+    "internal-tool"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "未登入者可重設管理者密碼；以管理者身分使用工具內設定的整合與資料來源",
+  "blocks": {
+    "1_summary": {
+      "title": "示範公告：OpsBuilder 1.90 以前版本的帳號接管漏洞（虛構產品）",
+      "date": "2026-09-30",
+      "industry": null,
+      "attack_chain": [
+        "未登入者可重設管理者密碼",
+        "以管理者身分使用工具內設定的整合與資料來源"
+      ],
+      "attck": [
+        "T1190",
+        "T1078"
+      ],
+      "cves": [
+        "DEMO-2026-0001"
+      ],
+      "confidence": "已確認",
+      "label": "公告",
+      "sources": [
+        {
+          "url": null,
+          "title": "虛構示範公告（模擬 fixture），非真實報導",
+          "quote": null,
+          "fetch_status": "skipped",
+          "verification_basis": "demo",
+          "verified_at": null
+        }
+      ],
+      "verification": {
+        "status": "skipped",
+        "issues": [],
+        "max_level": null
+      },
+      "summary": "未登入者可重設管理者密碼；以管理者身分使用工具內設定的整合與資料來源",
+      "summary_note": "自動摘要未產生",
+      "fixture_note": "虛構產品 OpsBuilder 的示範公告；CVSS 與已利用旗標為明確標示的模擬 fixture 值（規格第 7.4 節）"
+    },
+    "2_conclusion": {
+      "text": "1 項受影響，最高風險為高。internal-tool：opsbuilder 1.88，對外。",
+      "affected_count": 1,
+      "max_level": "high"
+    },
+    "3_affected": [
+      {
+        "asset_id": "internal-tool",
+        "our_state": "opsbuilder 1.88，對外",
+        "basis": "condition",
+        "verdict": "affected",
+        "reason": "版本落在受影響範圍，利用條件成立：login_reachable=True",
+        "risk_id": "internal-tool:opsbuilder:vuln",
+        "level": "high",
+        "score": 11,
+        "breakdown": [
+          {
+            "factor": "基礎分：漏洞",
+            "points": 3,
+            "reason": "CVSS 9.8"
+          },
+          {
+            "factor": "已遭實際利用",
+            "points": 2,
+            "reason": "KEV 或官方確認"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "可從 internet 連到"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-91app-2026-10"
+          },
+          {
+            "factor": "位於完整攻擊鏈",
+            "points": 3,
+            "reason": "攻擊路徑前提的必要一步"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-10T17:08:55Z"
+      }
+    ],
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": []
+    },
+    "5_solutions": [
+      {
+        "risk_id": "internal-tool:opsbuilder:vuln",
+        "temporary": "確認 internal-tool 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "permanent": "將 internal-tool 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "24 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "devops-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      }
+    ],
+    "6_notice": {
+      "needed": false,
+      "draft": null
+    },
+    "7_status": {
+      "status": "open",
+      "label": "待處理"
+    }
+  }
+}
