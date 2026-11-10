@@ -4,7 +4,7 @@ from __future__ import annotations
 import networkx as nx
 
 from tools.common import iso
-from tools.scoring import Factors, score
+from tools.scoring import DEFAULT_WEIGHTS, Factors, Weights, score
 
 SENSITIVE = {"pii", "order", "payment", "session"}
 OTHER_CATEGORIES = {"clone_app", "shadow_api", "shadow_it"}
@@ -52,7 +52,8 @@ def _compensating(f: dict, g: nx.MultiDiGraph) -> tuple[bool, str]:
 
 
 def build_risks(findings: list[dict], g: nx.MultiDiGraph, *, chain_ids: set[str], event_links: dict[str, set[str]],
-                real_events: set[str], provisional_events: set[str], as_of, prev: dict[str, dict] | None = None) -> list[dict]:
+                real_events: set[str], provisional_events: set[str], as_of, prev: dict[str, dict] | None = None,
+                weights: Weights = DEFAULT_WEIGHTS) -> list[dict]:
     prev = prev or {}
     risks = []
     for f in findings:
@@ -85,7 +86,7 @@ def build_risks(findings: list[dict], g: nx.MultiDiGraph, *, chain_ids: set[str]
             notes={"exposed": exposed_note, "compensating": comp_note,
                    "data": "、".join(sorted(classes & SENSITIVE)) or "",
                    "peer": "、".join(peer)})
-        r = score(factors)
+        r = score(factors, weights)
         status = "need_check" if r.need_check or f.get("exploit_conditions") == "unknown" else "open"
         old = prev.get(f["id"]) or {}
         risks.append({
@@ -96,7 +97,7 @@ def build_risks(findings: list[dict], g: nx.MultiDiGraph, *, chain_ids: set[str]
             "status": status, "first_seen": old.get("first_seen") or iso(as_of), "last_evaluated": iso(as_of),
             "verification_evidence": [], "control_id": f.get("control_id"), "credential_id": f.get("credential_id"),
             "evidence": f.get("evidence", []), "demo_fixture": bool(f.get("demo_fixture")),
-            "provisional_basis": provisional,
+            "provisional_basis": provisional, "level_floor": f.get("level_floor"),
         })
     return sorted(risks, key=lambda x: (-{"high": 2, "medium": 1, "low": 0}[x["level"]], -x["score"], x["id"]))
 

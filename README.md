@@ -135,7 +135,7 @@ python agents/run_agent.py all --replay           # A1 清理格式，引用比�
 1. 程式整理要撰寫的任務（`out/llm/tasks.json`：風險說明、修補建議、CEO 摘要、情資摘要、品牌商通知；分數、等級與燈號已由程式算好）
 2. Claude 只讀 `out/`、`.claude/`，只寫 `out/llm/results.json`（不上網、不派發 Subagent；hook 參數見 `.claude/analysis-settings.json`）
 3. 程式確認 Claude 只寫了 `out/`、任務檔沒被改動，再以各 Subagent 原本的範圍與格式驗證（不得改動分數、等級、狀態，不得含金鑰）
-4. A5 採用通過驗證的結果，其餘用程式範本；「Agent 執行」頁標示「即時呼叫・訂閱方案」
+4. A5 採用通過驗證的結果，其餘用程式範本；「AI 分析過程」頁標示「即時呼叫・訂閱方案」
 
 不需要額外設定（使用每日情資的 `CLAUDE_CODE_OAUTH_TOKEN`），不產生 API 費用，會使用訂閱額度。同一次執行的所有 Job 使用 Orchestrator 決定的同一個邏輯時間（`AS_OF`），任務鍵才會一致。A1（公告抽取）與 A3（客訴分類）的結果在各自的 Job 內使用，仍是範本；網站觸發與情境不使用訂閱方案。
 
@@ -168,7 +168,7 @@ python agents/run_agent.py all --replay           # A1 清理格式，引用比�
 | `WEB_EXECUTION_MODE` | `replay` |
 | `SENTINEL_BASE_URL` | `https://<網域>`（Issue 內的連結） |
 
-LINE 相關變數目前不需要（P2 未實作）。缺少 `DEMO_PASSCODE`、`GITHUB_WEBHOOK_SECRET` 或 Redis 時，對應的 API 會回 503 停用，不會以空值放行。
+LINE 相關變數為選用（見「給 CEO 看的頁面」）。缺少 `DEMO_PASSCODE`、`GITHUB_WEBHOOK_SECRET` 或 Redis 時，對應的 API 會回 503 停用，不會以空值放行。
 
 ### 6. Repo ① Webhook
 
@@ -181,7 +181,7 @@ Settings → Webhooks：Payload URL `https://<網域>/api/webhooks/github`、Con
    - 網站總覽的「每日情資」顯示「正常」；新事件出現在情資頁（標示「真實」），引用未通過驗證的事件只到暫定
    - 資料問題中不再出現 `github/deployments`（代表已讀到 Repo ① 的實際部署紀錄）
 3. 手動執行 `intel-watch`：沒有命中時不觸發；有命中時觸發 `advisory`
-4. 在筆電建立一次正式部署（即時監控頁也有這段指令）：
+4. 在筆電建立一次正式部署（即時告警頁也有這段指令）：
 
    ```bash
    gh api -X POST repos/<owner>/shopsaas-demo-platform/deployments --input - <<'EOF'
@@ -193,11 +193,18 @@ Settings → Webhooks：Payload URL `https://<網域>/api/webhooks/github`、Con
 5. 依序執行下方情境並記錄成本
 6. 重設 Demo，再跑一次 `daily`，確認回到基準狀態
 
+## 給 CEO 看的頁面
+
+- Demo 請從 `/brief`（今日重點）開始：三顆燈、三句摘要、今天要決定的事、最需要處理的 3 件事；可加 `?source=<情境>`
+- `/report`（行動報告）：按「匯出 PDF」後在列印視窗選「另存為 PDF」；管理者可把項目設為處理中（期限必填），到期前 24 小時與逾期時以 LINE 提醒（`reminders.yml` 每小時執行，GitHub 排程可能延遲）
+- `/weights`（燈號權重，在「工程細節」）：調整加分因子與高／中門檻，需 `ADMIN_PASSCODE`；以 `GH_DISPATCH_TOKEN`（Contents 讀寫）把 `rules/scoring.json` 寫回預設分支，下一次評估起生效
+- LINE：依規格 14.2 建立官方帳號後，Webhook URL 設為 `https://<網域>/api/webhooks/line`，Vercel 設定 `LINE_CHANNEL_SECRET`、`LINE_CHANNEL_ACCESS_TOKEN`、`LINE_BIND_CODE`、`LINE_MAX_ADMINS`、`LINE_PUSH_SIMULATED`；圖文選單三個按鈕送出文字「今日燈號」「最新告警」「行動報告」。未設定時 LINE 功能略過，不影響其他功能
+
 ## 執行情境
 
-情境把額外輸入疊加到基準資料上，結果寫到 `dashboard/public/data/scenarios/<name>/`，**不影響正式總覽燈號**。可以從網站的「Agent 執行」頁（需示範密碼，每小時一次）或 GitHub Actions 的 `sentinel` workflow 手動執行。
+情境把額外輸入疊加到基準資料上，結果寫到 `dashboard/public/data/scenarios/<name>/`，**不影響正式總覽燈號**。可以從網站的「AI 分析過程」頁（需示範密碼，每小時一次）或 GitHub Actions 的 `sentinel` workflow 手動執行。
 
-「Agent 執行」頁送出後會即時顯示每個 Agent（Job）的狀態與耗時，點 Agent 可開啟該 Job 的執行紀錄；執行結束後偵測到新結果隨 Vercel 重新部署上線，就提供「查看這次的 Agent 執行結果」。重新整理頁面會繼續追蹤（只存在瀏覽器本機）。網站觸發使用伺服器設定的執行模式（預設 replay），不使用訂閱方案：網站觸發的 `daily` 不會搜尋新聞。
+「AI 分析過程」頁送出後會即時顯示每個 Agent（Job）的狀態與耗時，點 Agent 可開啟該 Job 的執行紀錄；執行結束後偵測到新結果隨 Vercel 重新部署上線，就提供「查看這次的 Agent 執行結果」。重新整理頁面會繼續追蹤（只存在瀏覽器本機）。網站觸發使用伺服器設定的執行模式（預設 replay），不使用訂閱方案：網站觸發的 `daily` 不會搜尋新聞。
 
 | 情境 | 怎麼觸發 | 預期結果 |
 |------|---------|---------|
@@ -208,8 +215,8 @@ Settings → Webhooks：Payload URL `https://<網域>/api/webhooks/github`、Con
 | `intel-demo` | 網站／手動 | 5 份示範比對報告：2 高、1 中（含通知草稿）、1 不受影響、1 需確認 |
 | `advisory` | `intel-watch` 自動 | 只調查公告影響的資產；版本或條件未知為需確認，只有確認高風險才提高有效燈號 |
 | 即時：非 Pipeline 部署 | 筆電執行上方 `gh api` 指令 | RT-001 告警、Issue、圍堵建議 |
-| 即時：凌晨大量讀取 | 即時監控頁模擬器 | RT-002 告警（白天排練也能命中；模擬告警與真實告警完全隔離） |
-| 即時：多品牌詐騙 | 即時監控頁模擬器 | RT-003 告警，對應 91APP 事件 |
+| 即時：凌晨大量讀取 | 即時告警頁模擬器 | RT-002 告警（白天排練也能命中；模擬告警與真實告警完全隔離） |
+| 即時：多品牌詐騙 | 即時告警頁模擬器 | RT-003 告警，對應 91APP 事件 |
 | 修復後 | 依建議修正 Repo ①，再跑 `daily` | 對應攻擊鏈斷開、風險標為已修復；只修部分時其他高風險仍紅 |
 
 `nas`、`insider-path`、`mobile-sdk` 屬 P2，尚未提供輸入資料：網站按鈕標示「P2 未啟用」，手動執行會明確失敗，不會產出看似完成的報告。

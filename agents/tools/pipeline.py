@@ -18,6 +18,7 @@ from tools.lights import LABEL, compute_light
 from tools.loaders import TargetData, load_target
 from tools.reconcile import reconcile
 from tools.risk_engine import attach_paths, build_risks, link_events, mark_fixed
+from tools.scoring import load_weights
 from tools.signals import evaluate as evaluate_signals
 
 
@@ -92,8 +93,10 @@ def evaluate(inp: EvalInput) -> dict:
     links = link_events(matches, findings)
     real_events = {m["event"]["id"] for m in matches if m["real"]}
     provisional = {e["id"] for e in events if e["confidence"] == "provisional"}
+    weights, scoring, scoring_issue = load_weights()          # rules/scoring.json；無效時用預設權重並記錄
     risks = build_risks(findings, g, chain_ids=set(paths["chain_finding_ids"]), event_links=links,
-                        real_events=real_events, provisional_events=provisional, as_of=inp.as_of, prev=inp.prev_risks)
+                        real_events=real_events, provisional_events=provisional, as_of=inp.as_of, prev=inp.prev_risks,
+                        weights=weights)
     attach_paths(risks, paths["paths"])
     signals = evaluate_signals(data.signals, inp.as_of)
     for s in signals:
@@ -101,12 +104,12 @@ def evaluate(inp: EvalInput) -> dict:
             risks.insert(0, {
                 "id": s["id"], "finding_ids": [], "asset_id": "platform", "title": f"疑似已發生外洩：{s['summary']}",
                 "category": "signal", "level": "high", "score": 3, "raw_score": 3, "score_level": "low",
-                "level_reason": "規則下限：A3 已出事的訊號", "breakdown": [{"factor": "基礎分：規則", "points": 3, "reason": "signal:confirmed"}],
+                "level_reason": "規則下限：A3 已出事的訊號", "level_floor": "high", "breakdown": [{"factor": "基礎分：規則", "points": 3, "reason": "signal:confirmed"}],
                 "attack_path": None, "matched_events": [s["related_event"]] if s.get("related_event") else [],
                 "deadline_hours": 24, "solution": None, "status": "open", "first_seen": iso(inp.as_of),
                 "last_evaluated": iso(inp.as_of), "verification_evidence": [], "evidence": s["evidence"]})
 
-    data_issues = [*data.data_issues, *a2["data_issues"]]
+    data_issues = [*data.data_issues, *a2["data_issues"], *([scoring_issue] if scoring_issue else [])]
     complete = not any(i.get("required") and i["status"] in ("missing", "stale") for i in data.data_issues) and not a2["data_issues"]
     evaluated = set(g.nodes) | set(recon.get("saas_registered", []))
     risks += mark_fixed(risks, inp.prev_risks, complete=complete, evaluated_assets=evaluated, as_of=inp.as_of)
@@ -118,4 +121,5 @@ def evaluate(inp: EvalInput) -> dict:
         "verification": verification, "matches": matches, "paths": paths, "risks": risks, "signals": signals,
         "light": light, "light_reasons": reasons, "light_label": LABEL[light], "data_issues": data_issues,
         "complete": complete, "stack_complete": stack_complete(data, recon["coverage"]), "sdk_advisories": sdk_advisories,
+        "scoring": scoring,
     }

@@ -1,5 +1,6 @@
 import { getReport, listSources, resolveSource } from "@/lib/data";
 import { SimNotice, SourceSwitcher } from "@/components/ui";
+import { PAGES } from "@/lib/nav";
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +11,7 @@ export default async function Assets({ searchParams }: { searchParams: Promise<R
   const eol = ((report?.coverage as any)?.eol_exposed_items ?? []) as { asset_id: string; component: string; version: string; eol_date: string }[];
   return (
     <>
-      <h1>資產</h1>
+      <h1>{PAGES.assets.label}</h1>
       <SourceSwitcher current={source.key} sources={sources} path="/assets" />
       <SimNotice source={source} />
       <p className="muted">清冊 vs 實際觀察（runtime、內網、外部、MDM、付款、SSO）。盲點通常是「沒人知道它存在」。</p>

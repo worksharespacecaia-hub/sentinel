@@ -1,5 +1,6 @@
 // 告警交付（第 7.6 節、第 11.2 節 raiseAlert）：告警與 outbox 已先寫入 Redis，這裡才嘗試外部步驟。
-// - 順序：建立或查回 Issue → repository_dispatch（incident.yml）→ LINE（P2，未啟用時 skipped）；狀態變更另有 sync 步驟
+// - 順序：建立或查回 Issue → repository_dispatch（incident.yml）→ LINE（未設定時 skipped）；狀態變更另有 sync 步驟
+// - LINE 使用獨立交付狀態：Issue 失敗也照樣推播；推播失敗只記錄、不自動重試（規格第 7.7 節）
 // - 每一步有 pending/running/done/failed、attempts、last_error、鎖期限；外部呼叫逾時先查既有 Issue marker／workflow，不盲目重送
 // - 外部步驟失敗不撤銷已成立告警；管理者可由 /api/alerts/retry 重試
 import {
@@ -8,6 +9,8 @@ import {
 } from "./github.ts";
 import { K, getAlert, patchAlert, type Alert, type DeliveryStep } from "./alertstore.ts";
 import { LEVEL_TEXT } from "./labels.ts";
+import { pushToAdmins, siteUrl as lineSiteUrl } from "./line.ts";
+import { alertMessage } from "./line-messages.ts";
 import { acquireLock, releaseLock } from "./security.ts";
 
 const STEP_LOCK_SECONDS = 60;
@@ -82,10 +85,12 @@ const STEPS: Record<DeliveryStep, StepFn> = {
     };
   },
   async line(a) {
-    // P2：LINE 未實作／未啟用時明確標示 skipped，不阻擋 Issue 與調查；也不自動重試 LINE
-    const reason = a.delivery.line.reason ?? "LINE 通知未啟用（P2）";
+    // 模擬告警只推給第一位管理者（排練用，避免用完額度）；失敗不阻擋 Issue 與調查
+    const r = await pushToAdmins([alertMessage(a, lineSiteUrl())], "alert", { firstOnly: a.simulated });
+    if (r.state === "failed") throw new Error(r.reason ?? "LINE 推播失敗");
     return (x) => {
-      x.delivery.line = { ...x.delivery.line, state: "skipped", reason };
+      if (r.state === "skipped") x.delivery.line = { ...x.delivery.line, state: "skipped", reason: r.reason };
+      else x.delivery.line = { ...x.delivery.line, reason: `已推播給 ${r.recipients} 位管理者` };
     };
   },
   async sync(a) {
@@ -107,13 +112,16 @@ const STEPS: Record<DeliveryStep, StepFn> = {
 
 function needsRun(a: Alert, step: DeliveryStep): boolean {
   const s = a.delivery[step];
+  if (step === "line" && s.state === "failed" && s.attempts > 0) return false;   // LINE 不自動重試
   return s.state === "pending" || s.state === "failed" || (s.state === "running" && (!s.lease_until || Date.parse(s.lease_until) < Date.now()));
 }
 
 /** 依序執行尚未完成的步驟。每一步以 Redis 鎖保護（同一告警同一步驟同時只有一個執行者）。 */
 export async function deliver(alertId: string, only?: DeliveryStep[]): Promise<Alert | null> {
+  const blocked = new Set<DeliveryStep>();
   for (const step of ORDER) {
     if (only && !only.includes(step)) continue;
+    if (blocked.has(step)) continue;
     const a = await getAlert(alertId);
     if (!a) return null;
     if (!needsRun(a, step)) continue;
@@ -140,7 +148,8 @@ export async function deliver(alertId: string, only?: DeliveryStep[]): Promise<A
           x.delivery[step] = { ...x.delivery[step], state: "failed", last_error: errText(e), lease_until: null,
                                uncertain: uncertain || x.delivery[step].uncertain, updated_at: new Date().toISOString() };
         });
-        if (step === "issue") break;   // 沒有 Issue 就不派發調查（避免調查結果無處留言）
+        // 沒有 Issue 就不派發調查（避免調查結果無處留言）、也不同步狀態；LINE 仍照常推播
+        if (step === "issue") ["dispatch", "sync"].forEach((x) => blocked.add(x as DeliveryStep));
       }
     } finally {
       await releaseLock(K.stepLock(alertId, step), token);

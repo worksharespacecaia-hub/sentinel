@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getIntelReport, resolveSource } from "@/lib/data";
 import { LevelText, SimNotice } from "@/components/ui";
 import { SOURCE_TEXT, STATUS_TEXT } from "@/lib/labels";
+import { PAGES } from "@/lib/nav";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +21,7 @@ export default async function IntelDetail({ params, searchParams }: {
   const back = source.simulated ? `/intel?source=${encodeURIComponent(source.key)}` : "/intel";
   return (
     <>
-      <p><Link href={back}>← 回情資比對</Link></p>
+      <p><Link href={back}>← 回{PAGES.intel.label}</Link></p>
       <SimNotice source={source} />
       <h1>{s1.title}</h1>
       <p>{[s1.label, s1.confidence, ...s1.cves].map((t: string) => <span key={t} className="tag">{t}</span>)}</p>

@@ -14,9 +14,22 @@
 body { margin: 0; background: var(--bg); color: var(--text); font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif; line-height: 1.6; }
 a { color: var(--accent); }
 .banner { background: var(--banner); color: var(--banner-text); padding: 6px 16px; font-size: 14px; text-align: center; }
-header.nav { background: var(--panel); border-bottom: 1px solid var(--line); padding: 8px 16px; display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: center; }
-header.nav .brand { font-weight: 700; margin-right: 12px; }
-header.nav a { text-decoration: none; font-size: 15px; }
+header.nav { background: var(--panel); border-bottom: 1px solid var(--line); padding: 8px 16px; display: flex; flex-wrap: wrap; gap: 4px 18px; align-items: center; }
+header.nav .brand { font-weight: 700; margin-right: 12px; color: var(--text); }
+header.nav a { text-decoration: none; font-size: 16px; }
+header.nav .nav-main { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+header.nav a[aria-current="page"], header.nav .nav-more summary.current { color: var(--text); font-weight: 700;
+  text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; }
+.nav-more { position: relative; margin-left: auto; }
+.nav-more summary { cursor: pointer; list-style: none; color: var(--accent); font-size: 15px; padding: 2px 0; }
+.nav-more summary::-webkit-details-marker { display: none; }
+.nav-more ul { position: absolute; right: 0; top: calc(100% + 8px); z-index: 20; min-width: 170px; max-width: calc(100vw - 32px);
+  margin: 0; padding: 6px 0; list-style: none; background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 18%); }
+.nav-more li a { display: block; padding: 6px 14px; white-space: nowrap; }
+.nav-more li a:hover, .nav-more li a:focus-visible { background: var(--bg); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.warn { color: var(--yellow); font-weight: 600; }
 main { max-width: 1180px; margin: 0 auto; padding: 16px; }
 h1 { font-size: 24px; margin: 8px 0 12px; }
 h2 { font-size: 19px; margin: 24px 0 8px; }
@@ -71,3 +84,99 @@ a.button.primary { background: var(--accent); color: #fff; }
 }
 @media (max-width: 900px) { .flow { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .flow { grid-template-columns: 1fr; } }
+
+/* 紅黃綠三顆燈：亮目前那顆，旁邊一定有文字 */
+.traffic-light { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; }
+.traffic-light .lamps { display: inline-flex; gap: 10px; padding: 8px 12px; border-radius: 999px; background: var(--bg); border: 1px solid var(--line);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.lamp { width: 44px; height: 44px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+  background: currentColor; border: 2px solid currentColor; opacity: .2; }
+.lamp.red { color: var(--red); } .lamp.yellow { color: var(--yellow); } .lamp.green { color: var(--green); }
+.lamp.on { opacity: 1; box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 28%, transparent), 0 0 16px currentColor; }
+.lamp-name { color: var(--panel); font-weight: 700; font-size: 14px; }
+.lamp-text { font-size: 24px; }
+.lamp-text.red { color: var(--red); } .lamp-text.yellow { color: var(--yellow); } .lamp-text.green { color: var(--green); }
+.traffic-light.small .lamp { width: 22px; height: 22px; }
+.traffic-light.small .lamp-name { display: none; }
+.traffic-light.small .lamp-text { font-size: 17px; }
+
+/* 今日重點 */
+.brief { max-width: 860px; margin: 0 auto; font-size: 17px; }
+.brief h2 { margin: 0 0 8px; font-size: 21px; }
+.brief-hero .lamp-text { font-size: 26px; }
+.brief-summary { font-size: 19px; margin: 14px 0 0; padding-left: 1.4em; }
+.brief-summary li, .brief-decisions li { margin: 6px 0; }
+.brief-decisions { font-size: 18px; padding-left: 1.4em; margin: 0; }
+.kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 14px; }
+.kpis .panel { margin-bottom: 0; }
+.kpi .num { font-size: 40px; font-weight: 700; line-height: 1.15; }
+.kpi .of { font-size: 20px; color: var(--muted); font-weight: 400; }
+.brief-risks { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 10px; }
+.brief-risk { overflow-wrap: anywhere; }
+.brief-risk > a { display: block; color: var(--text); text-decoration: none; border: 1px solid var(--line); border-left: 5px solid var(--line);
+  border-radius: 8px; padding: 10px 12px; background: var(--bg); }
+.brief-risk.high > a { border-left-color: var(--red); } .brief-risk.medium > a { border-left-color: var(--yellow); }
+.brief-risk > a:hover, .brief-risk > a:focus-visible { border-color: var(--accent); }
+.brief-risk .tags { margin: 4px 0; }
+.brief-footer { margin-top: 4px; }
+@media (max-width: 640px) {
+  .kpis { grid-template-columns: 1fr; }
+  .lamp { width: 34px; height: 34px; }
+  .lamp-text, .brief-hero .lamp-text { font-size: 20px; }
+  .brief-summary { font-size: 17px; }
+}
+
+/* 行動報告 */
+.report { max-width: 960px; margin: 0 auto; }
+.report-toolbar { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 10px 16px; margin-bottom: 8px; }
+.report-toolbar details summary { list-style: none; cursor: pointer; border: 1px solid var(--line); background: var(--panel); }
+.report-toolbar details summary::-webkit-details-marker { display: none; }
+.report-toolbar details[open] { flex-basis: 100%; }
+.report-toolbar form, .track-form form { display: grid; gap: 8px; max-width: 520px; margin-top: 8px; }
+.report-toolbar label, .track-form label { display: grid; gap: 2px; font-size: 14px; }
+.report-head h1 { margin-bottom: 0; }
+.report-section h2 { margin: 0 0 8px; }
+.track-summary { font-weight: 600; }
+.action-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.action-item { border: 1px solid var(--line); border-left: 5px solid var(--line); border-radius: 8px; padding: 10px 12px; background: var(--bg);
+  overflow-wrap: anywhere; scroll-margin-top: 16px; }
+.action-item.high { border-left-color: var(--red); } .action-item.medium { border-left-color: var(--yellow); }
+.action-item:target { outline: 2px solid var(--accent); }
+.action-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; }
+.action-fields { display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; margin: 8px 0 0; font-size: 15px; }
+.action-fields dt { color: var(--muted); }
+.action-fields dd { margin: 0; }
+.track-state.due_soon { color: var(--yellow); font-weight: 600; }
+.track-state.overdue { color: var(--red); font-weight: 700; }
+.track-form { margin-top: 8px; }
+.track-form summary { cursor: pointer; color: var(--accent); font-size: 14px; }
+.notice h3 { font-size: 16px; margin: 8px 0 4px; }
+.report-footer { margin-top: 8px; }
+@media (max-width: 560px) { .action-fields { grid-template-columns: 1fr; } .action-fields dt { margin-top: 4px; } }
+
+/* 列印／另存 PDF：A4、保留免責橫幅、隱藏導覽與操作按鈕、強制淺色 */
+@media print {
+  @page { size: A4; margin: 14mm 12mm; }
+  :root {
+    --bg: #ffffff; --panel: #ffffff; --text: #111111; --muted: #444444; --line: #bbbbbb; --accent: #1f5fbf;
+    --red: #b42318; --red-bg: #fdecea; --yellow: #8a5a00; --yellow-bg: #fff4d6; --green: #1a7f37; --green-bg: #e6f4ea;
+    --banner: #ffffff; --banner-text: #111111;
+  }
+  body { font-size: 12pt; }
+  .banner { border: 1px solid #111; font-weight: 700; }
+  header.nav, .no-print, .report-toolbar { display: none !important; }
+  main { max-width: none; padding: 0; }
+  a { color: inherit; text-decoration: none; }
+  .panel { border-color: #bbb; break-inside: auto; }
+  .action-item, .notice, tr, .traffic-light { break-inside: avoid; }
+  h2 { break-after: avoid; }
+  thead { display: table-header-group; }
+  .lamp, .action-item, .tag { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* 燈號權重 */
+.weights input[type="number"] { width: 5.5em; }
+.weights-preview { border-top: 1px solid var(--line); margin-top: 12px; padding-top: 8px; }
+.weights-preview h3 { font-size: 16px; margin: 0 0 6px; }
+.weights-save { display: grid; gap: 8px; max-width: 520px; margin-top: 12px; }
+.weights-save label { display: grid; gap: 2px; font-size: 14px; }

@@ -1,5 +1,16 @@
 # Changelog
 
+## 未發布（feature/0.9.0-ceo-demo：給 CEO 看的 Demo）
+
+- **導覽列精簡**：只留 3 個主項（今日重點、行動報告、即時告警），其他頁收進「工程細節」下拉並標示目前頁。頁名改白話：總覽→詳細總覽、風險清單→風險明細、情資比對→外部事件、攻擊鏈→入侵路徑、資產→系統盤點、App→App 風險、Agent 執行→AI 分析過程、架構說明→運作原理、即時監控→即時告警（名稱集中在 `dashboard/lib/nav.ts`）
+- **今日重點 `/brief`**：紅黃綠三顆燈（亮目前燈號並附文字）、三句摘要、3 個數字、今天要決定的事、最需要處理的 3 件事
+- **行動報告 `/report`**：彙整決策、全部未修復的高中風險與建議做法、受影響的外部事件、通知草稿；「匯出 PDF」使用瀏覽器列印（A4 版面、保留免責橫幅）
+- **處理中追蹤**：管理者可把風險設為處理中（負責人、期限必填、最多 30 天）；`reminders.yml` 每小時檢查，期限前 24 小時與逾期各以 LINE 提醒一次。已修復仍只由重新評估判定
+- **LINE Bot（規格 7.7）**：`/api/webhooks/line`（簽章驗證、綁定碼、最多 3 位管理者、今日燈號／最新告警／行動報告查詢）、高風險告警推播、`/api/notify/light` 燈號變化推播、`/api/report/send` 手動傳送、額度分級（150／190 則）。未設定 LINE 時一律 skipped
+- **燈號權重 `/weights`**：加分因子與高／中門檻改由 `rules/scoring.json` 設定（預設值不變）；網站可試算並以管理者密碼儲存（寫回 GitHub 一個 commit），下一次評估起生效；設定無效時改用預設並列入資料狀態。報告新增 `scoring`、風險新增 `level_floor`、`provisional_basis`
+- **CEO 摘要白話化**：範本第二句改寫影響（可能碰到訂單資料、會員個資…），不寫版本號與 CVE；未登記系統的決策合併成一條；`ceo-brief` skill 與 Claude 撰寫任務同步
+- 尚未驗證：需要 Redis、LINE 帳號與 GitHub Token 的流程（追蹤寫入、綁定與推播、權重寫回）只有單元測試與型別檢查，未做整合與實機測試
+
 ## 0.8.0 — 2026-11-10（A2、A4、A5 的說明文字改由 Claude 訂閱方案撰寫）
 
 - 使用者決定用訂閱方案而不是 API Key。官方文件：Agent SDK 產品應使用 API Key 認證；claude-code-action 支援以 `CLAUDE_CODE_OAUTH_TOKEN` 使用訂閱方案。因此改為比照每日情資，以 claude-code-action 撰寫，不在 Agent SDK 中使用訂閱 Token（另查證 GitHub Models 已於 2026-07-30 停止服務）

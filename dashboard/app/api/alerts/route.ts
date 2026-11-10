@@ -1,6 +1,7 @@
 // GET /api/alerts：最近事件與告警、全部未結案告警的分頁清單（不以最近 50 筆推導 open 數量）。回應只含去敏資料。
 // Redis／GitHub 取用失敗或索引需重建時回報 degraded，不能回空清單假裝沒有告警。
 import { getAlerts, indexState, openCounts, openIds, pruneSimIndex, toPublic, K } from "@/lib/alertstore";
+import { lineStatus } from "@/lib/line";
 import { redis, redisConfigured } from "@/lib/redis";
 import { json } from "@/lib/security";
 import { readFeed } from "@/lib/window";
@@ -13,8 +14,8 @@ export async function GET(req: Request): Promise<Response> {
   try {
     const page = Math.max(0, Math.min(1000, Number(new URL(req.url).searchParams.get("open_page") ?? 0) || 0));
     const idx = await indexState();
-    const [feed, recentIds, realIds, simIds, counts] = await Promise.all([
-      readFeed(50), redis<string[]>("LRANGE", K.recent, 0, 49), openIds(false), openIds(true), openCounts(),
+    const [feed, recentIds, realIds, simIds, counts, line] = await Promise.all([
+      readFeed(50), redis<string[]>("LRANGE", K.recent, 0, 49), openIds(false), openIds(true), openCounts(), lineStatus(),
     ]);
     realIds.sort();
     const pageIds = realIds.slice(page * PAGE, (page + 1) * PAGE);
@@ -30,7 +31,7 @@ export async function GET(req: Request): Promise<Response> {
       events: feed, recent: recent.map(toPublic),
       open: { real: openReal.sort(byCreated).map(toPublic), real_total: realIds.length, page, pages: Math.ceil(realIds.length / PAGE),
               simulated: openSim.sort(byCreated).map(toPublic) },
-      line: { enabled: false, reason: "LINE 通知未啟用（P2）" },
+      line,
     });
   } catch (e) {
     return json({ available: false, degraded: `即時告警狀態無法取得（${(e as Error).message.slice(0, 80)}）` }, 503);

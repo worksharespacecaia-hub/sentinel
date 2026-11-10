@@ -1,11 +1,12 @@
 import LiveMonitor from "@/components/LiveMonitor";
+import { PAGES } from "@/lib/nav";
 
-export const metadata = { title: "即時監控｜Sentinel" };
+export const metadata = { title: `${PAGES.live.label}｜Sentinel` };
 
 export default function Live() {
   return (
     <>
-      <h1>即時監控</h1>
+      <h1>{PAGES.live.label}</h1>
       <div className="panel">
         <p>即時規則刻意不使用 LLM：事件進來後由程式依規則判斷、以 Redis 原子操作計算時間窗與去重，命中就先保存告警，
           再建立 GitHub Issue 並觸發圍堵建議流程（只建議、不執行）。</p>

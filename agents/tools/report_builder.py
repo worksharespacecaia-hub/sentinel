@@ -13,7 +13,8 @@ from tools.templates import ceo_summary, decisions, solution_for
 
 PUBLIC_RISK_KEYS = ("id", "finding_ids", "asset_id", "title", "category", "level", "score", "raw_score", "score_level",
                     "level_reason", "breakdown", "attack_path", "matched_events", "deadline_hours", "solution", "status",
-                    "first_seen", "last_evaluated", "verification_evidence", "explanation", "explanation_source")
+                    "first_seen", "last_evaluated", "verification_evidence", "explanation", "explanation_source",
+                    "level_floor", "provisional_basis")
 
 
 def assemble(result: dict, *, run_id: str, scenario: str, trigger_source: str, scope: str, generated_at,
@@ -24,6 +25,7 @@ def assemble(result: dict, *, run_id: str, scenario: str, trigger_source: str, s
     risks = []
     for r in result["risks"]:
         rr = {k: r.get(k) for k in PUBLIC_RISK_KEYS}
+        rr["provisional_basis"] = bool(rr.get("provisional_basis"))
         if r["level"] in ("high", "medium") and r["status"] != "fixed":
             rr["solution"] = (llm.get("solutions") or {}).get(r["id"]) or solution_for(r, nodes)
         risks.append(rr)
@@ -47,7 +49,7 @@ def assemble(result: dict, *, run_id: str, scenario: str, trigger_source: str, s
         "run_id": run_id, "scenario": scenario, "trigger_source": trigger_source, "scope": scope,
         "target_sha": result["data"].target_sha, "completeness": completeness, "data_issues": result["data_issues"],
         "generated_at": iso(generated_at), "as_of": observed, "light": result["light"], "light_reasons": result["light_reasons"],
-        "ceo_summary": llm.get("ceo_summary") or ceo_summary(result["light"], risks, intel_summary),
+        "ceo_summary": llm.get("ceo_summary") or ceo_summary(result["light"], risks, intel_summary, nodes),
         "decisions": llm.get("decisions") or decisions(risks), "counts": counts, "coverage": result["recon"]["coverage"],
         "risks": risks,
         "events": [{"id": r["event"]["id"], "kind": r["event"]["kind"], "title": r["event"]["title"],
@@ -57,7 +59,7 @@ def assemble(result: dict, *, run_id: str, scenario: str, trigger_source: str, s
         "open_alerts": open_alerts or [], "intel_summary": intel_summary, "daily_intel_status": daily_intel_status,
         "cost": cost or {"total_usd": 0.0, "per_agent": {}, "cache_hit_rate": None},
         "signals": result["signals"], "reconcile": result["recon"]["records"], "app_impact": app_impact,
-        "execution_mode": execution_mode,
+        "execution_mode": execution_mode, "scoring": result.get("scoring"),
     }
     Report.model_validate(report)
     return {"report": report, "intel_reports": intel_reports, "risks_full": result["risks"]}

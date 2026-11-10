@@ -1,6 +1,7 @@
 import { getGraph, getPaths, listSources, resolveSource } from "@/lib/data";
 import { SimNotice, SourceSwitcher } from "@/components/ui";
 import PathView from "@/components/PathView";
+import { PAGES } from "@/lib/nav";
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +11,7 @@ export default async function AttackPaths({ searchParams }: { searchParams: Prom
   const nodes = Object.fromEntries((graph?.nodes ?? []).map((n) => [String(n.id), n]));
   return (
     <>
-      <h1>攻擊鏈</h1>
+      <h1>{PAGES.attackPaths.label}</h1>
       <SourceSwitcher current={source.key} sources={sources} path="/attack-paths" />
       <SimNotice source={source} />
       <p className="muted">單一弱點可能只是中風險，串起來才是高風險。只有「網路可達＋已確認可利用的弱點或有效金鑰」才算完整攻擊鏈；
