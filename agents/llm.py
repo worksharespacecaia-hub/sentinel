@@ -154,6 +154,7 @@ class LLMRunner:
     # ---------------------------------------------------------------- live／record
     def _call_live(self, pending: list[tuple[Task, str]], graph_query):
         out: dict[str, dict] = {}
+        spent_before = self.cost["per_agent"].get(self.agent, 0.0)
         reservation = self.budget.reserve(self.agent, self.spec.budget) if self.budget else None
         if self.budget and not reservation:
             for t, _ in pending:
@@ -186,7 +187,8 @@ class LLMRunner:
             pending = [(t, k) for t, k in pending if out[t.id]["source"] == "template"]
             self.tracer.emit("error", f"輸出驗證失敗，第 {attempt} 次", source="template")
         if self.budget and reservation:
-            self.budget.settle(reservation, self.cost["per_agent"].get(self.agent, 0.0))
+            # 只結算這次呼叫的用量（per_agent 是累計值；同一個 Agent 呼叫多次時不能重複計入）
+            self.budget.settle(reservation, round(self.cost["per_agent"].get(self.agent, 0.0) - spent_before, 6))
         return out
 
     async def _query(self, pending, graph_query):
