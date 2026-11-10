@@ -12,7 +12,8 @@ from tools.reconcile import reconcile
 def run(ctx: RunCtx) -> dict:
     tr = ctx.tracer("a2")
     tr.emit("start", "弱點掃描解讀")
-    data = load_target(ctx.target_root, as_of=ctx.as_of, scanners_dir=ctx.scanners_dir, target_sha=ctx.target_sha)
+    data = load_target(ctx.target_root, as_of=ctx.as_of, scanners_dir=ctx.scanners_dir, target_sha=ctx.target_sha,
+                       deployments_file=ctx.deployments_file)
     for tool in ("gitleaks", "trivy", "checkov"):
         st = (data.scanners.get(tool) or {}).get("status", "missing")
         tr.emit("tool", f"{tool}：{st}")

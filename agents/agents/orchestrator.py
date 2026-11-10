@@ -10,7 +10,8 @@ from context import RunCtx
 
 def decide(ctx: RunCtx, *, event_name: str, ref_name: str | None, default_branch: str | None) -> dict:
     on_default = ref_name is None or default_branch is None or ref_name == default_branch
-    daily_intel = (ctx.mode == "live" and on_default and ctx.scenario == "daily"
+    # 每日情資用訂閱方案（claude-code-action），與 A1～A5 是否呼叫 API（execution_mode）無關
+    daily_intel = (on_default and ctx.scenario == "daily"
                    and (event_name == "schedule" or (event_name == "workflow_dispatch" and ctx.trigger_source == "manual")))
     plan = {"scanners": True, "a1": True, "a2": True, "a3": True, "a4": True, "a5": True}
     if ctx.scenario == "advisory":
@@ -27,7 +28,7 @@ def run(ctx: RunCtx) -> dict:
                default_branch=os.environ.get("DEFAULT_BRANCH"))
     tr.emit("skip", "planner 只在有新同業事件時呼叫（本次不需要）", subagent="planner", source="template")
     if not d["daily_intel"]:
-        tr.emit("skip", "daily-intel 不執行（非受信任的 live 每日排程／手動）")
+        tr.emit("skip", "daily-intel 不執行（只在預設分支的每日排程或手動 daily 執行）")
     save(ctx, "orchestrator", "plan.json", d)
     gh_out = os.environ.get("GITHUB_OUTPUT")
     if gh_out:

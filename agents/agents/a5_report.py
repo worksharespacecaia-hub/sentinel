@@ -85,10 +85,10 @@ def run(ctx: RunCtx) -> dict:
 
     daily_intel = "skipped"
     if ctx.scenario == "daily":
-        if ctx.mode == "replay":
-            daily_intel = "replay"
-        elif plan and plan.get("daily_intel"):
+        if plan and plan.get("daily_intel"):       # 排程或手動 daily：不論執行模式都會跑訂閱方案的每日情資
             daily_intel = "ok" if (ctx.out / "intel-daily.json").is_file() else "failed"
+        elif ctx.mode == "replay":
+            daily_intel = "replay"
     common = dict(run_id=ctx.run_id, scenario=ctx.scenario, trigger_source=ctx.trigger_source, scope=ctx.scope,
                   generated_at=ctx.as_of, execution_mode=ctx.mode, daily_intel_status=daily_intel)
     template = assemble(res, **common)
@@ -97,6 +97,10 @@ def run(ctx: RunCtx) -> dict:
     built = assemble(res, llm=llm, cost=cost, **common)
     if daily_intel == "failed":
         built["report"]["data_issues"].append({"source": "daily-intel", "status": "failed", "impact": "今日新聞情資未更新"})
+    skipped = load(ctx, "a1", "daily-intel-issues.json") or []
+    if daily_intel == "ok" and skipped:
+        built["report"]["data_issues"].append({"source": "daily-intel", "status": "partial",
+                                               "impact": f"每日情資有 {len(skipped)} 項格式不符已略過（詳見 A1 執行紀錄）"})
 
     out_dir = ctx.data_dir / output_dir
     scope_dir = ctx.scope if ctx.scope != "scenario" else f"scenario/{ctx.scenario}"   # 情境之間也不互相覆蓋

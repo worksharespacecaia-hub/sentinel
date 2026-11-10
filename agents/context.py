@@ -16,6 +16,7 @@ from llm import LLMRunner
 from tools.budget import budget_for
 from tools.cache import LLMCache, ReplayStore
 from tools.common import AGENTS_DIR, SENTINEL_ROOT, parse_time, read_json
+from tools.daily_intel import load_daily_intel
 from tools.loaders import FIXTURE_SCANNERS, FIXTURE_TARGET
 from tools.pipeline import EvalInput
 from tools.trace import Tracer
@@ -63,6 +64,7 @@ class RunCtx:
     advisory_id: str | None = None
     advisory_revision: str | None = None
     assets: list[str] = field(default_factory=list)
+    deployments_file: Path | None = None
     cost: dict = field(default_factory=lambda: {"total_usd": 0.0, "per_agent": {}})
     cache: LLMCache = field(default_factory=LLMCache)
     replay: ReplayStore = field(default_factory=ReplayStore)
@@ -93,14 +95,13 @@ class RunCtx:
             text = (self.scenario_dir / "signals" / name).read_text(encoding="utf-8")
             overrides[name] = list(csv.DictReader(io.StringIO(text))) if name.endswith(".csv") else \
                 [json.loads(x) for x in text.splitlines() if x.strip()]
-        live = []
-        daily_intel = self.out / "intel-daily.json"
-        if self.scenario == "daily" and daily_intel.is_file():
-            live = (read_json(daily_intel, {}) or {}).get("events", [])
+        # daily-intel（LLM）的輸出不可信：先清理、驗證格式，強制為 live 事件
+        live = load_daily_intel(self.out / "intel-daily.json")[0] if self.scenario == "daily" else []
         prev = read_json(self.data_dir / "daily" / "state" / "risks.json", {}) if self.scope == "daily" else {}
         return EvalInput(target_root=self.target_root, as_of=self.as_of, scanners_dir=self.scanners_dir,
                          intel_kinds=kinds, extra_event_dirs=extra, live_events=live, prev_risks=prev or {},
-                         signal_overrides=overrides or None, target_sha=self.target_sha, **kw)
+                         signal_overrides=overrides or None, target_sha=self.target_sha,
+                         deployments_file=self.deployments_file, **kw)
 
 
 def build_ctx(*, mode: str | None = None, scenario: str | None = None) -> RunCtx:
@@ -145,7 +146,7 @@ def build_ctx(*, mode: str | None = None, scenario: str | None = None) -> RunCtx
     return RunCtx(run_id=run_id, scenario=scenario, scope=scope, trigger_source=trigger, event_name=env.get("EVENT_NAME", "local"),
                   mode=resolve_mode(mode), as_of=as_of, target_root=target, scanners_dir=scanners, target_sha=sha,
                   output_dir=output_dir, advisory_id=advisory_id, advisory_revision=env.get("ADVISORY_REVISION") or None,
-                  assets=assets)
+                  assets=assets, deployments_file=Path(env["DEPLOYMENTS_FILE"]) if env.get("DEPLOYMENTS_FILE") else None)
 
 
 def reusable_scanners(target_sha: str | None, as_of: datetime) -> Path | None:

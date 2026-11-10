@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.0 — 2026-11-10（每日情資串接訂閱方案、讀取 GitHub Deployments）
+
+- **每日情資**：`daily-intel` 不再要求 live 模式，每日排程與手動 `daily` 都會執行（A1～A5 維持 replay，不花 API 費用）。原本綁 live 是實作時多加、規格沒有的條件，導致從未執行
+- **最小權限**：`daily-intel` 改用本 Job 的唯讀 `github.token`，不需安裝 Claude GitHub App，移除 `id-token: write`
+- **修正**：「Claude 只寫了 out/」檢查失敗時，結果仍會上傳並被 A1 採用；改為檢查通過才上傳，失敗時列出被改動的檔案
+- **不信任 LLM 輸出**：`out/intel-daily.json` 先清理再使用——強制為新事件（`live-` 前綴，不能冒充或覆蓋收錄事件）、清空自稱的驗證狀態、不採用「已遭利用」「已確認」與觸發條件、控制項只接受既有 ID、限制數量與長度；格式不符的事件略過並在報告標示
+- **引用驗證**：每日情資的新事件不論執行模式都實際抓來源頁面確認引用（抓網頁不是 LLM 呼叫）
+- 每日情資狀態依實際執行結果顯示（正常／今日新聞情資未更新），本機 replay 仍顯示重播模式
+- Skill 寫明 `intel-daily.json` 的輸出格式（Job 中 Claude 讀不到 `agents/schemas.py`）
+- **GitHub Deployments**：A0 Job 以 `TARGET_READ_TOKEN` 讀取 Repo ① 的 production Deployments 與最新狀態（`scripts/fetch-deployments.py`，只用 GET），以獨立 artifact 給 A2～A5 共用；讀取失敗時改用離線 fixture 並在報告標示原因。payload 的 service_id 驗證格式
+- 測試：daily-intel 觸發條件、輸出清理、報告狀態、Workflow 權限與上傳順序、Deployments 讀取與 Token 不外洩
+
 ## 0.2.3 — 2026-11-10（hotfix：gitleaks 設定檔）
 
 - 補上 sentinel 自己保存的 `.gitleaks.toml`（規格 5.5，與 Repo ① 相同、不讀受掃描 Repo 的設定）：先前檔案不存在，Docker 掛載時建立空目錄，首次 daily 的 gitleaks 掃描失敗
