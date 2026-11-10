@@ -9,6 +9,15 @@
       "path": "advisories/adv-opsbuilder-2026-001/42861808599",
       "light": "red",
       "execution_mode": "replay"
+    },
+    "kev-cve-2026-109618": {
+      "run_id": "42861814708",
+      "generated_at": "2026-11-10T17:11:04Z",
+      "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
+      "completeness": "complete",
+      "path": "advisories/kev-cve-2026-109618/42861814708",
+      "light": "red",
+      "execution_mode": "replay"
     }
   },
   "scenarios": {
@@ -67,6 +76,6 @@
     "light": "red",
     "execution_mode": "replay"
   },
-  "updated_at": "2026-11-10T17:08:55Z",
+  "updated_at": "2026-11-10T17:11:04Z",
   "failures": {}
 }
