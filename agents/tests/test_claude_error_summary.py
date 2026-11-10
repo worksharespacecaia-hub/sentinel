@@ -69,3 +69,32 @@ def test_permission_denials_listed_without_content(tmp_path, capsys, monkeypatch
                      "權限拒絕：Read out/stack.json", "權限拒絕：WebFetch evil.example", "權限拒絕：Agent subagent=other"]
     for leaked in ("機密內容", "最後的對話內容", "secret", "做壞事", "/etc/"):
         assert leaked not in out
+
+
+def test_tool_activity_errors_and_final_message(tmp_path, capsys):
+    msgs = [
+        {"type": "assistant", "message": {"content": [
+            {"type": "tool_use", "id": "t1", "name": "Read", "input": {"file_path": "out/stack.json"}},
+            {"type": "tool_use", "id": "t2", "name": "Agent", "input": {"subagent_type": "news-scout", "prompt": "搜尋機密"}}]}},
+        {"type": "assistant", "parent_tool_use_id": "t2", "message": {"content": [
+            {"type": "tool_use", "id": "t3", "name": "WebSearch", "input": {"query": "查詢內容"}}]}},
+        {"type": "user", "message": {"content": [
+            {"type": "tool_result", "tool_use_id": "t1", "is_error": True, "content": "File does not exist."},
+            {"type": "tool_result", "tool_use_id": "t3", "is_error": True, "content": [{"type": "text", "text": "Web search unavailable " + "x" * 300}]},
+            {"type": "tool_result", "tool_use_id": "t2", "is_error": False, "content": "網頁內容不該出現"}]}},
+        {"type": "result", "subtype": "success", "is_error": False, "num_turns": 7, "result": "找不到 out/stack.json，無法進行。"},
+    ]
+    p = tmp_path / "exec.json"
+    p.write_text(json.dumps(msgs, ensure_ascii=False), encoding="utf-8")
+    assert ces.main(["x", "--with-result", str(p)]) == 0
+    out = capsys.readouterr().out
+    assert "工具呼叫（主 Agent）：Agent(news-scout)×1、Read×1" in out
+    assert "工具呼叫（Subagent）：WebSearch×1" in out
+    assert "工具錯誤：Read：File does not exist." in out
+    err = next(line for line in out.splitlines() if line.startswith("工具錯誤：WebSearch"))
+    assert len(err) <= len("工具錯誤：WebSearch：") + 150
+    assert "Claude 最後的說明：找不到 out/stack.json，無法進行。" in out
+    for leaked in ("搜尋機密", "查詢內容", "網頁內容不該出現"):
+        assert leaked not in out
+    assert ces.main(["x", str(p)]) == 0                       # 沒有 --with-result 時不印最後的說明
+    assert "Claude 最後的說明" not in capsys.readouterr().out
