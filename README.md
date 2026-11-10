@@ -188,7 +188,7 @@ Settings → Webhooks：Payload URL `https://<網域>/api/webhooks/github`、Con
 
 ```bash
 cd shopsaas-demo-platform
-BASELINE_SHA=a0d8611612c2f2631a687271de528a0d7a806245 scripts/reset-demo.sh
+BASELINE_SHA=9a36cf036c436295c08a54d38789029e29d0f9ea scripts/reset-demo.sh
 ```
 
 `BASELINE_SHA` 是受信任的 baseline commit（與 `agents/fixtures/target-baseline/.fixture.json` 相同）；與 `baseline` tag 不一致時腳本會停止。腳本從最新 `main` 開 `demo-reset-<時間>` 分支、還原受追蹤檔案、顯示 diff，確認後 commit 並開 PR。還原會把假金鑰加回去，`pr-gate` 預期會擋下；請檢查 PR 後依 ruleset 手動授權合併，腳本不會繞過分支保護。合併後再跑一次 `daily`，應回到紅燈。

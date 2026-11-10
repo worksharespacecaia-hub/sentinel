@@ -4,6 +4,7 @@
 
 - 所有 `.sh` 標記為可執行：在 Windows 上 commit 時沒有執行位元，Actions 發布結果時 exit 126；新增測試防止再發生
 - Redis 設定接受 Vercel Marketplace 的 Upstash 整合實際注入的 `KV_REST_API_URL`／`KV_REST_API_TOKEN`（仍接受 `UPSTASH_REDIS_REST_*`，不使用唯讀 Token）
+- shopsaas-demo-platform 1.0.1 修正 CI 後 `baseline` tag 移到 `9a36cf036c436295c08a54d38789029e29d0f9ea`；更新 fixture、測試、README 與網站資料（只有 SHA 改變）
 
 ## 0.2.1 — 2026-11-10（hotfix：作者身分與 baseline SHA）
 
