@@ -197,29 +197,51 @@ export function contentsConfigured(): boolean {
   }
 }
 
-/** 目前的設定與 blob sha（寫回時以 sha 做併發檢查：別人先改過就回 409）。 */
-export async function getScoringConfig(): Promise<{ text: string; sha: string }> {
+/** 預設分支上的檔案內容與 blob sha（寫回時以 sha 做併發檢查：別人先改過就回 409）。 */
+async function getContentsFile(filePath: string): Promise<{ text: string; sha: string }> {
   const { owner, name } = repo();
   const body = await gh<{ content: string; encoding: string; sha: string }>("GET",
-    `/repos/${owner}/${name}/contents/${SCORING_PATH}?ref=${encodeURIComponent(branch())}`, process.env.GH_DISPATCH_TOKEN);
+    `/repos/${owner}/${name}/contents/${filePath}?ref=${encodeURIComponent(branch())}`, process.env.GH_DISPATCH_TOKEN);
   if (body.encoding !== "base64") throw new GitHubError("設定檔編碼不支援", true);
   return { text: Buffer.from(body.content, "base64").toString("utf8"), sha: body.sha };
 }
 
-/** 寫回設定（一個 commit）。不指定 committer／author：由 Token 身分記錄是誰改的。 */
-export async function putScoringConfig(text: string, sha: string, message: string): Promise<{ commit_sha: string; commit_url: string }> {
+/** 寫回檔案（一個 commit）。sha 為 null 代表建立新檔。不指定 committer／author：由 Token 身分記錄是誰改的。 */
+async function putContentsFile(filePath: string, text: string, sha: string | null, message: string):
+    Promise<{ commit_sha: string; commit_url: string; blob_sha: string }> {
   const { owner, name } = repo();
-  const body = await gh<{ commit: { sha: string; html_url: string } }>("PUT", `/repos/${owner}/${name}/contents/${SCORING_PATH}`,
-    process.env.GH_DISPATCH_TOKEN, { message, content: Buffer.from(text, "utf8").toString("base64"), sha, branch: branch() });
-  return { commit_sha: body.commit.sha, commit_url: body.commit.html_url };
+  const body = await gh<{ content: { sha: string }; commit: { sha: string; html_url: string } }>("PUT", `/repos/${owner}/${name}/contents/${filePath}`,
+    process.env.GH_DISPATCH_TOKEN, { message, content: Buffer.from(text, "utf8").toString("base64"), branch: branch(), ...(sha ? { sha } : {}) });
+  return { commit_sha: body.commit.sha, commit_url: body.commit.html_url, blob_sha: body.content.sha };
 }
 
 export interface ScoringCommit { sha: string; url: string; date: string; message: string }
 
-export async function listScoringHistory(limit = 10): Promise<ScoringCommit[]> {
+async function listFileHistory(filePath: string, limit: number): Promise<ScoringCommit[]> {
   const { owner, name } = repo();
   const list = await gh<{ sha: string; html_url: string; commit: { message: string; committer: { date: string } | null } }[]>("GET",
-    `/repos/${owner}/${name}/commits?path=${SCORING_PATH}&sha=${encodeURIComponent(branch())}&per_page=${limit}`, process.env.GH_DISPATCH_TOKEN);
+    `/repos/${owner}/${name}/commits?path=${filePath}&sha=${encodeURIComponent(branch())}&per_page=${limit}`, process.env.GH_DISPATCH_TOKEN);
   return list.map((c) => ({ sha: c.sha.slice(0, 7), url: c.html_url, date: c.commit.committer?.date ?? "",
                             message: c.commit.message.slice(0, 300) }));
 }
+
+export const getScoringConfig = () => getContentsFile(SCORING_PATH);
+export const putScoringConfig = (text: string, sha: string, message: string) => putContentsFile(SCORING_PATH, text, sha, message);
+export const listScoringHistory = (limit = 10) => listFileHistory(SCORING_PATH, limit);
+
+// ------------------------------------------------------------------ 偵測規則設定（rules/realtime-settings.json，Repo ② 預設分支）
+
+export const RULE_SETTINGS_PATH = "rules/realtime-settings.json";
+
+/** 還沒有人調整過時檔案不存在：回傳 null（全部用 rules/realtime.yaml 的預設值），第一次儲存才建立。 */
+export async function getRuleSettingsFile(): Promise<{ text: string; sha: string } | null> {
+  try {
+    return await getContentsFile(RULE_SETTINGS_PATH);
+  } catch (e) {
+    if (e instanceof GitHubError && e.status === 404) return null;
+    throw e;
+  }
+}
+export const putRuleSettingsFile = (text: string, sha: string | null, message: string) =>
+  putContentsFile(RULE_SETTINGS_PATH, text, sha, message);
+export const listRuleSettingsHistory = (limit = 10) => listFileHistory(RULE_SETTINGS_PATH, limit);

@@ -167,7 +167,7 @@ export default function LiveMonitor() {
       const res = await fetch("/api/alerts", { cache: "no-store" });
       setData(await res.json());
     } catch {
-      setData({ available: false, degraded: "無法連線即時告警服務" });
+      setData({ available: false, degraded: "無法連線異常行為偵測服務" });
     }
     setNow(Date.now());
   }, []);
@@ -186,7 +186,7 @@ export default function LiveMonitor() {
   const open = data.open;
   return (
     <>
-      {data.degraded && <div className="panel sim"><strong>資料不足：</strong>{data.degraded}。即時告警狀態無法確認，不能視為沒有告警。</div>}
+      {data.degraded && <div className="panel sim"><strong>資料不足：</strong>{data.degraded}。告警狀態無法確認，不能視為沒有告警。</div>}
       {data.counts && (
         <div className="grid">
           <div className="panel"><div className="muted">真實未結案高風險告警</div><div className="stat">{data.counts.real_high_open}</div></div>

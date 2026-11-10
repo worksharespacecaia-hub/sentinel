@@ -3,6 +3,7 @@
 // 告警先原子寫入 Redis 才回應；Issue／dispatch 由 after()（平台管理的生命週期）接續，不啟動未受管理的背景 Promise。
 import { after } from "next/server";
 import { deliver } from "@/lib/delivery";
+import { syncRulesFromGitHub } from "@/lib/rule-store";
 import { redis, redisConfigured } from "@/lib/redis";
 import { json } from "@/lib/security";
 import { BodyTooLarge, parseDeployment, readRawBody, verifySignature } from "@/lib/webhook";
@@ -46,7 +47,9 @@ export async function POST(req: Request): Promise<Response> {
     const pr = await processEvent(parsed.event);
     await redis("SET", dkey, "1", "EX", 2 * 86400);
     for (const id of pr.alerts) after(() => deliver(id).then(() => undefined, () => undefined));
-    return json({ event_id: pr.event_id, alerts: pr.alerts, rejected: pr.rejected, results: pr.results, timeline: pr.timeline });
+    if (pr.rules.missing) after(() => syncRulesFromGitHub().then(() => undefined, () => undefined));   // Redis 沒有規則設定：回應後修復
+    return json({ event_id: pr.event_id, alerts: pr.alerts, rejected: pr.rejected, results: pr.results, timeline: pr.timeline,
+                  rules_version: pr.rules.version });
   } catch {
     return json({ error: "告警服務暫時無法處理" }, 503);
   }
