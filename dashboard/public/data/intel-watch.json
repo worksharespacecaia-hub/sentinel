@@ -52,12 +52,12 @@
       ]
     }
   ],
-  "dispatched": false,
+  "dispatched": true,
   "items": [
     {
       "advisory_id": "adv-opsbuilder-2026-001",
       "revision": "2026-09-30.1",
-      "status": "queued",
+      "status": "pending",
       "verdict": "affected",
       "asset_ids": [
         "internal-tool"
@@ -66,12 +66,13 @@
       "reason": "命中 internal-tool",
       "matched_component": [
         "opsbuilder"
-      ]
+      ],
+      "error": null
     },
     {
       "advisory_id": "kev-cve-2026-109618",
       "revision": "2026-11-05T19:17:07.900",
-      "status": "queued",
+      "status": "pending",
       "verdict": "affected",
       "asset_ids": [
         "marketing-site",
@@ -81,12 +82,13 @@
       "reason": "命中 marketing-site, phpmyadmin",
       "matched_component": [
         "php"
-      ]
+      ],
+      "error": null
     },
     {
       "advisory_id": "kev-cve-2026-109619",
       "revision": "2026-11-05T19:17:08.397",
-      "status": "queued",
+      "status": "pending",
       "verdict": "affected",
       "asset_ids": [
         "marketing-site",
@@ -96,12 +98,13 @@
       "reason": "命中 marketing-site, phpmyadmin",
       "matched_component": [
         "php"
-      ]
+      ],
+      "error": null
     },
     {
       "advisory_id": "kev-cve-2026-111497",
       "revision": "2026-11-10T13:18:20.647",
-      "status": "queued",
+      "status": "pending",
       "verdict": "affected",
       "asset_ids": [
         "internal-tool",
@@ -112,12 +115,13 @@
       "reason": "命中 internal-tool, member-api, storefront",
       "matched_component": [
         "node"
-      ]
+      ],
+      "error": null
     },
     {
       "advisory_id": "kev-cve-2026-119977",
       "revision": "2026-11-04T12:52:38.683",
-      "status": "queued",
+      "status": "pending",
       "verdict": "affected",
       "asset_ids": [
         "marketing-site"
@@ -126,7 +130,8 @@
       "reason": "命中 marketing-site",
       "matched_component": [
         "wordpress"
-      ]
+      ],
+      "error": null
     },
     {
       "advisory_id": "kev-cve-2026-97229",
