@@ -1,6 +1,7 @@
 import { getIntelIndex, getReport, listSources, resolveSource } from "@/lib/data";
 import { SimNotice, SourceSwitcher } from "@/components/ui";
 import IntelList from "@/components/IntelList";
+import { PAGES } from "@/lib/nav";
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +11,7 @@ export default async function IntelPage({ searchParams }: { searchParams: Promis
   const q = source.simulated ? `?source=${encodeURIComponent(source.key)}` : "";
   return (
     <>
-      <h1>情資比對</h1>
+      <h1>{PAGES.intel.label}</h1>
       <SourceSwitcher current={source.key} sources={sources} path="/intel" />
       <SimNotice source={source} />
       <p>今日檢查 {report?.intel_summary.checked ?? events.length} 件事件，命中 {report?.intel_summary.affected ?? 0} 件。

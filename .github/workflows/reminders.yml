@@ -1,0 +1,27 @@
+name: reminders
+# 處理中項目的到期提醒：每小時呼叫網站的 /api/actions/remind（期限前 24 小時與逾期各推一次 LINE）。
+# 只呼叫網站 API，不 checkout、不需要任何 Repo 權限；SENTINEL_BASE_URL 未設定時略過。GitHub 排程可能延遲，提醒可能晚到。
+on:
+  schedule:
+    - cron: "41 * * * *"           # 每小時一次，避開整點與 intel-watch（17 分）
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: reminders
+  cancel-in-progress: false
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: 呼叫到期提醒
+        env:
+          NOTIFY_TOKEN: ${{ secrets.NOTIFY_TOKEN }}
+          BASE_URL: ${{ vars.SENTINEL_BASE_URL }}
+        run: |
+          if [[ -z "$BASE_URL" ]]; then echo "SENTINEL_BASE_URL 未設定，略過"; exit 0; fi
+          [[ "$BASE_URL" == https://* ]] || { echo "SENTINEL_BASE_URL 必須是 HTTPS"; exit 1; }
+          curl -fsS -X POST "$BASE_URL/api/actions/remind" -H "authorization: Bearer $NOTIFY_TOKEN" --max-time 60

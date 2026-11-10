@@ -16,6 +16,15 @@ export interface Risk {
   score_level: Level; level_reason: string; breakdown: Breakdown[]; attack_path: string[] | null;
   matched_events: string[]; deadline_hours: number; solution: Solution | null; status: "open" | "fixed" | "need_check";
   first_seen: string; last_evaluated: string; explanation?: string | null; explanation_source?: string | null;
+  /** 規則下限（例如影子 IT 至少高）；權重試算用。舊報告沒有這個欄位。 */
+  level_floor?: Level | null;
+  /** 暫定情資：最高只到中。 */
+  provisional_basis?: boolean;
+}
+/** 本次評估使用的燈號權重（rules/scoring.json）；舊報告沒有這個欄位，代表使用當時的預設權重。 */
+export interface ScoringInfo {
+  version: number; hash: string; factors: Record<string, number>; thresholds: { high: number; medium: number };
+  is_default: boolean; updated_at: string | null; updated_by: string | null;
 }
 export interface EventSummary { id: string; kind: string; title: string; affected_count: number; max_level: Level | null; status: string; demo: boolean }
 export interface Report {
@@ -29,6 +38,7 @@ export interface Report {
   reconcile: { asset_id: string; type: string; registered: boolean; observed: boolean; conclusion: string; label: string;
                level_floor: string | null; reason: string; owner: string | null; observed_sources: string[] }[];
   app_impact: Record<string, unknown>; execution_mode: string; open_alerts: unknown[];
+  scoring?: ScoringInfo;
 }
 export interface IndexEntry { run_id: string; generated_at: string; target_sha: string; completeness: string; path: string; light: Light; execution_mode: string }
 export interface DataIndex {

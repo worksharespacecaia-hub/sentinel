@@ -1,5 +1,6 @@
 import { getIndex, getIntelWatch } from "@/lib/data";
 import { fmtTime } from "@/lib/labels";
+import { PAGES } from "@/lib/nav";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +15,7 @@ export default async function Triggers() {
   const [idx, watch] = await Promise.all([getIndex(), getIntelWatch()]);
   return (
     <>
-      <h1>觸發紀錄</h1>
+      <h1>{PAGES.triggers.label}</h1>
       <div className="panel table-wrap"><table>
         <thead><tr><th>觸發</th><th>時機</th><th>做什麼</th><th>LLM</th></tr></thead>
         <tbody>{TRIGGERS.map((t) => <tr key={t[0]}>{t.map((c, i) => <td key={i}>{c}</td>)}</tr>)}</tbody>
@@ -33,7 +34,7 @@ export default async function Triggers() {
         <p className="muted">正式公告調查：{Object.keys(idx.advisories ?? {}).join("、") || "無"}</p>
       </div>
       <div className="panel"><h2 style={{ marginTop: 0 }}>① PR 把關／④ 即時告警</h2>
-        <p className="muted">PR 把關結果在 Repo ① 的 Pull Request 頁面；即時告警見「即時監控」與 GitHub Issues。</p></div>
+        <p className="muted">PR 把關結果在 Repo ① 的 Pull Request 頁面；即時告警見「{PAGES.live.label}」與 GitHub Issues。</p></div>
     </>
   );
 }

@@ -34,7 +34,10 @@ def _llm_texts(ctx: RunCtx, res: dict, built_template: dict) -> dict:
     rep = built_template["report"]
     tasks.append(Task(id="ceo", subagent="ceo-briefer", payload={"ids": ["ceo"], "light": rep["light"], "counts": rep["counts"],
                                                                 "light_reasons": rep["light_reasons"],
-                                                                "top": [r["title"] for r in risks[:5]]}))
+                                                                "top": [r["title"] for r in risks[:5]],
+                                                                # 程式範本的白話版本（確定性）：Claude 以此為底改寫，數字以上方欄位為準
+                                                                "draft_summary": rep["ceo_summary"],
+                                                                "draft_decisions": rep["decisions"]}))
     affected = [r for r in built_template["intel_reports"] if r["affected_count"] > 0]
     for r in affected:
         tasks.append(Task(id=f"intel:{r['event']['id']}", subagent="intel-report-writer",

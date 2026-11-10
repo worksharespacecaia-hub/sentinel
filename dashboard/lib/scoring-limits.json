@@ -1,0 +1,17 @@
+{
+  "generated_from": "agents/tools/scoring.py（pytest 檢查兩邊一致）",
+  "factors": {
+    "known_exploited": { "label": "已遭實際利用", "default": 2, "min": 0, "max": 5, "hint": "KEV 或官方確認已被利用" },
+    "exposed": { "label": "對外暴露", "default": 2, "min": 0, "max": 5, "hint": "可從網際網路連到" },
+    "data_sensitive": { "label": "資料敏感", "default": 1, "min": 0, "max": 5, "hint": "涉及個資、訂單、金流" },
+    "platform": { "label": "影響範圍", "default": 1, "min": 0, "max": 5, "hint": "平台層，影響所有品牌" },
+    "peer_event": { "label": "同業事件命中", "default": 1, "min": 0, "max": 5, "hint": "至少一件真實同業事件命中" },
+    "on_attack_chain": { "label": "位於完整攻擊鏈", "default": 3, "min": 0, "max": 5, "hint": "入侵路徑上的必要一步" },
+    "eol_no_fix": { "label": "已停止支援", "default": 1, "min": 0, "max": 5, "hint": "沒有修補版本可用" },
+    "compensating": { "label": "補償措施", "default": -3, "min": -5, "max": 0, "hint": "有本次證據證明有效時扣分" }
+  },
+  "thresholds": {
+    "high": { "label": "高風險門檻（紅燈）", "default": 7, "max": 15 },
+    "medium": { "label": "中風險門檻（黃燈）", "default": 4, "min": 1, "max": 14 }
+  }
+}
