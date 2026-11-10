@@ -131,10 +131,15 @@ def test_daily_intel_least_privilege_and_trusted_upload(sentinel):
     assert set(claude["with"]) == {"claude_code_oauth_token", "github_token", "prompt", "claude_args"}
     args = claude["with"]["claude_args"]
     assert '--disallowedTools "Bash,Edit,NotebookEdit"' in args and "--settings .claude/daily-intel-settings.json" in args
+    # Write(路徑) 不是有效的權限規則（不會放行，dontAsk 模式下 Write 被拒）；寫檔路徑規則用 Edit(...)，hook 再限制只能寫 intel-daily.json
+    assert "Edit(./out/**)" in args and "Write(" not in args
     names = [s.get("name", s.get("uses", "")) for s in job["steps"]]
     check = names.index("確認 Claude 只寫了 out/")
     upload = next(i for i, s in enumerate(job["steps"]) if str(s.get("uses", "")).startswith("actions/upload-artifact"))
     assert check < upload and "if" not in job["steps"][upload]   # 檢查失敗就不上傳，A1 不會用到可疑結果
+    wrote = names.index("確認已寫出 out/intel-daily.json")
+    assert names.index("anthropics/claude-code-action@v1") < wrote < check   # Claude 沒寫出檔案時 Job 明確失敗，並列出被拒絕的工具
+    assert "claude-error-summary.py" in job["steps"][wrote]["run"] and "exit 1" in job["steps"][wrote]["run"]
 
 
 def test_deployments_fetched_once_and_shared(sentinel):

