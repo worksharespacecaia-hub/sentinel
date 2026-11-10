@@ -77,6 +77,8 @@ export default async function ReportPage({ searchParams }: SP) {
                 </div>
                 {it.detail && <div className="muted">{it.detail}</div>}
                 {it.tags.length > 0 && <div className="tags">{it.tags.map((t) => <span key={t} className="tag">{t}</span>)}</div>}
+                {it.events.length > 0 && <div className="item-events">相關事件：{it.events.map((e, i) => (
+                  <span key={e.id}>{i > 0 && "、"}<a href={`#event-${e.id}`}>{e.title}</a></span>))}（來源見下方「與我們有關的外部事件」）</div>}
                 <dl className="action-fields">
                   <dt>建議先做</dt><dd>{it.temporary ?? "—"}</dd>
                   <dt>根本修復</dt><dd>{it.permanent ?? "—"}</dd>
@@ -99,17 +101,33 @@ export default async function ReportPage({ searchParams }: SP) {
         )}
       </section>
 
-      <section className="panel report-section">
+      <section className="panel report-section" id="events">
         <h2>與我們有關的外部事件：{action.events.length} 件</h2>
+        <p className="muted">每件事件附上報導來源；「已驗證引用」表示系統實際抓取來源頁面並找到原文引用。</p>
         {action.events.length === 0 ? <p>今天沒有與我們有關的外部事件。</p> : (
-          <div className="table-wrap"><table>
-            <thead><tr><th>事件</th><th>類型</th><th>受影響項目</th><th>最高等級</th></tr></thead>
-            <tbody>{action.events.map((e) => (
-              <tr key={e.id}>
-                <td><Link href={`${PAGES.intel.href}/${encodeURIComponent(e.id)}${source.simulated ? `?source=${encodeURIComponent(source.key)}` : ""}`}>{e.title}</Link></td>
-                <td>{KIND_TEXT[e.kind] ?? e.kind}</td><td>{e.affected_count}</td><td><LevelText level={e.max_level} /></td>
-              </tr>))}</tbody>
-          </table></div>
+          <ol className="event-list">
+            {action.events.map((e) => (
+              <li key={e.id} id={`event-${e.id}`} className="event-item">
+                <div className="action-title">
+                  <span className={`tag lv-${e.max_level ?? "low"}`}>{e.max_level ? `${LEVEL_TEXT[e.max_level]}風險` : "—"}</span>
+                  <strong><Link href={`${PAGES.intel.href}/${encodeURIComponent(e.id)}${source.simulated ? `?source=${encodeURIComponent(source.key)}` : ""}`}>{e.title}</Link></strong>
+                </div>
+                <div className="muted">{KIND_TEXT[e.kind] ?? e.kind}｜事件日期 {e.date ?? "—"}｜可信度 {e.confidence ?? "—"}｜受影響 {e.affected_count} 項</div>
+                {e.sources.length === 0 ? <p className="warn">沒有來源紀錄，請到事件頁確認。</p> : (
+                  <ul className="event-sources">
+                    {e.sources.map((src, i) => (
+                      <li key={i}>
+                        來源：{src.url ? <a className="src-link" href={src.url} target="_blank" rel="noreferrer nofollow">{src.title}</a> : src.title}
+                        {src.publisher && <span className="muted">（{src.publisher}）</span>}
+                        <span className={`tag ${src.demo ? "" : src.verified ? "src-ok" : "src-warn"}`}>{src.demo ? "示範，非真實報導" : src.verified ? "已驗證引用" : "來源暫時無法驗證"}</span>
+                        {src.quote && <blockquote className="muted">「{src.quote}」</blockquote>}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ol>
         )}
       </section>
 

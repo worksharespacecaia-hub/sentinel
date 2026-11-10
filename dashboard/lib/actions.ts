@@ -27,8 +27,15 @@ export function trackState(t: Pick<Tracking, "status" | "due_at"> | null | undef
 
 export const TRACK_TEXT: Record<TrackState, string> = { open: "待處理", in_progress: "處理中", due_soon: "處理中・即將到期", overdue: "處理中・已逾期" };
 
+/** 事件來源：只接受 http(s) 網址；示範事件沒有網址，明確標示非真實報導。 */
+export interface EventSource { title: string; url: string | null; publisher: string | null; verified: boolean; demo: boolean; quote: string | null }
+export interface EventDetail { date: string | null; confidence: string | null; sources: EventSource[] }
+export type ActionEvent = EventSummary & EventDetail;
+
 export interface ActionItem {
   id: string; level: Level; score: number; need_check: boolean; asset_id: string;
+  /** 相關的同業事件（可對應到報告中的事件來源）。 */
+  events: { id: string; title: string }[];
   headline: string; detail: string | null; tags: string[];
   temporary: string | null; permanent: string | null; owner: string | null;
   suggested_due: string | null; tracking: Tracking | null; track_state: TrackState; beyond_suggested: boolean;
@@ -36,19 +43,22 @@ export interface ActionItem {
 export interface Notice { event_id: string; title: string; draft: string }
 export interface ActionReport {
   light: Light; generated_at: string; summary: string[]; decisions: string[]; items: ActionItem[];
-  events: EventSummary[]; notices: Notice[];
+  events: ActionEvent[]; notices: Notice[];
   counts: { high: number; medium: number; in_progress: number; due_soon: number; overdue: number; unassigned_high: number };
 }
 
-export function buildActionReport(report: Report, opts: { light?: Light; tracking?: Record<string, Tracking>; notices?: Notice[]; now?: number } = {}): ActionReport {
+export function buildActionReport(report: Report, opts: { light?: Light; tracking?: Record<string, Tracking>; notices?: Notice[];
+                                    eventDetails?: Record<string, EventDetail>; now?: number } = {}): ActionReport {
   const now = opts.now ?? Date.now();
   const tracking = opts.tracking ?? {};
+  const titles = new Map(report.events.map((e) => [e.id, e.title]));
   const items: ActionItem[] = openRisks(report, ["high", "medium"]).map((r) => {
     const h = riskHeadline(r);
     const suggested = suggestedDeadline(r);
     const t = tracking[r.id]?.status === "in_progress" ? tracking[r.id] : null;
     return {
       id: r.id, level: r.level, score: r.score, need_check: r.status === "need_check", asset_id: r.asset_id,
+      events: r.matched_events.filter((e) => titles.has(e)).map((e) => ({ id: e, title: titles.get(e)! })),
       headline: h.headline, detail: h.detail, tags: riskTags(r),
       temporary: r.solution?.temporary ?? null, permanent: r.solution?.permanent ?? null, owner: r.solution?.suggested_owner ?? null,
       suggested_due: suggested ? suggested.toISOString() : null, tracking: t, track_state: trackState(t, now),
@@ -59,7 +69,9 @@ export function buildActionReport(report: Report, opts: { light?: Light; trackin
   return {
     light: opts.light ?? report.light, generated_at: report.generated_at, summary: report.ceo_summary,
     decisions: groupDecisions(report.decisions), items,
-    events: report.events.filter((e) => e.affected_count > 0), notices: opts.notices ?? [],
+    events: report.events.filter((e) => e.affected_count > 0)
+      .map((e) => ({ ...e, ...(opts.eventDetails?.[e.id] ?? { date: null, confidence: null, sources: [] }) })),
+    notices: opts.notices ?? [],
     counts: {
       high: items.filter((i) => i.level === "high").length, medium: items.filter((i) => i.level === "medium").length,
       in_progress: items.filter((i) => i.tracking).length, due_soon: count("due_soon"), overdue: count("overdue"),
@@ -91,4 +103,19 @@ export type ReminderKind = "due_soon" | "overdue";
 export function reminderDue(t: Pick<Tracking, "status" | "due_at">, now = Date.now()): ReminderKind | null {
   const s = trackState(t, now);
   return s === "overdue" ? "overdue" : s === "due_soon" ? "due_soon" : null;
+}
+
+/** 從情資比對報告（intel/<id>.json 的 1_summary）整理事件日期、可信度與來源。 */
+export function eventDetailFrom(rep: Record<string, any> | null | undefined): EventDetail {
+  const s = rep?.blocks?.["1_summary"] ?? {};
+  const demo = rep?.event?.kind === "demo" || Boolean(rep?.event?.demo);
+  const sources: EventSource[] = (Array.isArray(s.sources) ? s.sources : []).slice(0, 5).map((src: any) => {
+    const url = typeof src?.url === "string" && /^https?:\/\/[^\s"'<>]+$/.test(src.url) ? src.url : null;
+    let publisher: string | null = null;
+    try { publisher = url ? new URL(url).hostname.replace(/^www\./, "") : null; } catch { publisher = null; }
+    return { title: String(src?.title ?? "（無標題）").slice(0, 200), url, publisher,
+             verified: src?.fetch_status === "ok", demo: demo || src?.verification_basis === "demo" || !url,
+             quote: typeof src?.quote === "string" ? src.quote.slice(0, 200) : null };
+  });
+  return { date: typeof s.date === "string" ? s.date : null, confidence: typeof s.confidence === "string" ? s.confidence : null, sources };
 }

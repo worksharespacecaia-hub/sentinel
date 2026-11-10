@@ -41,7 +41,7 @@ export default async function Brief({ searchParams }: { searchParams: Promise<Re
       <section className="kpis" aria-label="三個重點數字">
         <div className="panel kpi"><div className="num lv-high">{report.counts.high}</div><div>個高風險</div><div className="muted">24 小時內要處理</div></div>
         <div className="panel kpi"><div className="num">{report.intel_summary.affected}<span className="of">／{report.intel_summary.checked}</span></div>
-          <div>件外部事件與我們有關</div><div className="muted">今天檢查的資安事件</div></div>
+          <div>件外部事件與我們有關</div><div className="muted"><Link href={`${PAGES.report.href}${q}#events`}>看事件與來源 →</Link></div></div>
         <div className="panel kpi"><div className="num">{typeof unregistered === "number" ? unregistered : "—"}</div>
           <div>個系統沒登記就對外開放</div><div className="muted">{typeof unregistered === "number" ? "看不到就管不到" : "無法計算"}</div></div>
       </section>
