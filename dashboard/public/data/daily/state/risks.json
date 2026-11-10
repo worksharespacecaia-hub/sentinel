@@ -55,7 +55,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -64,75 +64,6 @@
       "我們的狀況：opsbuilder 1.88，對外"
     ],
     "demo_fixture": true,
-    "provisional_basis": false
-  },
-  "brand-app:C-SECRET-IN-GIT": {
-    "id": "brand-app:C-SECRET-IN-GIT",
-    "finding_ids": [
-      "brand-app:C-SECRET-IN-GIT"
-    ],
-    "asset_id": "brand-app",
-    "title": "Git 中不得有正式環境金鑰：brand-app",
-    "category": "secret",
-    "level": "high",
-    "score": 10,
-    "raw_score": 10,
-    "score_level": "high",
-    "level_reason": "依分數",
-    "breakdown": [
-      {
-        "factor": "基礎分：控制項不符",
-        "points": 2,
-        "reason": "controls.yaml base_points"
-      },
-      {
-        "factor": "對外暴露",
-        "points": 2,
-        "reason": "商店上架的 App"
-      },
-      {
-        "factor": "資料敏感",
-        "points": 1,
-        "reason": "pii"
-      },
-      {
-        "factor": "影響範圍",
-        "points": 1,
-        "reason": "平台層，影響所有品牌"
-      },
-      {
-        "factor": "同業事件命中",
-        "points": 1,
-        "reason": "evt-91app-2026-10"
-      },
-      {
-        "factor": "位於完整攻擊鏈",
-        "points": 3,
-        "reason": "攻擊路徑前提的必要一步"
-      }
-    ],
-    "attack_path": [
-      "internet",
-      "brand-app",
-      "app-api-key",
-      "api-gateway",
-      "member-db-prod"
-    ],
-    "matched_events": [
-      "evt-91app-2026-10"
-    ],
-    "deadline_hours": 24,
-    "solution": null,
-    "status": "open",
-    "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
-    "verification_evidence": [],
-    "control_id": "C-SECRET-IN-GIT",
-    "credential_id": "app-api-key",
-    "evidence": [
-      "services/brand-app/src/config.ts:3"
-    ],
-    "demo_fixture": false,
     "provisional_basis": false
   },
   "marketing-site:php:vuln": {
@@ -183,78 +114,13 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
     "evidence": [
       "evt-php2shell-2026-10：[{'introduced': '8.2.0', 'fixed': '8.2.35'}, {'introduced': '8.3.0', 'fixed': '8.3.36'}, {'introduced': '8.4.0', 'fixed': '8.4.27'}, {'introduced': '8.5.0', 'fixed': '8.5.12'}, {'introduced': '8.1.0', 'fixed': None}, {'introduced': '8.0.0', 'fixed': None}, {'introduced': '7.4.0', 'fixed': None}]",
       "我們的狀況：php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On"
-    ],
-    "demo_fixture": false,
-    "provisional_basis": false
-  },
-  "gitlab:C-SECRET-IN-GIT": {
-    "id": "gitlab:C-SECRET-IN-GIT",
-    "finding_ids": [
-      "gitlab:C-SECRET-IN-GIT"
-    ],
-    "asset_id": "gitlab",
-    "title": "Git 中不得有正式環境金鑰：gitlab",
-    "category": "secret",
-    "level": "high",
-    "score": 8,
-    "raw_score": 8,
-    "score_level": "high",
-    "level_reason": "依分數",
-    "breakdown": [
-      {
-        "factor": "基礎分：控制項不符",
-        "points": 2,
-        "reason": "controls.yaml base_points"
-      },
-      {
-        "factor": "資料敏感",
-        "points": 1,
-        "reason": "order、pii"
-      },
-      {
-        "factor": "影響範圍",
-        "points": 1,
-        "reason": "平台層，影響所有品牌"
-      },
-      {
-        "factor": "同業事件命中",
-        "points": 1,
-        "reason": "evt-91app-2026-10"
-      },
-      {
-        "factor": "位於完整攻擊鏈",
-        "points": 3,
-        "reason": "攻擊路徑前提的必要一步"
-      }
-    ],
-    "attack_path": [
-      "internet",
-      "internal-tool",
-      "gitlab-read-token-internal-tool",
-      "gitlab",
-      "order-db-prod-cred",
-      "order-db-prod"
-    ],
-    "matched_events": [
-      "evt-91app-2026-10"
-    ],
-    "deadline_hours": 24,
-    "solution": null,
-    "status": "open",
-    "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
-    "verification_evidence": [],
-    "control_id": "C-SECRET-IN-GIT",
-    "credential_id": "order-db-prod-cred",
-    "evidence": [
-      "config/db.yml:4"
     ],
     "demo_fixture": false,
     "provisional_basis": false
@@ -309,7 +175,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": "C-INTERNAL-TOOL-EXPOSED",
     "credential_id": null,
@@ -367,7 +233,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -421,7 +287,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": "C-CLOUD-STORAGE-PUBLIC",
     "credential_id": null,
@@ -479,7 +345,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": "C-DEV-DEVICE-TOKEN",
     "credential_id": "deploy-token-eng07",
@@ -531,7 +397,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": "C-CLOUD-STORAGE-PUBLIC",
     "credential_id": null,
@@ -583,7 +449,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -625,7 +491,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -666,7 +532,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -707,7 +573,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -743,7 +609,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -797,7 +663,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -849,7 +715,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -900,7 +766,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -953,12 +819,12 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": "C-THIRD-PARTY-KEY-ROTATION",
     "credential_id": "mail-api-key",
     "evidence": [
-      "secrets.json: mail-api-key：456 天未輪替、無 IP 白名單"
+      "secrets.json: mail-api-key：457 天未輪替、無 IP 白名單"
     ],
     "demo_fixture": false,
     "provisional_basis": false
@@ -1004,7 +870,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1055,7 +921,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1106,7 +972,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1152,7 +1018,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1201,7 +1067,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": "C-BACKUP-ISOLATION",
     "credential_id": null,
@@ -1250,7 +1116,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": "C-INTERNAL-TOOL-EXPOSED",
     "credential_id": null,
@@ -1303,7 +1169,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": "C-NET-SEGMENT",
     "credential_id": null,
@@ -1351,7 +1217,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": "C-NON-CI-DEPLOY",
     "credential_id": "ai-assistant-token",
@@ -1392,7 +1258,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1433,7 +1299,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1480,7 +1346,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1527,7 +1393,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1574,7 +1440,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1633,7 +1499,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1680,7 +1546,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1727,7 +1593,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1774,7 +1640,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1816,7 +1682,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": "C-CACHE-TLS",
     "credential_id": null,
@@ -1862,7 +1728,7 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": null,
@@ -1899,12 +1765,146 @@
     "solution": null,
     "status": "open",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": "push-key-fcm-apns",
     "evidence": [
       "mobile-keys.json: push-key-fcm-apns stored_in share:fileserver-01/mobile/push-keys；accessible_by all-office-staff"
+    ],
+    "demo_fixture": false,
+    "provisional_basis": false
+  },
+  "brand-app:C-SECRET-IN-GIT": {
+    "id": "brand-app:C-SECRET-IN-GIT",
+    "finding_ids": [
+      "brand-app:C-SECRET-IN-GIT"
+    ],
+    "asset_id": "brand-app",
+    "title": "Git 中不得有正式環境金鑰：brand-app",
+    "category": "secret",
+    "level": "high",
+    "score": 10,
+    "raw_score": 10,
+    "score_level": "high",
+    "level_reason": "本次資料不完整或不在評估範圍，保留前次結果待確認",
+    "breakdown": [
+      {
+        "factor": "基礎分：控制項不符",
+        "points": 2,
+        "reason": "controls.yaml base_points"
+      },
+      {
+        "factor": "對外暴露",
+        "points": 2,
+        "reason": "商店上架的 App"
+      },
+      {
+        "factor": "資料敏感",
+        "points": 1,
+        "reason": "pii"
+      },
+      {
+        "factor": "影響範圍",
+        "points": 1,
+        "reason": "平台層，影響所有品牌"
+      },
+      {
+        "factor": "同業事件命中",
+        "points": 1,
+        "reason": "evt-91app-2026-10"
+      },
+      {
+        "factor": "位於完整攻擊鏈",
+        "points": 3,
+        "reason": "攻擊路徑前提的必要一步"
+      }
+    ],
+    "attack_path": [
+      "internet",
+      "brand-app",
+      "app-api-key",
+      "api-gateway",
+      "member-db-prod"
+    ],
+    "matched_events": [
+      "evt-91app-2026-10"
+    ],
+    "deadline_hours": 24,
+    "solution": null,
+    "status": "need_check",
+    "first_seen": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
+    "verification_evidence": [],
+    "control_id": "C-SECRET-IN-GIT",
+    "credential_id": "app-api-key",
+    "evidence": [
+      "services/brand-app/src/config.ts:3"
+    ],
+    "demo_fixture": false,
+    "provisional_basis": false
+  },
+  "gitlab:C-SECRET-IN-GIT": {
+    "id": "gitlab:C-SECRET-IN-GIT",
+    "finding_ids": [
+      "gitlab:C-SECRET-IN-GIT"
+    ],
+    "asset_id": "gitlab",
+    "title": "Git 中不得有正式環境金鑰：gitlab",
+    "category": "secret",
+    "level": "high",
+    "score": 8,
+    "raw_score": 8,
+    "score_level": "high",
+    "level_reason": "本次資料不完整或不在評估範圍，保留前次結果待確認",
+    "breakdown": [
+      {
+        "factor": "基礎分：控制項不符",
+        "points": 2,
+        "reason": "controls.yaml base_points"
+      },
+      {
+        "factor": "資料敏感",
+        "points": 1,
+        "reason": "order、pii"
+      },
+      {
+        "factor": "影響範圍",
+        "points": 1,
+        "reason": "平台層，影響所有品牌"
+      },
+      {
+        "factor": "同業事件命中",
+        "points": 1,
+        "reason": "evt-91app-2026-10"
+      },
+      {
+        "factor": "位於完整攻擊鏈",
+        "points": 3,
+        "reason": "攻擊路徑前提的必要一步"
+      }
+    ],
+    "attack_path": [
+      "internet",
+      "internal-tool",
+      "gitlab-read-token-internal-tool",
+      "gitlab",
+      "order-db-prod-cred",
+      "order-db-prod"
+    ],
+    "matched_events": [
+      "evt-91app-2026-10"
+    ],
+    "deadline_hours": 24,
+    "solution": null,
+    "status": "need_check",
+    "first_seen": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
+    "verification_evidence": [],
+    "control_id": "C-SECRET-IN-GIT",
+    "credential_id": "order-db-prod-cred",
+    "evidence": [
+      "config/db.yml:4"
     ],
     "demo_fixture": false,
     "provisional_basis": false
@@ -1921,7 +1921,7 @@
     "score": 1,
     "raw_score": 1,
     "score_level": "low",
-    "level_reason": "依分數",
+    "level_reason": "本次資料不完整或不在評估範圍，保留前次結果待確認",
     "breakdown": [
       {
         "factor": "基礎分：規則",
@@ -1933,9 +1933,9 @@
     "matched_events": [],
     "deadline_hours": 720,
     "solution": null,
-    "status": "open",
+    "status": "need_check",
     "first_seen": "2026-11-09T01:00:00Z",
-    "last_evaluated": "2026-11-09T01:00:00Z",
+    "last_evaluated": "2026-11-10T04:59:49Z",
     "verification_evidence": [],
     "control_id": null,
     "credential_id": "order-db-test-cred",

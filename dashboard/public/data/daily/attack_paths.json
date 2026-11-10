@@ -26,9 +26,7 @@
           "from": "brand-app",
           "to": "app-api-key",
           "kind": "read_secret",
-          "finding_ids": [
-            "brand-app:C-SECRET-IN-GIT"
-          ],
+          "finding_ids": [],
           "evidence": [
             "secrets.json:app-api-key.stored_in"
           ]
@@ -37,9 +35,7 @@
           "from": "app-api-key",
           "to": "api-gateway",
           "kind": "authorize",
-          "finding_ids": [
-            "brand-app:C-SECRET-IN-GIT"
-          ],
+          "finding_ids": [],
           "evidence": [
             "secrets.json:app-api-key.grants"
           ]
@@ -104,9 +100,7 @@
           "from": "gitlab",
           "to": "order-db-prod-cred",
           "kind": "read_secret",
-          "finding_ids": [
-            "gitlab:C-SECRET-IN-GIT"
-          ],
+          "finding_ids": [],
           "evidence": [
             "secrets.json:order-db-prod-cred.stored_in"
           ]
@@ -115,9 +109,7 @@
           "from": "order-db-prod-cred",
           "to": "order-db-prod",
           "kind": "authorize",
-          "finding_ids": [
-            "gitlab:C-SECRET-IN-GIT"
-          ],
+          "finding_ids": [],
           "evidence": [
             "secrets.json:order-db-prod-cred.grants"
           ]
@@ -161,8 +153,6 @@
     }
   ],
   "chain_finding_ids": [
-    "brand-app:C-SECRET-IN-GIT",
-    "gitlab:C-SECRET-IN-GIT",
     "internal-tool:C-INTERNAL-TOOL-EXPOSED",
     "internal-tool:opsbuilder:vuln",
     "laptop-eng-07:C-DEV-DEVICE-TOKEN"

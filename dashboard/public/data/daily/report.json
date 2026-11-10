@@ -1,26 +1,31 @@
 {
-  "run_id": "offline-p0",
+  "run_id": "42759027484",
   "scenario": "daily",
-  "trigger_source": "manual",
+  "trigger_source": "schedule",
   "scope": "daily",
   "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
-  "completeness": "complete",
+  "completeness": "partial",
   "data_issues": [
     {
       "source": "github/deployments",
       "status": "reused",
       "impact": "使用離線部署紀錄 fixture（未連 GitHub API）"
+    },
+    {
+      "source": "scanner/gitleaks",
+      "status": "missing",
+      "impact": "相關控制項為待確認，不視為零發現"
     }
   ],
-  "generated_at": "2026-11-09T01:00:00Z",
-  "as_of": "2026-11-09T01:00:00Z",
+  "generated_at": "2026-11-10T04:59:49Z",
+  "as_of": "2026-11-10T04:59:49Z",
   "light": "red",
   "light_reasons": [
     "14 個未處理的高風險"
   ],
   "ceo_summary": [
     "今天是紅燈：14 個高風險、18 個中風險。",
-    "最需要處理的是：opsbuilder 1.88：OpsBuilder 1.90 以前版本的帳號接管漏洞、Git 中不得有正式環境金鑰：brand-app、php 8.1.27：PHP2Shell。",
+    "最需要處理的是：opsbuilder 1.88：OpsBuilder 1.90 以前版本的帳號接管漏洞、php 8.1.27：PHP2Shell、內部工具不得對外開放：internal-tool。",
     "今天檢查 7 件外部資安事件，其中 7 件與我們有關。"
   ],
   "decisions": [
@@ -141,86 +146,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
-      "verification_evidence": [],
-      "explanation": null,
-      "explanation_source": null
-    },
-    {
-      "id": "brand-app:C-SECRET-IN-GIT",
-      "finding_ids": [
-        "brand-app:C-SECRET-IN-GIT"
-      ],
-      "asset_id": "brand-app",
-      "title": "Git 中不得有正式環境金鑰：brand-app",
-      "category": "secret",
-      "level": "high",
-      "score": 10,
-      "raw_score": 10,
-      "score_level": "high",
-      "level_reason": "依分數",
-      "breakdown": [
-        {
-          "factor": "基礎分：控制項不符",
-          "points": 2,
-          "reason": "controls.yaml base_points"
-        },
-        {
-          "factor": "對外暴露",
-          "points": 2,
-          "reason": "商店上架的 App"
-        },
-        {
-          "factor": "資料敏感",
-          "points": 1,
-          "reason": "pii"
-        },
-        {
-          "factor": "影響範圍",
-          "points": 1,
-          "reason": "平台層，影響所有品牌"
-        },
-        {
-          "factor": "同業事件命中",
-          "points": 1,
-          "reason": "evt-91app-2026-10"
-        },
-        {
-          "factor": "位於完整攻擊鏈",
-          "points": 3,
-          "reason": "攻擊路徑前提的必要一步"
-        }
-      ],
-      "attack_path": [
-        "internet",
-        "brand-app",
-        "app-api-key",
-        "api-gateway",
-        "member-db-prod"
-      ],
-      "matched_events": [
-        "evt-91app-2026-10"
-      ],
-      "deadline_hours": 24,
-      "solution": {
-        "risk_id": "brand-app:C-SECRET-IN-GIT",
-        "temporary": "撤銷並輪替 app-api-key，確認撤銷後舊值無法使用",
-        "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
-        "options": [
-          {
-            "name": "緩解",
-            "action": "撤銷並輪替金鑰",
-            "cost": "使用該金鑰的服務需同步更新",
-            "timing": "今天"
-          }
-        ],
-        "suggested_owner": "mobile-team",
-        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
-      },
-      "status": "open",
-      "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -300,82 +226,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
-      "verification_evidence": [],
-      "explanation": null,
-      "explanation_source": null
-    },
-    {
-      "id": "gitlab:C-SECRET-IN-GIT",
-      "finding_ids": [
-        "gitlab:C-SECRET-IN-GIT"
-      ],
-      "asset_id": "gitlab",
-      "title": "Git 中不得有正式環境金鑰：gitlab",
-      "category": "secret",
-      "level": "high",
-      "score": 8,
-      "raw_score": 8,
-      "score_level": "high",
-      "level_reason": "依分數",
-      "breakdown": [
-        {
-          "factor": "基礎分：控制項不符",
-          "points": 2,
-          "reason": "controls.yaml base_points"
-        },
-        {
-          "factor": "資料敏感",
-          "points": 1,
-          "reason": "order、pii"
-        },
-        {
-          "factor": "影響範圍",
-          "points": 1,
-          "reason": "平台層，影響所有品牌"
-        },
-        {
-          "factor": "同業事件命中",
-          "points": 1,
-          "reason": "evt-91app-2026-10"
-        },
-        {
-          "factor": "位於完整攻擊鏈",
-          "points": 3,
-          "reason": "攻擊路徑前提的必要一步"
-        }
-      ],
-      "attack_path": [
-        "internet",
-        "internal-tool",
-        "gitlab-read-token-internal-tool",
-        "gitlab",
-        "order-db-prod-cred",
-        "order-db-prod"
-      ],
-      "matched_events": [
-        "evt-91app-2026-10"
-      ],
-      "deadline_hours": 24,
-      "solution": {
-        "risk_id": "gitlab:C-SECRET-IN-GIT",
-        "temporary": "撤銷並輪替 order-db-prod-cred，確認撤銷後舊值無法使用",
-        "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
-        "options": [
-          {
-            "name": "緩解",
-            "action": "撤銷並輪替金鑰",
-            "cost": "使用該金鑰的服務需同步更新",
-            "timing": "今天"
-          }
-        ],
-        "suggested_owner": "devops-team",
-        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
-      },
-      "status": "open",
-      "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -445,7 +296,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -519,7 +370,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -580,7 +431,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -647,7 +498,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -708,7 +559,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -775,7 +626,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -832,7 +683,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -889,7 +740,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -946,7 +797,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -998,7 +849,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1068,7 +919,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1129,7 +980,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1190,7 +1041,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1253,7 +1104,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1314,7 +1165,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1375,7 +1226,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1436,7 +1287,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1498,7 +1349,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1556,7 +1407,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1615,7 +1466,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1678,7 +1529,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1736,7 +1587,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1787,7 +1638,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1838,7 +1689,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1900,7 +1751,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -1962,7 +1813,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -2024,7 +1875,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -2098,7 +1949,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -2139,7 +1990,7 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -2180,7 +2031,7 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -2221,7 +2072,7 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -2257,7 +2108,7 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -2298,7 +2149,7 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -2329,7 +2180,161 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "brand-app:C-SECRET-IN-GIT",
+      "finding_ids": [
+        "brand-app:C-SECRET-IN-GIT"
+      ],
+      "asset_id": "brand-app",
+      "title": "Git 中不得有正式環境金鑰：brand-app",
+      "category": "secret",
+      "level": "high",
+      "score": 10,
+      "raw_score": 10,
+      "score_level": "high",
+      "level_reason": "本次資料不完整或不在評估範圍，保留前次結果待確認",
+      "breakdown": [
+        {
+          "factor": "基礎分：控制項不符",
+          "points": 2,
+          "reason": "controls.yaml base_points"
+        },
+        {
+          "factor": "對外暴露",
+          "points": 2,
+          "reason": "商店上架的 App"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        },
+        {
+          "factor": "同業事件命中",
+          "points": 1,
+          "reason": "evt-91app-2026-10"
+        },
+        {
+          "factor": "位於完整攻擊鏈",
+          "points": 3,
+          "reason": "攻擊路徑前提的必要一步"
+        }
+      ],
+      "attack_path": [
+        "internet",
+        "brand-app",
+        "app-api-key",
+        "api-gateway",
+        "member-db-prod"
+      ],
+      "matched_events": [
+        "evt-91app-2026-10"
+      ],
+      "deadline_hours": 24,
+      "solution": {
+        "risk_id": "brand-app:C-SECRET-IN-GIT",
+        "temporary": "撤銷並輪替 app-api-key，確認撤銷後舊值無法使用",
+        "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "撤銷並輪替金鑰",
+            "cost": "使用該金鑰的服務需同步更新",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "mobile-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "need_check",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
+      "verification_evidence": [],
+      "explanation": null,
+      "explanation_source": null
+    },
+    {
+      "id": "gitlab:C-SECRET-IN-GIT",
+      "finding_ids": [
+        "gitlab:C-SECRET-IN-GIT"
+      ],
+      "asset_id": "gitlab",
+      "title": "Git 中不得有正式環境金鑰：gitlab",
+      "category": "secret",
+      "level": "high",
+      "score": 8,
+      "raw_score": 8,
+      "score_level": "high",
+      "level_reason": "本次資料不完整或不在評估範圍，保留前次結果待確認",
+      "breakdown": [
+        {
+          "factor": "基礎分：控制項不符",
+          "points": 2,
+          "reason": "controls.yaml base_points"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "order、pii"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        },
+        {
+          "factor": "同業事件命中",
+          "points": 1,
+          "reason": "evt-91app-2026-10"
+        },
+        {
+          "factor": "位於完整攻擊鏈",
+          "points": 3,
+          "reason": "攻擊路徑前提的必要一步"
+        }
+      ],
+      "attack_path": [
+        "internet",
+        "internal-tool",
+        "gitlab-read-token-internal-tool",
+        "gitlab",
+        "order-db-prod-cred",
+        "order-db-prod"
+      ],
+      "matched_events": [
+        "evt-91app-2026-10"
+      ],
+      "deadline_hours": 24,
+      "solution": {
+        "risk_id": "gitlab:C-SECRET-IN-GIT",
+        "temporary": "撤銷並輪替 order-db-prod-cred，確認撤銷後舊值無法使用",
+        "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "撤銷並輪替金鑰",
+            "cost": "使用該金鑰的服務需同步更新",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "devops-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      "status": "need_check",
+      "first_seen": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -2346,7 +2351,7 @@
       "score": 1,
       "raw_score": 1,
       "score_level": "low",
-      "level_reason": "依分數",
+      "level_reason": "本次資料不完整或不在評估範圍，保留前次結果待確認",
       "breakdown": [
         {
           "factor": "基礎分：規則",
@@ -2358,9 +2363,9 @@
       "matched_events": [],
       "deadline_hours": 720,
       "solution": null,
-      "status": "open",
+      "status": "need_check",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-09T01:00:00Z",
+      "last_evaluated": "2026-11-10T04:59:49Z",
       "verification_evidence": [],
       "explanation": null,
       "explanation_source": null
@@ -2380,7 +2385,7 @@
       "id": "evt-91app-2026-10",
       "kind": "archive",
       "title": "91APP 訂單資料庫遭入侵：未更新的內部工具 Appsmith 成破口，自內部 GitLab 取得資料庫金鑰",
-      "affected_count": 5,
+      "affected_count": 3,
       "max_level": "high",
       "status": "open",
       "demo": false

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "run_id": "42759027484",
+  "job": "scanners-trivy",
+  "scope": "scanner",
+  "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
+  "observed_at": "2026-11-10T04:58:36Z",
+  "valid_until": "2026-11-11T04:58:36Z",
+  "tool_version": {
+    "trivy": "0.57.1"
+  },
+  "database_revision": {
+    "trivy": null
+  },
+  "files": {
+    "trivy.json": "219ca771d23244993fb2a69aab57cdbd6adf8d53e0c2daac854f3e748b0d8ad0"
+  },
+  "status": "ok"
+}

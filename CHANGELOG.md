@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.3 — 2026-11-10（hotfix：gitleaks 設定檔）
+
+- 補上 sentinel 自己保存的 `.gitleaks.toml`（規格 5.5，與 Repo ① 相同、不讀受掃描 Repo 的設定）：先前檔案不存在，Docker 掛載時建立空目錄，首次 daily 的 gitleaks 掃描失敗
+- 新增測試：workflow 以 docker 掛載的 sentinel 檔案必須在 repo 中；`.gitleaks.toml` 必須與 baseline 副本一致
+
 ## 0.2.2 — 2026-11-10（hotfix：首次部署發現的問題）
 
 - 所有 `.sh` 標記為可執行：在 Windows 上 commit 時沒有執行位元，Actions 發布結果時 exit 126；新增測試防止再發生
