@@ -4,7 +4,8 @@
 - 每個事件強制為 kind=live、demo=false，ID 加上 live- 前綴，不能冒充或覆蓋預先收錄事件、示範事件與公告
 - 來源只保留網址、標題、引用與日期；驗證欄位清空，交給 intel_verify 實際抓頁面確認
 - 產品只保留名稱、生態系、版本範圍、CVSS 與影響類型；「已遭利用」「已確認」與觸發條件無法由程式驗證，不採用
-- 控制項只接受 controls.yaml 中已有的 ID；文字欄位限制長度
+- 控制項只接受 controls.yaml 中已有的 ID；建議新增的控制項（proposed_controls）只保留標題與理由文字；文字欄位限制長度
+- 沒有產品也沒有控制項的事件由 intel_match 判為「需確認」，不會因為沒東西可比就變成「不受影響」
 - 格式不符的事件略過並記錄原因；數量設上限，避免大量抓取
 - impacts（LLM 的初步判斷）不採用：受影響與否以程式比對為準
 """
@@ -73,6 +74,14 @@ def _product(raw) -> dict | None:
     return p
 
 
+def _proposed_controls(value) -> list[dict]:
+    """建議新增的控制項只當顯示文字（由人工決定是否加進 controls.yaml），不帶 ID，避免冒充既有控制項。"""
+    items = value if isinstance(value, list) else []
+    out = [{"title": _text(i.get("title"), 80), "reason": _text(i.get("reason"), 200) or ""}
+           for i in items[:10] if isinstance(i, dict)]
+    return [i for i in out if i["title"]][:3]
+
+
 def _live_id(raw_id: object, index: int) -> str:
     slug = SLUG_RE.sub("-", str(raw_id or "").lower()).strip("-.")[:60]
     slug = slug.removeprefix("live-") or f"event-{index + 1}"
@@ -96,6 +105,7 @@ def sanitize_event(raw: dict, index: int, controls: set[str]) -> dict:
         "is_update_of": update_of if isinstance(update_of, str) and ID_RE.match(update_of) else None,
         "attack_chain": _strings(raw.get("attack_chain")), "attck": _strings(raw.get("attck"), ATTCK_RE),
         "cves": _strings(raw.get("cves"), CVE_RE), "controls": [c for c in _strings(raw.get("controls")) if c in controls],
+        "proposed_controls": _proposed_controls(raw.get("proposed_controls")),
         "confidence": "confirmed" if raw.get("confidence") == "confirmed" else "provisional",   # 未驗證通過會再被降為暫定
         "products": [p for p in map(_product, (raw.get("products") or [])[:10] if isinstance(raw.get("products"), list) else []) if p],
         "sources": [{"url": _text(s.get("url"), 500), "title": _text(s.get("title"), 200) or "",

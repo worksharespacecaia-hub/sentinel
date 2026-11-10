@@ -56,6 +56,15 @@ def test_fields_filtered(tmp_path):
     assert ev["is_update_of"] is None and len(ev["title"]) == 200 and ev["confidence"] == "provisional"
 
 
+def test_proposed_controls_kept_as_text_only(tmp_path):
+    raw = event(proposed_controls=[{"id": "C-SECRET-IN-GIT", "title": "訂單查詢需有存取控制", "reason": "r" * 500},
+                                   {"reason": "沒有標題"}, "x", *[{"title": f"t{i}"} for i in range(5)]])
+    (ev,), _ = load_daily_intel(write(tmp_path, {"events": [raw]}))
+    assert ev["proposed_controls"] == [{"title": "訂單查詢需有存取控制", "reason": "r" * 200},
+                                       {"title": "t0", "reason": ""}, {"title": "t1", "reason": ""}]
+    assert ev["controls"] == []                          # 不能藉由建議項目塞進既有控制項 ID
+
+
 def test_invalid_events_skipped_with_reasons(tmp_path):
     events = [event(sources=[]), event(date="昨天"), event(title=""), "x", event(), event()]
     got, issues = load_daily_intel(write(tmp_path, {"events": events}))
