@@ -18,3 +18,4 @@ dashboard/tsconfig.tsbuildinfo
 # next dev 自動產生的 Agent 說明檔
 dashboard/AGENTS.md
 gh/
+dl/

@@ -24,6 +24,8 @@ const STAGES: { title: string; nodes: { key: string; label: string; skippedNote?
   ] },
   { title: "分析", nodes: [{ key: "a1-intel", label: "A1 外部情資" }, { key: "a2-scan", label: "A2 弱點掃描" }] },
   { title: "風險", nodes: [{ key: "a4-risk", label: "A4 攻擊鏈與風險" }] },
+  { title: "撰寫", nodes: [{ key: "claude-analysis", label: "Claude 撰寫說明（訂閱方案）", skippedNote: "只在每日排程與 GitHub 手動 daily 執行",
+                            failureNote: "失敗不影響流程，說明文字改用程式範本" }] },
   { title: "發布", nodes: [{ key: "a5-report", label: "A5 報告與發布" }] },
 ];
 

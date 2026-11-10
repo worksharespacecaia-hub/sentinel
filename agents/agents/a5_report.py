@@ -8,7 +8,7 @@ from datetime import timedelta
 
 from agents.common import finish, load
 from context import RunCtx
-from llm import Task
+from llm import Task, _validate
 from tools.cache import merge_cache
 from tools.common import AGENTS_DIR, iso, read_json, write_json
 from tools.graph_query import GraphQuery
@@ -39,7 +39,10 @@ def _llm_texts(ctx: RunCtx, res: dict, built_template: dict) -> dict:
     for r in affected:
         tasks.append(Task(id=f"intel:{r['event']['id']}", subagent="intel-report-writer",
                           payload={"ids": [f"intel:{r['event']['id']}"], "event": r["event"]["title"],
-                                   "conclusion": r["conclusion"], "rows": r["blocks"].get("3_affected", [])}))
+                                   "conclusion": r["conclusion"],
+                                   # 不放觀察時間：撰寫不需要，且會讓每個 Job 算出的任務鍵不同
+                                   "rows": [{k: v for k, v in row.items() if k != "observed_at"}
+                                            for row in r["blocks"].get("3_affected", [])]}))
     notices = [r for r in affected if (r.get("notice") or {}).get("needed")]
     for r in notices:
         tasks.append(Task(id=f"notice:{r['event']['id']}", subagent="brand-notice-writer",
@@ -63,9 +66,33 @@ def _llm_texts(ctx: RunCtx, res: dict, built_template: dict) -> dict:
     return llm
 
 
-def run(ctx: RunCtx) -> dict:
+def _collected_explanations(ctx: RunCtx, tr) -> dict:
+    """A2、A4 改用範本的說明：claude-analysis Job（訂閱方案）撰寫的結果，再以原任務的範圍與格式驗證一次。"""
+    results = ctx.llm_results()
+    if not results:
+        return {}
+    out, used = {}, {}
+    for agent in ("a2", "a4"):
+        for t in load(ctx, agent, "llm-tasks.json", []) or []:
+            got = results.get(t.get("key"))
+            if got is None:
+                continue
+            try:
+                items = _validate(t["output"], got, set(t["ids"]))
+            except ValueError as exc:
+                tr.emit("error", f"{agent}/{t['subagent']} 的 Claude 結果未通過驗證，改用範本：{exc}"[:200], source="template")
+                continue
+            for item in items:
+                out[item["id"]] = {"text": item["explanation"], "source": "live", "subagent": t["subagent"]}
+            used[(agent, t["subagent"])] = used.get((agent, t["subagent"]), 0) + len(items)
+    for (agent, sub), n in sorted(used.items()):
+        tr.emit("subagent", f"{agent} 的 {sub} 採用 Claude（訂閱方案）撰寫的說明（{n} 項）", subagent=sub, source="live")
+    return out
+
+
+def prepare(ctx: RunCtx) -> dict:
+    """確定性評估與範本報告（A5 與 claude-analysis Job 的任務規劃共用，不寫任何輸出）。"""
     tr = ctx.tracer("a5")
-    tr.emit("start", f"報告與建議 → {ctx.output_dir}")
     plan = load(ctx, "orchestrator", "plan.json")
     issues = []
     for up in UPSTREAM:
@@ -77,7 +104,8 @@ def run(ctx: RunCtx) -> dict:
     res = evaluate(ctx.eval_input(preverified=pre))
     res["data_issues"] = [*res["data_issues"], *issues]
 
-    expl = {**(load(ctx, "a2", "explanations.json", {}) or {}), **(load(ctx, "a4", "explanations.json", {}) or {})}
+    expl = {**(load(ctx, "a2", "explanations.json", {}) or {}), **(load(ctx, "a4", "explanations.json", {}) or {}),
+            **_collected_explanations(ctx, tr)}
     for r in res["risks"]:
         e = expl.get(r["id"])
         if e and e.get("source") != "template":
@@ -92,6 +120,14 @@ def run(ctx: RunCtx) -> dict:
     common = dict(run_id=ctx.run_id, scenario=ctx.scenario, trigger_source=ctx.trigger_source, scope=ctx.scope,
                   generated_at=ctx.as_of, execution_mode=ctx.mode, daily_intel_status=daily_intel)
     template = assemble(res, **common)
+    return {"plan": plan, "output_dir": output_dir, "res": res, "common": common, "template": template, "daily_intel": daily_intel}
+
+
+def run(ctx: RunCtx) -> dict:
+    tr = ctx.tracer("a5")
+    tr.emit("start", f"報告與建議 → {ctx.output_dir}")
+    p = prepare(ctx)
+    plan, output_dir, res, common, template, daily_intel = (p[k] for k in ("plan", "output_dir", "res", "common", "template", "daily_intel"))
     llm = _llm_texts(ctx, res, template)
     cost = {"total_usd": ctx.cost["total_usd"], "per_agent": _collect_costs(ctx), "cache_hit_rate": ctx.cache.hit_rate}
     built = assemble(res, llm=llm, cost=cost, **common)
@@ -107,8 +143,8 @@ def run(ctx: RunCtx) -> dict:
     md_dir = ctx.reports_dir / "intel" / scope_dir / ctx.as_of.strftime("%Y-%m-%d") / ctx.run_id
     tr.emit("result", f"燈號 {built['report']['light']}；{len(built['intel_reports'])} 份情資比對報告")
     manifest = write_outputs(out_dir, built, res, reports_md_dir=md_dir, run_id=ctx.run_id)
-    # daily-intel（訂閱方案的 Claude 判讀）的執行紀錄由該 Job 以程式整理，有執行時一併放進執行樹
-    merge_traces([ctx.out / up / "trace.jsonl" for up in [*UPSTREAM, "daily-intel", "a5"]], out_dir / "trace.jsonl")
+    # daily-intel、claude-analysis（訂閱方案的 Claude）的執行紀錄由各 Job 以程式整理，有執行時一併放進執行樹
+    merge_traces([ctx.out / up / "trace.jsonl" for up in [*UPSTREAM, "daily-intel", "claude-analysis", "a5"]], out_dir / "trace.jsonl")
     if ctx.scope == "daily" and ctx.scanners_dir and ctx.scanners_dir.is_dir() and "fixtures" not in ctx.scanners_dir.parts:
         import shutil
         dest = out_dir / "state" / "scanners"
