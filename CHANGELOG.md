@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.2 — 2026-11-10（hotfix：每日情資寫不出結果）
+
+- `--allowedTools` 的 `Write(./out/**)` 不是有效的權限規則，dontAsk 模式下 Write 一律被拒：Claude 完成搜尋卻寫不出 `out/intel-daily.json`，Job 仍顯示成功。改為 `Edit(./out/**)`（涵蓋所有寫檔工具），PreToolUse hook 仍只允許寫 `out/intel-daily.json`（本機以相同參數驗證：intel-daily.json 可寫，out/other.json、notes.txt 被 hook 擋下）
+- Claude 執行結束但沒有寫出 `out/intel-daily.json` 時 Job 明確失敗，並列出被拒絕的工具（只列工具名稱、相對路徑或網址主機）
+- 0.3.1 的診斷已找出前一個問題：Secret 中的 Token 含換行與多餘字元（401 OAuth access token is invalid），重新貼上後驗證通過
+
 ## 0.3.1 — 2026-11-10（hotfix：每日情資失敗診斷）
 
 - 首次啟用的 daily-intel 在第一個 API 請求就結束（0 回合用量），但 claude-code-action 隱藏了錯誤訊息，無法判斷原因
