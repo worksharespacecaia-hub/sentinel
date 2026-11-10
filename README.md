@@ -115,7 +115,7 @@ npm run dev
 ### 5. Vercel
 
 1. 匯入 `sentinel`，Root Directory 設為 `dashboard`，Production Branch 為 `main`
-2. 從 Vercel Marketplace 加入 Upstash Redis（自動注入 `UPSTASH_REDIS_REST_URL`、`UPSTASH_REDIS_REST_TOKEN`）
+2. 從 Vercel Marketplace 加入 Upstash Redis（會自動注入 `KV_REST_API_URL`、`KV_REST_API_TOKEN` 等變數，程式直接使用；也接受 `UPSTASH_REDIS_REST_URL`、`UPSTASH_REDIS_REST_TOKEN`，不使用唯讀 Token）
 3. 設定環境變數：
 
 | 變數 | 值 |
