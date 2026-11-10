@@ -6,6 +6,23 @@ export function LightBadge({ light, label }: { light: Light; label?: string }) {
   return <span className={`light ${light}`} aria-label={LIGHT_TEXT[light]}>{label ?? LIGHT_TEXT[light]}</span>;
 }
 
+const LAMPS: Light[] = ["red", "yellow", "green"];
+const LAMP_NAME: Record<Light, string> = { red: "紅", yellow: "黃", green: "綠" };
+
+/** 紅黃綠三顆燈，亮目前燈號、其他變暗；旁邊一定附文字（燈號不能只靠顏色）。 */
+export function TrafficLight({ light, size = "large" }: { light: Light; size?: "large" | "small" }) {
+  return (
+    <div className={`traffic-light ${size}`} role="img" aria-label={LIGHT_TEXT[light]}>
+      <div className="lamps" aria-hidden="true">
+        {LAMPS.map((l) => (
+          <span key={l} className={`lamp ${l}${l === light ? " on" : ""}`}><span className="lamp-name">{LAMP_NAME[l]}</span></span>
+        ))}
+      </div>
+      <strong className={`lamp-text ${light}`}>{LIGHT_TEXT[light]}</strong>
+    </div>
+  );
+}
+
 export function LevelText({ level }: { level: Level | null | undefined }) {
   if (!level) return <span className="muted">—</span>;
   return <span className={`lv-${level}`}>{LEVEL_TEXT[level]}</span>;

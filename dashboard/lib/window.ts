@@ -5,6 +5,7 @@
 // - 真實為 real、模擬為 sim:<simulation_id>，所有 key 分開；key 皆有保留期與大小上限
 import { createHash } from "node:crypto";
 import { CREATE_ALERT_LUA, K, SIM_ALERT_TTL, newStep, type Alert } from "./alertstore.ts";
+import { initialLineStep } from "./line.ts";
 import { evalLua, redis } from "./redis.ts";
 import {
   BASELINES, baselineFor, maskText, namespaceOf, rulesFor, staticMatch, timeCheck, validateEvent, windowMs,
@@ -157,6 +158,12 @@ export function summaryFor(rule: Rule, ev: RtEvent, threshold: number | null): s
   return `24 小時內 __METRIC__ 個品牌回報含訂單資訊的詐騙`;
 }
 
+/** LINE 交付初始狀態（只推真實高風險告警；模擬告警依 LINE_PUSH_SIMULATED；未設定時 skipped）。 */
+function lineStep(level: string, simulated: boolean) {
+  const s = initialLineStep(level, simulated);
+  return s.state === "pending" ? newStep() : newStep("skipped", s.reason);
+}
+
 /** 告警 JSON 範本：__METRIC__ 與 "__EVENTS__" 由 Lua 在原子步驟內填入。 */
 export function alertTemplate(rule: Rule, ev: RtEvent, id: string, dedupKey: string, threshold: number | null, receivedAt: string, evaluatedAt: string): string {
   const repo = process.env.GH_OWNER && process.env.GH_REPO ? `${process.env.GH_OWNER}/${process.env.GH_REPO}` : null;
@@ -167,7 +174,7 @@ export function alertTemplate(rule: Rule, ev: RtEvent, id: string, dedupKey: str
     source_event_ids: "__EVENTS__", dedup_key: dedupKey,
     delivery: {
       issue: newStep(), dispatch: newStep(),
-      line: newStep("skipped", ev.simulated && process.env.LINE_PUSH_SIMULATED !== "true" ? "模擬告警預設不推播" : "LINE 通知未啟用（P2）"),
+      line: lineStep(rule.level, ev.simulated),
       sync: newStep("done"),
     },
     timeline: { event_received: receivedAt, rule_evaluated: evaluatedAt, alert_created: evaluatedAt, issue_created: null, dispatched: null, advice_ready: null },

@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 Level = Literal["high", "medium", "low"]
 ResultSource = Literal["live", "replay", "template"]
@@ -104,6 +104,40 @@ class Risk(_Model):
     verification_evidence: list[str] = Field(default_factory=list)
     explanation: str | None = None             # A2／A4 Subagent 的說明文字（不影響分數）
     explanation_source: ResultSource | None = None
+    level_floor: Level | None = None           # 規則下限（網站權重試算用）
+    provisional_basis: bool = False            # 暫定情資：最高只到中
+
+
+class ScoringFactors(_Model):
+    """rules/scoring.json 的加分因子；範圍與 tools/scoring.py、dashboard/lib/scoring-limits.json 一致。"""
+    known_exploited: int = Field(ge=0, le=5)
+    exposed: int = Field(ge=0, le=5)
+    data_sensitive: int = Field(ge=0, le=5)
+    platform: int = Field(ge=0, le=5)
+    peer_event: int = Field(ge=0, le=5)
+    on_attack_chain: int = Field(ge=0, le=5)
+    eol_no_fix: int = Field(ge=0, le=5)
+    compensating: int = Field(ge=-5, le=0)
+
+
+class ScoringThresholds(_Model):
+    high: int = Field(ge=2, le=15)
+    medium: int = Field(ge=1, le=14)
+
+    @model_validator(mode="after")
+    def _order(self):
+        if self.medium >= self.high:
+            raise ValueError("中門檻必須小於高門檻")
+        return self
+
+
+class ScoringConfig(_Model):
+    version: int = Field(ge=1)
+    factors: ScoringFactors
+    thresholds: ScoringThresholds
+    updated_at: str | None = None
+    updated_by: str | None = None
+    reason: str | None = None
 
 
 class TraceEvent(_Model):
@@ -238,6 +272,7 @@ class Report(_Model):
     signals: list[dict] = Field(default_factory=list)
     reconcile: list[dict] = Field(default_factory=list)
     app_impact: dict = Field(default_factory=dict)
+    scoring: dict | None = None                # 本次使用的燈號權重（rules/scoring.json）
     execution_mode: Literal["replay", "record", "live", "template"] = "template"
 
 

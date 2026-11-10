@@ -23,7 +23,7 @@ interface AlertsResponse {
   available: boolean; degraded: string | null; now?: string;
   counts?: { real_open: number; real_high_open: number; simulated_open: number };
   events?: FeedEntry[]; recent?: Alert[]; open?: { real: Alert[]; real_total: number; simulated: Alert[] };
-  line?: { enabled: boolean; reason: string };
+  line?: { enabled: boolean; reason?: string; admins: number; max_admins: number; used: number | null; limit: number | null; tier: string };
 }
 
 const SOURCE_TEXT: Record<string, string> = { "github.deployment": "GitHub 部署", "db.audit": "資料庫稽核", "support.complaint": "客服回報" };
@@ -193,7 +193,10 @@ export default function LiveMonitor() {
           <div className="panel"><div className="muted">真實未結案告警（含已圍堵）</div><div className="stat">{data.counts.real_open}</div></div>
           <div className="panel"><div className="muted">模擬告警（不影響正式燈號）</div><div className="stat">{data.counts.simulated_open}</div></div>
           <div className="panel"><div className="muted">LINE 通知</div><div>{data.line?.enabled ? "已啟用" : data.line?.reason ?? "未啟用"}</div>
-            <div className="muted">已綁定管理者 — 人；本月已用 — / 200 則</div></div>
+            <div className="muted">已綁定管理者 {data.line?.enabled ? `${data.line.admins} / ${data.line.max_admins}` : "—"} 人；
+              本月已用 {data.line?.used ?? "—"} / {data.line?.limit ?? 200} 則</div>
+            {data.line?.tier === "alerts_only" && <div className="warn">本月額度偏高：只推播高風險告警</div>}
+            {data.line?.tier === "stopped" && <div className="lv-high">LINE 額度已用完，請查看網站</div>}</div>
         </div>
       )}
       <Simulator onDone={load} />

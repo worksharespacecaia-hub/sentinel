@@ -151,7 +151,7 @@ export default function RunConsole() {
               </div>
             ))}
           </div>
-          {phase === "published" && <p><a className="button primary" href={resultPath(active.scenario)}>查看這次的 Agent 執行結果</a></p>}
+          {phase === "published" && <p><a className="button primary" href={resultPath(active.scenario)}>查看這次的分析結果</a></p>}
           <p><button type="button" onClick={reset}>{phase === "published" ? "關閉" : "停止追蹤（不會取消 GitHub 上的執行）"}</button></p>
         </div>
       )}

@@ -1,5 +1,6 @@
 import { getGraph, getReport, listSources, resolveSource } from "@/lib/data";
 import { RiskDetail, SimNotice, SourceSwitcher } from "@/components/ui";
+import { PAGES } from "@/lib/nav";
 
 export const dynamic = "force-dynamic";
 
@@ -19,7 +20,7 @@ export default async function AppRisk({ searchParams }: { searchParams: Promise<
   const impact = report?.app_impact as Record<string, any> | undefined;
   return (
     <>
-      <h1>App</h1>
+      <h1>{PAGES.appRisk.label}</h1>
       <SourceSwitcher current={source.key} sources={sources} path="/app-risk" />
       <SimNotice source={source} />
       <p className="muted">同一套程式碼打包成各品牌 App；修補要經商店審核與使用者更新，舊版會長期留在手機上。安裝數為 Demo 假設數字。</p>

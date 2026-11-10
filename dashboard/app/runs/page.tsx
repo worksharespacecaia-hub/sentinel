@@ -2,6 +2,7 @@ import { getReport, getTrace, listSources, resolveSource } from "@/lib/data";
 import { AGENT_TEXT, SOURCE_TEXT, fmtTime } from "@/lib/labels";
 import { SimNotice, SourceSwitcher } from "@/components/ui";
 import RunConsole from "@/components/RunConsole";
+import { PAGES } from "@/lib/nav";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +18,7 @@ export default async function Runs({ searchParams }: { searchParams: Promise<Rec
   const replayed = report?.execution_mode !== "live";
   return (
     <>
-      <h1>Agent 執行</h1>
+      <h1>{PAGES.runs.label}</h1>
       <div className="panel">
         <h2 style={{ marginTop: 0 }}>執行 Agent 流程</h2>
         <p className="muted">選擇情境後送出，網站會派發 GitHub Actions，並在這裡即時顯示每個 Agent 的進度；點 Agent 可開啟該 Job 的執行紀錄。

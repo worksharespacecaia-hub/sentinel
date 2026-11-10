@@ -71,33 +71,71 @@ def solution_for(risk: dict, graph_nodes: dict) -> dict:
             "suggested_owner": owner, "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復", "source": "template"}
 
 
-def ceo_summary(light: str, risks: list[dict], intel: dict) -> list[str]:
+# CEO 摘要用白話描述「可能碰到什麼」，不寫版本號、CVE、元件名稱（ceo-brief skill）
+DATA_CLASS_TEXT = {"order": "訂單資料", "pii": "會員個資", "payment": "金流資料", "source_code": "原始碼", "session": "登入狀態"}
+
+
+def _has_factor(risk: dict, factor: str) -> bool:
+    return any(b["factor"] == factor for b in risk.get("breakdown") or [])
+
+
+def _reach_text(highs: list[dict], nodes: dict) -> list[str]:
+    """攻擊路徑終點轉白話（依節點 data_classes），去重保序；沒有資料類別的終點寫成「核心系統（id）」。"""
+    out: list[str] = []
+    for r in highs:
+        path = r.get("attack_path") or []
+        if len(path) < 2:
+            continue
+        target = path[-1]
+        classes = (nodes.get(target) or {}).get("data_classes") or []
+        labels = [DATA_CLASS_TEXT[c] for c in classes if c in DATA_CLASS_TEXT] or [f"核心系統（{target}）"]
+        for label in labels:
+            if label not in out:
+                out.append(label)
+    return out
+
+
+def ceo_summary(light: str, risks: list[dict], intel: dict, nodes: dict | None = None) -> list[str]:
+    nodes = nodes or {}
     highs = [r for r in risks if r["level"] == "high" and r["status"] != "fixed"]
     meds = [r for r in risks if r["level"] == "medium" and r["status"] != "fixed"]
     first = {"red": "今天是紅燈", "yellow": "今天是黃燈", "green": "今天是綠燈"}[light]
-    top = "、".join(r["title"].split("（")[0] for r in highs[:3]) if highs else "目前沒有高風險"
+    chained = [r for r in highs if len(r.get("attack_path") or []) > 1]
+    eol = [r for r in highs if _has_factor(r, "已停止支援")]
+    parts = []
+    if chained:
+        reach = _reach_text(chained, nodes)
+        parts.append(f"{len(chained)} 個問題可被串成入侵路徑" + (f"，可能一路碰到{'、'.join(reach)}" if reach else ""))
+    if eol:
+        parts.append(f"{len(eol)} 個對外系統已停止支援、沒有修補版本")
+    if not parts and highs:
+        parts.append(f"{len(highs)} 個高風險要在 24 小時內處理")
+    second = f"最需要處理的是：{'；'.join(parts)}。" if parts else "目前沒有高風險。"
     return [
         f"{first}：{len(highs)} 個高風險、{len(meds)} 個中風險。",
-        f"最需要處理的是：{top}。",
+        second,
         f"今天檢查 {intel.get('checked', 0)} 件外部資安事件，其中 {intel.get('affected', 0)} 件與我們有關。",
     ]
 
 
 def decisions(risks: list[dict]) -> list[str]:
-    out = []
+    """下架問題在前；未登記的系統合併成一條（格式與網站 lib/brief.ts 的 groupDecisions 一致）。"""
+    takedown, shadow = [], []
     for r in risks:
         if r["status"] == "fixed" or r["level"] != "high":
             continue
-        if any(b["factor"] == "已停止支援" for b in r["breakdown"]):
-            out.append(f"是否暫時下架 {r['asset_id']}（已停止支援且沒有修補版本）")
-        if r["category"] == "shadow_it":
-            out.append(f"{r['asset_id']} 要納管還是除役")
-    seen, uniq = set(), []
-    for d in out:
-        if d not in seen:
-            seen.add(d)
-            uniq.append(d)
-    return uniq[:5]
+        if _has_factor(r, "已停止支援"):
+            d = f"是否暫時下架 {r['asset_id']}（已停止支援且沒有修補版本）"
+            if d not in takedown:
+                takedown.append(d)
+        if r["category"] == "shadow_it" and r["asset_id"] not in shadow:
+            shadow.append(r["asset_id"])
+    out = list(takedown)
+    if len(shadow) == 1:
+        out.append(f"{shadow[0]} 要納管還是除役")
+    elif shadow:
+        out.append(f"{len(shadow)} 個未登記的系統要納管還是除役：{'、'.join(shadow)}")
+    return out[:5]
 
 
 def notice_draft(event_title: str, brands: list[str] | None = None) -> str:

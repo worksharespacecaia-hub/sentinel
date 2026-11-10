@@ -156,3 +156,70 @@ export async function findIncidentRun(alertId: string): Promise<RunInfo | null> 
     `/repos/${owner}/${name}/actions/workflows/incident.yml/runs?event=repository_dispatch&per_page=50`, process.env.GH_DISPATCH_TOKEN);
   return body.workflow_runs.find((r) => r.display_title === `incident ${alertId}`) ?? null;
 }
+
+// ------------------------------------------------------------------ 已發布檔案（Repo ②，指定 commit）
+
+const REPO_PATH_RE = /^[A-Za-z0-9][A-Za-z0-9._/-]{0,200}$/;
+export const SHA_RE = /^[0-9a-f]{40}$/;
+
+/** 讀取指定 commit 的檔案（raw）。燈號通知用它讀 A5 剛發布、Vercel 可能尚未重新部署的 report／manifest。 */
+export async function getRepoText(filePath: string, ref: string): Promise<string> {
+  if (!REPO_PATH_RE.test(filePath) || filePath.includes("..") || !(SHA_RE.test(ref) || ID_RE.test(ref))) throw new GitHubError("路徑或 ref 格式錯誤", true);
+  const { owner, name } = repo();
+  let res: Response;
+  try {
+    res = await fetch(`${API}/repos/${owner}/${name}/contents/${filePath}?ref=${encodeURIComponent(ref)}`, {
+      headers: { ...headers(process.env.GH_DISPATCH_TOKEN), accept: "application/vnd.github.raw+json" },
+      cache: "no-store", signal: AbortSignal.timeout(10000),
+    });
+  } catch (e) {
+    throw new GitHubError((e as Error).name === "TimeoutError" ? "GitHub 回應逾時" : "無法連線 GitHub", false);
+  }
+  if (!res.ok) throw new GitHubError(`GitHub 回應 ${res.status}`, true, res.status);
+  return res.text();
+}
+
+export async function getRepoJson<T>(filePath: string, ref: string): Promise<T> {
+  return JSON.parse(await getRepoText(filePath, ref)) as T;
+}
+
+// ------------------------------------------------------------------ 燈號權重（rules/scoring.json，Repo ② 預設分支）
+
+const SCORING_PATH = "rules/scoring.json";
+const branch = () => process.env.GH_DEFAULT_BRANCH || "main";
+
+export function contentsConfigured(): boolean {
+  try {
+    repo();
+    return Boolean(process.env.GH_DISPATCH_TOKEN);
+  } catch {
+    return false;
+  }
+}
+
+/** 目前的設定與 blob sha（寫回時以 sha 做併發檢查：別人先改過就回 409）。 */
+export async function getScoringConfig(): Promise<{ text: string; sha: string }> {
+  const { owner, name } = repo();
+  const body = await gh<{ content: string; encoding: string; sha: string }>("GET",
+    `/repos/${owner}/${name}/contents/${SCORING_PATH}?ref=${encodeURIComponent(branch())}`, process.env.GH_DISPATCH_TOKEN);
+  if (body.encoding !== "base64") throw new GitHubError("設定檔編碼不支援", true);
+  return { text: Buffer.from(body.content, "base64").toString("utf8"), sha: body.sha };
+}
+
+/** 寫回設定（一個 commit）。不指定 committer／author：由 Token 身分記錄是誰改的。 */
+export async function putScoringConfig(text: string, sha: string, message: string): Promise<{ commit_sha: string; commit_url: string }> {
+  const { owner, name } = repo();
+  const body = await gh<{ commit: { sha: string; html_url: string } }>("PUT", `/repos/${owner}/${name}/contents/${SCORING_PATH}`,
+    process.env.GH_DISPATCH_TOKEN, { message, content: Buffer.from(text, "utf8").toString("base64"), sha, branch: branch() });
+  return { commit_sha: body.commit.sha, commit_url: body.commit.html_url };
+}
+
+export interface ScoringCommit { sha: string; url: string; date: string; message: string }
+
+export async function listScoringHistory(limit = 10): Promise<ScoringCommit[]> {
+  const { owner, name } = repo();
+  const list = await gh<{ sha: string; html_url: string; commit: { message: string; committer: { date: string } | null } }[]>("GET",
+    `/repos/${owner}/${name}/commits?path=${SCORING_PATH}&sha=${encodeURIComponent(branch())}&per_page=${limit}`, process.env.GH_DISPATCH_TOKEN);
+  return list.map((c) => ({ sha: c.sha.slice(0, 7), url: c.html_url, date: c.commit.committer?.date ?? "",
+                            message: c.commit.message.slice(0, 300) }));
+}

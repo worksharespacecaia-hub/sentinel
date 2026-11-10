@@ -1,7 +1,9 @@
+import { PAGES } from "@/lib/nav";
+
 export default function Architecture() {
   return (
     <>
-      <h1>架構說明</h1>
+      <h1>{PAGES.architecture.label}</h1>
       <div className="panel">
         <h2 style={{ marginTop: 0 }}>流程</h2>
         <ol>
