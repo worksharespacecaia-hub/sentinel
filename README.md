@@ -172,7 +172,9 @@ Settings → Webhooks：Payload URL `https://<網域>/api/webhooks/github`、Con
 
 ## 執行情境
 
-情境把額外輸入疊加到基準資料上，結果寫到 `dashboard/public/data/scenarios/<name>/`，**不影響正式總覽燈號**。可以從網站總覽頁的執行表單（需示範密碼，每小時一次）或 GitHub Actions 的 `sentinel` workflow 手動執行。
+情境把額外輸入疊加到基準資料上，結果寫到 `dashboard/public/data/scenarios/<name>/`，**不影響正式總覽燈號**。可以從網站的「Agent 執行」頁（需示範密碼，每小時一次）或 GitHub Actions 的 `sentinel` workflow 手動執行。
+
+「Agent 執行」頁送出後會即時顯示每個 Agent（Job）的狀態與耗時，點 Agent 可開啟該 Job 的執行紀錄；執行結束後偵測到新結果隨 Vercel 重新部署上線，就提供「查看這次的 Agent 執行結果」。重新整理頁面會繼續追蹤（只存在瀏覽器本機）。網站觸發使用伺服器設定的執行模式（預設 replay），不使用訂閱方案：網站觸發的 `daily` 不會搜尋新聞。
 
 | 情境 | 怎麼觸發 | 預期結果 |
 |------|---------|---------|

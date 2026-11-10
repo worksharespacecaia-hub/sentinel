@@ -4,7 +4,6 @@ import { computeSummary } from "@/lib/summary";
 import { openAlertsInfo } from "@/lib/alerts";
 import { fmtTime, LIGHT_TEXT } from "@/lib/labels";
 import { LightBadge, RiskRow, SimNotice, SourceSwitcher } from "@/components/ui";
-import RunButton from "@/components/RunButton";
 
 export const dynamic = "force-dynamic";
 
@@ -75,7 +74,7 @@ export default async function Overview({ searchParams }: { searchParams: Promise
       )}
       <div className="panel">
         <h2 style={{ marginTop: 0 }}>手動執行</h2>
-        <RunButton sources={sources.map((s) => s.key)} />
+        <p>到 <Link href="/runs">Agent 執行</Link> 頁選擇情境並執行，可即時看到每個 Agent 的進度。</p>
       </div>
       {report.data_issues.length > 0 && (
         <div className="panel"><h2 style={{ marginTop: 0 }}>資料狀態</h2>
