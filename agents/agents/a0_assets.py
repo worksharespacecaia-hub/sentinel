@@ -16,7 +16,8 @@ from tools.stack import build_seen, build_stack
 def run(ctx: RunCtx) -> dict:
     tr = ctx.tracer("a0")
     tr.emit("start", "資產探索與對帳")
-    data = load_target(ctx.target_root, as_of=ctx.as_of, scanners_dir=ctx.scanners_dir, target_sha=ctx.target_sha)
+    data = load_target(ctx.target_root, as_of=ctx.as_of, scanners_dir=ctx.scanners_dir, target_sha=ctx.target_sha,
+                       deployments_file=ctx.deployments_file)
     recon = reconcile(data)
     g = build_graph(data, recon)
     gj = graph_to_json(g)

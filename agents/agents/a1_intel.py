@@ -4,6 +4,7 @@ from __future__ import annotations
 from agents.common import finish, save
 from context import RunCtx
 from llm import Task
+from tools.daily_intel import load_daily_intel
 from tools.intel_verify import verify_event
 from tools.pipeline import event_sources
 
@@ -20,10 +21,15 @@ def run(ctx: RunCtx) -> dict:
         res = llm.get(a["id"]) or {}
         # LLM 抽取只是初步結果；程式比對以結構化欄位與 intel_verify 為準
         a["extraction_source"] = res.get("source", "template")
+    if ctx.scenario == "daily":
+        _, issues = load_daily_intel(ctx.out / "intel-daily.json")
+        for issue in issues:
+            tr.emit("error", f"daily-intel 輸出：{issue}", source="template")
+        save(ctx, "a1", "daily-intel-issues.json", issues)
     verified = []
     for raw in raw_events:
-        online = ctx.mode == "live" and raw.get("kind") == "live"
-        verified.append(verify_event(raw, as_of=ctx.as_of, online=online))
+        # 每日情資的新事件一律實際抓來源頁面確認引用（抓網頁不是 LLM 呼叫，replay 模式也要驗證）
+        verified.append(verify_event(raw, as_of=ctx.as_of, online=raw.get("kind") == "live"))
     kinds = {}
     for v in verified:
         kinds[v["event"]["kind"]] = kinds.get(v["event"]["kind"], 0) + 1
