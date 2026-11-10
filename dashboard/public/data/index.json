@@ -40,8 +40,8 @@
     }
   },
   "latest_daily": {
-    "run_id": "42754636524",
-    "generated_at": "2026-11-10T04:18:09Z",
+    "run_id": "42759027484",
+    "generated_at": "2026-11-10T04:59:49Z",
     "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
     "completeness": "partial",
     "path": "daily",
@@ -57,6 +57,6 @@
     "light": "red",
     "execution_mode": "replay"
   },
-  "updated_at": "2026-11-10T04:18:09Z",
+  "updated_at": "2026-11-10T04:59:49Z",
   "failures": {}
 }
