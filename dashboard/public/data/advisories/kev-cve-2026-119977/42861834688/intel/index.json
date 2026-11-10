@@ -1,0 +1,110 @@
+[
+  {
+    "id": "evt-1shop-2026-10",
+    "kind": "archive",
+    "title": "1shop 一頁購物疑 Mailgun API 金鑰遭取得，詐騙信內容吻合真實訂單",
+    "affected_count": 1,
+    "max_level": "medium",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "evt-91app-2026-10",
+    "kind": "archive",
+    "title": "91APP 訂單資料庫遭入侵：未更新的內部工具 Appsmith 成破口，自內部 GitLab 取得資料庫金鑰",
+    "affected_count": 5,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "evt-binance-2026-10",
+    "kind": "archive",
+    "title": "幣安 63.4 億美元駭案：假面試惡意程式入侵開發者電腦，取得容器部署憑證後攻陷錢包簽章服務",
+    "affected_count": 2,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "evt-nextjs-cve-2025-29927",
+    "kind": "archive",
+    "title": "Next.js Middleware 授權繞過（CVE-2025-29927）",
+    "affected_count": 1,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "evt-php2shell-2026-10",
+    "kind": "archive",
+    "title": "PHP2Shell：PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619）",
+    "affected_count": 2,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "evt-synology-2026-10",
+    "kind": "archive",
+    "title": "Synology NAS 遭 C3RB3R 勒索軟體加密：DSM 登入頁對外暴露，常駐連接的備份碟一併被加密",
+    "affected_count": 3,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "adv-opsbuilder-2026-001",
+    "kind": "advisory",
+    "title": "示範公告：OpsBuilder 1.90 以前版本的帳號接管漏洞（虛構產品）",
+    "affected_count": 1,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "kev-cve-2026-109618",
+    "kind": "advisory",
+    "title": "CISA KEV：PHP Memory Corruption Vulnerability（CVE-2026-109618）",
+    "affected_count": 2,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "kev-cve-2026-109619",
+    "kind": "advisory",
+    "title": "CISA KEV：PHP Stale Internal Request-State Vulnerability（CVE-2026-109619）",
+    "affected_count": 2,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "kev-cve-2026-111497",
+    "kind": "advisory",
+    "title": "CISA KEV：Google Brotli Unchecked Return Value Vulnerability（CVE-2026-111497）",
+    "affected_count": 3,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "kev-cve-2026-119977",
+    "kind": "advisory",
+    "title": "CISA KEV：WordPress WordPress Core Time-of-check Time-of-use (TOCTOU) Race Condition Vulnerability（CVE-2026-119977）",
+    "affected_count": 1,
+    "max_level": "medium",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "kev-cve-2026-97229",
+    "kind": "advisory",
+    "title": "CISA KEV：GitLab Community Edition and Enterprise Edition Integer Overflow or Wraparound Vulnerability（CVE-2026-97229）",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "not_affected",
+    "demo": false
+  }
+]
