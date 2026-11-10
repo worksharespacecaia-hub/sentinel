@@ -18,7 +18,7 @@ const STAGES: { title: string; nodes: { key: string; label: string; skippedNote?
     { key: "scanners (trivy)", label: "掃描：Trivy" },
     { key: "scanners (gitleaks)", label: "掃描：Gitleaks" },
     { key: "scanners (checkov)", label: "掃描：Checkov" },
-    { key: "daily-intel", label: "每日情資（訂閱方案）", skippedNote: "只在每日排程與 GitHub 手動 daily 執行",
+    { key: "daily-intel", label: "每日情資（程式抓新聞＋Claude 判讀）", skippedNote: "只在每日排程與 GitHub 手動 daily 執行",
       failureNote: "失敗不影響流程，報告標示今日新聞情資未更新" },
     { key: "a3-signals", label: "A3 早期訊號" },
   ] },

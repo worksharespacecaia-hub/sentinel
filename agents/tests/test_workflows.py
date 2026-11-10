@@ -130,7 +130,9 @@ def test_daily_intel_least_privilege_and_trusted_upload(sentinel):
     assert claude["with"]["github_token"] == "${{ github.token }}"
     assert set(claude["with"]) == {"claude_code_oauth_token", "github_token", "prompt", "claude_args"}
     args = claude["with"]["claude_args"]
-    assert '--disallowedTools "Bash,Edit,NotebookEdit"' in args and "--settings .claude/daily-intel-settings.json" in args
+    assert '--disallowedTools "Bash,Edit,NotebookEdit,WebFetch"' in args and "--settings .claude/daily-intel-settings.json" in args
+    # 文章由程式事先抓好（news_collect），Claude 不抓網頁：工具清單與自動核准都沒有 WebFetch
+    assert '--tools "Read,Write,Agent,Skill,WebSearch"' in args and "WebFetch" not in args.split("--disallowedTools")[0]
     # Write(路徑) 不是有效的權限規則（不會放行，dontAsk 模式下 Write 被拒）；寫檔路徑規則用 Edit(...)，hook 再限制只能寫 intel-daily.json
     assert "Edit(./out/**)" in args and "Write(" not in args
     names = [s.get("name", s.get("uses", "")) for s in job["steps"]]
@@ -139,7 +141,14 @@ def test_daily_intel_least_privilege_and_trusted_upload(sentinel):
     assert check < upload and "if" not in job["steps"][upload]   # 檢查失敗就不上傳，A1 不會用到可疑結果
     wrote = names.index("確認已寫出 out/intel-daily.json")
     assert names.index("anthropics/claude-code-action@v1") < wrote < check   # Claude 沒寫出檔案時 Job 明確失敗，並列出被拒絕的工具
-    assert "claude-error-summary.py --with-result" in job["steps"][wrote]["run"] and "exit 1" in job["steps"][wrote]["run"]
+    assert job["steps"][wrote]["run"].count("claude-error-summary.py --with-result --activity") == 2   # 成功與失敗都留下紀錄
+    assert "exit 1" in job["steps"][wrote]["run"]
+    collect = next(i for i, s in enumerate(job["steps"]) if "news_collect.py" in str(s.get("run", "")))
+    assert collect < names.index("anthropics/claude-code-action@v1")         # 先由程式抓文章，再交給 Claude
+    assert "sha256sum out/news.json" in job["steps"][collect]["run"] and "secrets." not in yaml.safe_dump(job["steps"][collect])
+    assert 'sha256sum -c --quiet "$RUNNER_TEMP/news.sha256"' in job["steps"][check]["run"]   # Claude 執行後 news.json 不得被改動
+    up = job["steps"][upload]["with"]
+    assert up["path"].split() == ["out/intel-daily.json", "out/news.json"]   # A1 用同一份原文確認引用
 
 
 def test_deployments_fetched_once_and_shared(sentinel):

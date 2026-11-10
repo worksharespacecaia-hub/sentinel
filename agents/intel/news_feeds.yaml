@@ -1,0 +1,44 @@
+# 每日情資的新聞來源（受審查設定）：daily-intel Job 在 Claude 之前由程式抓取（agents/tools/news_collect.py）。
+# 文章網址的網域必須在 sources.yaml 中（A1 用同一份原文確認引用）；feed_hosts 只用來抓 RSS，不算可信來源。
+# security: true 的來源本身是資安媒體，其他來源必須含資安關鍵字才保留。
+window_hours: 72
+max_items: 30              # 交給 Claude 判讀的文章上限（依相關度排序；news.json 要能一次讀完，約 2 萬 token 以內）
+max_article_fetch: 25      # RSS 摘要太短、需要另外抓內文的文章上限
+max_sentences: 15          # 每篇文章保留的句子上限（重點多在前段）
+max_bytes: 80000           # news.json 大小上限：超過時從相關度最低的文章開始捨去（Claude 的 Read 一次約 2.5 萬 token）
+feed_hosts: [feeds.feedburner.com]
+feeds:
+  - {id: ithome, name: iThome, url: "https://www.ithome.com.tw/rss", tz: "+08:00"}
+  - {id: technews, name: TechNews 科技新報, url: "https://technews.tw/feed/", tz: "+08:00"}
+  - {id: inside, name: INSIDE, url: "https://www.inside.com.tw/feed/rss", tz: "+08:00"}
+  - {id: cyberq, name: CyberQ, url: "https://cyberq.tw/feed/", tz: "+08:00", security: true}
+  - {id: cna-tech, name: 中央社科技, url: "https://feeds.feedburner.com/rsscna/technology", tz: "+08:00"}
+  - {id: cna-social, name: 中央社社會, url: "https://feeds.feedburner.com/rsscna/social", tz: "+08:00"}
+  - {id: taipeitimes, name: Taipei Times, url: "https://www.taipeitimes.com/xml/index.rss", tz: "+08:00"}
+  - {id: thehackernews, name: The Hacker News, url: "https://feeds.feedburner.com/TheHackersNews", tz: "+00:00", security: true}
+  - {id: securityweek, name: SecurityWeek, url: "https://www.securityweek.com/feed/", tz: "+00:00", security: true}
+  - {id: therecord, name: The Record, url: "https://therecord.media/feed", tz: "+00:00", security: true}
+kev:
+  name: CISA KEV
+  url: "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
+  link: "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search={cve}"
+# stack.json 的產品 → 新聞中常見的寫法（不分大小寫；英文以字詞邊界比對）。沒列出的產品不參與排序，避免 next、node 這類泛用字誤判
+product_terms:
+  apache-httpd: [Apache HTTP Server, Apache httpd]
+  express: [Express.js, expressjs]
+  gitlab-ce: [GitLab]
+  lodash: [lodash]
+  next: [Next.js, nextjs]
+  nginx: [nginx]
+  node: [Node.js, nodejs]
+  openjdk: [OpenJDK]
+  php: [PHP]
+  phpmyadmin: [phpMyAdmin]
+  postgresql: [PostgreSQL]
+  redis: [Redis]
+  synology-dsm: [Synology]
+  wordpress: [WordPress]
+security_terms: [資安, 駭客, 駭侵, 外洩, 個資, 漏洞, 勒索, 入侵, 網攻, 攻擊, 詐騙, 撞庫, 釣魚, 惡意程式, 後門, 盜用, CVE-, breach, hacked, hacker,
+                 ransomware, vulnerability, vulnerabilities, exploit, leak, malware, phishing, zero-day, cyberattack, data theft, backdoor, compromised]
+industry_terms: [電商, 購物, 零售, 會員, 訂單, 支付, 金流, SaaS, 網購, 商家, 開店平台, e-commerce, ecommerce, retail, retailer, shopping, payment, customer data]
+region_terms: [台灣, 臺灣, Taiwan, Taipei, 亞洲, Asia, 日本, Japan, 韓國, Korea, 新加坡, Singapore, 香港, Hong Kong]

@@ -4,13 +4,12 @@
 - Read：只允許 out/ 與 .claude/（Skill、Subagent 定義）；拒絕 ..、.git、.env
 - Write：只允許 out/intel-daily.json
 - Agent：只允許 4 個每日情資 Subagent，且必須在前景執行（無人值守的單次執行，主 Agent 結束回合時背景 Subagent 會被中斷）
-- WebFetch：只允許 HTTPS 與受信任來源網域（agents/intel/sources.yaml）；WebSearch 允許
+- WebFetch：一律拒絕（文章由程式事先抓好放在 out/news.json）；WebSearch 允許（補充用，結果由程式抓頁面確認）
 - Skill：只允許 daily-intel；其他工具一律拒絕
 """
 import json
 import sys
 from pathlib import Path
-from urllib.parse import urlsplit
 
 ROOT = Path.cwd().resolve()
 SUBAGENTS = {"news-scout", "advisory-scout", "incident-analyst", "stack-impact-analyst"}
@@ -36,14 +35,6 @@ def inside(raw, *bases):
     return any(p == b or b in p.parents for b in bases)
 
 
-def trusted_domains():
-    domains = []
-    for line in (ROOT / "agents" / "intel" / "sources.yaml").read_text(encoding="utf-8").splitlines():
-        if "domain:" in line:
-            domains.append(line.split("domain:")[1].split(",")[0].strip())
-    return domains
-
-
 def main():
     data = json.load(sys.stdin)
     tool, inp = data.get("tool_name", ""), data.get("tool_input") or {}
@@ -63,10 +54,7 @@ def main():
     if tool == "WebSearch":
         return allow()
     if tool == "WebFetch":
-        parts = urlsplit(inp.get("url", ""))
-        host = (parts.hostname or "").lower()
-        ok = parts.scheme == "https" and not parts.username and any(host == d or host.endswith("." + d) for d in trusted_domains())
-        return allow() if ok else deny("WebFetch 只允許受信任來源的 HTTPS 網址")
+        deny("每日情資不使用 WebFetch：文章已由程式抓好放在 out/news.json，請從中照抄引用")
     deny(f"工具 {tool} 未核准")
 
 

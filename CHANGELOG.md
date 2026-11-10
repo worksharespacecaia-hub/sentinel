@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.6.0 — 2026-11-10（每日情資改為程式抓新聞、Claude 判讀）
+
+- **架構調整**（使用者決定）：資安新聞改由程式從可信網站的 RSS 與 CISA KEV 抓取（`agents/tools/news_collect.py`、`agents/intel/news_feeds.yaml`），Claude 只做判讀；不再使用 WebFetch，WebSearch 只用來補充 RSS 沒涵蓋的事件
+  - 來源：iThome、TechNews、INSIDE、CyberQ、中央社（科技、社會）、Taipei Times、The Hacker News、SecurityWeek、The Record、CISA KEV
+  - 近 72 小時（原 48 小時；GitHub 排程常延遲數小時）；一般新聞來源只保留含資安關鍵字的文章，依技術棧產品、產業、地區排序取前 30 篇；內文切成句子（每句一行），`news.json` 限制在 80 KB 內
+  - safe_fetch：只接受 HTTPS 與允許的網域、限制大小與型態；XML 以 defusedxml 解析；文章網域必須在可信清單中
+  - A1 以同一次執行抓到的原文確認引用（不需再抓一次）；WebSearch 補充的事件仍實際抓頁面確認
+  - Job 在抓取後記錄 `news.json` 雜湊，Claude 執行後核對；hook 拒絕 WebFetch
+- 本機端到端驗證（11/10）：抓到 40 篇相關文章；Claude 判讀出 4 件事件，引用全部比對通過——易遊網會員資料外洩（iThome、INSIDE、Taipei Times 三家一致 → 確認）、順立智慧（Cyberbiz）資料庫遭異常存取波及櫻花／曜亞／崇越安永生活、美吾華購物網站、SEGA（Arara）
+- 修正：沒有時區的發布時間（iThome）被當成 UTC；safe_fetch 接受 `text/xml`、`application/atom+xml`
+- 併入未單獨發布的 0.5.1：Subagent 搜尋步驟、`advisory-scout` 讀正確路徑 `out/stack.json`、Skill 參考檔使用完整路徑；每次執行的 log 逐筆列出工具呼叫（工具、查詢字詞或網站、結果）與 Claude 最後的說明，不含網頁內容
+- 網站：「Agent 執行」頁的每日情資節點與說明改為「程式抓新聞＋Claude 判讀」
+
 ## 0.5.0 — 2026-11-10（每日情資信任來源擴充）
 
 - 0.4.2 後每日情資全流程跑通（狀態正常、報告完整、無資料問題），但新事件 0 件：信任網站清單只有 15 個網域，多數台灣新聞網站抓不到原文，依「每項判斷必附原文引用」的規則不列入
