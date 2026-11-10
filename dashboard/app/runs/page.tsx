@@ -1,6 +1,7 @@
 import { getReport, getTrace, listSources, resolveSource } from "@/lib/data";
 import { AGENT_TEXT, SOURCE_TEXT, fmtTime } from "@/lib/labels";
 import { SimNotice, SourceSwitcher } from "@/components/ui";
+import RunConsole from "@/components/RunConsole";
 
 export const dynamic = "force-dynamic";
 
@@ -17,6 +18,13 @@ export default async function Runs({ searchParams }: { searchParams: Promise<Rec
   return (
     <>
       <h1>Agent 執行</h1>
+      <div className="panel">
+        <h2 style={{ marginTop: 0 }}>執行 Agent 流程</h2>
+        <p className="muted">選擇情境後送出，網站會派發 GitHub Actions，並在這裡即時顯示每個 Agent 的進度；點 Agent 可開啟該 Job 的執行紀錄。
+          網站觸發使用伺服器設定的執行模式（預設重播，不花 API 費用），不使用訂閱方案；每小時最多一次。</p>
+        <RunConsole />
+      </div>
+      <h2>執行紀錄</h2>
       <SourceSwitcher current={source.key} sources={sources} path="/runs" />
       <SimNotice source={source} />
       <p className="muted">執行 {report?.run_id}（{fmtTime(report?.generated_at)}，模式 {report?.execution_mode}）
