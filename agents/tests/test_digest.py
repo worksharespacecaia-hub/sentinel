@@ -218,6 +218,15 @@ def test_eligibility_excludes_demo_and_non_daily_runs():
     assert dg.eligible_report(make_report("kev-cve-2026-1234", kind="advisory"))
     assert not dg.eligible_report(make_report("demo-x-2026", kind="demo"))
     assert not dg.eligible_report(make_report("evt-b-2026-10", kind="archive", demo=True))
+    fixture = make_report("adv-fixture-2026-001", kind="advisory")
+    fixture["event"]["demo_fixture"] = True                           # 原始事件的 demo_fixture（demo=false 的示範公告）
+    assert not dg.eligible_report(fixture)
+    demo_src = make_report("adv-fixture-2026-002", kind="advisory", sources=[
+        {"url": None, "title": "虛構示範公告", "quote": None, "published": None, "verification_basis": "demo"}])
+    assert not dg.eligible_report(demo_src)                           # A1 已把來源標為示範
+    assert not dg.eligible_report(make_report("adv-x-2026-001", kind="advisory"), {"adv-x-2026-001"})
+    assert dg.fixture_ids([{"id": "adv-a", "kind": "advisory", "demo": False, "demo_fixture": True},
+                           {"id": "evt-b", "kind": "archive", "demo": False}, {"id": "demo-c", "kind": "demo"}]) == {"adv-a", "demo-c"}
     assert dg.eligible_run("daily", "schedule") and dg.eligible_run("daily", "manual")
     assert not dg.eligible_run("daily", "web")
     assert not dg.eligible_run("scenario", "manual") and not dg.eligible_run("advisory", "intel-watch")
@@ -370,6 +379,29 @@ def test_demo_events_never_recorded():
     s, seen = merge(None, None, [make_report("demo-x-2026", kind="demo"),
                                  make_report("evt-d-2026-10", kind="archive", demo=True)], day(0))
     assert s["events"] == {} and seen["first_seen_by_key"] == {}
+
+
+def test_demo_fixture_never_enters_store_seen_or_latest():
+    fixture = make_report("adv-opsbuilder-2026-001", kind="advisory", status="open",
+                          impacts=[_impact("adv-opsbuilder-2026-001", "internal-tool", "affected", "r")])
+    real = make_report("evt-real-2026-10", kind="archive")
+    stats = {}
+    s, seen = dg.merge_store(None, None, daily_report(), [fixture, real], day(0), complete=True, asset_labels={},
+                             run_id="run-1", stats=stats, exclude_ids={"adv-opsbuilder-2026-001"})
+    assert list(s["events"]) == ["evt-real-2026-10"] and stats["new"] == 1
+    assert dg.seen_key("adv-opsbuilder-2026-001") not in seen["first_seen_by_key"]
+    latest = dg.build_latest(s, daily_report(), day(0), day(0, 1), "run-1")
+    assert "adv-opsbuilder-2026-001" not in json.dumps(latest)
+    # 前版（功能修正前）已收錄的 fixture：下一次合併時一併移除
+    prev = {**s, "events": {**s["events"], "adv-opsbuilder-2026-001": {
+        **dg.event_content(fixture), "first_seen": "2026-11-01", "last_seen": "2026-11-01",
+        "last_seen_at": "2026-11-01T00:00:00Z", "observed_run_id": "run-0", "assessment": None}}}
+    prev_seen = {"schema_version": 1, "first_seen_by_key": {**seen["first_seen_by_key"],
+                                                            dg.seen_key("adv-opsbuilder-2026-001"): "2026-11-01"}}
+    s2, seen2 = dg.merge_store(prev, prev_seen, daily_report("run-2"), [fixture, real], day(1), complete=True,
+                               asset_labels={}, run_id="run-2", exclude_ids={"adv-opsbuilder-2026-001"})
+    assert list(s2["events"]) == ["evt-real-2026-10"]
+    assert dg.seen_key("adv-opsbuilder-2026-001") not in seen2["first_seen_by_key"]
 
 
 def test_seen_contains_only_hash_and_date():

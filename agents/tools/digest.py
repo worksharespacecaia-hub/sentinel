@@ -270,11 +270,23 @@ def event_content(rep: dict) -> dict:
             "sources": public_sources(ev.get("sources"))}
 
 
-def eligible_report(rep: dict) -> bool:
-    """只收 daily 的 live／archive／advisory；示範事件（kind=demo 或 demo=true）一律排除。"""
+def is_fixture(ev: dict) -> bool:
+    """示範 fixture：kind=demo、demo=true、原始事件的 demo_fixture=true（例如虛構產品的示範公告），
+    或 A1 已把來源標為示範（intel_verify 對 fixture 一律設 verification_basis="demo"）。不以標題文字判斷。"""
+    return (ev.get("kind") == "demo" or bool(ev.get("demo")) or bool(ev.get("demo_fixture"))
+            or any(isinstance(s, dict) and s.get("verification_basis") == "demo" for s in ev.get("sources") or []))
+
+
+def fixture_ids(events: list[dict] | None) -> set[str]:
+    """pipeline 驗證後的事件（保留原始事件的 demo_fixture 等額外欄位）中屬於示範 fixture 的 ID。"""
+    return {ev["id"] for ev in events or [] if isinstance(ev, dict) and isinstance(ev.get("id"), str) and is_fixture(ev)}
+
+
+def eligible_report(rep: dict, exclude_ids: set[str] | frozenset = frozenset()) -> bool:
+    """只收 daily 的 live／archive／advisory 真實事件；示範事件與示範 fixture 一律排除（R2.2）。"""
     ev = rep.get("event") or {}
-    return (ev.get("kind") in ("live", "archive", "advisory") and not ev.get("demo")
-            and isinstance(ev.get("id"), str) and bool(EVENT_ID_RE.match(ev["id"])))
+    return (ev.get("kind") in ("live", "archive", "advisory") and not is_fixture(ev)
+            and isinstance(ev.get("id"), str) and bool(EVENT_ID_RE.match(ev["id"])) and ev["id"] not in exclude_ids)
 
 
 def eligible_run(scope: str, trigger_source: str) -> bool:
@@ -414,8 +426,11 @@ def finalize_store(store: dict, seen: dict, as_of: datetime, days: int = WINDOW_
 
 def merge_store(prev: dict | None, seen: dict | None, report: dict, intel_reports: list[dict], as_of: datetime, *,
                 complete: bool, asset_labels: dict[str, str], generated_at: datetime | None = None,
-                run_id: str | None = None, stats: dict | None = None) -> tuple[dict, dict]:
+                run_id: str | None = None, stats: dict | None = None,
+                exclude_ids: set[str] | frozenset = frozenset()) -> tuple[dict, dict]:
     """把本次 daily 的比對報告併入累積資料（純函式，不寫檔）。回傳 (store, seen)。
+
+    exclude_ids：示範 fixture 的事件 ID（由 A5 從 pipeline 事件取得）；不收錄、不記去重，既有紀錄也一併移除。
 
     - 新 ID 先查 seen：曾收錄者沿用原 first_seen；已過期 ID 不重新加入；只有從未收錄者才以 as_of 的台灣日期新增去重鍵
     - 收錄資料（last_seen／last_seen_at／observed_run_id）每次觀察都更新
@@ -431,6 +446,10 @@ def merge_store(prev: dict | None, seen: dict | None, report: dict, intel_report
     start, _ = window_bounds(as_of)
     store = copy.deepcopy(prev) if prev else {"schema_version": 1, "updated_at": iso(generated_at), "data_issues": [], "events": {}}
     seen_map = dict((seen or {}).get("first_seen_by_key") or {})
+    for eid in [k for k, ev in store["events"].items() if k in exclude_ids or is_fixture(ev)]:
+        store["events"].pop(eid)
+    for eid in exclude_ids:
+        seen_map.pop(seen_key(eid), None)
     events = store["events"]
     for ev in events.values():                     # 去重紀錄先於清理與容量裁切產生
         k = seen_key(ev["id"])
@@ -438,7 +457,7 @@ def merge_store(prev: dict | None, seen: dict | None, report: dict, intel_report
     obs = {"last_seen": today, "last_seen_at": iso(as_of), "observed_run_id": run_id}
     this_key = (parse_time(iso(as_of)), run_id)
     for rep in intel_reports:
-        if not eligible_report(rep):
+        if not eligible_report(rep, exclude_ids):
             continue
         eid = rep["event"]["id"]
         key = seen_key(eid)
@@ -674,7 +693,8 @@ def validated_bytes(name: str, value: dict) -> bytes:
 
 
 def prepare_bundle(digest_dir: Path, report: dict, intel_reports: list[dict], *, as_of: datetime, generated_at: datetime,
-                   run_id: str, asset_labels: dict[str, str], stats: dict | None = None) -> dict[str, bytes]:
+                   run_id: str, asset_labels: dict[str, str], stats: dict | None = None,
+                   exclude_ids: set[str] | frozenset = frozenset()) -> dict[str, bytes]:
     """在記憶體中產生新的 seen／store／latest 並逐檔驗證；不寫任何檔案。
 
     資料不完整時不重建 latest：沿用前版並只做到期移除（不改 updated_at／as_of／run_id／next_update_at）。
@@ -684,7 +704,8 @@ def prepare_bundle(digest_dir: Path, report: dict, intel_reports: list[dict], *,
     prev = {name: load_valid(digest_dir / name, name) for name in FILES}
     complete = report.get("completeness") == "complete"
     store, seen = merge_store(prev["store.json"], prev["seen.json"], report, intel_reports, as_of, complete=complete,
-                              asset_labels=asset_labels, generated_at=generated_at, run_id=run_id, stats=stats)
+                              asset_labels=asset_labels, generated_at=generated_at, run_id=run_id, stats=stats,
+                              exclude_ids=exclude_ids)
     if complete:
         latest, stats["latest"] = build_latest(store, report, as_of, generated_at, run_id), "rebuilt"
     elif prev["latest.json"] is not None:

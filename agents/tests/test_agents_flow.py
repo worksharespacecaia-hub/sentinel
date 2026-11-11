@@ -191,8 +191,12 @@ def test_daily_replay_writes_digest_beside_daily(ctx, frozen_clock):
     assert not (ctx.data_dir / "daily" / "digest").exists()            # 不落入 daily/（每次發布會整個覆蓋）
     rep = _report(ctx)
     assert rep["completeness"] == "complete"
-    real = [e for e in rep["events"] if e["kind"] in ("live", "archive", "advisory") and not e["demo"]]
+    fixture = "adv-opsbuilder-2026-001"                                # demo_fixture 的虛構示範公告（demo=false）
+    assert any(e["id"] == fixture for e in rep["events"])
+    real = [e for e in rep["events"] if e["kind"] in ("live", "archive", "advisory") and not e["demo"] and e["id"] != fixture]
     assert sorted(store.events) == sorted(e["id"] for e in real) and len(seen.first_seen_by_key) == len(real)
+    assert fixture not in store.events and dg.seen_key(fixture) not in seen.first_seen_by_key
+    assert fixture not in (d / "latest.json").read_text(encoding="utf-8")
     # 首次建置：收錄事件都放在上線當天（台灣日期）
     assert [day.date for day in latest.days] == ["2026-11-09"] and latest.counts.total == len(real)
     assert latest.as_of == "2026-11-09T01:00:00Z" and latest.updated_at == "2026-11-09T01:20:00Z"

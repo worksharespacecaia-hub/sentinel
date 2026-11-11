@@ -192,7 +192,8 @@ def _digest(ctx: RunCtx, tr, built: dict, res: dict, output_dir: str) -> None:
     try:
         labels = digest.public_asset_labels(res["data"].services, res["data"].vendors, dict(res["graph"].nodes(data=True)))
         bundle = digest.prepare_bundle(ctx.data_dir / "digest", built["report"], built["intel_reports"], as_of=ctx.as_of,
-                                       generated_at=_clock(), run_id=ctx.run_id, asset_labels=labels, stats=stats)
+                                       generated_at=_clock(), run_id=ctx.run_id, asset_labels=labels, stats=stats,
+                                       exclude_ids=digest.fixture_ids(res["events"]))
         digest.commit_bundle(ctx.data_dir / "digest", bundle, ctx.out / "a5" / "digest-staging")
     except Exception as exc:                         # noqa: BLE001 - 整理失敗不讓 A5 失敗
         code = digest.safe_error_code(exc)
