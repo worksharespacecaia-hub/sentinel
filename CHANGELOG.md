@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.2 — 2026-11-11（摘要數字滑過顯示包含哪幾項）
+
+- **今日重點、行動報告**：摘要與決策裡有底線的數字，滑鼠移上去（或用鍵盤聚焦）會顯示小卡，列出前 5 項與「還有幾項」；點數字仍跳到「數字從哪來」
+- **RWD**：小卡寬度不超過畫面寬度減左右 16px，位置依畫面計算，手機 360／414、平板、桌機都不超出畫面；觸控裝置不顯示（點數字直接跳到清單），列印不顯示
+- **驗證**：本機以 Chrome 在 360、414、768、1280、1920 五種寬度逐一滑過兩頁所有數字（80 次），小卡皆在畫面內、頁面無橫向捲軸
+
 ## 0.10.1 — 2026-11-11（Subagent 全部改用 Haiku；成本量測）
 
 - **模型**：原本用 Sonnet 的 6 個撰寫型 Subagent（planner、remediation-advisor、brand-notice-writer、ceo-briefer、intel-report-writer、containment-advisor）改用 Haiku 5.5，設定 effort medium、未用圖譜時最多 3 回合；其他 Subagent 不變（effort low、最多 2 回合）。快取鍵含模型 ID，這 6 個的舊快取不再命中，第一次 live 會重新撰寫

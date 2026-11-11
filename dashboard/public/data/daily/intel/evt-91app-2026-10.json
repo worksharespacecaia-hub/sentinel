@@ -199,7 +199,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "91APP 事件的破口是未更新的內部工具 Appsmith，攻擊者再自內部 GitLab 取得資料庫金鑰；我們有 5 項相符，最高為高風險：internal-tool 對外開放（8 分）、gitlab 與 brand-app 的 Git 內金鑰（8 分與 10 分），另有 nas-office-01 對外開放與測試環境可連正式資料庫（各 5 分，中風險）。",
+  "summary": "91APP 事件的破口是未更新的內部工具，再從內部 GitLab 取得資料庫金鑰；我們有 5 項受影響，包含對外開放的 internal-tool、程式庫與 App 中的金鑰，最高為高風險（brand-app 10 分），其中 internal-tool、gitlab、brand-app 都在完整攻擊鏈上。",
   "blocks": {
     "1_summary": {
       "title": "91APP 訂單資料庫遭入侵：未更新的內部工具 Appsmith 成破口，自內部 GitLab 取得資料庫金鑰",
@@ -243,7 +243,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "91APP 事件的破口是未更新的內部工具 Appsmith，攻擊者再自內部 GitLab 取得資料庫金鑰；我們有 5 項相符，最高為高風險：internal-tool 對外開放（8 分）、gitlab 與 brand-app 的 Git 內金鑰（8 分與 10 分），另有 nas-office-01 對外開放與測試環境可連正式資料庫（各 5 分，中風險）。",
+      "summary": "91APP 事件的破口是未更新的內部工具，再從內部 GitLab 取得資料庫金鑰；我們有 5 項受影響，包含對外開放的 internal-tool、程式庫與 App 中的金鑰，最高為高風險（brand-app 10 分），其中 internal-tool、gitlab、brand-app 都在完整攻擊鏈上。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -276,7 +276,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、live-91app-order-data-resale-2026-11"
+            "reason": "evt-91app-2026-10"
           },
           {
             "factor": "位於完整攻擊鏈",
@@ -286,7 +286,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-11T03:28:21Z"
+        "observed_at": "2026-11-11T08:28:41Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -311,12 +311,12 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、evt-synology-2026-10、live-91app-order-data-resale-2026-11"
+            "reason": "evt-91app-2026-10、evt-synology-2026-10"
           }
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-11T03:28:21Z"
+        "observed_at": "2026-11-11T08:28:41Z"
       },
       {
         "asset_id": "gitlab",
@@ -346,7 +346,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、live-91app-order-data-resale-2026-11"
+            "reason": "evt-91app-2026-10"
           },
           {
             "factor": "位於完整攻擊鏈",
@@ -356,7 +356,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-11T03:28:21Z"
+        "observed_at": "2026-11-11T08:28:41Z"
       },
       {
         "asset_id": "brand-app",
@@ -391,7 +391,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、live-91app-order-data-resale-2026-11"
+            "reason": "evt-91app-2026-10"
           },
           {
             "factor": "位於完整攻擊鏈",
@@ -401,7 +401,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-11T03:28:21Z"
+        "observed_at": "2026-11-11T08:28:41Z"
       },
       {
         "asset_id": "order-db-prod",
@@ -431,12 +431,12 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、live-91app-order-data-resale-2026-11"
+            "reason": "evt-91app-2026-10"
           }
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-11T03:28:21Z"
+        "observed_at": "2026-11-11T08:28:41Z"
       }
     ],
     "4_unaffected_and_check": {
@@ -534,15 +534,5 @@
       "status": "open",
       "label": "待處理"
     }
-  },
-  "updates": [
-    {
-      "id": "live-91app-order-data-resale-2026-11",
-      "title": "91APP 個資外洩事件延燒，駭客兜售 4 電商 790 萬筆訂單資料",
-      "date": "2026-11-11",
-      "status": "open",
-      "conclusion": "5 項受影響，最高風險為高。internal-tool：network.json: internet → internal-tool:443。",
-      "confidence": "provisional"
-    }
-  ]
+  }
 }

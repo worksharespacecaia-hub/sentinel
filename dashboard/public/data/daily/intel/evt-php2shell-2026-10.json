@@ -218,7 +218,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "PHP2Shell（CVE-2026-109618、CVE-2026-109619）有 2 項相符：marketing-site（php 8.1.27、對外、已停止支援且無修補）為高風險 9 分；phpmyadmin（php 8.3.20）因只允許 corp-vpn 連入有補償措施扣 3 分，為中風險 4 分。",
+  "summary": "PHP2Shell 的兩個免驗證遠端執行漏洞命中 2 項資產：marketing-site 對外、已停止支援且無修補（高風險，9 分）；phpmyadmin 僅允許公司 VPN 連入，因補償措施降為中風險（4 分）。",
   "blocks": {
     "1_summary": {
       "title": "PHP2Shell：PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619）",
@@ -270,7 +270,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "PHP2Shell（CVE-2026-109618、CVE-2026-109619）有 2 項相符：marketing-site（php 8.1.27、對外、已停止支援且無修補）為高風險 9 分；phpmyadmin（php 8.3.20）因只允許 corp-vpn 連入有補償措施扣 3 分，為中風險 4 分。",
+      "summary": "PHP2Shell 的兩個免驗證遠端執行漏洞命中 2 項資產：marketing-site 對外、已停止支援且無修補（高風險，9 分）；phpmyadmin 僅允許公司 VPN 連入，因補償措施降為中風險（4 分）。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -318,7 +318,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-11T03:28:21Z"
+        "observed_at": "2026-11-11T08:28:41Z"
       },
       {
         "asset_id": "phpmyadmin",
@@ -358,7 +358,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-11T03:28:21Z"
+        "observed_at": "2026-11-11T08:28:41Z"
       }
     ],
     "4_unaffected_and_check": {

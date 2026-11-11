@@ -1,0 +1,217 @@
+{
+  "event": {
+    "id": "live-wordpress-core-upgrade-race-2026-11",
+    "kind": "live",
+    "title": "CISA 確認 WordPress 核心升級流程漏洞（CVE-2026-119977）遭利用",
+    "date": "2026-11-11",
+    "industry": "SaaS",
+    "attack_chain": [
+      "在 WordPress 核心升級期間利用競態條件漏洞"
+    ],
+    "attck": [
+      "T1190"
+    ],
+    "cves": [
+      "CVE-2026-119977"
+    ],
+    "products": [
+      {
+        "name": "wordpress",
+        "ecosystem": "generic",
+        "affected": [
+          {
+            "introduced": "4.7",
+            "fixed": "7.1.4"
+          }
+        ],
+        "cvss": 8.1,
+        "impact": "other"
+      }
+    ],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://thehackernews.com/2026/11/cisa-confirms-hackers-exploiting.html",
+        "title": "CISA Confirms Hackers Exploiting WordPress Core Flaw During Software Upgrades",
+        "quote": "CISA Confirms Hackers Exploiting WordPress Core Flaw During Software Upgrades",
+        "published": "2026-11-11",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-11T08:28:41Z",
+        "content_hash": "sha256:b65a5fa1f8ac06d34db0b6e422d755a62f168e74519539383c09731aea788b59",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "1 項受影響，最高風險為高。marketing-site：wordpress 6.4.3，對外。",
+  "affected_count": 1,
+  "max_level": "high",
+  "impacts": [
+    {
+      "event_id": "live-wordpress-core-upgrade-race-2026-11",
+      "asset_id": "marketing-site",
+      "basis": "version",
+      "our_state": "wordpress 6.4.3，對外",
+      "verdict": "affected",
+      "risk_id": "marketing-site:wordpress:vuln",
+      "to_verify": [],
+      "reason": "版本落在受影響範圍"
+    }
+  ],
+  "solutions": [
+    {
+      "risk_id": "marketing-site:wordpress:vuln",
+      "temporary": "確認 marketing-site 的暴露範圍，先以 WAF 或存取限制降低風險",
+      "permanent": "將 marketing-site 的受影響元件升級到修補版本",
+      "options": [
+        {
+          "name": "修補",
+          "action": "升級到修補版本",
+          "cost": "需回歸測試",
+          "timing": "24 小時內"
+        },
+        {
+          "name": "緩解",
+          "action": "限制來源、關閉受影響功能",
+          "cost": "部分功能受限",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "security-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template"
+    }
+  ],
+  "notice": {
+    "needed": false,
+    "draft": null
+  },
+  "status": "open",
+  "evaluated_asset_ids": [
+    "marketing-site"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "CISA 確認 WordPress 核心升級流程漏洞遭利用；marketing-site 的 wordpress 6.4.3 版本受影響且對外，程式判定為高風險（7 分）。",
+  "blocks": {
+    "1_summary": {
+      "title": "CISA 確認 WordPress 核心升級流程漏洞（CVE-2026-119977）遭利用",
+      "date": "2026-11-11",
+      "industry": "SaaS",
+      "attack_chain": [
+        "在 WordPress 核心升級期間利用競態條件漏洞"
+      ],
+      "attck": [
+        "T1190"
+      ],
+      "cves": [
+        "CVE-2026-119977"
+      ],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://thehackernews.com/2026/11/cisa-confirms-hackers-exploiting.html",
+          "title": "CISA Confirms Hackers Exploiting WordPress Core Flaw During Software Upgrades",
+          "quote": "CISA Confirms Hackers Exploiting WordPress Core Flaw During Software Upgrades",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-11T08:28:41Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "CISA 確認 WordPress 核心升級流程漏洞遭利用；marketing-site 的 wordpress 6.4.3 版本受影響且對外，程式判定為高風險（7 分）。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "1 項受影響，最高風險為高。marketing-site：wordpress 6.4.3，對外。",
+      "affected_count": 1,
+      "max_level": "high"
+    },
+    "3_affected": [
+      {
+        "asset_id": "marketing-site",
+        "our_state": "wordpress 6.4.3，對外",
+        "basis": "version",
+        "verdict": "affected",
+        "reason": "版本落在受影響範圍",
+        "risk_id": "marketing-site:wordpress:vuln",
+        "level": "high",
+        "score": 7,
+        "breakdown": [
+          {
+            "factor": "基礎分：漏洞",
+            "points": 2,
+            "reason": "CVSS 8.1"
+          },
+          {
+            "factor": "已遭實際利用",
+            "points": 2,
+            "reason": "KEV 或官方確認"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "可從 internet 連到"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "live-wordpress-core-upgrade-race-2026-11"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-11T08:28:41Z"
+      }
+    ],
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": []
+    },
+    "5_solutions": [
+      {
+        "risk_id": "marketing-site:wordpress:vuln",
+        "temporary": "確認 marketing-site 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "permanent": "將 marketing-site 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "24 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "security-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      }
+    ],
+    "6_notice": {
+      "needed": false,
+      "draft": null
+    },
+    "7_status": {
+      "status": "open",
+      "label": "待處理"
+    }
+  }
+}

@@ -1,7 +1,7 @@
 {
   "tool": "nvd",
   "tool_version": "NVD CVE API 2.0",
-  "database_revision": "2026-11-11T03:29:10Z",
+  "database_revision": "2026-11-11T08:29:26Z",
   "api_key": false,
   "results": [
     {
