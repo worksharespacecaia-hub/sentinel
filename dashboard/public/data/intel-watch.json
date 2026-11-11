@@ -14,7 +14,7 @@
       ]
     }
   ],
-  "dispatched": true,
+  "dispatched": false,
   "items": [
     {
       "advisory_id": "adv-opsbuilder-2026-001",
@@ -66,7 +66,7 @@
     {
       "advisory_id": "kev-cve-2026-111497",
       "revision": "2026-11-10T13:18:20.647",
-      "status": "pending",
+      "status": "done",
       "verdict": "affected",
       "asset_ids": [
         "internal-tool",
@@ -78,7 +78,8 @@
       "matched_component": [
         "node"
       ],
-      "error": null
+      "error": null,
+      "run_id": "43080719293"
     },
     {
       "advisory_id": "kev-cve-2026-119977",
