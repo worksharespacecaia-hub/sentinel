@@ -28,11 +28,13 @@ fi
 git config user.name "github-actions[bot]"
 git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+# 資安事件整理的到期清理以 publisher 時間為基準：重試固定同一個時間，避免跨台灣午夜時每次清理結果不同
+PUBLISH_NOW="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 for attempt in 1 2 3; do
   git fetch --quiet "$REMOTE_URL" main
   git reset --quiet --hard FETCH_HEAD
   git clean -fdq -- "${ALLOWED[@]}" 2>/dev/null || true
-  python agents/tools/publish_merge.py --candidate "$CANDIDATE" --repo . --output-dir "$OUTPUT_DIR"
+  python agents/tools/publish_merge.py --candidate "$CANDIDATE" --repo . --output-dir "$OUTPUT_DIR" --now "$PUBLISH_NOW"
   git add -- "${ALLOWED[@]}"
   if git diff --cached --quiet; then
     echo "push-with-retry: 沒有內容變更，不 commit"

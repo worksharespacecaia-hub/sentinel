@@ -22,7 +22,7 @@ from pathlib import Path
 from urllib.parse import parse_qsl, unquote, urlencode, urlsplit, urlunsplit
 
 from llm import SECRET_RE
-from schemas import DigestLatest, DigestSeen, DigestStore
+from schemas import DigestEvent, DigestLatest, DigestSeen, DigestStore
 from tools.common import TAIPEI, iso, parse_time, sha256_text
 from tools.findings import SECRET_VALUE_RE
 
@@ -381,7 +381,8 @@ def store_issues(store: dict, seen: dict, as_of: datetime, days: int = WINDOW_DA
     kept_by_day: dict[str, int] = defaultdict(int)
     for ev in store["events"].values():
         kept_by_day[ev["first_seen"]] += 1
-    issues = [i for i in store.get("data_issues") or [] if i.get("code") in ("future_first_seen", "merge_conflict")]
+    # merge_conflict 只由發布端在本次合併後附加，不跨 run 累積
+    issues = [i for i in store.get("data_issues") or [] if i.get("code") == "future_first_seen"]
     for d in sorted(seen_by_day, reverse=True):
         n = seen_by_day[d] - kept_by_day.get(d, 0)
         if n > 0:
@@ -405,7 +406,8 @@ def finalize_store(store: dict, seen: dict, as_of: datetime, days: int = WINDOW_
         return len(serialize({**trial, "data_issues": store_issues(trial, seen, as_of, days)})) <= MAX_BYTES
 
     events, omitted = trim_events(store["events"], fits)
-    store["events"] = dict(sorted(events.items()))
+    order = list(DigestEvent.model_fields)          # 欄位順序固定：A5 與發布端寫出的位元組一致，重試不產生假差異
+    store["events"] = {k: {f: events[k][f] for f in order if f in events[k]} for k in sorted(events)}
     store["data_issues"] = store_issues(store, seen, as_of, days)
     return store, removed, omitted
 
@@ -574,8 +576,7 @@ def build_latest(store: dict, report: dict, as_of: datetime, generated_at: datet
     store = prune(store, as_of, days)
     flat = {k: ev for k, ev in store["events"].items() if ev.get("assessment") is not None}
     pending = len(store["events"]) - len(flat)
-    base = [i for i in store.get("data_issues") or [] if i["code"] in ("capacity", "future_first_seen", "seen_size",
-                                                                         "merge_conflict")]
+    base = [i for i in store.get("data_issues") or [] if i["code"] in ("capacity", "future_first_seen", "seen_size")]
     if pending:
         base.append(_issue("pending_assessment", f"{pending} 件事件尚待完整評估，暫不列入整理", pending))
     head = {"schema_version": 1, "updated_at": iso(generated_at), "as_of": iso(as_of), "run_id": run_id,
@@ -706,7 +707,7 @@ def commit_bundle(digest_dir: Path, files: dict[str, bytes], staging_parent: Pat
     digest_dir = Path(digest_dir)
     staging_parent = Path(staging_parent)
     staging_parent.mkdir(parents=True, exist_ok=True)
-    staging = Path(tempfile.mkdtemp(prefix="digest-", dir=staging_parent))
+    staging = Path(tempfile.mkdtemp(prefix=".digest-staging-", dir=staging_parent))
     created_dir = not digest_dir.exists()
     touched: list[str] = []
     try:
