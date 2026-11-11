@@ -199,6 +199,19 @@ a.button.primary { background: var(--accent); color: #fff; }
 /* 摘要數字的來源 */
 .fact-link { color: inherit; font-weight: 700; text-decoration: underline; text-decoration-style: dotted; text-decoration-thickness: 2px; text-underline-offset: 4px; }
 .fact-link:hover, .fact-link:focus-visible { color: var(--accent); }
+.fact-link { position: relative; }
+.fact-tip { display: none; position: absolute; top: calc(100% + 6px); left: 0; z-index: 30; width: max-content;
+  max-width: min(340px, calc(100vw - 32px)); padding: 10px 12px; background: var(--panel); color: var(--text);
+  border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 8px 24px rgb(0 0 0 / 22%);
+  font-size: 14px; font-weight: 400; line-height: 1.5; text-align: left; white-space: normal; cursor: default; }
+.fact-tip::before { content: ""; position: absolute; left: 0; right: 0; top: -8px; height: 8px; } /* 滑鼠移進小卡時不斷開 */
+.fact-tip strong { display: block; margin-bottom: 4px; }
+.fact-tip ul { margin: 0 0 4px; padding-left: 1.1em; }
+.fact-tip li { margin: 2px 0; }
+.fact-tip-more { display: block; color: var(--muted); font-size: 13px; }
+.fact-link:hover .fact-tip, .fact-link:focus-visible .fact-tip { display: block; }
+@media (hover: none) { .fact-link:hover .fact-tip { display: none; } }
+@media print { .fact-tip { display: none !important; } }
 .fact-bad { color: var(--yellow); font-weight: 700; }
 .fact { border-top: 1px solid var(--line); padding: 6px 0; scroll-margin-top: 16px; }
 .fact summary { cursor: pointer; }
