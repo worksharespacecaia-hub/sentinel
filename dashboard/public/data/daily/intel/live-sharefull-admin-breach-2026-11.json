@@ -1,0 +1,135 @@
+{
+  "event": {
+    "id": "live-sharefull-admin-breach-2026-11",
+    "kind": "live",
+    "title": "日本打工媒合平台 Sharefull 管理系統遭非法存取，約 750 萬名使用者資料恐外洩",
+    "date": "2026-11-11",
+    "industry": "SaaS",
+    "attack_chain": [
+      "管理系統遭非法存取",
+      "使用者帳號與個資可能外洩"
+    ],
+    "attck": [],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.cna.com.tw/news/ait/202611110191.aspx",
+        "title": "日本宜得利3762萬筆個資恐外洩 代理式AI助長網路攻擊",
+        "quote": "另外，短期打工媒合平台Sharefull也傳出約750萬名使用者的個資可能外洩，甚至涉及銀行帳戶資料。",
+        "published": "2026-11-11",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-11T08:28:41Z",
+        "content_hash": "sha256:313b562a2887c23bd45df07a3fc388a1a11c4d07c27e095456067bb11713aef8",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "平台管理系統需限制存取來源並偵測異常登入",
+        "reason": "來源指出平台管理系統遭非法存取，可能外洩約 750 萬名使用者個資（含銀行帳戶），現有控制項沒有涵蓋管理後台的存取控制"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-sharefull-admin-breach-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：平台管理系統需限制存取來源並偵測異常登入"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產"
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "Sharefull 於 11 月 4 日深夜發現管理系統遭非法存取，已封鎖入侵途徑。最多約 750 萬名使用者的帳號資訊可能外洩，含姓名、電話、電子郵件、臉部照片、銀行帳戶等。",
+  "blocks": {
+    "1_summary": {
+      "title": "日本打工媒合平台 Sharefull 管理系統遭非法存取，約 750 萬名使用者資料恐外洩",
+      "date": "2026-11-11",
+      "industry": "SaaS",
+      "attack_chain": [
+        "管理系統遭非法存取",
+        "使用者帳號與個資可能外洩"
+      ],
+      "attck": [],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.cna.com.tw/news/ait/202611110191.aspx",
+          "title": "日本宜得利3762萬筆個資恐外洩 代理式AI助長網路攻擊",
+          "quote": "另外，短期打工媒合平台Sharefull也傳出約750萬名使用者的個資可能外洩，甚至涉及銀行帳戶資料。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-11T08:28:41Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "Sharefull 於 11 月 4 日深夜發現管理系統遭非法存取，已封鎖入侵途徑。最多約 750 萬名使用者的帳號資訊可能外洩，含姓名、電話、電子郵件、臉部照片、銀行帳戶等。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：平台管理系統需限制存取來源並偵測異常登入"
+          ],
+          "observed_at": "2026-11-11T08:28:41Z"
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "event": {
+    "id": "live-cyberbiz-shop-db-2026-11",
+    "kind": "live",
+    "title": "電商 SaaS 順立智慧（Cyberbiz）資料庫遭異常存取，漢來美食、黑松訂單資料受影響",
+    "date": "2026-11-10",
+    "industry": "電商",
+    "attack_chain": [
+      "委外商城服務商資料庫遭未經授權的異常存取",
+      "多家客戶線上商店的訂單資料受影響"
+    ],
+    "attck": [],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180424",
+        "title": "漢來美食委外購物商城發生資安事件，部分消費者訂單資料遭異常存取",
+        "quote": "漢來美食委外購物商城發生資安事件，部分消費者訂單資料遭異常存取",
+        "published": "2026-11-11",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-11T08:28:41Z",
+        "content_hash": "sha256:087496d7ce9131484c2085fc81acdb36a759f6fc1221bc4c2de03811e10c07ef",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://www.ithome.com.tw/news/180420",
+        "title": "黑松線上商店委外廠商資料庫遭異常存取，訂單資料恐受影響",
+        "quote": "黑松線上商店委外廠商資料庫遭異常存取，訂單資料恐受影響",
+        "published": "2026-11-11",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-11T08:28:41Z",
+        "content_hash": "sha256:ca2b8f408bf0ec54d4537ad148a93e80d61702e2c06db74730eadbf4dbbee619",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "委外電商平台的訂單資料庫需有存取控制與異常存取告警",
+        "reason": "來源指出委外商城服務商的資料庫遭異常存取，連帶影響多家客戶的訂單資料，現有控制項沒有涵蓋委外電商平台資料庫的防護"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-cyberbiz-shop-db-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：委外電商平台的訂單資料庫需有存取控制與異常存取告警"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產"
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "漢來美食與黑松於 11 月 10 日在公開資訊觀測站發布重大訊息，指委外購物商城服務商順立智慧（Cyberbiz）通知其資料庫遭未經授權的異常存取，涉及線上商店的訂單相關資料。兩家公司已通知消費者或會員並加強防詐宣導。",
+  "blocks": {
+    "1_summary": {
+      "title": "電商 SaaS 順立智慧（Cyberbiz）資料庫遭異常存取，漢來美食、黑松訂單資料受影響",
+      "date": "2026-11-10",
+      "industry": "電商",
+      "attack_chain": [
+        "委外商城服務商資料庫遭未經授權的異常存取",
+        "多家客戶線上商店的訂單資料受影響"
+      ],
+      "attck": [],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180424",
+          "title": "漢來美食委外購物商城發生資安事件，部分消費者訂單資料遭異常存取",
+          "quote": "漢來美食委外購物商城發生資安事件，部分消費者訂單資料遭異常存取",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-11T08:28:41Z"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/180420",
+          "title": "黑松線上商店委外廠商資料庫遭異常存取，訂單資料恐受影響",
+          "quote": "黑松線上商店委外廠商資料庫遭異常存取，訂單資料恐受影響",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-11T08:28:41Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "漢來美食與黑松於 11 月 10 日在公開資訊觀測站發布重大訊息，指委外購物商城服務商順立智慧（Cyberbiz）通知其資料庫遭未經授權的異常存取，涉及線上商店的訂單相關資料。兩家公司已通知消費者或會員並加強防詐宣導。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：委外電商平台的訂單資料庫需有存取控制與異常存取告警"
+          ],
+          "observed_at": "2026-11-11T08:28:41Z"
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  }
+}

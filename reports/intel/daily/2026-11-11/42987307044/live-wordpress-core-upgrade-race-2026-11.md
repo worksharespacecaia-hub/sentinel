@@ -1,0 +1,25 @@
+# CISA 確認 WordPress 核心升級流程漏洞（CVE-2026-119977）遭利用
+`真實` `暫定` `CVE-2026-119977`
+
+**結論：1 項受影響，最高風險為高。marketing-site：wordpress 6.4.3，對外。**
+
+## 事件摘要
+CISA 確認 WordPress 核心升級流程漏洞遭利用；marketing-site 的 wordpress 6.4.3 版本受影響且對外，程式判定為高風險（7 分）。
+
+## 受影響項目
+| 資產 | 我們的狀況 | 比對依據 | 結論 | 風險 |
+|------|----------|---------|------|------|
+| marketing-site | wordpress 6.4.3，對外 | version | 受影響 | 高（7 分） |
+
+## 可能的解法：marketing-site:wordpress:vuln
+| 選項 | 做法 | 代價 | 時效 |
+|------|------|------|------|
+| 修補 | 升級到修補版本 | 需回歸測試 | 24 小時內 |
+| 緩解 | 限制來源、關閉受影響功能 | 部分功能受限 | 今天 |
+建議負責團隊：security-team；驗證方式：工程團隊修正後，下次完整掃描不再命中才標示已修復
+
+## 處理狀態
+待處理
+
+## 來源
+- CISA Confirms Hackers Exploiting WordPress Core Flaw During Software Upgrades：https://thehackernews.com/2026/11/cisa-confirms-hackers-exploiting.html

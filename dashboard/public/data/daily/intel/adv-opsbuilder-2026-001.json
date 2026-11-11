@@ -107,7 +107,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "OpsBuilder 1.90 以前版本有帳號接管漏洞（示範公告，虛構產品）：internal-tool 使用 opsbuilder 1.88 且對外，登入頁可連到，為高風險 11 分。",
+  "summary": "示範公告指 OpsBuilder 1.90 以前版本有帳號接管漏洞；我們的 internal-tool 使用 1.88 且登入頁可從外部連到，利用條件成立，程式判定為高風險（11 分），並位於完整攻擊鏈上。",
   "blocks": {
     "1_summary": {
       "title": "示範公告：OpsBuilder 1.90 以前版本的帳號接管漏洞（虛構產品）",
@@ -141,7 +141,7 @@
         "issues": [],
         "max_level": null
       },
-      "summary": "OpsBuilder 1.90 以前版本有帳號接管漏洞（示範公告，虛構產品）：internal-tool 使用 opsbuilder 1.88 且對外，登入頁可連到，為高風險 11 分。",
+      "summary": "示範公告指 OpsBuilder 1.90 以前版本有帳號接管漏洞；我們的 internal-tool 使用 1.88 且登入頁可從外部連到，利用條件成立，程式判定為高風險（11 分），並位於完整攻擊鏈上。",
       "summary_note": null,
       "fixture_note": "虛構產品 OpsBuilder 的示範公告；CVSS 與已利用旗標為明確標示的模擬 fixture 值（規格第 7.4 節）"
     },
@@ -179,7 +179,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、live-91app-order-data-resale-2026-11"
+            "reason": "evt-91app-2026-10"
           },
           {
             "factor": "位於完整攻擊鏈",
@@ -189,7 +189,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-11T03:28:21Z"
+        "observed_at": "2026-11-11T08:28:41Z"
       }
     ],
     "4_unaffected_and_check": {
