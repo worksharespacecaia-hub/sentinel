@@ -176,14 +176,15 @@ test("明細連結：讀取時查驗目前 daily；明細消失時不給連結�
   const same = detailLink(e, DAILY, new Set(["evt-a"]));
   assert.equal(same?.href, "/intel/evt-a");
   assert.equal(same?.otherRun, false);
+  assert.equal(same?.note, null);   // 同一次評估：不重複標示評估時間
 
   // latest 未更新，daily 被取代：明細仍在但屬於另一次評估
   const replaced: DailyInfo = { run_id: "run-2", as_of: "2026-11-12T00:00:00Z", generated_at: "2026-11-12T00:15:00Z", daily_intel_status: "ok" };
   const other = buildDigestView(latest, NOW, replaced, new Set(["evt-a"])).days[0].groups[0].head;
   assert.equal(other.detail?.otherRun, true);
   assert.equal(other.detail?.evaluatedAt, "2026-11-12T00:00:00Z");
-  assert.ok(other.detail?.note.startsWith("明細為另一份每日評估"));
-  assert.ok(other.detail?.note.includes(fmtTime("2026-11-12T00:00:00Z")));
+  assert.ok(other.detail?.note?.startsWith("明細為另一份每日評估"));
+  assert.ok(other.detail?.note?.includes(fmtTime("2026-11-12T00:00:00Z")));
   assert.equal(other.evaluatedText, `上次評估於 ${fmtTime("2026-11-11T00:00:00Z")}`);   // 快照時間不變，且不宣稱本次重新確認
   assert.equal(buildDigestView(latest, NOW, DAILY, new Set()).days[0].groups[0].head.evaluatedText, `評估於 ${fmtTime("2026-11-11T00:00:00Z")}`);
   assert.ok(buildDigestView(latest, NOW, null, new Set()).days[0].groups[0].head.evaluatedText.startsWith("上次評估於"));

@@ -248,7 +248,8 @@ export function filterDigest<T extends FilterItem>(days: ViewDay<T>[], filter: R
 
 // ── 明細連結（讀取時查驗）與頁首提示 ───────────────────────
 
-export interface DetailLink { href: string; otherRun: boolean; evaluatedAt: string; note: string }
+/** note：只有明細來自另一次評估時才有附註（R2.8）；同一次評估時為 null，避免與卡片的評估時間重複。 */
+export interface DetailLink { href: string; otherRun: boolean; evaluatedAt: string; note: string | null }
 
 /**
  * 只有目前已發布的 daily intel index 有此事件、且明細檔實際存在（available）時才給連結。
@@ -259,7 +260,7 @@ export function detailLink(ev: Pick<DigestEvent, "id" | "assessment">, daily: Da
   const otherRun = daily.run_id !== ev.assessment.run_id;
   return {
     href: `/intel/${encodeURIComponent(ev.id)}`, otherRun, evaluatedAt: daily.as_of,
-    note: otherRun ? `明細為另一份每日評估（評估於 ${fmtTime(daily.as_of)}）` : `明細與上方結論為同一次評估（評估於 ${fmtTime(daily.as_of)}）`,
+    note: otherRun ? `明細為另一份每日評估（評估於 ${fmtTime(daily.as_of)}）` : null,
   };
 }
 

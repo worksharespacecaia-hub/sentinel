@@ -70,7 +70,7 @@ function EventCard({ c, update = false }: { c: Card; update?: boolean }) {
       )}
       <p className="muted">{c.evaluatedText}{c.relationChangedText && `｜${c.relationChangedText}`}</p>
       {c.detail && (
-        <p><Link href={c.detail.href}>查看比對明細</Link> <span className="muted">{c.detail.note}</span></p>
+        <p><Link href={c.detail.href}>查看比對明細</Link>{c.detail.note && <> <span className="muted">{c.detail.note}</span></>}</p>
       )}
       <details open={!c.detail}>
         <summary>受影響系統與結論（保存的評估結果）</summary>
