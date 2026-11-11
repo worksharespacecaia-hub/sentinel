@@ -1,6 +1,7 @@
 // 伺服器端讀取 A5 發布的 public/data（唯讀）。來源只接受 index.json 中存在的 daily 或情境，不接受任意路徑。
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import { buildDigestView, flattenLatest, isDigestLatest, type DailyInfo, type DigestLatest, type DigestView } from "./digest.ts";
 
 export type Level = "high" | "medium" | "low";
 export type Light = "red" | "yellow" | "green";
@@ -111,4 +112,60 @@ export async function getTrace(s: Source) {
   return text.split("\n").filter(Boolean).map((l) => JSON.parse(l) as {
     ts: string; agent: string; subagent: string | null; kind: string; detail: string; source: string | null; cost_usd: number | null;
   });
+}
+
+// ── 資安事件整理（/digest）：只讀 digest/latest.json；store.json 與 seen.json 不讀 ──
+
+export type DigestFile = { status: "missing" } | { status: "invalid" } | { status: "ok"; latest: DigestLatest };
+
+async function readDigestFile(): Promise<DigestFile> {
+  let text: string;
+  try {
+    text = await fs.readFile(path.join(DATA_DIR, "digest", "latest.json"), "utf8");
+  } catch {
+    return { status: "missing" };          // 功能上線後尚未產生（R7.3）
+  }
+  try {
+    const data: unknown = JSON.parse(text);
+    return isDigestLatest(data) ? { status: "ok", latest: data } : { status: "invalid" };
+  } catch {
+    return { status: "invalid" };
+  }
+}
+
+/** 已發布的整理；不存在或格式不合時回傳 null。 */
+export const getDigest = () => readDigestFile().then((f) => (f.status === "ok" ? f.latest : null));
+
+const DAILY: Source = { key: "daily", dir: "daily", label: "每日", simulated: false };
+
+/** 明細檔是否實際存在（只接受安全的 ID，不讀內容）。 */
+async function intelDetailExists(id: string): Promise<boolean> {
+  if (!SAFE_SEGMENT.test(id)) return false;
+  try {
+    return (await fs.stat(path.join(DATA_DIR, "daily", "intel", `${id}.json`))).isFile();
+  } catch {
+    return false;
+  }
+}
+
+export type DigestPage = { status: "missing" } | { status: "invalid" } | { status: "ok"; view: DigestView };
+
+/**
+ * 以明確的 now 組出頁面資料：依台灣日期清理窗口、重組新進度與計數；
+ * 新聞情資狀態與明細連結一律讀「目前」已發布的 daily（報告、intel index、明細檔），不沿用整理產生當時的狀態（R2.8、R3.3）。
+ * 不改檔案、不改 latest 的更新時間。明細一律對應正式 daily，不繼承情境 source。
+ */
+export async function getDigestView(now: Date): Promise<DigestPage> {
+  const file = await readDigestFile();
+  if (file.status !== "ok") return file;
+  const [report, index] = await Promise.all([getReport(DAILY), getIntelIndex(DAILY)]);
+  const daily: DailyInfo | null = report && typeof report.run_id === "string" && typeof report.as_of === "string"
+    && typeof report.generated_at === "string" && typeof report.daily_intel_status === "string"
+    ? { run_id: report.run_id, as_of: report.as_of, generated_at: report.generated_at, daily_intel_status: report.daily_intel_status }
+    : null;
+  const listed = new Set((Array.isArray(index) ? index : []).map((e) => e?.id).filter((x): x is string => typeof x === "string"));
+  const ids = [...new Set(flattenLatest(file.latest).map((e) => e.id))].filter((id) => listed.has(id));
+  const exists = await Promise.all(ids.map(intelDetailExists));
+  const available = new Set(ids.filter((_, i) => exists[i]));
+  return { status: "ok", view: buildDigestView(file.latest, now, daily, available) };
 }

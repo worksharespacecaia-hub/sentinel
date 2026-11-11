@@ -1,5 +1,5 @@
 "use client";
-// 導覽列：3 個主項＋「工程細節」下拉；標示目前所在頁（aria-current），換頁後下拉自動收合。
+// 導覽列：4 個主項＋「工程細節」下拉；標示目前所在頁（aria-current），換頁後下拉自動收合。
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ENGINEERING, ENGINEERING_LABEL, PAGES, PRIMARY, isActive } from "@/lib/nav";
