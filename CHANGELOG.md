@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.10.1 — 2026-11-11（Subagent 全部改用 Haiku；成本量測）
+
+- **模型**：原本用 Sonnet 的 6 個撰寫型 Subagent（planner、remediation-advisor、brand-notice-writer、ceo-briefer、intel-report-writer、containment-advisor）改用 Haiku 5.5，設定 effort medium、未用圖譜時最多 3 回合；其他 Subagent 不變（effort low、最多 2 回合）。快取鍵含模型 ID，這 6 個的舊快取不再命中，第一次 live 會重新撰寫
+- **修正**：remediation-advisor 回傳 Solution 時多出的欄位（例如 `confidence`）會讓 Report schema 驗證失敗、A5 整份報告產不出來；改為只保留 Solution 允許的欄位
+- **用量記錄**：每次呼叫另記 token 用量（input、output、cache 寫入／讀取，含 Subagent，依模型拆分），寫進 `out/<agent>/cost.json` 的 `usage`；trace 的 result 事件附 token 數
+- **成本量測**：新增 `scripts/cost_probe.py`（本機 record，冷啟動與有快取各跑一次，執行前備份、結束後還原，報告寫在 `.cost-test/`）；`SENTINEL_MODEL_OVERRIDE` 可強制所有 Subagent 用指定模型以便比較
+- **實測**（2026-11-11 本機，全 Haiku）：daily 無快取 US$0.0725（A2 0.015、A4 0.016、A5 0.042）、全部命中快取 US$0；README「實際成本」已更新
+
 ## 0.10.0 — 2026-11-11（資安事件整理）
 
 規格文件（requirements／design／tasks）保存在 Repo 之外（專案資料夾的 `specs/security-digest/`），未納入版本控制。
