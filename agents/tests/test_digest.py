@@ -428,3 +428,155 @@ def test_size_limit_trims_lowest_priority_and_records_omissions(monkeypatch):
 
 def test_real_limits_are_1mib_and_50_per_day():
     assert dg.MAX_BYTES == 1024 * 1024 and dg.PER_DAY_LIMIT == 50 and dg.WINDOW_DAYS == 30
+
+
+# ── T3：整理產生（latest） ─────────────────────────────────────────────────────
+
+def build(store, as_of, *, run_id="run-1", generated_at=None, status="ok"):
+    latest = dg.build_latest(store, daily_report(run_id, status=status), as_of, generated_at or as_of + timedelta(minutes=20),
+                             run_id)
+    DigestLatest.model_validate(latest)
+    return latest
+
+
+@pytest.mark.parametrize("generated,expected", [
+    ("2026-11-10T23:59:59Z", "2026-11-11T00:00:00Z"),     # 台灣 08:00 前一秒
+    ("2026-11-11T00:00:00Z", "2026-11-12T00:00:00Z"),     # 剛好台灣 08:00：取隔日
+    ("2026-11-11T00:20:00Z", "2026-11-12T00:00:00Z"),     # 08:20 產生
+    ("2026-11-30T15:59:00Z", "2026-12-01T00:00:00Z"),     # 跨月
+    ("2026-12-31T23:30:00Z", "2027-01-01T00:00:00Z"),     # 跨年
+])
+def test_next_update_at_boundaries(generated, expected):
+    from tools.common import parse_time
+    assert dg.iso(dg.next_update_at(parse_time(generated))) == expected
+
+
+def test_next_update_uses_actual_generation_time_when_run_crosses_day():
+    s, _ = merge(None, None, [make_report("live-late-2026")], day(9))   # 評估 as_of 11/10 00:00Z
+    latest = build(s, day(9), generated_at=day(10, 1))                 # 實際完成於 11/11 01:00Z
+    assert latest["as_of"] == "2026-11-10T00:00:00Z" and latest["updated_at"] == "2026-11-11T01:00:00Z"
+    assert latest["next_update_at"] == "2026-11-12T00:00:00Z"         # 嚴格晚於實際產生時間
+
+
+def test_first_build_groups_archives_under_today_and_sorts_by_relation_and_level():
+    eids = [f"evt-arch{n}-2026-10" for n in range(6)]
+    reps = [
+        make_report(eids[0], kind="archive", status="not_affected", impacts=[_impact(eids[0], "s", "not_affected")]),
+        make_report(eids[1], kind="archive", status="open", impacts=[_impact(eids[1], "s", "affected", "r")],
+                    max_level="medium", levels={("s", "affected"): "medium"}),
+        make_report(eids[2], kind="archive", status="need_check"),
+        make_report(eids[3], kind="archive", status="open", impacts=[_impact(eids[3], "s", "affected", "r")],
+                    max_level="high", levels={("s", "affected"): "high"}),
+        make_report(eids[4], kind="archive", status="fixed", impacts=[_impact(eids[4], "s", "affected", "r")]),
+        make_report(eids[5], kind="advisory", status="need_check"),
+    ]
+    s, _ = merge(None, None, reps, day(10))
+    latest = build(s, day(10))
+    assert [d["date"] for d in latest["days"]] == ["2026-11-11"] and latest["days"][0]["count"] == 6
+    assert [ev["id"] for ev in latest["days"][0]["events"]] == [eids[3], eids[1], eids[2], eids[5], eids[0], eids[4]]
+    assert latest["counts"] == {"total": 6, "affected": 2, "need_check": 2, "not_affected": 1, "fixed": 1}
+    assert latest["window_days"] == 30 and latest["daily_intel_status"] == "ok" and latest["run_id"] == "run-1"
+
+
+def test_days_newest_first_and_history_keeps_its_evaluation_time():
+    s, seen = merge(None, None, [make_report("live-old-2026")], day(0), run_id="run-0")
+    s, seen = merge(s, seen, [make_report("live-new-2026")], day(2), run_id="run-2")   # 舊事件本次未出現
+    latest = build(s, day(2), run_id="run-2")
+    assert [d["date"] for d in latest["days"]] == ["2026-11-03", "2026-11-01"]
+    old = latest["days"][1]["events"][0]
+    assert old["assessment"]["evaluated_at"] == "2026-11-01T00:00:00Z" and old["assessment"]["run_id"] == "run-0"
+    assert latest["as_of"] == "2026-11-03T00:00:00Z"
+
+
+def test_only_assessed_events_are_published():
+    s, seen = merge(None, None, [make_report("live-full-2026")], day(0))
+    s, seen = merge(s, seen, [make_report("live-pending-2026")], day(1), complete=False, run_id="run-p")
+    latest = build(s, day(1))
+    ids = [ev["id"] for d in latest["days"] for ev in d["events"]]
+    assert ids == ["live-full-2026"] and latest["counts"]["total"] == 1
+    assert any(i["code"] == "pending_assessment" and i["omitted"] == 1 for i in latest["data_issues"])
+
+
+def test_updates_nested_promoted_and_invalid_links_kept():
+    parent = make_report("evt-parent-2026", kind="archive", status="not_affected", title="原事件標題",
+                         impacts=[_impact("evt-parent-2026", "s", "not_affected")])
+    child = make_report("live-child-2026", is_update_of="evt-parent-2026", status="open",
+                        impacts=[_impact("live-child-2026", "s", "affected", "r")], max_level="high",
+                        levels={("s", "affected"): "high"})
+    grandchild = make_report("live-grand-2026", is_update_of="live-child-2026")
+    selfref = make_report("live-self-2026", is_update_of="live-self-2026")
+    cyc_a = make_report("live-cyc-a-2026", is_update_of="live-cyc-b-2026")
+    cyc_b = make_report("live-cyc-b-2026", is_update_of="live-cyc-a-2026")
+    other = make_report("live-other-2026", status="need_check")
+    s, seen = merge(None, None, [parent, other], day(0))
+    s, seen = merge(s, seen, [child, grandchild, selfref, cyc_a, cyc_b], day(1), run_id="run-2")
+    latest = build(s, day(1))
+    d1, d0 = latest["days"]
+    assert d1["date"] == "2026-11-02" and d0["date"] == "2026-11-01"
+    # 新進度掛在原事件底下（原事件所在日期），鏈結攤平到原事件；受影響子事件讓整組排到需確認之前
+    assert [(ev["id"], [u["id"] for u in ev["updates"]]) for ev in d0["events"]] == [
+        ("evt-parent-2026", ["live-child-2026", "live-grand-2026"]), ("live-other-2026", [])]
+    assert d0["count"] == 4
+    # 自我參照、循環降為獨立卡片並記錄問題，事件不消失
+    assert sorted(ev["id"] for ev in d1["events"]) == ["live-cyc-a-2026", "live-cyc-b-2026", "live-self-2026"]
+    assert {ev["standalone_reason"] for ev in d1["events"]} == {"link_invalid"}
+    assert next(i for i in latest["data_issues"] if i["code"] == "invalid_update_link")["omitted"] == 3
+    assert latest["counts"]["total"] == 7 == sum(d["count"] for d in latest["days"])       # 唯一 ID 計數（含 updates）
+    # 原事件到期：子事件提升為獨立卡片（較早事件的新進度），不保留原事件標題
+    pruned = dg.prune_latest(latest, day(30))                       # 窗口 11/02～12/01：11/01 的原事件到期
+    DigestLatest.model_validate(pruned)
+    heads = {ev["id"]: ev for d in pruned["days"] for ev in d["events"]}
+    assert "evt-parent-2026" not in heads and "live-other-2026" not in heads
+    assert heads["live-child-2026"]["standalone_reason"] == "parent_missing"
+    assert [u["id"] for u in heads["live-child-2026"]["updates"]] == ["live-grand-2026"]
+    assert "原事件標題" in json.dumps(latest, ensure_ascii=False)
+    assert "原事件標題" not in json.dumps(pruned, ensure_ascii=False)
+    assert pruned["counts"]["total"] == 5
+    for k in ("updated_at", "as_of", "run_id", "next_update_at", "daily_intel_status"):
+        assert pruned[k] == latest[k]                               # 清理不刷新任何時間
+
+
+def test_filter_like_regroup_keeps_affected_child_of_unaffected_parent():
+    """父事件不受影響、子事件受影響：整組依最優先的成員排序，不會排到需確認之後。"""
+    parent = make_report("evt-p2-2026", kind="archive", status="not_affected", impacts=[_impact("evt-p2-2026", "s", "not_affected")])
+    child = make_report("live-c2-2026", is_update_of="evt-p2-2026", status="open",
+                        impacts=[_impact("live-c2-2026", "s", "affected", "r")], max_level="low", levels={("s", "affected"): "low"})
+    need = make_report("live-n2-2026", status="need_check")
+    s, _ = merge(None, None, [parent, child, need], day(0))
+    latest = build(s, day(0))
+    assert [ev["id"] for ev in latest["days"][0]["events"]] == ["evt-p2-2026", "live-n2-2026"]
+    assert latest["counts"]["affected"] == 1 and latest["counts"]["not_affected"] == 1
+
+
+def test_prune_latest_only_removes_expired_and_keeps_times():
+    s, seen = merge(None, None, [make_report("live-p1-2026")], day(0))
+    s, seen = merge(s, seen, [make_report("live-p2-2026")], day(5), run_id="run-5")
+    latest = build(s, day(5), run_id="run-5")
+    assert dg.prune_latest(latest, day(5)) == latest
+    later = dg.prune_latest(latest, day(30))
+    assert [d["date"] for d in later["days"]] == ["2026-11-06"] and later["counts"]["total"] == 1
+    assert later["updated_at"] == latest["updated_at"] and later["next_update_at"] == latest["next_update_at"]
+    assert later["days"][0]["events"][0]["assessment"] == latest["days"][0]["events"][0]["assessment"]
+
+
+def test_latest_size_limit_trims_flat_set_before_grouping(monkeypatch):
+    parent = make_report("evt-cap-parent", kind="archive", status="fixed",
+                         impacts=[_impact("evt-cap-parent", "s", "affected", "r")], summary="長" * 290)
+    child = make_report("live-cap-child", is_update_of="evt-cap-parent", status="open",
+                        impacts=[_impact("live-cap-child", "s", "affected", "r")], max_level="high",
+                        levels={("s", "affected"): "high"})
+    fillers = [make_report(f"live-fill-{n:02d}", status="need_check", summary="填" * 290) for n in range(12)]
+    s, _ = merge(None, None, [parent, child, *fillers], day(0))
+    monkeypatch.setattr(dg, "MAX_BYTES", 20_000)
+    latest = build(s, day(0))
+    assert len(dg.serialize(latest)) <= 20_000
+    heads = {ev["id"]: ev for d in latest["days"] for ev in d["events"]}
+    assert "evt-cap-parent" not in heads                            # 已修復、優先順序最低的原事件被裁切
+    assert heads["live-cap-child"]["standalone_reason"] == "parent_missing"   # 子事件未超限，不被連帶刪除
+    cap = sum(i["omitted"] for i in latest["data_issues"] if i["code"] == "capacity")
+    assert cap == 14 - latest["counts"]["total"] and cap > 0
+
+
+def test_empty_digest_has_no_days():
+    latest = build({"schema_version": 1, "updated_at": "2026-11-01T00:20:00Z", "data_issues": [], "events": {}}, day(0))
+    assert latest["days"] == [] and latest["counts"]["total"] == 0

@@ -14,7 +14,7 @@ import copy
 import json
 import re
 from collections import defaultdict, deque
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 from urllib.parse import parse_qsl, unquote, urlencode, urlsplit, urlunsplit
 
 from llm import SECRET_RE
@@ -468,3 +468,151 @@ def merge_store(prev: dict | None, seen: dict | None, report: dict, intel_report
     stats["omitted"] += omitted
     stats["pending"] = sum(1 for ev in store["events"].values() if ev.get("assessment") is None)
     return store, seen_out
+
+
+# ── T3：整理產生（latest）：分組、排序、新進度、計數與下次預定更新 ─────────────────
+
+MAX_UPDATE_DEPTH = 5                  # 新進度鏈結超過這個深度視為過深，降為獨立卡片
+LATEST_FIELDS = ("updates", "standalone_reason")
+
+
+def next_update_at(generated_at: datetime) -> datetime:
+    """嚴格晚於實際產生時間的下一個 UTC 00:00（台灣 08:00）；剛好 00:00 時取隔日，跨日完成也不會落在過去。"""
+    g = generated_at.astimezone(timezone.utc)
+    return datetime(g.year, g.month, g.day, tzinfo=timezone.utc) + timedelta(days=1)
+
+
+def _flat(ev: dict) -> dict:
+    return {k: v for k, v in ev.items() if k not in LATEST_FIELDS}
+
+
+def flatten_latest(latest: dict) -> list[dict]:
+    out = []
+    for d in latest.get("days") or []:
+        for ev in d["events"]:
+            out.append(_flat(ev))
+            out += [_flat(u) for u in ev.get("updates") or []]
+    return out
+
+
+def _resolve(ev: dict, by_id: dict[str, dict]) -> tuple[str, str | None]:
+    """回傳 (群組的原事件 ID, 獨立顯示原因)。自我參照、循環或過深鏈結降為獨立卡片，不丟棄事件。"""
+    parent = ev.get("is_update_of")
+    if parent is None:
+        return ev["id"], None
+    if parent == ev["id"]:
+        return ev["id"], "link_invalid"
+    if parent not in by_id:
+        return ev["id"], "parent_missing"          # 原事件不在可顯示集合：單獨顯示「較早事件的新進度」
+    chain, cur = [ev["id"]], ev
+    while cur.get("is_update_of") is not None:
+        p = cur["is_update_of"]
+        if p not in by_id:
+            return cur["id"], None                 # 鏈結頂端是一張「較早事件的新進度」卡片
+        if p in chain or len(chain) > MAX_UPDATE_DEPTH:
+            return ev["id"], "link_invalid"
+        chain.append(p)
+        cur = by_id[p]
+    return cur["id"], None
+
+
+def _priority(ev: dict) -> tuple:
+    a = ev["assessment"]
+    return (REL_RANK[a["relation"]], LEVEL_RANK[a.get("max_level")])
+
+
+def group_events(flat: list[dict]) -> tuple[list[dict], dict, list[dict]]:
+    """扁平事件 → (days, counts, 新進度關聯問題)。新進度掛在原事件的 updates；日期與計數皆以唯一事件 ID 計算。"""
+    by_id = {ev["id"]: ev for ev in flat}
+    heads: dict[str, dict] = {}
+    children: dict[str, list[dict]] = defaultdict(list)
+    invalid = 0
+    for ev in sorted(flat, key=lambda e: e["id"]):
+        root, reason = _resolve(ev, by_id)
+        if root == ev["id"]:
+            heads[ev["id"]] = {**ev, "updates": [], "standalone_reason": reason}
+            invalid += reason == "link_invalid"
+        else:
+            children[root].append(ev)
+    days: dict[str, list[dict]] = defaultdict(list)
+    for hid, head in heads.items():
+        kids = sorted(children.get(hid, []), key=lambda e: (e.get("event_date") or e["first_seen"], e["first_seen"], e["id"]))
+        head["updates"] = [{**k, "updates": [], "standalone_reason": None} for k in kids]
+        days[head["first_seen"]].append(head)
+    out_days = []
+    for d in sorted(days, reverse=True):
+        groups = sorted(days[d], key=lambda g: (min(_priority(e) for e in [g, *g["updates"]]), g["id"]))
+        out_days.append({"date": d, "count": sum(1 + len(g["updates"]) for g in groups), "events": groups})
+    counts = {"total": len(by_id), "affected": 0, "need_check": 0, "not_affected": 0, "fixed": 0}
+    for ev in flat:
+        counts[ev["assessment"]["relation"]] += 1
+    issues = [_issue("invalid_update_link", f"{invalid} 件事件的新進度關聯有誤（自我參照、循環或過深），改為獨立顯示", invalid)] \
+        if invalid else []
+    return out_days, counts, issues
+
+
+def _merge_capacity(issues: list[dict]) -> list[dict]:
+    """同一收錄日期的容量省略合併成一筆（省略數相加），其他問題保持原樣。"""
+    cap: dict[str, int] = defaultdict(int)
+    rest = []
+    for i in issues:
+        if i["code"] == "capacity":
+            cap[i["date"]] += i["omitted"]
+        else:
+            rest.append(i)
+    return [_issue("capacity", f"{d} 收錄的事件超過容量上限，省略 {n} 件", n, d) for d, n in sorted(cap.items(), reverse=True)] + rest
+
+
+def build_latest(store: dict, report: dict, as_of: datetime, generated_at: datetime, run_id: str,
+                 days: int = WINDOW_DAYS) -> dict:
+    """完整 daily 才呼叫：只發布窗口內 assessment 非 null 的事件；歷史事件保留自己的評估時間，不換成本次。"""
+    store = prune(store, as_of, days)
+    flat = {k: ev for k, ev in store["events"].items() if ev.get("assessment") is not None}
+    pending = len(store["events"]) - len(flat)
+    base = [i for i in store.get("data_issues") or [] if i["code"] in ("capacity", "future_first_seen", "seen_size",
+                                                                         "merge_conflict")]
+    if pending:
+        base.append(_issue("pending_assessment", f"{pending} 件事件尚待完整評估，暫不列入整理", pending))
+    head = {"schema_version": 1, "updated_at": iso(generated_at), "as_of": iso(as_of), "run_id": run_id,
+            "next_update_at": iso(next_update_at(generated_at)), "daily_intel_status": report["daily_intel_status"],
+            "window_days": days}
+
+    def assemble(events: dict, extra: list[dict]) -> dict:
+        out_days, counts, link = group_events(list(events.values()))
+        return {**head, "data_issues": _merge_capacity([*base, *extra, *link]), "counts": counts, "days": out_days}
+
+    def fits(events: dict) -> bool:
+        return len(serialize(assemble(events, []))) <= MAX_BYTES
+
+    kept, _ = trim_events(flat, fits, depth=4)
+    trimmed: dict[str, int] = defaultdict(int)
+    for k, ev in flat.items():
+        if k not in kept:
+            trimmed[ev["first_seen"]] += 1
+    extra = [_issue("capacity", "", n, d) for d, n in trimmed.items()]
+    return assemble(kept, extra)
+
+
+def prune_latest(latest: dict, as_of: datetime, days: int = WINDOW_DAYS, *, seen: dict | None = None) -> dict:
+    """只移除到期內容並重組群組與計數（原事件到期時子事件提升為獨立卡片）。
+
+    不改 updated_at／as_of／run_id／next_update_at，不新增事件或結論。seen 提供較早的首次收錄日期時，修正 first_seen 後重新分組。
+    """
+    start, end = window_bounds(as_of, days)
+    seen_map = (seen or {}).get("first_seen_by_key") or {}
+    flat = []
+    future = 0
+    for ev in flatten_latest(latest):
+        fixed = seen_map.get(seen_key(ev["id"]))
+        if fixed and fixed < ev["first_seen"]:
+            ev = {**ev, "first_seen": fixed}
+        if ev["first_seen"] > end:
+            future += 1
+        elif ev["first_seen"] >= start:
+            flat.append(ev)
+    out_days, counts, link = group_events(flat)
+    keep = [i for i in latest.get("data_issues") or []
+            if i["code"] not in ("invalid_update_link", "future_first_seen") and (i.get("date") is None or start <= i["date"] <= end)]
+    if future:
+        keep.append(_issue("future_first_seen", f"{future} 件事件的收錄日期晚於今天，已排除", future))
+    return {**latest, "data_issues": [*keep, *link], "counts": counts, "days": out_days}
