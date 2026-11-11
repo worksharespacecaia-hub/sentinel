@@ -22,7 +22,14 @@
   - 第 0 節規則 6：受信任程式可寫入的內容加上 `dashboard/public/data/digest/`
   - 第 10、10.1 節：新增 digest 三份資料與發布合併規則（seen 聯集、store 整組合併、latest 選取與到期清理）
   - 第 11.1 節：新增 `/digest` 頁面，主導覽由 3 項改為 4 項
+- 驗證（本機，2026-11-11）：
+  - 自動測試：Python 456 passed；dashboard `npm test` 71 pass（新增 `lib/digest.test.ts` 13 項，凍結 now）、`tsc --noEmit` 與 `next build` 通過
+  - 以 `python agents/run_agent.py all --replay` 產生 digest 三檔（6 件收錄事件都在上線當天分組、皆受影響）；`next start` 後以 Chrome 無頭模式截圖 `/digest` 桌面、深色、390px（含展開明細），`scrollWidth <= innerWidth` 皆成立；「查看比對明細」標示與保存結論同一次評估，「辦公室 NAS（3 項）」同名合併且受影響數不變
+  - 本機暫存假資料逐一驗證畫面：整理不存在（「整理尚未產生，將於下次每日評估後出現」）、沒有事件（「近 30 天沒有收錄的外部資安事件」）、過期（「資料已過期：上次更新於…」與「上次評估於」）、最新 daily 的新聞情資 failed／skipped／重播、父子事件篩選（原事件不符合時仍顯示受影響新進度與群組標示；讀取時原事件過期的新進度提升為「較早事件的新進度」；自我參照獨立顯示並列入資料狀態）、容量省略（只加總窗口內日期）與 20 項截斷提示、daily 被取代且明細檔消失時退回保存的評估結果、明細屬另一次評估時註明「明細為另一份每日評估」；`javascript:` 來源不產生連結；`/report` 標題日期、`/brief`、`/intel` 正常且保留 noindex
+  - 驗證後已還原本機產生與假資料（`dashboard/public/data`、history 當日檔、`reports/intel` 當日目錄、`out/`）
+  - 驗證中修正：卡片的「評估於／上次評估於」改與目前已發布的 daily 比較（daily 被取代或讀不到時一律「上次評估於」）；數字列多餘空白
 - 尚未驗證（只在本機驗證）：GitHub Actions 上的排程與手動 daily 實際產生並發布 digest、`push-with-retry.sh` 在 main 上的重試合併、Vercel 部署後的 `/digest`；第一次排程 daily 之前，正式網站會顯示「整理尚未產生」
+  - tasks.md T9 第 1、2、4 項（凍結時間連續多日與同日重跑的 daily、D+30／D+31 實體清理、不完整快照、注入 digest 準備／提交失敗再做發布重試）只由 T2～T5 的 Python 自動測試涵蓋，未以完整流程逐日實跑
 
 ## 0.9.5 — 2026-11-10（異常行為偵測與偵測規則設定）
 

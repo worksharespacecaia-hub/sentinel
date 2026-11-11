@@ -316,7 +316,7 @@ export interface DigestView {
   counts: DigestCounts; capacityOmitted: number; issues: string[]; days: ViewDay<Card>[];
 }
 
-function card(ev: DigestEvent, latest: DigestLatest, daily: DailyInfo | null, available: ReadonlySet<string>, reason: DigestGroup["standalone_reason"]): Card {
+function card(ev: DigestEvent, daily: DailyInfo | null, available: ReadonlySet<string>, reason: DigestGroup["standalone_reason"]): Card {
   const a = ev.assessment;
   const evaluated = fmtTime(a.evaluated_at);
   return {
@@ -327,7 +327,8 @@ function card(ev: DigestEvent, latest: DigestLatest, daily: DailyInfo | null, av
     sources: ev.sources.map((s) => ({ title: s.title, domain: s.domain, href: safeHref(s.url), verified: s.verified })),
     cves: ev.cves, conclusion: a.conclusion, impacts: mergeImpacts(a.impacts),
     impactsNote: a.impacts_truncated ? `僅列前 ${a.impacts.length} 項，共 ${a.impacts_total} 項` : null,
-    evaluatedText: a.run_id === latest.run_id ? `評估於 ${evaluated}` : `上次評估於 ${evaluated}`,
+    // 「本次」指目前已發布的 daily；不是同一次評估（或讀不到 daily）時一律標「上次評估於」，不宣稱本次重新確認（R6.3）
+    evaluatedText: daily && a.run_id === daily.run_id ? `評估於 ${evaluated}` : `上次評估於 ${evaluated}`,
     relationChangedText: a.relation_changed_at ? `結論更新於 ${fmtTime(a.relation_changed_at)}` : null,
     standaloneText: reason === "parent_missing" ? "較早事件的新進度" : reason === "link_invalid" ? "新進度的關聯有誤，獨立顯示" : null,
     detail: detailLink(ev, daily, available),
@@ -350,8 +351,8 @@ export function buildDigestView(latest: DigestLatest, now: Date, daily: DailyInf
     days: pruned.days.map((d) => ({
       date: d.date, count: d.count,
       groups: d.groups.map((g) => ({
-        head: card(g.head, latest, daily, available, g.standalone_reason),
-        updates: g.updates.map((u) => card(u, latest, daily, available, null)),
+        head: card(g.head, daily, available, g.standalone_reason),
+        updates: g.updates.map((u) => card(u, daily, available, null)),
       })),
     })),
   };

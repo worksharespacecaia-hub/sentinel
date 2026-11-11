@@ -184,7 +184,9 @@ test("明細連結：讀取時查驗目前 daily；明細消失時不給連結�
   assert.equal(other.detail?.evaluatedAt, "2026-11-12T00:00:00Z");
   assert.ok(other.detail?.note.startsWith("明細為另一份每日評估"));
   assert.ok(other.detail?.note.includes(fmtTime("2026-11-12T00:00:00Z")));
-  assert.equal(other.evaluatedText, `評估於 ${fmtTime("2026-11-11T00:00:00Z")}`);   // 快照時間不變
+  assert.equal(other.evaluatedText, `上次評估於 ${fmtTime("2026-11-11T00:00:00Z")}`);   // 快照時間不變，且不宣稱本次重新確認
+  assert.equal(buildDigestView(latest, NOW, DAILY, new Set()).days[0].groups[0].head.evaluatedText, `評估於 ${fmtTime("2026-11-11T00:00:00Z")}`);
+  assert.ok(buildDigestView(latest, NOW, null, new Set()).days[0].groups[0].head.evaluatedText.startsWith("上次評估於"));
 
   // daily 被取代且明細已移除：退回保存的快照（無連結，結論與系統仍在）
   const gone = buildDigestView(latest, NOW, replaced, new Set()).days[0].groups[0].head;

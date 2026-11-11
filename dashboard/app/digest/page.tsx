@@ -34,9 +34,10 @@ function DigestBody({ view }: { view: DigestView }) {
         )}
       </section>
 
-      <p className="digest-counts">近 30 天 <strong>{c.total}</strong> 件，
-        受影響 <strong className={c.affected ? "lv-high" : undefined}>{c.affected}</strong> 件、
-        需確認 <strong className={c.need_check ? "warn" : undefined}>{c.need_check}</strong> 件</p>
+      <p className="digest-counts">
+        近 30 天 <strong>{c.total}</strong> 件，受影響 <strong className={c.affected ? "lv-high" : undefined}>{c.affected}</strong> 件、需確認{" "}
+        <strong className={c.need_check ? "warn" : undefined}>{c.need_check}</strong> 件
+      </p>
 
       {c.total === 0 ? <div className="panel">近 30 天沒有收錄的外部資安事件。</div> : <DigestList days={view.days} />}
 
