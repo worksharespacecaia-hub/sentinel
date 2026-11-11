@@ -1,0 +1,198 @@
+{
+  "event": {
+    "id": "live-neticrm-vendor-breach-2026-11",
+    "kind": "live",
+    "title": "netiCRM 服務商網絡行動科技遭駭，30 多個非營利組織示警",
+    "date": "2026-11-10",
+    "industry": "SaaS",
+    "attack_chain": [
+      "外部攻擊者入侵網絡行動科技的部分伺服器",
+      "服務商切斷攻擊者連線、完成漏洞修補，並更新伺服器金鑰與系統密碼",
+      "下游 30 多個使用 netiCRM 的組織相繼公告並暫停部分線上服務"
+    ],
+    "attck": [
+      "T1199"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [
+      "C-THIRD-PARTY-KEY-ROTATION"
+    ],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180384",
+        "title": "捐款人個資恐外洩！netiCRM服務商遭駭，公督盟、司改會等超過30個非營利組織接連示警",
+        "quote": "其中，公督盟已預防性暫停線上捐款及活動報名服務，至於是否涉及捐款人個資外洩，目前仍在調查中。",
+        "published": "2026-11-10",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-11T03:28:21Z",
+        "content_hash": "sha256:e40b84df11310195226604aca12cfccbb6511d4a085e98e47ad2da46e42f7043",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "SaaS 與外包服務商須約定資安事件通知時限與範圍",
+        "reason": "來源顯示下游組織多是從服務商通知或其他組織公告得知事件，現有控制項沒有涵蓋供應商事件通報義務與捐款人個資的下游通知流程。"
+      }
+    ]
+  },
+  "conclusion": "1 項受影響，最高風險為中。mail-api-key：secrets.json: mail-api-key：458 天未輪替、無 IP 白名單。",
+  "affected_count": 1,
+  "max_level": "medium",
+  "impacts": [
+    {
+      "event_id": "live-neticrm-vendor-breach-2026-11",
+      "asset_id": "mail-api-key",
+      "basis": "control",
+      "our_state": "secrets.json: mail-api-key：458 天未輪替、無 IP 白名單",
+      "verdict": "affected",
+      "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+      "reason": "不符合 C-THIRD-PARTY-KEY-ROTATION（第三方服務金鑰 90 天內輪替且有 IP 白名單）"
+    }
+  ],
+  "solutions": [
+    {
+      "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+      "temporary": "撤銷並輪替 mail-api-key，確認撤銷後舊值無法使用",
+      "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "撤銷並輪替金鑰",
+          "cost": "使用該金鑰的服務需同步更新",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "security-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template"
+    }
+  ],
+  "notice": {
+    "needed": false,
+    "draft": null
+  },
+  "status": "open",
+  "evaluated_asset_ids": [
+    "mail-api-key"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "netiCRM 服務商網絡行動科技遭駭，30 多個非營利組織示警；我們有 1 項相符（中風險，6 分）：mail-api-key 458 天未輪替且無 IP 白名單。",
+  "blocks": {
+    "1_summary": {
+      "title": "netiCRM 服務商網絡行動科技遭駭，30 多個非營利組織示警",
+      "date": "2026-11-10",
+      "industry": "SaaS",
+      "attack_chain": [
+        "外部攻擊者入侵網絡行動科技的部分伺服器",
+        "服務商切斷攻擊者連線、完成漏洞修補，並更新伺服器金鑰與系統密碼",
+        "下游 30 多個使用 netiCRM 的組織相繼公告並暫停部分線上服務"
+      ],
+      "attck": [
+        "T1199"
+      ],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180384",
+          "title": "捐款人個資恐外洩！netiCRM服務商遭駭，公督盟、司改會等超過30個非營利組織接連示警",
+          "quote": "其中，公督盟已預防性暫停線上捐款及活動報名服務，至於是否涉及捐款人個資外洩，目前仍在調查中。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-11T03:28:21Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "netiCRM 服務商網絡行動科技遭駭，30 多個非營利組織示警；我們有 1 項相符（中風險，6 分）：mail-api-key 458 天未輪替且無 IP 白名單。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "1 項受影響，最高風險為中。mail-api-key：secrets.json: mail-api-key：458 天未輪替、無 IP 白名單。",
+      "affected_count": 1,
+      "max_level": "medium"
+    },
+    "3_affected": [
+      {
+        "asset_id": "mail-api-key",
+        "our_state": "secrets.json: mail-api-key：458 天未輪替、無 IP 白名單",
+        "basis": "control",
+        "verdict": "affected",
+        "reason": "不符合 C-THIRD-PARTY-KEY-ROTATION（第三方服務金鑰 90 天內輪替且有 IP 白名單）",
+        "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "level": "medium",
+        "score": 6,
+        "breakdown": [
+          {
+            "factor": "基礎分：控制項不符",
+            "points": 2,
+            "reason": "controls.yaml base_points"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "第三方金鑰無 IP 白名單，外部任何來源都可使用"
+          },
+          {
+            "factor": "資料敏感",
+            "points": 1,
+            "reason": "order、pii"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-1shop-2026-10、live-neticrm-vendor-breach-2026-11"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-11T03:28:21Z"
+      }
+    ],
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": []
+    },
+    "5_solutions": [
+      {
+        "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "temporary": "撤銷並輪替 mail-api-key，確認撤銷後舊值無法使用",
+        "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "撤銷並輪替金鑰",
+            "cost": "使用該金鑰的服務需同步更新",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "security-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      }
+    ],
+    "6_notice": {
+      "needed": false,
+      "draft": null
+    },
+    "7_status": {
+      "status": "open",
+      "label": "待處理"
+    }
+  }
+}

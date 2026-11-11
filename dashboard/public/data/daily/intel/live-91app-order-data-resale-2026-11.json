@@ -1,0 +1,523 @@
+{
+  "event": {
+    "id": "live-91app-order-data-resale-2026-11",
+    "kind": "live",
+    "title": "91APP 個資外洩事件延燒，駭客兜售 4 電商 790 萬筆訂單資料",
+    "date": "2026-11-11",
+    "industry": "電商",
+    "attack_chain": [
+      "ARTEX AI Agent 對 91APP Commerce Cloud 的訂單資料庫進行自動化攻擊，未經授權存取部分消費者個資",
+      "91APP 於 10 月 14 日阻斷入侵",
+      "11 月 7 日駭客在地下交易平台刊登販售訂單資料，宣稱來自 91APP"
+    ],
+    "attck": [
+      "T1119"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [
+      "C-INTERNAL-TOOL-EXPOSED",
+      "C-SECRET-IN-GIT",
+      "C-NET-SEGMENT"
+    ],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://infosecu.technews.tw/2026/11/11/91app-security-4-e-commerce-data-breach/",
+        "title": "91APP 個資外洩事件延燒，駭客兜售 4 電商 790 萬筆訂單資料",
+        "quote": "91APP 個資外洩事件延燒，駭客兜售 4 電商 790 萬筆訂單資料",
+        "published": "2026-11-11",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-11T03:28:21Z",
+        "content_hash": "sha256:7cf0e9e304d5aa2e6c348e8fcd0b5816eed46baac6701342a0b24cda170a42cd",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": "evt-91app-2026-10",
+    "proposed_controls": [
+      {
+        "title": "含個資的訂單資料庫須偵測並限制異常的自動化大量查詢",
+        "reason": "來源指出 91APP 訂單資料庫遭 AI Agent 自動化攻擊而被未授權存取，現有控制項沒有涵蓋對個資資料庫的自動化大量存取偵測與限流。"
+      }
+    ]
+  },
+  "conclusion": "5 項受影響，最高風險為高。internal-tool：network.json: internet → internal-tool:443。",
+  "affected_count": 5,
+  "max_level": "high",
+  "impacts": [
+    {
+      "event_id": "live-91app-order-data-resale-2026-11",
+      "asset_id": "internal-tool",
+      "basis": "control",
+      "our_state": "network.json: internet → internal-tool:443",
+      "verdict": "affected",
+      "risk_id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+      "reason": "不符合 C-INTERNAL-TOOL-EXPOSED（內部工具不得對外開放）"
+    },
+    {
+      "event_id": "live-91app-order-data-resale-2026-11",
+      "asset_id": "nas-office-01",
+      "basis": "control",
+      "our_state": "network.json: internet → nas-office-01:5001",
+      "verdict": "affected",
+      "risk_id": "nas-office-01:C-INTERNAL-TOOL-EXPOSED",
+      "reason": "不符合 C-INTERNAL-TOOL-EXPOSED（內部工具不得對外開放）"
+    },
+    {
+      "event_id": "live-91app-order-data-resale-2026-11",
+      "asset_id": "gitlab",
+      "basis": "control",
+      "our_state": "config/db.yml:4",
+      "verdict": "affected",
+      "risk_id": "gitlab:C-SECRET-IN-GIT",
+      "reason": "不符合 C-SECRET-IN-GIT（Git 中不得有正式環境金鑰）"
+    },
+    {
+      "event_id": "live-91app-order-data-resale-2026-11",
+      "asset_id": "brand-app",
+      "basis": "control",
+      "our_state": "services/brand-app/src/config.ts:3",
+      "verdict": "affected",
+      "risk_id": "brand-app:C-SECRET-IN-GIT",
+      "reason": "不符合 C-SECRET-IN-GIT（Git 中不得有正式環境金鑰）"
+    },
+    {
+      "event_id": "live-91app-order-data-resale-2026-11",
+      "asset_id": "order-db-prod",
+      "basis": "control",
+      "our_state": "network.json: order-db-test（test）→ order-db-prod:5432",
+      "verdict": "affected",
+      "risk_id": "order-db-prod:C-NET-SEGMENT",
+      "reason": "不符合 C-NET-SEGMENT（非正式環境不得連線正式資料庫）"
+    }
+  ],
+  "solutions": [
+    {
+      "risk_id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+      "temporary": "確認 internal-tool 的狀況並限制存取",
+      "permanent": "依控制項要求修正，並在下次掃描確認",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "依控制項修正",
+          "cost": "依項目而定",
+          "timing": "24 小時內"
+        }
+      ],
+      "suggested_owner": "devops-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template"
+    },
+    {
+      "risk_id": "nas-office-01:C-INTERNAL-TOOL-EXPOSED",
+      "temporary": "確認 nas-office-01 的狀況並限制存取",
+      "permanent": "依控制項要求修正，並在下次掃描確認",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "依控制項修正",
+          "cost": "依項目而定",
+          "timing": "168 小時內"
+        }
+      ],
+      "suggested_owner": "it-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template"
+    },
+    {
+      "risk_id": "gitlab:C-SECRET-IN-GIT",
+      "temporary": "撤銷並輪替 gitlab，確認撤銷後舊值無法使用",
+      "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "撤銷並輪替金鑰",
+          "cost": "使用該金鑰的服務需同步更新",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "devops-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template"
+    },
+    {
+      "risk_id": "brand-app:C-SECRET-IN-GIT",
+      "temporary": "撤銷並輪替 brand-app，確認撤銷後舊值無法使用",
+      "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "撤銷並輪替金鑰",
+          "cost": "使用該金鑰的服務需同步更新",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "mobile-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template"
+    },
+    {
+      "risk_id": "order-db-prod:C-NET-SEGMENT",
+      "temporary": "確認 order-db-prod 的狀況並限制存取",
+      "permanent": "依控制項要求修正，並在下次掃描確認",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "依控制項修正",
+          "cost": "依項目而定",
+          "timing": "168 小時內"
+        }
+      ],
+      "suggested_owner": "dba-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template"
+    }
+  ],
+  "notice": {
+    "needed": true,
+    "draft": "致各品牌商：我們發現與「91APP 個資外洩事件延燒，駭客兜售 4 電商 790 萬筆訂單資料」相關的風險，正在處理中。請提醒會員：官方不會以電話或簡訊要求轉帳或提供驗證碼，也請只從官方商店下載品牌 App。有疑問請聯繫平台客服。（自動範本，發送前請人工確認）"
+  },
+  "status": "open",
+  "evaluated_asset_ids": [
+    "brand-app",
+    "gitlab",
+    "internal-tool",
+    "nas-office-01",
+    "order-db-prod"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "91APP 個資外洩延燒，駭客兜售 4 家電商 790 萬筆訂單資料；我們有 5 項相符，最高為高風險：internal-tool 對外開放（8 分）、gitlab（8 分）與 brand-app（10 分）的 Git 內金鑰，另有 nas-office-01 與 order-db-prod 的網路問題（各 5 分，中風險）。",
+  "blocks": {
+    "1_summary": {
+      "title": "91APP 個資外洩事件延燒，駭客兜售 4 電商 790 萬筆訂單資料",
+      "date": "2026-11-11",
+      "industry": "電商",
+      "attack_chain": [
+        "ARTEX AI Agent 對 91APP Commerce Cloud 的訂單資料庫進行自動化攻擊，未經授權存取部分消費者個資",
+        "91APP 於 10 月 14 日阻斷入侵",
+        "11 月 7 日駭客在地下交易平台刊登販售訂單資料，宣稱來自 91APP"
+      ],
+      "attck": [
+        "T1119"
+      ],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://infosecu.technews.tw/2026/11/11/91app-security-4-e-commerce-data-breach/",
+          "title": "91APP 個資外洩事件延燒，駭客兜售 4 電商 790 萬筆訂單資料",
+          "quote": "91APP 個資外洩事件延燒，駭客兜售 4 電商 790 萬筆訂單資料",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-11T03:28:21Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "91APP 個資外洩延燒，駭客兜售 4 家電商 790 萬筆訂單資料；我們有 5 項相符，最高為高風險：internal-tool 對外開放（8 分）、gitlab（8 分）與 brand-app（10 分）的 Git 內金鑰，另有 nas-office-01 與 order-db-prod 的網路問題（各 5 分，中風險）。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "5 項受影響，最高風險為高。internal-tool：network.json: internet → internal-tool:443。",
+      "affected_count": 5,
+      "max_level": "high"
+    },
+    "3_affected": [
+      {
+        "asset_id": "internal-tool",
+        "our_state": "network.json: internet → internal-tool:443",
+        "basis": "control",
+        "verdict": "affected",
+        "reason": "不符合 C-INTERNAL-TOOL-EXPOSED（內部工具不得對外開放）",
+        "risk_id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+        "level": "high",
+        "score": 8,
+        "breakdown": [
+          {
+            "factor": "基礎分：控制項不符",
+            "points": 2,
+            "reason": "controls.yaml base_points"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "可從 internet 連到"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-91app-2026-10、live-91app-order-data-resale-2026-11"
+          },
+          {
+            "factor": "位於完整攻擊鏈",
+            "points": 3,
+            "reason": "攻擊路徑前提的必要一步"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-11T03:28:21Z"
+      },
+      {
+        "asset_id": "nas-office-01",
+        "our_state": "network.json: internet → nas-office-01:5001",
+        "basis": "control",
+        "verdict": "affected",
+        "reason": "不符合 C-INTERNAL-TOOL-EXPOSED（內部工具不得對外開放）",
+        "risk_id": "nas-office-01:C-INTERNAL-TOOL-EXPOSED",
+        "level": "medium",
+        "score": 5,
+        "breakdown": [
+          {
+            "factor": "基礎分：控制項不符",
+            "points": 2,
+            "reason": "controls.yaml base_points"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "可從 internet 連到"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-91app-2026-10、evt-synology-2026-10、live-91app-order-data-resale-2026-11"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-11T03:28:21Z"
+      },
+      {
+        "asset_id": "gitlab",
+        "our_state": "config/db.yml:4",
+        "basis": "control",
+        "verdict": "affected",
+        "reason": "不符合 C-SECRET-IN-GIT（Git 中不得有正式環境金鑰）",
+        "risk_id": "gitlab:C-SECRET-IN-GIT",
+        "level": "high",
+        "score": 8,
+        "breakdown": [
+          {
+            "factor": "基礎分：控制項不符",
+            "points": 2,
+            "reason": "controls.yaml base_points"
+          },
+          {
+            "factor": "資料敏感",
+            "points": 1,
+            "reason": "order、pii"
+          },
+          {
+            "factor": "影響範圍",
+            "points": 1,
+            "reason": "平台層，影響所有品牌"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-91app-2026-10、live-91app-order-data-resale-2026-11"
+          },
+          {
+            "factor": "位於完整攻擊鏈",
+            "points": 3,
+            "reason": "攻擊路徑前提的必要一步"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-11T03:28:21Z"
+      },
+      {
+        "asset_id": "brand-app",
+        "our_state": "services/brand-app/src/config.ts:3",
+        "basis": "control",
+        "verdict": "affected",
+        "reason": "不符合 C-SECRET-IN-GIT（Git 中不得有正式環境金鑰）",
+        "risk_id": "brand-app:C-SECRET-IN-GIT",
+        "level": "high",
+        "score": 10,
+        "breakdown": [
+          {
+            "factor": "基礎分：控制項不符",
+            "points": 2,
+            "reason": "controls.yaml base_points"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "商店上架的 App"
+          },
+          {
+            "factor": "資料敏感",
+            "points": 1,
+            "reason": "pii"
+          },
+          {
+            "factor": "影響範圍",
+            "points": 1,
+            "reason": "平台層，影響所有品牌"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-91app-2026-10、live-91app-order-data-resale-2026-11"
+          },
+          {
+            "factor": "位於完整攻擊鏈",
+            "points": 3,
+            "reason": "攻擊路徑前提的必要一步"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-11T03:28:21Z"
+      },
+      {
+        "asset_id": "order-db-prod",
+        "our_state": "network.json: order-db-test（test）→ order-db-prod:5432",
+        "basis": "control",
+        "verdict": "affected",
+        "reason": "不符合 C-NET-SEGMENT（非正式環境不得連線正式資料庫）",
+        "risk_id": "order-db-prod:C-NET-SEGMENT",
+        "level": "medium",
+        "score": 5,
+        "breakdown": [
+          {
+            "factor": "基礎分：控制項不符",
+            "points": 2,
+            "reason": "controls.yaml base_points"
+          },
+          {
+            "factor": "資料敏感",
+            "points": 1,
+            "reason": "order、pii"
+          },
+          {
+            "factor": "影響範圍",
+            "points": 1,
+            "reason": "平台層，影響所有品牌"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-91app-2026-10、live-91app-order-data-resale-2026-11"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-11T03:28:21Z"
+      }
+    ],
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": []
+    },
+    "5_solutions": [
+      {
+        "risk_id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+        "temporary": "確認 internal-tool 的狀況並限制存取",
+        "permanent": "依控制項要求修正，並在下次掃描確認",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "依控制項修正",
+            "cost": "依項目而定",
+            "timing": "24 小時內"
+          }
+        ],
+        "suggested_owner": "devops-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      {
+        "risk_id": "nas-office-01:C-INTERNAL-TOOL-EXPOSED",
+        "temporary": "確認 nas-office-01 的狀況並限制存取",
+        "permanent": "依控制項要求修正，並在下次掃描確認",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "依控制項修正",
+            "cost": "依項目而定",
+            "timing": "168 小時內"
+          }
+        ],
+        "suggested_owner": "it-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      {
+        "risk_id": "gitlab:C-SECRET-IN-GIT",
+        "temporary": "撤銷並輪替 gitlab，確認撤銷後舊值無法使用",
+        "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "撤銷並輪替金鑰",
+            "cost": "使用該金鑰的服務需同步更新",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "devops-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      {
+        "risk_id": "brand-app:C-SECRET-IN-GIT",
+        "temporary": "撤銷並輪替 brand-app，確認撤銷後舊值無法使用",
+        "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "撤銷並輪替金鑰",
+            "cost": "使用該金鑰的服務需同步更新",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "mobile-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      {
+        "risk_id": "order-db-prod:C-NET-SEGMENT",
+        "temporary": "確認 order-db-prod 的狀況並限制存取",
+        "permanent": "依控制項要求修正，並在下次掃描確認",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "依控制項修正",
+            "cost": "依項目而定",
+            "timing": "168 小時內"
+          }
+        ],
+        "suggested_owner": "dba-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      }
+    ],
+    "6_notice": {
+      "needed": true,
+      "draft": "致各品牌商：我們發現與「91APP 個資外洩事件延燒，駭客兜售 4 電商 790 萬筆訂單資料」相關的風險，正在處理中。請提醒會員：官方不會以電話或簡訊要求轉帳或提供驗證碼，也請只從官方商店下載品牌 App。有疑問請聯繫平台客服。（自動範本，發送前請人工確認）"
+    },
+    "7_status": {
+      "status": "open",
+      "label": "待處理"
+    }
+  },
+  "update_of": {
+    "id": "evt-91app-2026-10",
+    "title": "91APP 訂單資料庫遭入侵：未更新的內部工具 Appsmith 成破口，自內部 GitLab 取得資料庫金鑰",
+    "status": "open"
+  }
+}

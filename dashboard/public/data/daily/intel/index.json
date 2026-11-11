@@ -49,7 +49,7 @@
     "kind": "archive",
     "title": "Synology NAS 遭 C3RB3R 勒索軟體加密：DSM 登入頁對外暴露，常駐連接的備份碟一併被加密",
     "affected_count": 3,
-    "max_level": "medium",
+    "max_level": "high",
     "status": "open",
     "demo": false
   },
@@ -63,39 +63,75 @@
     "demo": false
   },
   {
-    "id": "live-cyberbiz-ecommerce-outsourced-2026-11",
-    "kind": "live",
-    "title": "順立智慧（Cyberbiz）委外電商平台資料庫遭異常存取，多家品牌商城受波及",
+    "id": "kev-cve-2026-109618",
+    "kind": "advisory",
+    "title": "CISA KEV：PHP Memory Corruption Vulnerability（CVE-2026-109618）",
+    "affected_count": 2,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "kev-cve-2026-109619",
+    "kind": "advisory",
+    "title": "CISA KEV：PHP Stale Internal Request-State Vulnerability（CVE-2026-109619）",
+    "affected_count": 2,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "kev-cve-2026-111497",
+    "kind": "advisory",
+    "title": "CISA KEV：Google Brotli Unchecked Return Value Vulnerability（CVE-2026-111497）",
+    "affected_count": 3,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "kev-cve-2026-119977",
+    "kind": "advisory",
+    "title": "CISA KEV：WordPress WordPress Core Time-of-check Time-of-use (TOCTOU) Race Condition Vulnerability（CVE-2026-119977）",
+    "affected_count": 1,
+    "max_level": "medium",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "kev-cve-2026-97229",
+    "kind": "advisory",
+    "title": "CISA KEV：GitLab Community Edition and Enterprise Edition Integer Overflow or Wraparound Vulnerability（CVE-2026-97229）",
     "affected_count": 0,
     "max_level": null,
     "status": "not_affected",
     "demo": false
   },
   {
-    "id": "live-eztravel-member-center-2026-11",
+    "id": "live-91app-order-data-resale-2026-11",
     "kind": "live",
-    "title": "易遊網會員中心遭攻擊，逾 69 萬人歷史訂單聯絡資料受影響",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "not_affected",
+    "title": "91APP 個資外洩事件延燒，駭客兜售 4 電商 790 萬筆訂單資料",
+    "affected_count": 5,
+    "max_level": "high",
+    "status": "open",
     "demo": false
   },
   {
-    "id": "live-neticrm-nonprofit-donor-2026-11",
+    "id": "live-neticrm-vendor-breach-2026-11",
     "kind": "live",
-    "title": "netiCRM 服務商遭駭，逾 20 個非營利組織捐款人個資恐外洩",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "not_affected",
+    "title": "netiCRM 服務商網絡行動科技遭駭，30 多個非營利組織示警",
+    "affected_count": 1,
+    "max_level": "medium",
+    "status": "open",
     "demo": false
   },
   {
-    "id": "live-sega-arara-mail-service-2026-11",
+    "id": "live-arara-mail-vendor-breach-2026-11",
     "kind": "live",
-    "title": "日本郵件發送服務商 Arara 遭未授權存取，SEGA 外洩近 220 萬筆資料",
+    "title": "日本郵件發送服務商 Arara 遭未授權存取，SEGA 等逾 380 家企業受影響",
     "affected_count": 0,
     "max_level": null,
-    "status": "not_affected",
+    "status": "need_check",
     "demo": false
   }
 ]

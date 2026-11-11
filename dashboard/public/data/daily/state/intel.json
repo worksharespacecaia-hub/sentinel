@@ -1073,175 +1073,559 @@
       "demo_fixture": true
     },
     {
-      "id": "live-cyberbiz-ecommerce-outsourced-2026-11",
-      "kind": "live",
+      "id": "kev-cve-2026-109618",
+      "kind": "advisory",
       "is_update_of": null,
-      "title": "順立智慧（Cyberbiz）委外電商平台資料庫遭異常存取，多家品牌商城受波及",
-      "date": "2026-11-10",
-      "industry": "電商",
-      "attack_chain": [
-        "電商平台委外服務廠商順立智慧的資料庫遭未經授權的異常存取",
-        "涉及下游商城的訂單及消費者個人資料",
-        "順立智慧通知下游商家，各商家啟動應變並清查受影響範圍"
-      ],
+      "title": "CISA KEV：PHP Memory Corruption Vulnerability（CVE-2026-109618）",
+      "date": "2026-10-26",
+      "industry": null,
+      "attack_chain": [],
       "attck": [],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
+      "cves": [
+        "CVE-2026-109618"
+      ],
+      "products": [
         {
-          "url": "https://www.ithome.com.tw/news/180358",
-          "title": "台灣櫻花購物商城的委外廠商資料庫遭異常存取，訂單及消費者個資恐受影響",
-          "quote": "台灣櫻花購物商城的委外廠商資料庫遭異常存取，訂單及消費者個資恐受影響",
-          "published": "2026-11-10",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-10T12:22:28Z",
-          "content_hash": "sha256:04083af62958090ec754c51920d4510dc13694868c22062507d518c8f9f10573",
-          "verification_basis": "live"
-        },
-        {
-          "url": "https://www.ithome.com.tw/news/180352",
-          "title": "曜亞子公司線上購物平臺遭委外廠商資安事件波及，訂單資料遭異常存取",
-          "quote": "曜亞子公司線上購物平臺遭委外廠商資安事件波及，訂單資料遭異常存取",
-          "published": "2026-11-10",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-10T12:22:28Z",
-          "content_hash": "sha256:b100d015b8b0ff9bafc84d6343f50dcbaf203ce7069a38b73bf3f4f5b67396ff",
-          "verification_basis": "live"
-        },
-        {
-          "url": "https://www.ithome.com.tw/news/180356",
-          "title": "美吾華購物網站疑似個資外洩，茅頭指向委外的電商服務系統",
-          "quote": "美吾華購物網站疑似個資外洩，茅頭指向委外的電商服務系統",
-          "published": "2026-11-10",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-10T12:22:28Z",
-          "content_hash": "sha256:b29e5b392bf3958bec94f4e41d2a3e73a8a45440b4023477030aa1efc5a301c8",
-          "verification_basis": "live"
-        },
-        {
-          "url": "https://www.ithome.com.tw/news/180351",
-          "title": "崇越子公司安永生活電商委外服務商發生異常資料存取，清查受影響範圍",
-          "quote": "崇越子公司安永生活電商委外服務商發生異常資料存取，清查受影響範圍",
-          "published": "2026-11-10",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-10T12:22:28Z",
-          "content_hash": "sha256:5a69da40d32bffc16a26287ce40881d0c8c1779993c50b58fdbf76f3442ea089",
-          "verification_basis": "live"
+          "name": "php",
+          "ecosystem": "php",
+          "affected": [
+            {
+              "start_including": "7.3.0",
+              "end_excluding": "8.2.35"
+            },
+            {
+              "start_including": "8.3.0",
+              "end_excluding": "8.3.36"
+            },
+            {
+              "start_including": "8.4.0",
+              "end_excluding": "8.4.27"
+            },
+            {
+              "start_including": "8.5.0",
+              "end_excluding": "8.5.12"
+            }
+          ],
+          "cvss": 9.8,
+          "known_exploited": true,
+          "impact": "other"
         }
       ],
-      "proposed_controls": [],
-      "demo": false,
-      "facts": [],
-      "summary": "櫻花接獲電商委外服務廠商順立智慧通知，其資料庫遭未經授權的異常存取，涉及購物商城訂單及消費者個人資料。曜亞子公司曜胜生技的 DR CYJ 購物網、崇越子公司安永生活也因同一委外廠商事件受影響，美吾華則指出事件與委外電商平台服務廠商系統有關。各公司表示原因與影響範圍仍在調查中。",
-      "fixture_note": null
-    },
-    {
-      "id": "live-eztravel-member-center-2026-11",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "易遊網會員中心遭攻擊，逾 69 萬人歷史訂單聯絡資料受影響",
-      "date": "2026-11-09",
-      "industry": "電商",
-      "attack_chain": [
-        "11 月 7 日會員中心出現外部異常網路攻擊",
-        "部分歷史訂單聯絡資料（姓名、電子郵件、聯絡電話、商品訂購資訊）遭不當取得",
-        "業者完成異常流量攔截與阻斷，並委請第三方資安團隊鑑識"
-      ],
-      "attck": [],
-      "cves": [],
-      "products": [],
-      "revision": "1",
+      "revision": "2026-11-05T19:17:07.900",
       "controls": [],
       "confidence": "confirmed",
       "sources": [
         {
-          "url": "https://www.inside.com.tw/article/42862-eztravel-member-center-breach-690k-order-contact-data",
-          "title": "易遊網遭駭，逾 69 萬人訂單聯絡資料外洩，業者稱不含信用卡與身分證字號",
-          "quote": "旅遊平台 易遊網 在 2026 年 11 月 9 日發布公告，表示 11 月 7 日偵測到會員中心出現外部異常網路攻擊，部分歷史訂單的聯絡資料遭不當取得，受影響人數超過 69 萬人。",
-          "published": "2026-11-10",
+          "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search=CVE-2026-109618",
+          "title": "CISA Known Exploited Vulnerabilities：CVE-2026-109618",
+          "quote": null,
+          "published": "2026-10-26",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-10T12:22:28Z",
-          "content_hash": "sha256:8a4fd891c42df5bd6551a7bcf659319bde0984d5c0787f4539225e53df143fd2",
-          "verification_basis": "live"
+          "verified_at": "2026-11-10T17:04:44Z",
+          "content_hash": null,
+          "verification_basis": "official_api"
         },
         {
-          "url": "https://www.ithome.com.tw/news/180354",
-          "title": "易遊網會員中心遭網路攻擊，逾69萬人歷史訂單聯絡資料受影響",
-          "quote": "易遊網會員中心遭網路攻擊，逾69萬人歷史訂單聯絡資料受影響",
-          "published": "2026-11-10",
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-109618",
+          "title": "NVD：CVE-2026-109618",
+          "quote": null,
+          "published": "2026-10-21",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-10T12:22:28Z",
-          "content_hash": "sha256:f98a7d3124992c64b87ccc26336ec997cd0aba0a94b59bee4e5ba8827b5cb017",
-          "verification_basis": "live"
+          "verified_at": "2026-11-10T17:04:44Z",
+          "content_hash": null,
+          "verification_basis": "official_api"
         }
       ],
       "proposed_controls": [],
       "demo": false,
       "facts": [],
-      "summary": "易遊網於 11 月 7 日偵測到會員中心出現外部異常網路攻擊，部分歷史訂單聯絡資料遭不當取得，受影響人數超過 69 萬人。業者表示不含信用卡卡號、安全碼、帳號登入密碼、身分證字號及護照號碼，並已通報主管機關及警政單位、委請第三方資安團隊調查。公告未說明攻擊手法與攻擊者身分。",
-      "fixture_note": null
+      "summary": "PHP uses longjmp() for out-of-memory (OOM) errors to exit the current context and abort handling of the request. Some contexts may not properly account for this scenario and leave request memory in an uninitialized state before performing an allocation. The subsequent request cleanup procedure may r",
+      "fixture_note": null,
+      "generated_by": "kev-nvd",
+      "generated_at": "2026-11-10T17:04:44Z"
     },
     {
-      "id": "live-neticrm-nonprofit-donor-2026-11",
-      "kind": "live",
+      "id": "kev-cve-2026-109619",
+      "kind": "advisory",
       "is_update_of": null,
-      "title": "netiCRM 服務商遭駭，逾 20 個非營利組織捐款人個資恐外洩",
-      "date": "2026-11-10",
-      "industry": "SaaS",
+      "title": "CISA KEV：PHP Stale Internal Request-State Vulnerability（CVE-2026-109619）",
+      "date": "2026-10-26",
+      "industry": null,
+      "attack_chain": [],
+      "attck": [],
+      "cves": [
+        "CVE-2026-109619"
+      ],
+      "products": [
+        {
+          "name": "php",
+          "ecosystem": "php",
+          "affected": [
+            {
+              "start_including": "5.4.0",
+              "end_excluding": "8.2.35"
+            },
+            {
+              "start_including": "8.3.0",
+              "end_excluding": "8.3.36"
+            },
+            {
+              "start_including": "8.4.0",
+              "end_excluding": "8.4.27"
+            },
+            {
+              "start_including": "8.5.0",
+              "end_excluding": "8.5.12"
+            }
+          ],
+          "cvss": 9.2,
+          "known_exploited": true,
+          "impact": "other"
+        }
+      ],
+      "revision": "2026-11-05T19:17:08.397",
+      "controls": [],
+      "confidence": "confirmed",
+      "sources": [
+        {
+          "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search=CVE-2026-109619",
+          "title": "CISA Known Exploited Vulnerabilities：CVE-2026-109619",
+          "quote": null,
+          "published": "2026-10-26",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-10T17:04:44Z",
+          "content_hash": null,
+          "verification_basis": "official_api"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-109619",
+          "title": "NVD：CVE-2026-109619",
+          "quote": null,
+          "published": "2026-10-21",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-10T17:04:44Z",
+          "content_hash": null,
+          "verification_basis": "official_api"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [],
+      "summary": "PHP has various global state that temporarily points into request memory. In some scenarios, global state may not be correctly reset, or may be repopulated after being reset. The global state may then refer to request memory even after it has been freed. Subsequent requests may read or branch on thi",
+      "fixture_note": null,
+      "generated_by": "kev-nvd",
+      "generated_at": "2026-11-10T17:04:44Z"
+    },
+    {
+      "id": "kev-cve-2026-111497",
+      "kind": "advisory",
+      "is_update_of": null,
+      "title": "CISA KEV：Google Brotli Unchecked Return Value Vulnerability（CVE-2026-111497）",
+      "date": "2026-10-27",
+      "industry": null,
+      "attack_chain": [],
+      "attck": [],
+      "cves": [
+        "CVE-2026-111497"
+      ],
+      "products": [
+        {
+          "name": "node",
+          "ecosystem": "generic",
+          "affected": [
+            {
+              "end_excluding": "22.23.4"
+            },
+            {
+              "start_including": "23.0.0",
+              "end_excluding": "24.22.1"
+            },
+            {
+              "start_including": "25.0.0",
+              "end_excluding": "26.12.1"
+            }
+          ],
+          "cvss": 9.8,
+          "known_exploited": true,
+          "impact": "other"
+        }
+      ],
+      "revision": "2026-11-10T13:18:20.647",
+      "controls": [],
+      "confidence": "confirmed",
+      "sources": [
+        {
+          "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search=CVE-2026-111497",
+          "title": "CISA Known Exploited Vulnerabilities：CVE-2026-111497",
+          "quote": null,
+          "published": "2026-10-27",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-10T17:04:44Z",
+          "content_hash": null,
+          "verification_basis": "official_api"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-111497",
+          "title": "NVD：CVE-2026-111497",
+          "quote": null,
+          "published": "2026-10-22",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-10T17:04:44Z",
+          "content_hash": null,
+          "verification_basis": "official_api"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [],
+      "summary": "A buffer overflow vulnerability in the Brotli decoder (c/dec/decode.c) in Google Brotli versions 1.0.3 through 1.2.0 on all platforms allows a remote unauthenticated attacker to corrupt adjacent decoder state memory, disclose sensitive memory contents, cause a denial of service, or potentially execu",
+      "fixture_note": null,
+      "generated_by": "kev-nvd",
+      "generated_at": "2026-11-10T17:04:44Z"
+    },
+    {
+      "id": "kev-cve-2026-119977",
+      "kind": "advisory",
+      "is_update_of": null,
+      "title": "CISA KEV：WordPress WordPress Core Time-of-check Time-of-use (TOCTOU) Race Condition Vulnerability（CVE-2026-119977）",
+      "date": "2026-11-03",
+      "industry": null,
+      "attack_chain": [],
+      "attck": [],
+      "cves": [
+        "CVE-2026-119977"
+      ],
+      "products": [
+        {
+          "name": "wordpress",
+          "ecosystem": "generic",
+          "affected": [
+            {
+              "start_including": "4.7",
+              "end_excluding": "4.7.39"
+            },
+            {
+              "start_including": "4.8",
+              "end_excluding": "4.8.34"
+            },
+            {
+              "start_including": "4.9",
+              "end_excluding": "4.9.35"
+            },
+            {
+              "start_including": "5.0",
+              "end_excluding": "5.0.31"
+            },
+            {
+              "start_including": "5.1",
+              "end_excluding": "5.1.28"
+            },
+            {
+              "start_including": "5.2",
+              "end_excluding": "5.2.30"
+            },
+            {
+              "start_including": "5.3",
+              "end_excluding": "5.3.27"
+            },
+            {
+              "start_including": "5.4",
+              "end_excluding": "5.4.25"
+            },
+            {
+              "start_including": "5.5",
+              "end_excluding": "5.5.24"
+            },
+            {
+              "start_including": "5.6",
+              "end_excluding": "5.6.23"
+            },
+            {
+              "start_including": "5.7",
+              "end_excluding": "5.7.21"
+            },
+            {
+              "start_including": "5.8",
+              "end_excluding": "5.8.19"
+            },
+            {
+              "start_including": "5.9",
+              "end_excluding": "5.9.20"
+            },
+            {
+              "start_including": "6.0",
+              "end_excluding": "6.0.18"
+            },
+            {
+              "start_including": "6.1",
+              "end_excluding": "6.1.16"
+            },
+            {
+              "start_including": "6.2",
+              "end_excluding": "6.2.15"
+            },
+            {
+              "start_including": "6.3",
+              "end_excluding": "6.3.14"
+            },
+            {
+              "start_including": "6.4",
+              "end_excluding": "6.4.14"
+            },
+            {
+              "start_including": "6.5",
+              "end_excluding": "6.5.14"
+            },
+            {
+              "start_including": "6.6",
+              "end_excluding": "6.6.11"
+            },
+            {
+              "start_including": "6.7",
+              "end_excluding": "6.7.11"
+            },
+            {
+              "start_including": "6.8",
+              "end_excluding": "6.8.12"
+            },
+            {
+              "start_including": "6.9",
+              "end_excluding": "6.9.11"
+            },
+            {
+              "start_including": "7.0",
+              "end_excluding": "7.0.8"
+            },
+            {
+              "start_including": "7.1",
+              "end_excluding": "7.1.4"
+            }
+          ],
+          "cvss": 8.1,
+          "known_exploited": true,
+          "impact": "other"
+        }
+      ],
+      "revision": "2026-11-04T12:52:38.683",
+      "controls": [],
+      "confidence": "confirmed",
+      "sources": [
+        {
+          "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search=CVE-2026-119977",
+          "title": "CISA Known Exploited Vulnerabilities：CVE-2026-119977",
+          "quote": null,
+          "published": "2026-11-03",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-10T17:04:44Z",
+          "content_hash": null,
+          "verification_basis": "official_api"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-119977",
+          "title": "NVD：CVE-2026-119977",
+          "quote": null,
+          "published": "2026-10-31",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-10T17:04:44Z",
+          "content_hash": null,
+          "verification_basis": "official_api"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [],
+      "summary": "WordPress Core is vulnerable to Remote Code Execution in versions 4.7 through 7.1.3. This is due to predictable, web-accessible staging paths used during full-package core upgrades. This makes it possible for unauthenticated attackers to execute code on the server during the upgrade window.",
+      "fixture_note": null,
+      "generated_by": "kev-nvd",
+      "generated_at": "2026-11-10T17:04:44Z"
+    },
+    {
+      "id": "kev-cve-2026-97229",
+      "kind": "advisory",
+      "is_update_of": null,
+      "title": "CISA KEV：GitLab Community Edition and Enterprise Edition Integer Overflow or Wraparound Vulnerability（CVE-2026-97229）",
+      "date": "2026-10-29",
+      "industry": null,
+      "attack_chain": [],
+      "attck": [],
+      "cves": [
+        "CVE-2026-97229"
+      ],
+      "products": [
+        {
+          "name": "gitlab-ce",
+          "ecosystem": "generic",
+          "affected": [
+            {
+              "start_including": "19.2.0",
+              "end_excluding": "19.2.8"
+            },
+            {
+              "start_including": "19.3.0",
+              "end_excluding": "19.3.5"
+            },
+            {
+              "start_including": "19.4.0",
+              "end_excluding": "19.4.2"
+            }
+          ],
+          "cvss": 10.0,
+          "known_exploited": true,
+          "impact": "other"
+        }
+      ],
+      "revision": "2026-11-02T13:30:16.800",
+      "controls": [],
+      "confidence": "confirmed",
+      "sources": [
+        {
+          "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search=CVE-2026-97229",
+          "title": "CISA Known Exploited Vulnerabilities：CVE-2026-97229",
+          "quote": null,
+          "published": "2026-10-29",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-10T17:04:44Z",
+          "content_hash": null,
+          "verification_basis": "official_api"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-97229",
+          "title": "NVD：CVE-2026-97229",
+          "quote": null,
+          "published": "2026-10-13",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-10T17:04:44Z",
+          "content_hash": null,
+          "verification_basis": "official_api"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [],
+      "summary": "GitLab has remediated an issue in GitLab CE/EE affecting all versions from 19.2 before 19.2.8, 19.3 before 19.3.5, and 19.4 before 19.4.2 that, under certain conditions, could have allowed an unauthenticated user to execute arbitrary code on the GitLab server via a specially crafted regular expressi",
+      "fixture_note": null,
+      "generated_by": "kev-nvd",
+      "generated_at": "2026-11-10T17:04:44Z"
+    },
+    {
+      "id": "live-91app-order-data-resale-2026-11",
+      "kind": "live",
+      "is_update_of": "evt-91app-2026-10",
+      "title": "91APP 個資外洩事件延燒，駭客兜售 4 電商 790 萬筆訂單資料",
+      "date": "2026-11-11",
+      "industry": "電商",
       "attack_chain": [
-        "攻擊者取得服務商內部程式碼管理系統的一組帳號密碼",
-        "利用系統漏洞取得一臺伺服器的管理權限並入侵",
-        "服務商切斷連線、修補漏洞並更新伺服器金鑰與系統密碼"
+        "ARTEX AI Agent 對 91APP Commerce Cloud 的訂單資料庫進行自動化攻擊，未經授權存取部分消費者個資",
+        "91APP 於 10 月 14 日阻斷入侵",
+        "11 月 7 日駭客在地下交易平台刊登販售訂單資料，宣稱來自 91APP"
       ],
       "attck": [
-        "T1078"
+        "T1119"
       ],
       "cves": [],
       "products": [],
       "revision": "1",
-      "controls": [],
+      "controls": [
+        "C-INTERNAL-TOOL-EXPOSED",
+        "C-SECRET-IN-GIT",
+        "C-NET-SEGMENT"
+      ],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://infosecu.technews.tw/2026/11/11/91app-security-4-e-commerce-data-breach/",
+          "title": "91APP 個資外洩事件延燒，駭客兜售 4 電商 790 萬筆訂單資料",
+          "quote": "91APP 個資外洩事件延燒，駭客兜售 4 電商 790 萬筆訂單資料",
+          "published": "2026-11-11",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-11T03:28:21Z",
+          "content_hash": "sha256:7cf0e9e304d5aa2e6c348e8fcd0b5816eed46baac6701342a0b24cda170a42cd",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [
+        {
+          "title": "含個資的訂單資料庫須偵測並限制異常的自動化大量查詢",
+          "reason": "來源指出 91APP 訂單資料庫遭 AI Agent 自動化攻擊而被未授權存取，現有控制項沒有涵蓋對個資資料庫的自動化大量存取偵測與限流。"
+        }
+      ],
+      "demo": false,
+      "facts": [],
+      "summary": "91APP 先前公布 Commerce Cloud 其中一座訂單資料庫遭 ARTEX AI Agent 自動化攻擊，最大可能影響 1,329 個品牌、約 479.8 萬名消費者。11 月 7 日有駭客在中國地下交易平台兜售全家行動購、寶雅、康是美、無印良品共約 790 萬筆訂單資料，但數量為駭客單方說法，真實性與是否與先前事件重複尚未確認。",
+      "fixture_note": null,
+      "inherited_from": "evt-91app-2026-10"
+    },
+    {
+      "id": "live-neticrm-vendor-breach-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "netiCRM 服務商網絡行動科技遭駭，30 多個非營利組織示警",
+      "date": "2026-11-10",
+      "industry": "SaaS",
+      "attack_chain": [
+        "外部攻擊者入侵網絡行動科技的部分伺服器",
+        "服務商切斷攻擊者連線、完成漏洞修補，並更新伺服器金鑰與系統密碼",
+        "下游 30 多個使用 netiCRM 的組織相繼公告並暫停部分線上服務"
+      ],
+      "attck": [
+        "T1199"
+      ],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [
+        "C-THIRD-PARTY-KEY-ROTATION"
+      ],
       "confidence": "provisional",
       "sources": [
         {
           "url": "https://www.ithome.com.tw/news/180384",
-          "title": "捐款人個資恐外洩！netiCRM服務商遭駭，公督盟、司改會等超過20個非營利組織接連示警",
+          "title": "捐款人個資恐外洩！netiCRM服務商遭駭，公督盟、司改會等超過30個非營利組織接連示警",
           "quote": "其中，公督盟已預防性暫停線上捐款及活動報名服務，至於是否涉及捐款人個資外洩，目前仍在調查中。",
           "published": "2026-11-10",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-10T12:22:28Z",
-          "content_hash": "sha256:3cc5c8406a5c872e2f7bfc942cf885729d1fc0cdbefd3ebe85afc1e02986bcde",
+          "verified_at": "2026-11-11T03:28:21Z",
+          "content_hash": "sha256:e40b84df11310195226604aca12cfccbb6511d4a085e98e47ad2da46e42f7043",
           "verification_basis": "live"
         }
       ],
-      "proposed_controls": [],
+      "proposed_controls": [
+        {
+          "title": "SaaS 與外包服務商須約定資安事件通知時限與範圍",
+          "reason": "來源顯示下游組織多是從服務商通知或其他組織公告得知事件，現有控制項沒有涵蓋供應商事件通報義務與捐款人個資的下游通知流程。"
+        }
+      ],
       "demo": false,
       "facts": [],
-      "summary": "netiCRM 服務商網絡行動科技部分伺服器遭外部攻擊者入侵，超過 20 個非營利組織發布示警，公督盟預防性暫停線上捐款及活動報名服務。是否涉及捐款人個資外洩仍在調查中。服務商說明攻擊者取得內部程式碼管理系統的一組帳號密碼，並利用系統漏洞取得一臺伺服器的管理權限。",
+      "summary": "臺灣非營利組織使用的捐款管理系統 netiCRM，其服務商網絡行動科技部分伺服器於 11 月 8 日晚間至 9 日凌晨遭外部攻擊者入侵，超過 30 個組織公告提醒捐款人留意詐騙。服務商表示已切斷連線、修補漏洞並更新伺服器金鑰與系統密碼；是否涉及捐款人個資外洩仍在調查中。",
       "fixture_note": null
     },
     {
-      "id": "live-sega-arara-mail-service-2026-11",
+      "id": "live-arara-mail-vendor-breach-2026-11",
       "kind": "live",
       "is_update_of": null,
-      "title": "日本郵件發送服務商 Arara 遭未授權存取，SEGA 外洩近 220 萬筆資料",
+      "title": "日本郵件發送服務商 Arara 遭未授權存取，SEGA 等逾 380 家企業受影響",
       "date": "2026-11-10",
-      "industry": "SaaS",
+      "industry": "零售",
       "attack_chain": [
-        "Arara 郵件發送系統遭第三方未授權存取",
-        "電子報訂戶電子郵件地址及部分個資外洩",
-        "影響使用該服務的超過 380 家企業客戶"
+        "第三方未經授權存取 Arara 系統",
+        "Arara 保管的客戶企業資料外洩，波及 380 多家企業"
       ],
-      "attck": [],
+      "attck": [
+        "T1199"
+      ],
       "cves": [],
       "products": [],
       "revision": "1",
@@ -1249,32 +1633,26 @@
       "confidence": "provisional",
       "sources": [
         {
-          "url": "https://www.ithome.com.tw/news/180353",
-          "title": "SEGA集團因日本Arara資安事件外洩資料220萬筆",
-          "quote": "這次事件影響超過380家企業電子報發送客戶服務的客戶。",
-          "published": "2026-11-10",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-10T12:22:28Z",
-          "content_hash": "sha256:12427bb124ce06706a45543bb7c94400bea67ab5b77423705aee1b8c601bcb60",
-          "verification_basis": "live"
-        },
-        {
           "url": "https://www.ithome.com.tw/news/180375",
           "title": "【資安日報】11月10日，甫揭露的OpenSSH漏洞SSHole出現嘗試利用活動",
           "quote": "Arara於10月底發生資安事件，可能造成超過8,100萬筆客戶資料外洩，影響逾380家企業，包括小學館、BIC Camera及摩斯漢堡等。",
-          "published": "2026-11-09",
+          "published": "2026-11-10",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-10T12:22:28Z",
+          "verified_at": "2026-11-11T03:28:21Z",
           "content_hash": "sha256:cf3ab0adc74b382dad55b21ce9d0ed5777caab0fcca744ad0b1b32c7020379c1",
           "verification_basis": "live"
         }
       ],
-      "proposed_controls": [],
+      "proposed_controls": [
+        {
+          "title": "委外郵件與行銷服務商持有的客戶資料須最小化並定期清理",
+          "reason": "單一郵件服務商遭入侵即波及逾 380 家企業，現有控制項沒有涵蓋委外商持有資料的範圍與保存期限管理。"
+        }
+      ],
       "demo": false,
       "facts": [],
-      "summary": "委外郵件發送服務商 Arara 的系統遭第三方未授權存取，SEGA 及 SEGA FAVE 外洩電子報訂戶電子郵件地址 2,196,044 筆及隨信發送的個人資訊 92,273 筆。Arara 事件可能造成超過 8,100 萬筆客戶資料外洩，影響逾 380 家企業。",
+      "summary": "日本委外郵件發送服務商 Arara 於 10 月底發生資安事件，可能造成超過 8,100 萬筆客戶資料外洩，影響逾 380 家企業，包括 BIC Camera、摩斯漢堡等。SEGA 集團因此外洩近 220 萬筆資料，表示不含姓名、住址、電話、信用卡資訊與登入密碼。",
       "fixture_note": null
     }
   ],
@@ -1320,25 +1698,49 @@
       "issues": [],
       "max_level": null
     },
-    "live-cyberbiz-ecommerce-outsourced-2026-11": {
+    "kev-cve-2026-109618": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": "程式取自 CISA KEV 與 NVD API"
+    },
+    "kev-cve-2026-109619": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": "程式取自 CISA KEV 與 NVD API"
+    },
+    "kev-cve-2026-111497": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": "程式取自 CISA KEV 與 NVD API"
+    },
+    "kev-cve-2026-119977": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": "程式取自 CISA KEV 與 NVD API"
+    },
+    "kev-cve-2026-97229": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": "程式取自 CISA KEV 與 NVD API"
+    },
+    "live-91app-order-data-resale-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-eztravel-member-center-2026-11": {
+    "live-neticrm-vendor-breach-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-neticrm-nonprofit-donor-2026-11": {
-      "status": "ok",
-      "issues": [],
-      "max_level": null,
-      "note": null
-    },
-    "live-sega-arara-mail-service-2026-11": {
+    "live-arara-mail-vendor-breach-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,

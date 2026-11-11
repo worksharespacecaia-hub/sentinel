@@ -1,0 +1,198 @@
+{
+  "event": {
+    "id": "live-cyberbiz-ecommerce-supplier-breach-2026-11",
+    "kind": "live",
+    "title": "委外電商平台廠商順立智慧（Cyberbiz）資料庫遭異常存取，多家品牌商城受波及",
+    "date": "2026-11-10",
+    "industry": "電商",
+    "attack_chain": [
+      "順立智慧（Cyberbiz）資料庫遭未經授權的異常存取（來源未說明手法）",
+      "委外客戶的購物商城訂單資料與消費者個資受波及",
+      "各公司接獲通知後啟動應變並提醒會員防詐騙"
+    ],
+    "attck": [
+      "T1199"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180358",
+        "title": "台灣櫻花購物商城的委外廠商資料庫遭異常存取，訂單及消費者個資恐受影響",
+        "quote": "台灣櫻花購物商城的委外廠商資料庫遭異常存取，訂單及消費者個資恐受影響",
+        "published": "2026-11-10",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-10T16:09:21Z",
+        "content_hash": "sha256:30784b0a1556a6fdc596c5a5fe36c7d544c701b2231e9a53b1c0d2d2bbb7f227",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://www.ithome.com.tw/news/180352",
+        "title": "曜亞子公司線上購物平臺遭委外廠商資安事件波及，訂單資料遭異常存取",
+        "quote": "曜亞子公司線上購物平臺遭委外廠商資安事件波及，訂單資料遭異常存取",
+        "published": "2026-11-10",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-10T16:09:21Z",
+        "content_hash": "sha256:8b856d44a19a743cf996c704589c3daa75b8843140c452187d562b5e928a3047",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://www.ithome.com.tw/news/180356",
+        "title": "美吾華購物網站疑似個資外洩，茅頭指向委外的電商服務系統",
+        "quote": "美吾華購物網站疑似個資外洩，茅頭指向委外的電商服務系統",
+        "published": "2026-11-10",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-10T16:09:21Z",
+        "content_hash": "sha256:e444ea85dcdabfd5668ede463a62327a76ddd52e0bcaadd5a439d8f2adf0f2c0",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://www.ithome.com.tw/news/180351",
+        "title": "崇越子公司安永生活電商委外服務商發生異常資料存取，清查受影響範圍",
+        "quote": "崇越子公司安永生活電商委外服務商發生異常資料存取，清查受影響範圍",
+        "published": "2026-11-10",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-10T16:09:21Z",
+        "content_hash": "sha256:cb016e6ac781e33b7acc1427d2d605d16418c91fcdf07b30a1011289e2e9ed59",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "委外電商平台商須有資安事件通報時限與客戶資料存取稽核",
+        "reason": "多家企業是接獲順立智慧通知後才得知事件，現有控制項沒有涵蓋委外商的通報時限、客戶資料隔離與存取稽核。"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-cyberbiz-ecommerce-supplier-breach-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：委外電商平台商須有資安事件通報時限與客戶資料存取稽核"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產"
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "櫻花、曜亞、崇越等公司發布重大訊息，指出委外電商服務商順立智慧（Cyberbiz）的資料庫遭未經授權的異常存取，涉及訂單與消費者個資；美吾華則表示事件與其委外的電商平台廠商系統有關，原因與範圍仍在調查中。各公司均稱對財務與業務無重大影響。",
+  "blocks": {
+    "1_summary": {
+      "title": "委外電商平台廠商順立智慧（Cyberbiz）資料庫遭異常存取，多家品牌商城受波及",
+      "date": "2026-11-10",
+      "industry": "電商",
+      "attack_chain": [
+        "順立智慧（Cyberbiz）資料庫遭未經授權的異常存取（來源未說明手法）",
+        "委外客戶的購物商城訂單資料與消費者個資受波及",
+        "各公司接獲通知後啟動應變並提醒會員防詐騙"
+      ],
+      "attck": [
+        "T1199"
+      ],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180358",
+          "title": "台灣櫻花購物商城的委外廠商資料庫遭異常存取，訂單及消費者個資恐受影響",
+          "quote": "台灣櫻花購物商城的委外廠商資料庫遭異常存取，訂單及消費者個資恐受影響",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-10T16:09:21Z"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/180352",
+          "title": "曜亞子公司線上購物平臺遭委外廠商資安事件波及，訂單資料遭異常存取",
+          "quote": "曜亞子公司線上購物平臺遭委外廠商資安事件波及，訂單資料遭異常存取",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-10T16:09:21Z"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/180356",
+          "title": "美吾華購物網站疑似個資外洩，茅頭指向委外的電商服務系統",
+          "quote": "美吾華購物網站疑似個資外洩，茅頭指向委外的電商服務系統",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-10T16:09:21Z"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/180351",
+          "title": "崇越子公司安永生活電商委外服務商發生異常資料存取，清查受影響範圍",
+          "quote": "崇越子公司安永生活電商委外服務商發生異常資料存取，清查受影響範圍",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-10T16:09:21Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "櫻花、曜亞、崇越等公司發布重大訊息，指出委外電商服務商順立智慧（Cyberbiz）的資料庫遭未經授權的異常存取，涉及訂單與消費者個資；美吾華則表示事件與其委外的電商平台廠商系統有關，原因與範圍仍在調查中。各公司均稱對財務與業務無重大影響。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：委外電商平台商須有資安事件通報時限與客戶資料存取稽核"
+          ],
+          "observed_at": "2026-11-10T16:09:21Z"
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  }
+}

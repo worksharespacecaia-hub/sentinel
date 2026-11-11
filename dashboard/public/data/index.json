@@ -2,11 +2,47 @@
   "schema_version": 1,
   "advisories": {
     "adv-opsbuilder-2026-001": {
-      "run_id": "42782627588",
-      "generated_at": "2026-11-10T08:28:13Z",
+      "run_id": "42861808599",
+      "generated_at": "2026-11-10T17:08:55Z",
       "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
       "completeness": "complete",
-      "path": "advisories/adv-opsbuilder-2026-001/42782627588",
+      "path": "advisories/adv-opsbuilder-2026-001/42861808599",
+      "light": "red",
+      "execution_mode": "replay"
+    },
+    "kev-cve-2026-109618": {
+      "run_id": "42861814708",
+      "generated_at": "2026-11-10T17:11:04Z",
+      "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
+      "completeness": "complete",
+      "path": "advisories/kev-cve-2026-109618/42861814708",
+      "light": "red",
+      "execution_mode": "replay"
+    },
+    "kev-cve-2026-109619": {
+      "run_id": "42861820916",
+      "generated_at": "2026-11-10T17:13:10Z",
+      "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
+      "completeness": "complete",
+      "path": "advisories/kev-cve-2026-109619/42861820916",
+      "light": "red",
+      "execution_mode": "replay"
+    },
+    "kev-cve-2026-111497": {
+      "run_id": "42861828195",
+      "generated_at": "2026-11-10T17:15:22Z",
+      "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
+      "completeness": "complete",
+      "path": "advisories/kev-cve-2026-111497/42861828195",
+      "light": "red",
+      "execution_mode": "replay"
+    },
+    "kev-cve-2026-119977": {
+      "run_id": "42861834688",
+      "generated_at": "2026-11-10T17:17:22Z",
+      "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
+      "completeness": "complete",
+      "path": "advisories/kev-cve-2026-119977/42861834688",
       "light": "red",
       "execution_mode": "replay"
     }
@@ -50,8 +86,8 @@
     }
   },
   "latest_daily": {
-    "run_id": "42815139913",
-    "generated_at": "2026-11-10T12:22:28Z",
+    "run_id": "42952944663",
+    "generated_at": "2026-11-11T03:28:21Z",
     "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
     "completeness": "complete",
     "path": "daily",
@@ -59,14 +95,14 @@
     "execution_mode": "replay"
   },
   "latest_complete_daily": {
-    "run_id": "42815139913",
-    "generated_at": "2026-11-10T12:22:28Z",
+    "run_id": "42952944663",
+    "generated_at": "2026-11-11T03:28:21Z",
     "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
     "completeness": "complete",
     "path": "daily",
     "light": "red",
     "execution_mode": "replay"
   },
-  "updated_at": "2026-11-10T12:22:28Z",
+  "updated_at": "2026-11-11T03:28:21Z",
   "failures": {}
 }
