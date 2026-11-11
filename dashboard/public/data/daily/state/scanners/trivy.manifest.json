@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "run_id": "42851613388",
+  "run_id": "42952944663",
   "job": "scanners-trivy",
   "scope": "scanner",
   "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
-  "observed_at": "2026-11-10T16:10:29Z",
-  "valid_until": "2026-11-11T16:10:29Z",
+  "observed_at": "2026-11-11T03:29:42Z",
+  "valid_until": "2026-11-12T03:29:42Z",
   "tool_version": {
     "trivy": "0.57.1"
   },

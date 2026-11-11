@@ -47,7 +47,7 @@
     "is_update_of": null,
     "proposed_controls": []
   },
-  "conclusion": "1 項受影響，最高風險為中。mail-api-key：secrets.json: mail-api-key：457 天未輪替、無 IP 白名單。",
+  "conclusion": "1 項受影響，最高風險為中。mail-api-key：secrets.json: mail-api-key：458 天未輪替、無 IP 白名單。",
   "affected_count": 1,
   "max_level": "medium",
   "impacts": [
@@ -55,7 +55,7 @@
       "event_id": "evt-1shop-2026-10",
       "asset_id": "mail-api-key",
       "basis": "control",
-      "our_state": "secrets.json: mail-api-key：457 天未輪替、無 IP 白名單",
+      "our_state": "secrets.json: mail-api-key：458 天未輪替、無 IP 白名單",
       "verdict": "affected",
       "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
       "reason": "不符合 C-THIRD-PARTY-KEY-ROTATION（第三方服務金鑰 90 天內輪替且有 IP 白名單）"
@@ -89,7 +89,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "事件：1shop 疑似 Mailgun API 金鑰遭取得，詐騙信內容吻合真實訂單。比對結果 1 項受影響、最高為中（6 分）：mail-api-key 已 457 天未輪替且無 IP 白名單；建議輪替金鑰並加白名單。",
+  "summary": "1shop 疑似因 Mailgun API 金鑰遭取得，詐騙信內容吻合真實訂單；我們有 1 項受影響（中風險，6 分）：mail-api-key 已 458 天未輪替且無 IP 白名單，建議輪替並加上白名單。",
   "blocks": {
     "1_summary": {
       "title": "1shop 一頁購物疑 Mailgun API 金鑰遭取得，詐騙信內容吻合真實訂單",
@@ -129,19 +129,19 @@
         "max_level": null,
         "note": null
       },
-      "summary": "事件：1shop 疑似 Mailgun API 金鑰遭取得，詐騙信內容吻合真實訂單。比對結果 1 項受影響、最高為中（6 分）：mail-api-key 已 457 天未輪替且無 IP 白名單；建議輪替金鑰並加白名單。",
+      "summary": "1shop 疑似因 Mailgun API 金鑰遭取得，詐騙信內容吻合真實訂單；我們有 1 項受影響（中風險，6 分）：mail-api-key 已 458 天未輪替且無 IP 白名單，建議輪替並加上白名單。",
       "summary_note": null,
       "fixture_note": null
     },
     "2_conclusion": {
-      "text": "1 項受影響，最高風險為中。mail-api-key：secrets.json: mail-api-key：457 天未輪替、無 IP 白名單。",
+      "text": "1 項受影響，最高風險為中。mail-api-key：secrets.json: mail-api-key：458 天未輪替、無 IP 白名單。",
       "affected_count": 1,
       "max_level": "medium"
     },
     "3_affected": [
       {
         "asset_id": "mail-api-key",
-        "our_state": "secrets.json: mail-api-key：457 天未輪替、無 IP 白名單",
+        "our_state": "secrets.json: mail-api-key：458 天未輪替、無 IP 白名單",
         "basis": "control",
         "verdict": "affected",
         "reason": "不符合 C-THIRD-PARTY-KEY-ROTATION（第三方服務金鑰 90 天內輪替且有 IP 白名單）",
@@ -167,12 +167,12 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-1shop-2026-10"
+            "reason": "evt-1shop-2026-10、live-neticrm-vendor-breach-2026-11"
           }
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-10T16:09:21Z"
+        "observed_at": "2026-11-11T03:28:21Z"
       }
     ],
     "4_unaffected_and_check": {

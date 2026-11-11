@@ -1,9 +1,51 @@
 {
   "tool": "kev",
-  "tool_version": "2026.11.09",
-  "database_revision": "2026-11-09T19:54:37.4945Z",
-  "count": 1773,
+  "tool_version": "2026.11.10",
+  "database_revision": "2026-11-10T19:03:29.8375Z",
+  "count": 1779,
   "cves": {
+    "CVE-2026-124194": {
+      "added": "2026-11-10",
+      "vendor": "Microsoft",
+      "product": "Office",
+      "name": "Microsoft Office Outlook Missing User Interaction for Potentially Unsafe Action Vulnerability",
+      "ransomware": false
+    },
+    "CVE-2026-111793": {
+      "added": "2026-11-10",
+      "vendor": "Openwave Messaging Limited",
+      "product": "Webtop Media Transcoder",
+      "name": "Openwave Messaging Limited Webtop Media Transcoder Incorrect Resource Transfer Between Spheres Vulnerability",
+      "ransomware": false
+    },
+    "CVE-2026-20320": {
+      "added": "2026-11-10",
+      "vendor": "Cisco",
+      "product": "BroadWorks",
+      "name": "Cisco BroadWorks Improper Restriction of XML External Entity Reference Vulnerability",
+      "ransomware": false
+    },
+    "CVE-2026-111560": {
+      "added": "2026-11-10",
+      "vendor": "Barracuda Networks",
+      "product": "Multiple Products",
+      "name": "Barracuda Networks Multiple Products OS Command Injection Vulnerability",
+      "ransomware": false
+    },
+    "CVE-2026-116606": {
+      "added": "2026-11-10",
+      "vendor": "Barracuda Networks",
+      "product": "Barracuda Email Security Gateway (ESG)",
+      "name": "Barracuda Networks Email Security Gateway (ESG) Authentication Bypass Using an Alternate Path or Channel Vulnerability",
+      "ransomware": false
+    },
+    "CVE-2026-125350": {
+      "added": "2026-11-10",
+      "vendor": "Google",
+      "product": "Chromium",
+      "name": "Google Chromium Use-After-Free Vulnerability",
+      "ransomware": false
+    },
     "CVE-2026-102895": {
       "added": "2026-11-09",
       "vendor": "GPUStack",

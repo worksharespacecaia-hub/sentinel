@@ -126,7 +126,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "事件：幣安因假面試惡意程式入侵開發者電腦，取得部署憑證後攻陷簽章服務。比對結果 2 項受影響、最高為高：laptop-eng-07 持有正式部署權杖（7 分，高）；ai-code-assistant 的權杖可繞過 Pipeline 直接部署（4 分，中）。",
+  "summary": "幣安事件是假面試惡意程式入侵開發者電腦，取得部署憑證後攻陷簽章服務；我們有 2 項相符：laptop-eng-07 持有部署權杖（高風險，7 分）與 ai-code-assistant 的權杖可繞過 Pipeline 審核部署（中風險，4 分）。",
   "blocks": {
     "1_summary": {
       "title": "幣安 63.4 億美元駭案：假面試惡意程式入侵開發者電腦，取得容器部署憑證後攻陷錢包簽章服務",
@@ -176,7 +176,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "事件：幣安因假面試惡意程式入侵開發者電腦，取得部署憑證後攻陷簽章服務。比對結果 2 項受影響、最高為高：laptop-eng-07 持有正式部署權杖（7 分，高）；ai-code-assistant 的權杖可繞過 Pipeline 直接部署（4 分，中）。",
+      "summary": "幣安事件是假面試惡意程式入侵開發者電腦，取得部署憑證後攻陷簽章服務；我們有 2 項相符：laptop-eng-07 持有部署權杖（高風險，7 分）與 ai-code-assistant 的權杖可繞過 Pipeline 審核部署（中風險，4 分）。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -219,7 +219,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-10T16:09:21Z"
+        "observed_at": "2026-11-11T03:28:21Z"
       },
       {
         "asset_id": "ai-code-assistant",
@@ -249,7 +249,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-10T16:09:21Z"
+        "observed_at": "2026-11-11T03:28:21Z"
       }
     ],
     "4_unaffected_and_check": {

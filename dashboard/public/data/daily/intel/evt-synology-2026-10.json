@@ -182,7 +182,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "事件：Synology NAS 因 DSM 登入頁對外暴露遭 C3RB3R 勒索軟體加密，連接的備份碟一併被加密。我們的 nas-office-01 同樣對外且使用 DSM 7.2.1-69057 Update 5，漏洞項為高（8 分）；另備份未隔離（5 分，中）與管理介面對外（5 分，中），共 3 項受影響。",
+  "summary": "Synology NAS 遭 C3RB3R 勒索軟體加密，同時連接的備份碟被一併加密；我們有 3 項相符：nas-office-01 的 DSM 對外且有漏洞（高風險，8 分），備份未隔離且從未還原測試（中風險，5 分），以及內部工具對外開放（中風險，5 分）。",
   "blocks": {
     "1_summary": {
       "title": "Synology NAS 遭 C3RB3R 勒索軟體加密：DSM 登入頁對外暴露，常駐連接的備份碟一併被加密",
@@ -223,7 +223,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "事件：Synology NAS 因 DSM 登入頁對外暴露遭 C3RB3R 勒索軟體加密，連接的備份碟一併被加密。我們的 nas-office-01 同樣對外且使用 DSM 7.2.1-69057 Update 5，漏洞項為高（8 分）；另備份未隔離（5 分，中）與管理介面對外（5 分，中），共 3 項受影響。",
+      "summary": "Synology NAS 遭 C3RB3R 勒索軟體加密，同時連接的備份碟被一併加密；我們有 3 項相符：nas-office-01 的 DSM 對外且有漏洞（高風險，8 分），備份未隔離且從未還原測試（中風險，5 分），以及內部工具對外開放（中風險，5 分）。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -261,12 +261,12 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、evt-synology-2026-10"
+            "reason": "evt-91app-2026-10、evt-synology-2026-10、live-91app-order-data-resale-2026-11"
           }
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-10T16:09:21Z"
+        "observed_at": "2026-11-11T03:28:21Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -296,7 +296,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-10T16:09:21Z"
+        "observed_at": "2026-11-11T03:28:21Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -321,12 +321,12 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、evt-synology-2026-10"
+            "reason": "evt-91app-2026-10、evt-synology-2026-10、live-91app-order-data-resale-2026-11"
           }
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-10T16:09:21Z"
+        "observed_at": "2026-11-11T03:28:21Z"
       }
     ],
     "4_unaffected_and_check": {
