@@ -1,11 +1,12 @@
 // 網站導覽與頁面名稱的唯一來源：導覽列與各頁標題都從這裡取，名稱以 CEO 看得懂的白話為準。
-// 主項只放 demo 會講的 3 頁，其他工程用頁面收在「工程細節」下拉。
+// 主項只放 demo 會講的 4 頁，其他工程用頁面收在「工程細節」下拉。
 
 export interface PageInfo { href: string; label: string }
 
 export const PAGES = {
   brief: { href: "/brief", label: "今日重點" },
   report: { href: "/report", label: "行動報告" },
+  digest: { href: "/digest", label: "資安事件整理" },
   live: { href: "/live", label: "異常行為偵測" },
   overview: { href: "/", label: "詳細總覽" },
   risks: { href: "/risks", label: "風險明細" },
@@ -20,7 +21,7 @@ export const PAGES = {
   rules: { href: "/rules", label: "偵測規則" },
 } as const satisfies Record<string, PageInfo>;
 
-export const PRIMARY: PageInfo[] = [PAGES.brief, PAGES.report, PAGES.live];
+export const PRIMARY: PageInfo[] = [PAGES.brief, PAGES.report, PAGES.digest, PAGES.live];
 
 export const ENGINEERING: PageInfo[] = [
   PAGES.overview, PAGES.risks, PAGES.intel, PAGES.attackPaths, PAGES.assets, PAGES.appRisk,
