@@ -3,6 +3,7 @@ import { AGENT_TEXT, SOURCE_TEXT, fmtTime } from "@/lib/labels";
 import { SimNotice, SourceSwitcher } from "@/components/ui";
 import RunConsole from "@/components/RunConsole";
 import { PAGES } from "@/lib/nav";
+import { approvedLines, planSummary, rejectedLines } from "@/lib/agentplan";
 
 export const dynamic = "force-dynamic";
 
@@ -36,6 +37,25 @@ export default async function Runs({ searchParams }: { searchParams: Promise<Rec
         {report?.daily_intel_status === "ok" && <> 每日情資則由程式抓取今日資安新聞、Claude（訂閱方案）實際判讀（狀態：正常）。</>}
         {report?.daily_intel_status === "failed" && <> 每日情資本次未成功（今日新聞情資未更新）。</>}
       </div>}
+      {report?.agent_plan && (() => {
+        const plan = report.agent_plan;
+        const titles = Object.fromEntries(report.events.map((e) => [e.id, e.title]));
+        const ok = approvedLines(plan, titles), no = rejectedLines(plan, titles);
+        return (
+          <div className="panel">
+            <strong>{planSummary(plan)}</strong>
+            <p className="muted">AI 只能建議追加的檢查與說明，由程式逐項核准；不會跳過任何評估，也不影響分數、燈號與結論。</p>
+            {plan.note && <p className="muted">備註：{plan.note}</p>}
+            {(ok.length > 0 || no.length > 0) && (
+              <details>
+                <summary>查看核准與拒絕明細</summary>
+                {ok.length > 0 && <><h3>核准（{ok.length}）</h3><ul>{ok.map((t, i) => <li key={`a${i}`}>{t}</li>)}</ul></>}
+                {no.length > 0 && <><h3>拒絕（{no.length}）</h3><ul>{no.map((t, i) => <li key={`r${i}`}>{t}</li>)}</ul></>}
+              </details>
+            )}
+          </div>
+        );
+      })()}
       <div className="panel">
         <ul className="tree">
           {ORDER.filter((a) => byAgent.has(a)).map((agent) => {

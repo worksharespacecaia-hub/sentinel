@@ -9,7 +9,9 @@ Claude 負責判讀與整理，不抓網頁（沒有 WebFetch）；只有 `out/n
 
 1. 讀取 `out/stack.json`（技術棧摘要）、`out/seen.json`（近 14 天已知事件）與 `out/news.json`（今日文章）。
 2. 派發 Subagent：`news-scout`（事件）、`advisory-scout`（公告與已遭利用漏洞）；兩者回報後再派發 `incident-analyst`、`stack-impact-analyst`。
-3. 只寫出 `out/intel-daily.json`，不做其他寫入。
+3. 彙整 4 個 Subagent 的結果後，由你（主 Agent）依 `.claude/skills/daily-intel/references/agent-plan.md` 寫出動態派工建議 `agent_plan`
+   （不要為此派發新的 Subagent）。
+4. 只寫出 `out/intel-daily.json`（含 `events`、`impacts`、`agent_plan`），不做其他寫入。
 
 這是無人值守的單次執行：結束回合就代表整個流程結束，沒有人會再回來。
 - Subagent 一律在前景執行（不要使用背景執行）；彼此獨立的 Subagent 可以在同一則訊息中同時派發
@@ -28,7 +30,12 @@ Claude 負責判讀與整理，不抓網頁（沒有 WebFetch）；只有 `out/n
 - 沒有 CVE 的事件對應到 `.claude/skills/daily-intel/references/controls.md` 的控制項 ID。
   對應不到任何現有控制項時，在 `proposed_controls` 寫出建議新增的控制項（標題與理由，依來源描述的手法）；
   `controls` 與 `proposed_controls` 都空的事件，程式無從比對，只會標為「需確認」。
-- 沒有相關事件時寫出 `{"events": [], "impacts": []}`，並在最後的說明中簡述今天看過哪些文章、為什麼都不相關。
+- 事件的 `id` 必須非空且彼此不重複（小寫英文、數字與 `-`）；`agent_plan` 用這個 `id` 指定事件。
+- `agent_plan` 只是建議，由程式核准：只能從 `references/controls.md` 的控制項與 `references/agent-plan.md` 的可追加工作中挑選，
+  只能追加，不能要求跳過、停用或改變任何評估、分數與結論；規則與上限見 `references/agent-plan.md`。
+  事件能直接對應的控制項照舊寫在事件的 `controls`（會進入比對）；`agent_plan.extra_controls` 只放「值得一併確認」的控制項，兩者不重複。
+  沒有建議時寫 `{}`；`agent_plan` 寫不出來時也要照常寫出 `events` 與 `impacts`。
+- 沒有相關事件時寫出 `{"events": [], "impacts": [], "agent_plan": {}}`，並在最後的說明中簡述今天看過哪些文章、為什麼都不相關。
 
 ## 輸出格式（`out/intel-daily.json`）
 
@@ -62,7 +69,15 @@ Claude 負責判讀與整理，不抓網頁（沒有 WebFetch）；只有 `out/n
   "impacts": [
     {"event_id": "shop-x-breach-2026-11", "asset_id": "storefront", "basis": "version", "our_state": "php 8.2.30",
      "verdict": "need_check", "reason": "初步判斷的理由"}
-  ]
+  ],
+  "agent_plan": {
+    "extra_controls": [
+      {"event_id": "shop-x-breach-2026-11", "control_id": "C-CLOUD-STORAGE-PUBLIC", "reason": "來源提到資料外洩，值得一併確認雲端儲存空間未公開"}
+    ],
+    "extra_tasks": [
+      {"agent": "a4", "subagent": "impact-analyst", "event_id": "shop-x-breach-2026-11", "reason": "補充與會員資料相關風險的影響說明"}
+    ]
+  }
 }
 ```
 
@@ -74,4 +89,5 @@ Claude 負責判讀與整理，不抓網頁（沒有 WebFetch）；只有 `out/n
 - `products[].impact`：`remote_code_execution`、`account_takeover`、`authorization_bypass`、`data_exposure`、`privilege_escalation`、`denial_of_service`、`other`
 - `proposed_controls`：最多 3 項，每項 `title`（80 字內）與 `reason`（200 字內）；能對應到現有控制項時留空陣列
 - `impacts[].verdict`：`affected`、`not_affected`、`need_check`；`basis`：`version`、`control`、`condition`
+- `agent_plan`：格式、上限與可追加工作見 `references/agent-plan.md`；不寫計數或核准結果，程式會自己核准
 - 不要填寫驗證結果（`verified` 等）；引用是否真的出現在來源頁面由後續程式實際抓取確認，格式不符的事件會被略過

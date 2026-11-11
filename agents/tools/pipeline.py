@@ -8,6 +8,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 
+from tools.agent_plan import planner_checks
 from tools.attack_path import find_paths
 from tools.common import INTEL_DIR, iso
 from tools.findings import build_findings
@@ -39,6 +40,7 @@ class EvalInput:
     signal_overrides: dict | None = None
     target_sha: str | None = None
     preverified: list[dict] | None = None      # A1 已驗證的 [{event, verification}]，避免重抓來源
+    agent_plan: dict | None = None             # 動態派工：A1 計畫（已由 agent_plan.load_agent_plan 核對）；只追加呈現，不影響判定
 
 
 def event_sources(inp: EvalInput) -> list[dict]:
@@ -94,6 +96,10 @@ def evaluate(inp: EvalInput) -> dict:
         if mx:
             for imp in m["impacts"]:
                 imp["level_cap"] = mx
+    # 動態派工的加查：只把核准的控制項轉成本次已算好的檢查結果，不進 impacts、事件連結與評分（R5）
+    approved = [a for a in ((inp.agent_plan or {}).get("approved") or []) if isinstance(a, dict)]
+    for m in matches:
+        m["planner_checks"] = planner_checks(m["event"]["id"], approved, a2["controls"]) if approved else []
 
     paths = find_paths(g, findings)
     links = link_events(matches, findings)
@@ -128,5 +134,5 @@ def evaluate(inp: EvalInput) -> dict:
         "verification": verification, "matches": matches, "paths": paths, "risks": risks, "signals": signals,
         "light": light, "light_reasons": reasons, "light_label": LABEL[light], "data_issues": data_issues,
         "complete": complete, "stack_complete": stack_complete(data, recon["coverage"]), "sdk_advisories": sdk_advisories,
-        "scoring": scoring, "event_updates": event_updates,
+        "scoring": scoring, "event_updates": event_updates, "agent_plan": inp.agent_plan,
     }

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 
-from agents.common import finish, load
+from agents.common import finish, load, load_a1
 from context import RunCtx
 from llm import Task, _validate
 from tools import digest
@@ -111,8 +111,8 @@ def prepare(ctx: RunCtx) -> dict:
             issues.append({"source": f"job/{up}", "status": "missing", "required": False,
                            "impact": "上游產物缺失：確定性評估已重算，相關說明改用範本"})
     output_dir = ctx.output_dir if plan else f"failures/{ctx.run_id}"
-    pre = load(ctx, "a1", "verified.json")
-    res = evaluate(ctx.eval_input(preverified=pre))
+    pre, agent_plan = load_a1(ctx, tr)
+    res = evaluate(ctx.eval_input(preverified=pre, agent_plan=agent_plan))
     res["data_issues"] = [*res["data_issues"], *issues]
 
     expl = {**(load(ctx, "a2", "explanations.json", {}) or {}), **(load(ctx, "a4", "explanations.json", {}) or {}),
