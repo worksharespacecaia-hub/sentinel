@@ -10,7 +10,9 @@ export const STATUS_TEXT: Record<string, string> = {
   open: "待處理", fixed: "已修復", need_check: "需確認", not_affected: "不受影響",
 };
 export const KIND_TEXT: Record<string, string> = { live: "真實", archive: "真實・已收錄", demo: "示範", advisory: "公告" };
-export const SOURCE_TEXT: Record<string, string> = { live: "即時呼叫", replay: "重播錄製", template: "程式範本" };
+export const SOURCE_TEXT: Record<string, string> = {
+  live: "即時呼叫", replay: "重播錄製", template: "程式範本", subscription: "訂閱方案", skipped: "未觸發",
+};
 export const AGENT_TEXT: Record<string, string> = {
   orchestrator: "Orchestrator", a0: "A0 資產探索與對帳", "daily-intel": "每日情資（程式抓新聞＋Claude 判讀）", "claude-analysis": "Claude 撰寫說明（訂閱方案）", a1: "A1 外部情資", a2: "A2 弱點掃描", a3: "A3 早期訊號",
   a4: "A4 攻擊鏈與風險", a5: "A5 報告與建議", incident: "圍堵建議",

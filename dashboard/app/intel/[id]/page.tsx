@@ -4,6 +4,7 @@ import { getIntelReport, resolveSource } from "@/lib/data";
 import { LevelText, SimNotice } from "@/components/ui";
 import { SOURCE_TEXT, STATUS_TEXT } from "@/lib/labels";
 import { PAGES } from "@/lib/nav";
+import { extraCheckRows } from "@/lib/agentplan";
 
 export const dynamic = "force-dynamic";
 
@@ -76,6 +77,19 @@ export default async function IntelDetail({ params, searchParams }: {
           {b["4_unaffected_and_check"].notes.map((n: string, i: number) => <li key={`m${i}`}>{n}</li>)}
         </ul>
       </div>
+
+      {extraCheckRows(b["8_extra_checks"]).length > 0 && (
+        <div className="panel">
+          <h2 style={{ marginTop: 0 }}>AI 建議加查</h2>
+          <p className="muted">程式檢查結果，不影響結論與分數。AI 依這件事件建議一併確認的控制項，結果取自本次已算好的檢查。
+            <Link href={`/runs${source.simulated ? `?source=${encodeURIComponent(source.key)}` : ""}`}>查看本次的核准與拒絕明細</Link></p>
+          <div className="table-wrap"><table>
+            <thead><tr><th>控制項</th><th>檢查結果</th><th>資產</th><th>檢查說明</th><th>建議理由</th></tr></thead>
+            <tbody>{extraCheckRows(b["8_extra_checks"]).map((r, i) => (
+              <tr key={i}><td>{r.title}</td><td>{r.status}</td><td>{r.assets}</td><td>{r.checkReason}</td><td>{r.suggestedReason}</td></tr>))}</tbody>
+          </table></div>
+        </div>
+      )}
 
       {(b["5_solutions"] ?? []).map((sol: any) => (
         <div className="panel" key={sol.risk_id}>

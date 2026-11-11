@@ -435,8 +435,11 @@ def public_plan(plan: dict | None) -> dict | None:
     if not plan:
         return None
     n, m, k = counts(plan)
+    from tools.controls import load_controls
+    used = {r.get("control_id") for r in [*(plan.get("approved") or []), *(plan.get("rejected") or [])]}
+    titles = {c["id"]: c["title"] for c in load_controls() if c["id"] in used}   # 網站顯示控制項名稱，不顯示內部 ID
     return {"source": plan["source"], "note": plan.get("note"), "events": list(plan.get("events") or []),
-            "suggested": n, "approved_count": m, "rejected_count": k,
+            "suggested": n, "approved_count": m, "rejected_count": k, "control_titles": titles,
             "approved": copy.deepcopy(plan.get("approved") or []), "rejected": copy.deepcopy(plan.get("rejected") or [])}
 
 
