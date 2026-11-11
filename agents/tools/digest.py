@@ -23,7 +23,7 @@ from urllib.parse import parse_qsl, unquote, urlencode, urlsplit, urlunsplit
 
 from llm import SECRET_RE
 from schemas import DigestEvent, DigestLatest, DigestSeen, DigestStore
-from tools.common import TAIPEI, iso, parse_time, sha256_text
+from tools.common import RULES_DIR, TAIPEI, iso, parse_time, sha256_text
 from tools.findings import SECRET_VALUE_RE
 
 WINDOW_DAYS = 30
@@ -37,6 +37,7 @@ SEEN_WARN_BYTES = 1024 * 1024         # seen 不裁切，只監測大小
 UNNAMED_ASSET = "未命名系統"
 PENDING_ASSET = "待確認系統"
 REDACTED = "［已遮蔽］"
+ASSET_LABELS_FILE = RULES_DIR / "asset-labels.json"   # Sentinel 自行維護的系統白話名稱（Repo ① 清冊沒有 name）
 
 RELATION = {"open": "affected", "need_check": "need_check", "not_affected": "not_affected", "fixed": "fixed"}
 LEVEL_ZH = {"high": "高", "medium": "中", "low": "低"}
@@ -152,29 +153,68 @@ def public_sources(sources: list[dict] | None) -> list[dict]:
     return out
 
 
-def public_asset_labels(services: list[dict] | None = None, vendors: list[dict] | None = None,
-                        graph_nodes: dict | None = None) -> dict[str, str]:
-    """資產的可公開名稱：只取服務／第三方清冊的 name、圖譜節點的 display_name（不使用 people 清冊）。
+def _label_text(asset_id, name) -> str | None:
+    """名稱的共同檢查：清理空白後非空、不超過 60 字、不含機敏內容、不等於也不包含資產 ID。"""
+    if not isinstance(asset_id, str) or not asset_id or not isinstance(name, str):
+        return None
+    text = re.sub(r"\s+", " ", CONTROL_RE.sub(" ", name)).strip()
+    if not text or len(text) > LABEL_LIMIT or has_sensitive(text) or asset_id in text:
+        return None
+    return text
 
-    名稱與 ID 完全相同、清理後為空或含機敏內容的不採用；找不到時由 asset_label() 顯示「未命名系統」，不回退顯示 ID。
+
+def load_asset_label_file(path: Path | None = None) -> tuple[dict[str, str], list[dict]]:
+    """讀 rules/asset-labels.json：{"schema_version": 1, "labels": {"<asset_id>": "<白話名稱>"}}。
+
+    檔案不存在 → ({}, [])；格式無效 → 整份忽略並回傳一筆白話問題；個別名稱不合規 → 略過該筆並回傳問題。永不丟出例外。
+    """
+    path = Path(path) if path is not None else ASSET_LABELS_FILE
+    if not path.is_file():
+        return {}, []
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        ok = (isinstance(data, dict) and set(data) == {"schema_version", "labels"} and data["schema_version"] == 1
+              and isinstance(data["labels"], dict))
+    except (OSError, ValueError):
+        ok = False
+    if not ok:
+        return {}, [_issue("asset_labels_invalid", "系統名稱對照檔格式無效，已忽略；沒有名稱的系統顯示「未命名系統」")]
+    labels: dict[str, str] = {}
+    bad = 0
+    for asset_id, name in data["labels"].items():
+        text = _label_text(asset_id, name)
+        if text is None:
+            bad += 1
+        else:
+            labels[asset_id] = text
+    issues = [_issue("asset_labels_invalid", f"系統名稱對照檔有 {bad} 筆名稱不合規（空白、超過 60 字、含機敏內容或含系統代號），已略過", bad)]         if bad else []
+    return labels, issues
+
+
+def public_asset_labels(services: list[dict] | None = None, vendors: list[dict] | None = None,
+                        graph_nodes: dict | None = None, file_labels: dict[str, str] | None = None) -> dict[str, str]:
+    """資產的可公開名稱，優先順序：清冊（服務／第三方）name／display_name > 圖譜 display_name > rules/asset-labels.json。
+
+    不使用 people 清冊。名稱等於或包含 ID、超過 60 字、清理後為空或含機敏內容的不採用；
+    都找不到時由 asset_label() 顯示「未命名系統」，任何情況都不回退顯示 ID。
     """
     labels: dict[str, str] = {}
 
     def put(asset_id, name):
-        if not isinstance(asset_id, str) or not isinstance(name, str) or asset_id in labels:
+        if asset_id in labels:
             return
-        if has_sensitive(name):
-            return
-        text = public_text(name, LABEL_LIMIT)
-        if text and text != asset_id:
+        text = _label_text(asset_id, name)
+        if text:
             labels[asset_id] = text
 
     for s in services or []:
         put(s.get("id"), s.get("name") or s.get("display_name"))
     for v in vendors or []:
-        put(v.get("id"), v.get("name"))
+        put(v.get("id"), v.get("name") or v.get("display_name"))
     for node_id, attrs in (graph_nodes or {}).items():
         put(node_id, (attrs or {}).get("display_name"))
+    for asset_id, name in (file_labels or {}).items():
+        put(asset_id, name)
     return labels
 
 
@@ -212,32 +252,54 @@ def public_impacts(rep: dict, labels: dict[str, str]) -> tuple[list[dict], int]:
 
 # 只用 ASCII 邊界：中文字也算 \w，\b 在「高internal」之間不成立
 _INTERNAL_TOKEN_RE = re.compile(
-    r"(?<![A-Za-z0-9_./-])[a-z0-9_][A-Za-z0-9_./-]*\.(?:json|jsonl|ya?ml|tsx?|jsx?|py|csv|php|conf|env|tf|xml|gradle|ini"
-    r"|toml|sh)(?![A-Za-z0-9])"                                                                   # 檔案路徑／欄位來源
+    r"(?<![A-Za-z0-9_./-])[a-z0-9_~][A-Za-z0-9_./~-]*\.(?:json|jsonl|ya?ml|tsx?|jsx?|py|csv|php|conf|env|tf|xml|gradle"
+    r"|ini|toml|sh)(?![A-Za-z0-9])"                                                               # 檔案路徑／欄位來源
     r"|(?<![A-Za-z0-9])C-[A-Z0-9]+(?:-[A-Z0-9]+)+(?![A-Za-z0-9])"                                 # 控制項 ID
     r"|:\d{2,5}(?![0-9])"                                                                         # 連接埠
-    r"|(?<![A-Za-z0-9_-])(?=[a-z0-9_-]*[a-z])[a-z0-9]+(?:[-_][a-z0-9]+)+(?![A-Za-z0-9_-])")       # 像內部 ID 的字串
+    r"|(?<![A-Za-z0-9_.~-])[a-z0-9_.~-]*[a-z0-9_~]/[A-Za-z0-9_./-]+"                              # 小寫路徑（~/.config/x）
+    r"|(?<![A-Za-z0-9_.-])[a-z_][a-z0-9_]*(?:\.[a-z0-9_]+)+\s*=")                                 # 設定鍵（a.b.c=On）
+# 未提供系統 ID 清單時的保守規則：任何像內部 ID 的小寫連字號字串都視為內部字串
+_ID_LIKE_RE = re.compile(r"(?<![A-Za-z0-9_-])(?=[a-z0-9_-]*[a-z])[a-z0-9]+(?:[-_][a-z0-9]+)+(?![A-Za-z0-9_-])")
 
 
-def public_conclusion(rep: dict, labels: dict[str, str], relation: str) -> str:
-    """結論：已知資產 ID 轉成可公開名稱；仍含內部 ID、檔案路徑或機敏內容時，改用依結構化結果產生的白話範本。"""
+def _id_re(aid: str) -> re.Pattern:
+    return re.compile(rf"(?<![A-Za-z0-9_.-]){re.escape(aid)}(?![A-Za-z0-9_-])")
+
+
+def public_conclusion(rep: dict, labels: dict[str, str], relation: str, internal_ids: set[str] | None = None) -> str:
+    """結論：已知資產 ID 轉成可公開名稱；仍含內部 ID、檔案路徑、設定鍵或機敏內容時，改用依結構化結果產生的白話範本。
+
+    internal_ids：本次圖譜的全部節點 ID。提供時只把「仍殘留的已知 ID」視為內部字串（產品名稱如 synology-dsm 可保留）；
+    未提供時改用保守規則，任何像 ID 的連字號字串都改用範本。
+    """
     text = str(rep.get("conclusion") or "")
     ids = {i["asset_id"] for i in rep.get("impacts") or [] if i.get("asset_id") and i["asset_id"] != "*"} | set(labels)
     for aid in sorted(ids, key=len, reverse=True):
-        text = re.sub(rf"(?<![A-Za-z0-9_.-]){re.escape(aid)}(?![A-Za-z0-9_-])", asset_label(aid, labels), text)
+        text = _id_re(aid).sub(asset_label(aid, labels), text)
     text = re.sub(r"\s+", " ", CONTROL_RE.sub(" ", text)).strip()
-    if text and not has_sensitive(text) and not _INTERNAL_TOKEN_RE.search(text) and len(text) <= SUMMARY_LIMIT:
+    if internal_ids is None:
+        leftover = bool(_ID_LIKE_RE.search(text))
+    else:
+        leftover = any(_id_re(aid).search(text) for aid in internal_ids if aid and aid != "*")
+    if text and not leftover and not has_sensitive(text) and not _INTERNAL_TOKEN_RE.search(text) and len(text) <= SUMMARY_LIMIT:
         return text
-    return conclusion_template(rep, relation)
+    return conclusion_template(rep, relation, labels)
 
 
-def conclusion_template(rep: dict, relation: str) -> str:
+def conclusion_template(rep: dict, relation: str, labels: dict[str, str] | None = None) -> str:
+    """白話範本：只用結構化結果（關係、受影響數、最高等級、有可公開名稱的受影響系統，最多 3 個）。"""
     impacts = rep.get("impacts") or []
     level = LEVEL_ZH.get(rep.get("max_level"), "未評")
+    named: list[str] = []
+    for i in impacts:
+        name = (labels or {}).get(i.get("asset_id")) if i.get("verdict") == "affected" else None
+        if name and name not in named:
+            named.append(name)
+    systems = f"包括{'、'.join(named[:3])}{'等' if len(named) > 3 else ''}。" if named else ""
     if relation == "affected":
-        return f"{rep.get('affected_count', 0)} 項受影響，最高風險為{level}。"
+        return f"{rep.get('affected_count', 0)} 項受影響，最高風險為{level}。{systems}"
     if relation == "fixed":
-        return f"{rep.get('affected_count', 0)} 項曾受影響，目前都已修復。"
+        return f"{rep.get('affected_count', 0)} 項曾受影響，目前都已修復。{systems}"
     if relation == "need_check":
         need = [i for i in impacts if i.get("verdict") == "need_check"]
         if need and all(i.get("asset_id") == "*" for i in need):
@@ -246,12 +308,13 @@ def conclusion_template(rep: dict, relation: str) -> str:
     return "不受影響：沒有符合的系統。"
 
 
-def assessment_from_report(rep: dict, labels: dict[str, str], *, run_id: str, evaluated_at: str) -> dict:
+def assessment_from_report(rep: dict, labels: dict[str, str], *, run_id: str, evaluated_at: str,
+                           internal_ids: set[str] | None = None) -> dict:
     """一份完整 IntelMatchReport → 評估快照。關係、等級、受影響數、結論與明細都取自同一份報告，整組使用。"""
     relation = RELATION[rep["status"]]
     impacts, total = public_impacts(rep, labels)
     return {"evaluated_at": evaluated_at, "run_id": run_id, "relation": relation, "max_level": rep.get("max_level"),
-            "affected_count": int(rep.get("affected_count") or 0), "conclusion": public_conclusion(rep, labels, relation),
+            "affected_count": int(rep.get("affected_count") or 0), "conclusion": public_conclusion(rep, labels, relation, internal_ids),
             "impacts": impacts, "impacts_total": total, "impacts_truncated": total > len(impacts),
             "relation_changed_at": None}
 
@@ -394,7 +457,7 @@ def store_issues(store: dict, seen: dict, as_of: datetime, days: int = WINDOW_DA
     for ev in store["events"].values():
         kept_by_day[ev["first_seen"]] += 1
     # merge_conflict 只由發布端在本次合併後附加，不跨 run 累積
-    issues = [i for i in store.get("data_issues") or [] if i.get("code") == "future_first_seen"]
+    issues = [i for i in store.get("data_issues") or [] if i.get("code") in ("future_first_seen", "asset_labels_invalid")]
     for d in sorted(seen_by_day, reverse=True):
         n = seen_by_day[d] - kept_by_day.get(d, 0)
         if n > 0:
@@ -427,7 +490,8 @@ def finalize_store(store: dict, seen: dict, as_of: datetime, days: int = WINDOW_
 def merge_store(prev: dict | None, seen: dict | None, report: dict, intel_reports: list[dict], as_of: datetime, *,
                 complete: bool, asset_labels: dict[str, str], generated_at: datetime | None = None,
                 run_id: str | None = None, stats: dict | None = None,
-                exclude_ids: set[str] | frozenset = frozenset()) -> tuple[dict, dict]:
+                exclude_ids: set[str] | frozenset = frozenset(), extra_issues: list[dict] | None = None,
+                internal_ids: set[str] | None = None) -> tuple[dict, dict]:
     """把本次 daily 的比對報告併入累積資料（純函式，不寫檔）。回傳 (store, seen)。
 
     exclude_ids：示範 fixture 的事件 ID（由 A5 從 pipeline 事件取得）；不收錄、不記去重，既有紀錄也一併移除。
@@ -472,7 +536,8 @@ def merge_store(prev: dict | None, seen: dict | None, report: dict, intel_report
                 continue
             first = first or today
             seen_map[key] = first
-            a = assessment_from_report(rep, asset_labels, run_id=run_id, evaluated_at=iso(as_of)) if full else None
+            a = assessment_from_report(rep, asset_labels, run_id=run_id, evaluated_at=iso(as_of),
+                                       internal_ids=internal_ids) if full else None
             events[eid] = {**event_content(rep), "first_seen": first, **obs, "assessment": a}
             stats["new"] += 1
             continue
@@ -480,7 +545,7 @@ def merge_store(prev: dict | None, seen: dict | None, report: dict, intel_report
             old.update(obs)
         prev_a = old.get("assessment")
         if full and (prev_a is None or this_key >= _eval_key(prev_a)):
-            a = assessment_from_report(rep, asset_labels, run_id=run_id, evaluated_at=iso(as_of))
+            a = assessment_from_report(rep, asset_labels, run_id=run_id, evaluated_at=iso(as_of), internal_ids=internal_ids)
             if prev_a is not None:
                 a["relation_changed_at"] = iso(as_of) if prev_a["relation"] != a["relation"] else prev_a.get("relation_changed_at")
             old.update({**event_content(rep), "assessment": a})
@@ -488,6 +553,9 @@ def merge_store(prev: dict | None, seen: dict | None, report: dict, intel_report
         else:
             stats["observed_only"] += 1
     store["updated_at"] = iso(generated_at)
+    # 名稱對照檔的問題只反映本次讀取結果：先移除前版的，再附加本次的（發布端合併時保留）
+    store["data_issues"] = [*(i for i in store.get("data_issues") or [] if i.get("code") != "asset_labels_invalid"),
+                            *(extra_issues or [])]
     seen_out = {"schema_version": 1, "first_seen_by_key": dict(sorted(seen_map.items()))}
     store, removed, omitted = finalize_store(store, seen_out, as_of)
     stats["removed"] += removed
@@ -694,7 +762,8 @@ def validated_bytes(name: str, value: dict) -> bytes:
 
 def prepare_bundle(digest_dir: Path, report: dict, intel_reports: list[dict], *, as_of: datetime, generated_at: datetime,
                    run_id: str, asset_labels: dict[str, str], stats: dict | None = None,
-                   exclude_ids: set[str] | frozenset = frozenset()) -> dict[str, bytes]:
+                   exclude_ids: set[str] | frozenset = frozenset(), extra_issues: list[dict] | None = None,
+                   internal_ids: set[str] | None = None) -> dict[str, bytes]:
     """在記憶體中產生新的 seen／store／latest 並逐檔驗證；不寫任何檔案。
 
     資料不完整時不重建 latest：沿用前版並只做到期移除（不改 updated_at／as_of／run_id／next_update_at）。
@@ -705,7 +774,7 @@ def prepare_bundle(digest_dir: Path, report: dict, intel_reports: list[dict], *,
     complete = report.get("completeness") == "complete"
     store, seen = merge_store(prev["store.json"], prev["seen.json"], report, intel_reports, as_of, complete=complete,
                               asset_labels=asset_labels, generated_at=generated_at, run_id=run_id, stats=stats,
-                              exclude_ids=exclude_ids)
+                              exclude_ids=exclude_ids, extra_issues=extra_issues, internal_ids=internal_ids)
     if complete:
         latest, stats["latest"] = build_latest(store, report, as_of, generated_at, run_id), "rebuilt"
     elif prev["latest.json"] is not None:

@@ -195,6 +195,92 @@ def test_asset_labels_only_from_public_names():
     assert dg.asset_label("*", labels) == dg.PENDING_ASSET
 
 
+def _write_labels(tmp_path, value, raw=None):
+    p = tmp_path / "asset-labels.json"
+    p.write_text(raw if raw is not None else json.dumps(value, ensure_ascii=False), encoding="utf-8")
+    return p
+
+
+def test_label_file_precedence_inventory_then_graph_then_file():
+    file_labels = {"storefront": "檔案名稱", "saas-x": "檔案名稱 X", "member-api": "會員服務 API"}
+    labels = dg.public_asset_labels(services=[{"id": "storefront", "name": "清冊名稱"}],
+                                    graph_nodes={"saas-x": {"display_name": "圖譜名稱"}}, file_labels=file_labels)
+    assert labels == {"storefront": "清冊名稱", "saas-x": "圖譜名稱", "member-api": "會員服務 API"}
+    assert dg.asset_label("not-listed-svc", labels) == dg.UNNAMED_ASSET            # 未列入仍顯示「未命名系統」
+
+
+def test_label_file_loading_and_invalid_entries(tmp_path):
+    assert dg.load_asset_label_file(tmp_path / "missing.json") == ({}, [])
+    good = _write_labels(tmp_path, {"schema_version": 1, "labels": {
+        "storefront": " 商店網站 ", "x-svc": "x-svc", "y-svc": "y-svc 服務", "z-svc": "長" * 61, "k-svc": "金鑰 ghp_abcdefghijklmnopqrstuvwxyz",
+        "n-svc": 3, "m-svc": "", "ok-db": "訂單資料庫"}})
+    labels, issues = dg.load_asset_label_file(good)
+    assert labels == {"storefront": "商店網站", "ok-db": "訂單資料庫"}         # 等於／包含 ID、超過 60 字、機敏、非字串皆略過
+    assert [(i["code"], i["omitted"]) for i in issues] == [("asset_labels_invalid", 6)]
+    for raw in ("{not json", json.dumps({"schema_version": 2, "labels": {}}), json.dumps({"labels": {}}),
+                json.dumps({"schema_version": 1, "labels": []}), json.dumps({"schema_version": 1, "labels": {}, "x": 1}), "[]"):
+        labels, issues = dg.load_asset_label_file(_write_labels(tmp_path, None, raw))
+        assert labels == {} and issues[0]["code"] == "asset_labels_invalid" and "未命名系統" in issues[0]["impact"]
+
+
+def test_repo_label_file_is_valid_and_never_shows_ids():
+    labels, issues = dg.load_asset_label_file()
+    assert issues == [] and labels
+    for aid, name in labels.items():
+        assert aid not in name and len(name) <= 60 and not dg.has_sensitive(name)
+
+
+def test_label_file_covers_every_impacted_asset_in_fixtures(baseline):
+    """target-baseline 與 after-fix fixture 圖譜中，出現在比對 impacts 的每個資產都有白話名稱。"""
+    from tools.loaders import FIXTURE_SCANNERS
+    from tools.pipeline import EvalInput, evaluate
+    from tools.common import AGENTS_DIR
+    labels, _ = dg.load_asset_label_file()
+    results = [evaluate(EvalInput(target_root=baseline["data"].root, as_of=day(8), scanners_dir=FIXTURE_SCANNERS,
+                                  intel_kinds=("archive", "advisory", "demo")))]
+    for variant in ("full", "partial"):
+        root = AGENTS_DIR / "fixtures" / "after-fix" / variant
+        scanners = root / "scanners" if (root / "scanners").is_dir() else FIXTURE_SCANNERS
+        results.append(evaluate(EvalInput(target_root=root / "target", as_of=day(8), scanners_dir=scanners,
+                                          intel_kinds=("archive", "advisory", "demo"))))
+    impacted = {i["asset_id"] for r in results for m in r["matches"] for i in m["impacts"]} - {"*"}
+    assert impacted and impacted <= set(labels), sorted(impacted - set(labels))
+    nodes = {n for r in results for n in r["graph"].nodes}
+    assert nodes <= set(labels), sorted(nodes - set(labels))                 # 圖譜所有節點也都有名稱
+
+
+def test_label_issue_recorded_in_store_and_not_accumulated():
+    issue = dg._issue("asset_labels_invalid", "系統名稱對照檔格式無效，已忽略")
+    s, seen = dg.merge_store(None, None, daily_report(), [make_report()], day(0), complete=True, asset_labels={},
+                             run_id="run-1", extra_issues=[issue])
+    assert [i["code"] for i in s["data_issues"]].count("asset_labels_invalid") == 1
+    s2, _ = dg.merge_store(s, seen, daily_report("run-2"), [make_report()], day(1), complete=True, asset_labels={},
+                           run_id="run-2")
+    assert not any(i["code"] == "asset_labels_invalid" for i in s2["data_issues"])      # 對照檔修好後不殘留
+    kept, _, _ = dg.finalize_store(s, seen, day(0, 2))
+    assert any(i["code"] == "asset_labels_invalid" for i in kept["data_issues"])        # 發布端清理時保留
+
+
+def test_conclusion_with_graph_ids_keeps_product_names_but_not_internal_strings():
+    eid = "evt-syn-2026-10"
+    nodes = {"nas-office-01", "storefront", "order-db-prod", "laptop-eng-07"}
+    labels = {"nas-office-01": "辦公室 NAS", "laptop-eng-07": "工程部門筆電"}
+    rep = make_report(eid, status="open", impacts=[_impact(eid, "nas-office-01", "affected", "r")], max_level="medium",
+                      conclusion="1 項受影響，最高風險為中。nas-office-01：synology-dsm 7.2.1-69057 Update 5，對外。")
+    a = dg.assessment_from_report(rep, labels, run_id=RUN, evaluated_at="2026-11-10T00:00:00Z", internal_ids=nodes)
+    assert a["conclusion"] == "1 項受影響，最高風險為中。辦公室 NAS：synology-dsm 7.2.1-69057 Update 5，對外。"
+    # 沒有提供圖譜 ID 時維持保守規則
+    assert dg.assessment_from_report(rep, labels, run_id=RUN, evaluated_at="2026-11-10T00:00:00Z")["conclusion"] == \
+        "1 項受影響，最高風險為中。包括辦公室 NAS。"
+    for text in ("1 項受影響，最高風險為中。nas-office-01 連到 order-db-prod。",           # 沒有名稱的已知 ID 殘留
+                 "1 項受影響，最高風險為中。laptop-eng-07 有 ~/.config/pipeline/token。",  # 路徑
+                 "1 項受影響，最高風險為中。nas-office-01：php，session.upload_progress.enabled=On。"):   # 設定鍵
+        r = {**rep, "conclusion": text}
+        out = dg.assessment_from_report(r, labels, run_id=RUN, evaluated_at="2026-11-10T00:00:00Z", internal_ids=nodes)
+        assert out["conclusion"] == "1 項受影響，最高風險為中。包括辦公室 NAS。", text
+        assert not any(n in out["conclusion"] for n in nodes)
+
+
 def test_conclusion_replaces_ids_or_falls_back_to_template():
     eid = "evt-c-2026-11"
     rep = make_report(eid, status="need_check", impacts=[_impact(eid, "storefront", "need_check")],

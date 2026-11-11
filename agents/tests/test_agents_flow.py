@@ -205,7 +205,10 @@ def test_daily_replay_writes_digest_beside_daily(ctx, frozen_clock):
     for ev in store.events.values():
         assert ev.assessment is not None and ev.assessment.run_id == "test-run"
         for imp in ev.assessment.impacts:
-            assert imp.asset_label != imp.asset_id                       # 內部 ID 不作顯示名稱
+            assert imp.asset_id not in imp.asset_label                   # 內部 ID 不作顯示名稱
+            assert imp.asset_label != dg.UNNAMED_ASSET                   # rules/asset-labels.json 涵蓋 replay 的受影響系統
+        for node in ("internal-tool", "nas-office-01", "order-db-prod", "storefront"):
+            assert not re.search(rf"(?<![A-Za-z0-9_.-]){re.escape(node)}(?![A-Za-z0-9_-])", ev.assessment.conclusion)
     text = "".join(b.decode("utf-8") for b in _digest_files(ctx).values())
     assert "DEMO-FAKE" not in text and "quote" not in text
     # trace：整理結果在合併後的 daily trace，且沒有新增任何 LLM 來源節點
@@ -299,3 +302,16 @@ def test_incomplete_daily_keeps_latest_times_and_content(ctx, frozen_clock, monk
     ev = next(iter(store["events"].values()))
     assert ev["observed_run_id"] == "test-run-2" and ev["assessment"]["run_id"] == "test-run"
     assert any("沿用前版" in e["detail"] for e in _digest_trace(ctx))
+
+
+def test_invalid_asset_label_file_is_ignored_and_reported(ctx, frozen_clock, monkeypatch, tmp_path):
+    bad = tmp_path / "asset-labels.json"
+    bad.write_text("{oops", encoding="utf-8")
+    monkeypatch.setattr(dg, "ASSET_LABELS_FILE", bad)
+    run_all(ctx)                                                       # A5 不因對照檔無效而失敗
+    store = json.loads((ctx.data_dir / "digest" / "store.json").read_text(encoding="utf-8"))
+    issue = next(i for i in store["data_issues"] if i["code"] == "asset_labels_invalid")
+    assert "格式無效" in issue["impact"]
+    labels = {imp["asset_label"] for ev in store["events"].values() for imp in ev["assessment"]["impacts"]}
+    assert labels <= {dg.UNNAMED_ASSET, dg.PENDING_ASSET}              # 沒有名稱時顯示「未命名系統」，不顯示 ID
+    assert not any(e["kind"] == "error" for e in _digest_trace(ctx))

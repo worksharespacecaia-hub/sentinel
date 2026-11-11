@@ -346,7 +346,7 @@ class DigestEvent(_Model):
 
 class DigestIssue(_Model):
     code: Literal["capacity", "pending_assessment", "future_first_seen", "invalid_update_link", "seen_size",
-                  "merge_conflict", "invalid_candidate"]
+                  "merge_conflict", "invalid_candidate", "asset_labels_invalid"]
     impact: str                                    # 白話說明，網站可直接顯示
     omitted: int = Field(default=0, ge=0)          # 省略／受影響的事件數
     date: str | None = Field(default=None, pattern=_DATE)
