@@ -49,4 +49,5 @@ def finish(ctx: RunCtx, agent: str) -> None:
     ctx.cache.save_delta(ctx.out / agent / "llm-delta.json")
     # 改用範本的任務：claude-analysis Job（訂閱方案）會撰寫，A5 再採用通過驗證的結果
     write_json(ctx.out / agent / "llm-tasks.json", [t for t in ctx.llm_plan if t["agent"] == agent])
-    write_json(ctx.out / agent / "cost.json", {"agent": agent, "usd": ctx.cost["per_agent"].get(agent, 0.0)})
+    write_json(ctx.out / agent / "cost.json", {"agent": agent, "usd": ctx.cost["per_agent"].get(agent, 0.0),
+                                                "usage": ctx.cost.get("usage", {}).get(agent)})

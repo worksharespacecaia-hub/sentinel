@@ -19,3 +19,6 @@ dashboard/tsconfig.tsbuildinfo
 dashboard/AGENTS.md
 gh/
 dl/
+
+# 成本量測（scripts/cost_probe.py）的備份與報告
+.cost-test/

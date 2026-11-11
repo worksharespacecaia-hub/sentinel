@@ -14,12 +14,14 @@ import os
 import re
 from dataclasses import dataclass
 
-from registry import AGENTS, CLI_VERSION, ENV_PASSTHROUGH, MODELS, SDK_VERSION, options_for
+from registry import AGENTS, CLI_VERSION, ENV_PASSTHROUGH, SDK_VERSION, model_id, options_for
 from tools.cache import LLMCache, ReplayStore, cache_key
 from tools.graph_query import GraphQuery, ScopeError
 from tools.trace import Tracer
 
 SECRET_RE = re.compile(r"DEMO-FAKE-[A-Z0-9-]{4,}|-----BEGIN [A-Z ]*PRIVATE KEY-----|sk-ant-[A-Za-z0-9_-]{10,}|ghp_[A-Za-z0-9]{20,}")
+# LLM 可撰寫的 Solution 欄位（source 由 A5 依實際來源填入）；對應 schemas.Solution
+SOLUTION_FIELDS = frozenset({"risk_id", "temporary", "permanent", "options", "suggested_owner", "verify"})
 
 
 @dataclass
@@ -59,13 +61,15 @@ def _validate(kind: str, output, task_ids: set[str]):
         if not isinstance(output, list):
             raise ValueError("需要 Solution 陣列")
         for item in output:
-            if item.get("risk_id") not in task_ids:
-                raise ValueError(f"risk_id 不在本次範圍：{item.get('risk_id')}")
+            if not isinstance(item, dict) or item.get("risk_id") not in task_ids:
+                raise ValueError(f"risk_id 不在本次範圍：{item.get('risk_id') if isinstance(item, dict) else item}")
             for k in ("temporary", "permanent", "options", "verify"):
                 if k not in item:
                     raise ValueError(f"Solution 缺少 {k}")
-            for forbidden in ("score", "level", "status"):
-                item.pop(forbidden, None)   # LLM 不能改動程式判定
+            # 只保留 Solution 允許的欄位：score／level／status 等程式判定不能被 LLM 改動，
+            # 其他多餘欄位（例如 confidence）會讓 Report schema（extra=forbid）驗證失敗、整份報告無法產出
+            for extra in set(item) - SOLUTION_FIELDS:
+                item.pop(extra)
     elif kind == "ceo":
         if not isinstance(output, dict) or len(output.get("ceo_summary") or []) != 3:
             raise ValueError("ceo_summary 需要三句")
@@ -119,6 +123,7 @@ class LLMRunner:
         # collected：claude-analysis Job（訂閱方案）事先撰寫、已通過程式驗證的結果（cache key → output）
         # plan：replay 時記下改用範本的任務，交給 claude-analysis Job 撰寫
         self.collected, self.plan = collected, plan
+        self._last_usage: dict | None = None   # _query() 最後一次的 token 用量（成本量測用）
 
     def describe(self, task: Task, key: str) -> dict:
         """交給 claude-analysis Job 的任務說明：Subagent 的指示、Skill、輸出格式與輸入資料（已去敏）。"""
@@ -131,7 +136,7 @@ class LLMRunner:
         sub = self.spec.subagents[task.subagent]
         return cache_key(scope=self.scope, agent=self.agent, subagent=task.subagent, payload=task.payload,
                          target_sha=self.target_sha, advisory_revision=self.advisory_revision, prompt=sub.prompt,
-                         skills=sub.skills, model=MODELS[sub.model], sdk_version=SDK_VERSION, cli_version=CLI_VERSION)
+                         skills=sub.skills, model=model_id(sub.model), sdk_version=SDK_VERSION, cli_version=CLI_VERSION)
 
     def run(self, tasks: list[Task], *, graph_query: GraphQuery | None = None) -> dict[str, dict]:
         """回傳 {task_id: {"output": ..., "source": live|replay|template, "subagent": name}}。"""
@@ -186,11 +191,13 @@ class LLMRunner:
         for attempt in (1, 2):
             try:
                 coro = self._query(pending, graph_query)
+                self._last_usage = None
                 raw, cost = asyncio.run(asyncio.wait_for(coro, self.timeout_s) if self.timeout_s else coro)
             except Exception as exc:   # SDK、網路或預算錯誤一律降級
                 self.tracer.emit("error", f"LLM 呼叫失敗：{type(exc).__name__}", source="template")
                 raw, cost = None, 0.0
             self._add_cost(cost)
+            self._add_usage(self._last_usage)
             ok = True
             for t, k in pending:
                 kind = self.spec.subagents[t.subagent].output
@@ -244,12 +251,44 @@ class LLMRunner:
                 elif isinstance(msg, ResultMessage):
                     cost = msg.total_cost_usd or 0.0
                     final = msg.result
-                    self.tracer.emit("result", f"{msg.subtype} turns={msg.num_turns}", source="live", cost_usd=cost)
+                    usage = {"turns": msg.num_turns or 0, "tokens": _token_counts(msg.usage),
+                             "models": {m: _token_counts(u, camel=True) | {"cost_usd": float(u.get("costUSD") or 0.0)}
+                                        for m, u in (msg.model_usage or {}).items()}}
+                    self._last_usage = usage
+                    t = usage["tokens"]
+                    self.tracer.emit("result", f"{msg.subtype} turns={msg.num_turns} in={t['input']} out={t['output']} "
+                                               f"cache_w={t['cache_write']} cache_r={t['cache_read']} "
+                                               f"models={','.join(usage['models'])}", source="live", cost_usd=cost)
         return _extract_json(final), cost
 
     def _add_cost(self, cost: float) -> None:
         self.cost["total_usd"] = round(self.cost.get("total_usd", 0.0) + cost, 6)
         self.cost["per_agent"][self.agent] = round(self.cost["per_agent"].get(self.agent, 0.0) + cost, 6)
+
+    def _add_usage(self, usage: dict | None) -> None:
+        """累計 token 用量（成本量測用；A5 報告只讀 total_usd／per_agent，不受影響）。"""
+        if not usage:
+            return
+        agg = self.cost.setdefault("usage", {}).setdefault(self.agent, {"calls": 0, "turns": 0, "tokens": _token_counts(None),
+                                                                         "models": {}})
+        agg["calls"] += 1
+        agg["turns"] += usage.get("turns", 0)
+        for k, v in usage["tokens"].items():
+            agg["tokens"][k] += v
+        for m, u in usage["models"].items():
+            dst = agg["models"].setdefault(m, _token_counts(None) | {"cost_usd": 0.0})
+            for k, v in u.items():
+                dst[k] = round(dst[k] + v, 6) if k == "cost_usd" else dst[k] + v
+
+
+_TOKEN_KEYS = {"input": ("input_tokens", "inputTokens"), "output": ("output_tokens", "outputTokens"),
+               "cache_write": ("cache_creation_input_tokens", "cacheCreationInputTokens"),
+               "cache_read": ("cache_read_input_tokens", "cacheReadInputTokens")}
+
+
+def _token_counts(raw: dict | None, *, camel: bool = False) -> dict[str, int]:
+    raw = raw or {}
+    return {k: int(raw.get(names[1] if camel else names[0]) or 0) for k, names in _TOKEN_KEYS.items()}
 
 
 def _ids(task: Task) -> set[str]:
