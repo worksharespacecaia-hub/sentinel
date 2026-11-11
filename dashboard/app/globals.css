@@ -205,3 +205,24 @@ a.button.primary { background: var(--accent); color: #fff; }
 .fact ul { margin: 6px 0; padding-left: 1.2em; font-size: 15px; }
 .fact:target, .fact[open] { background: color-mix(in srgb, var(--accent) 6%, transparent); }
 @media print { .fact-link { text-decoration: none; } }
+
+/* 資安事件整理 /digest：沿用既有顏色變數（含深色模式）；關係與等級都附文字 */
+.digest { max-width: 960px; margin: 0 auto; }
+.digest-meta p { margin: 4px 0; }
+.digest-counts { font-size: 17px; margin: 0 0 8px; }
+.digest-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.digest-filter button[aria-pressed="true"] { background: var(--accent); color: var(--panel); border-color: var(--accent); font-weight: 700; }
+.digest-day h2 { margin: 18px 0 8px; }
+.digest-groups, .digest-updates ol { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.digest-card { border: 1px solid var(--line); border-left: 5px solid var(--line); border-radius: 8px; padding: 10px 12px; background: var(--panel);
+  overflow-wrap: anywhere; min-width: 0; }
+.digest-card.rel-affected { border-left-color: var(--red); } .digest-card.rel-need_check { border-left-color: var(--yellow); }
+.tag.rel-affected { border-color: var(--red); color: var(--red); font-weight: 700; }
+.tag.rel-need_check { border-color: var(--yellow); color: var(--yellow); font-weight: 700; }
+.digest-card p { margin: 6px 0; }
+.digest-card details { margin-top: 6px; }
+.digest-card details ul { margin: 6px 0; padding-left: 1.2em; }
+.digest-updates { margin: 8px 0 0 18px; padding-left: 10px; border-left: 2px dashed var(--line); display: grid; gap: 6px; }
+.digest-marker { border: 1px dashed var(--line); border-radius: 8px; padding: 6px 10px; overflow-wrap: anywhere; }
+.digest-issues { overflow-wrap: anywhere; }
+@media (max-width: 560px) { .digest-updates { margin-left: 4px; padding-left: 8px; } }

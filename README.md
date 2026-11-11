@@ -51,7 +51,7 @@ agents/                 Python：Agent（agents/）、確定性工具（tools/�
   intel/                預先收錄的真實事件、已知公告、示範事件、控制項
 rules/                  即時規則 realtime.yaml 與帳號基準 baselines.json
 dashboard/              Next.js 網站與 API（Vercel 只部署這個目錄）
-  public/data/          A5 發布的評估結果（daily、scenarios、advisories）
+  public/data/          A5 發布的評估結果（daily、scenarios、advisories）與資安事件整理（digest/，保留近 30 天）
 reports/                情資比對報告（Markdown）
 scripts/                build-rules.py、push-with-retry.sh、sync-target-fixture.sh、lint-workflows.sh
 .github/workflows/      sentinel.yml、intel-watch.yml、incident.yml
@@ -197,6 +197,11 @@ Settings → Webhooks：Payload URL `https://<網域>/api/webhooks/github`、Con
 
 - Demo 請從 `/brief`（今日重點）開始：三顆燈、三句摘要、今天要決定的事、最需要處理的 3 件事；可加 `?source=<情境>`
 - `/report`（行動報告）：按「匯出 PDF」後在列印視窗選「另存為 PDF」；管理者可把項目設為處理中（期限必填），到期前 24 小時與逾期時以 LINE 提醒（`reminders.yml` 每小時執行，GitHub 排程可能延遲）
+- `/digest`（資安事件整理）：近 30 天外部資安事件（每日新聞、收錄事件、公告），依收錄日期分組，標示與我們的關係（受影響／需確認／不受影響／已修復）、最高等級與來源；可依關係篩選，新進度列在原事件底下
+  - 跟著每日評估固定每天更新一次（台灣 08:00，手動 daily 也會更新；網站觸發的 daily 不更新內容），網站沒有調整頻率或立即更新的按鈕。頁首顯示最後更新、下次預定更新（GitHub 排程可能延遲）；超過下次預定更新 12 小時仍未更新時標示資料已過期
+  - 資料在 `dashboard/public/data/digest/`：`latest.json`（網站唯一讀取的檔案）、`store.json`（累積資料）、`seen.json`（只有事件 ID 雜湊與首次收錄日期，避免過期事件重新出現時被當成新事件）。三份都是公開檔案，只保存可公開的欄位；系統名稱來自清冊、圖譜或 `rules/asset-labels.json`
+  - 網站讀取時才查驗目前 daily 的新聞情資狀態與事件明細：明細還在才給「查看比對明細」連結（不同次評估會註明），否則展開保存的評估結果；並以當天台灣日期再過濾一次 30 天窗口
+  - 每個收錄日期最多 50 件、檔案各 1 MiB；超過時頁面標示省略件數
 - `/weights`（燈號權重，在「工程細節」）：調整加分因子與高／中門檻，需 `ADMIN_PASSCODE`；以 `GH_DISPATCH_TOKEN`（Contents 讀寫）把 `rules/scoring.json` 寫回預設分支，下一次評估起生效
 - `/rules`（偵測規則，在「工程細節」）：調整異常行為偵測的參數（啟用／停用、等級、偵測時段、時間窗、門檻、允許的部署者），需 `ADMIN_PASSCODE`；寫回 `rules/realtime-settings.json` 一個 commit（使用 `GH_DISPATCH_TOKEN`）並同步到 Redis，數秒內生效，不必重新部署。正規表示式、資料表與新的規則類型仍需改 `rules/realtime.yaml` 並經過審查
 - LINE：依規格 14.2 建立官方帳號後，Webhook URL 設為 `https://<網域>/api/webhooks/line`，Vercel 設定 `LINE_CHANNEL_SECRET`、`LINE_CHANNEL_ACCESS_TOKEN`、`LINE_BIND_CODE`、`LINE_MAX_ADMINS`、`LINE_PUSH_SIMULATED`；圖文選單三個按鈕送出文字「今日燈號」「最新告警」「行動報告」。未設定時 LINE 功能略過，不影響其他功能

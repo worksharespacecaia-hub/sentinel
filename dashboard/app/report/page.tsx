@@ -3,7 +3,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getReport, listSources, resolveSource } from "@/lib/data";
-import { KIND_TEXT, LEVEL_TEXT, fmtTime } from "@/lib/labels";
+import { KIND_TEXT, LEVEL_TEXT, fmtTime, taipeiDate } from "@/lib/labels";
 import { TRACK_TEXT } from "@/lib/actions";
 import { PAGES } from "@/lib/nav";
 import { loadActionReport } from "@/lib/report-data";
@@ -20,8 +20,6 @@ import { summaryFacts } from "@/lib/brief";
 export const dynamic = "force-dynamic";
 
 type SP = { searchParams: Promise<Record<string, string | string[]>> };
-
-const taipeiDate = (iso: string) => new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Taipei" }).format(new Date(iso));
 
 export async function generateMetadata({ searchParams }: SP): Promise<Metadata> {
   const source = await resolveSource((await searchParams).source);
