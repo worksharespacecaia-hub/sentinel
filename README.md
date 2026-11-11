@@ -27,7 +27,7 @@ Vercel：Dashboard、/api/run、/api/status、/api/webhooks/github、/api/events
 | 層級 | 內容 |
 |------|------|
 | Agent 層 | 每個 Agent 是一個 GitHub Actions Job，以 `needs:` 串接；Actions 的 Job 圖就是多 Agent 流程圖 |
-| Subagent 層 | Job 內以 Claude Agent SDK 定義 Subagents 與 Skills（主 Agent 用 Haiku，撰寫用 Sonnet）；每日排程與手動 daily 時，A2、A4、A5 的說明文字由 `claude-analysis` Job（claude-code-action，訂閱方案）撰寫 |
+| Subagent 層 | Job 內以 Claude Agent SDK 定義 Subagents 與 Skills（主 Agent 與所有 Subagent 都用 Haiku 5.5；撰寫型 Subagent 用 effort medium）；每日排程與手動 daily 時，A2、A4、A5 的說明文字由 `claude-analysis` Job（claude-code-action，訂閱方案）撰寫 |
 | 每日情資層 | `daily-intel` Job：程式先從可信資安網站的 RSS 與 CISA KEV 抓近 72 小時文章（`news_collect.py`），再由 claude-code-action（訂閱方案）判讀；只在預設分支的每日排程與手動 `daily` 執行 |
 | 工具層 | Trivy、Gitleaks、Checkov、CISA KEV 全集、NVD（依 CPE 查執行環境與設備的 CVE，本地重新比對版本）與確定性 Python：圖譜、對帳、控制項、評分、攻擊路徑、燈號、報告 |
 | 網站與即時層 | Next.js（Vercel）＋ Upstash Redis：Dashboard、即時規則、告警交付與結案 |
@@ -256,7 +256,7 @@ BASELINE_SHA=9a36cf036c436295c08a54d38789029e29d0f9ea scripts/reset-demo.sh
 | `record` | 只限本機，實際呼叫 API 並錄製；以 `LOCAL_RECORD_CAP_USD` 限制單次上限 |
 | `live` | Workflow 實際呼叫 Claude API。呼叫前先向 `/api/budget` 預留月預算（預設 US$15、保留 10% 緩衝、單筆上限 US$0.5），不足或服務無法連線時改用範本；另在 Anthropic Console 設定每月上限 |
 
-規格估算（Claude API，不含訂閱方案；誤差約 ±50%，以報告中的 `total_cost_usd` 為準）：
+規格估算（Claude API，不含訂閱方案；以撰寫用 Sonnet 估算，改用全 Haiku 後實際更低，見下方實際成本；以報告中的 `total_cost_usd` 為準）：
 
 | 執行類型 | 估計成本 |
 |---------|-----:|
@@ -273,7 +273,7 @@ BASELINE_SHA=9a36cf036c436295c08a54d38789029e29d0f9ea scripts/reset-demo.sh
 
 | 情境 | 實際成本 |
 |------|-----:|
-| `daily` | 待部署後記錄 |
+| `daily` | 約 $0.07（無快取）／$0（全部命中快取）；2026-11-11 本機 `scripts/cost_probe.py` 量測，全 Haiku |
 | `php2shell` | 待部署後記錄 |
 | `peer-incident` | 待部署後記錄 |
 | `early-signal` | 待部署後記錄 |

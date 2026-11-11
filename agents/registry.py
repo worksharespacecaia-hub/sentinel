@@ -19,6 +19,16 @@ SDK_VERSION = "0.2.179"
 CLI_VERSION = "2.1.319"
 MODELS = {"haiku": "claude-haiku-5-5", "sonnet": "claude-sonnet-5-5"}
 
+
+def model_id(alias: str) -> str:
+    """回傳模型 ID。SENTINEL_MODEL_OVERRIDE（haiku|sonnet）只供成本量測，強制所有 Agent／Subagent 使用同一個模型。"""
+    override = (os.environ.get("SENTINEL_MODEL_OVERRIDE") or "").strip()
+    if override:
+        if override not in MODELS:
+            raise ValueError(f"未知的 SENTINEL_MODEL_OVERRIDE：{override}")
+        return MODELS[override]
+    return MODELS[alias]
+
 # allowed_tools 只是「自動核准」，不會限制可用工具；限制要靠 tools、disallowed_tools 與 hook
 COMMON_DISALLOWED = [
     "Bash", "Write", "Edit", "NotebookEdit", "WebSearch", "WebFetch",
@@ -43,18 +53,19 @@ class SubagentSpec:
     name: str
     description: str
     prompt: str
-    model: str                       # haiku | sonnet
+    model: str                       # MODELS 的別名；目前全部 Subagent 都用 haiku
     skills: list[str]
     graph: bool = False
     read_references: bool = False
     effort: str | None = None
     output: str = "explanations"     # 輸出 schema 名稱（llm.py 驗證用）
+    turns: int | None = None         # 未用圖譜時的回合上限；None 為 2
 
     @property
     def max_turns(self) -> int:
         if self.graph:
             return 6
-        return 3 if self.model == "sonnet" else 2
+        return self.turns or 2
 
 
 @dataclass
@@ -74,15 +85,19 @@ G = "sentinel-guardrails"
 OUT_EXPLAIN = "只輸出 JSON 陣列，每筆 {\"id\": 任務中給的 ID, \"explanation\": 繁體中文 1～2 句, \"confidence\": \"high\"|\"low\"}。"
 
 
+# 撰寫型 Subagent（原本用 Sonnet，2026-11-11 起改用 Haiku）：effort medium、最多 3 回合，與成本量測時的設定相同
+WRITER = {"effort": "medium", "turns": 3}
+
+
 def _s(name, desc, prompt, model="haiku", skills=(), **kw) -> SubagentSpec:
     return SubagentSpec(name=name, description=desc, prompt=prompt, model=model, skills=[G, *skills],
-                        effort="low" if model == "haiku" else None, **kw)
+                        effort=kw.pop("effort", "low"), **kw)
 
 
 AGENTS: dict[str, AgentSpec] = {
     "orchestrator": AgentSpec("orchestrator", "你是 Orchestrator。只在有新同業事件時請 planner 建議額外檢查項目，等回報後彙整。", [G], 0.05, {
         "planner": _s("planner", "依新同業事件建議需要額外檢查的控制項（只建議）",
-                      "任務內容附上新事件摘要與控制項清單。只回報可能相關的控制項 ID 與理由。" + OUT_EXPLAIN, "sonnet"),
+                      "任務內容附上新事件摘要與控制項清單。只回報可能相關的控制項 ID 與理由。" + OUT_EXPLAIN, **WRITER),
     }),
     "a0": AgentSpec("a0", "你是 A0 資產探索 Agent。只把對帳不上的設備交給 device-identifier，等回報後彙整。", [G, "device-fingerprint"], 0.05, {
         "device-identifier": _s("device-identifier", "依回應特徵辨識對帳不上的設備產品與版本",
@@ -125,22 +140,22 @@ AGENTS: dict[str, AgentSpec] = {
                     [G, "remediation-playbooks", "brand-notice", "ceo-brief", "intel-report"], 0.50, {
         "remediation-advisor": _s("remediation-advisor", "為中高風險撰寫暫時緩解、根本修復與修補／緩解／下架選項（只建議，不執行）",
                                   "依 remediation-playbooks 中命中的劇本撰寫建議解法。需要更多資產資訊時可查詢圖譜。版本、分數、結論以程式結果為準，"
-                                  "不得改動。輸出 Solution JSON 陣列。", "sonnet", ["remediation-playbooks"], graph=True, read_references=True,
+                                  "不得改動。輸出 Solution JSON 陣列。", skills=["remediation-playbooks"], **WRITER, graph=True, read_references=True,
                                   output="solutions"),
         "key-rotation-advisor": _s("key-rotation-advisor", "金鑰輪替順序、影響服務與需撤銷的長效授權",
                                    "任務內容附上金鑰清單與授權關係。" + OUT_EXPLAIN),
         "brand-notice-writer": _s("brand-notice-writer", "品牌商通知草稿與防詐提醒", "任務內容附上事件與受影響範圍。" + OUT_EXPLAIN,
-                                  "sonnet", ["brand-notice"]),
+                                  skills=["brand-notice"], **WRITER),
         "ceo-briefer": _s("ceo-briefer", "燈號 + 三句話摘要 + 今日需決策事項", "任務內容附上燈號與風險摘要。只輸出 JSON "
-                          "{\"ceo_summary\": [三句], \"decisions\": [...]}，用詞避免技術術語。", "sonnet", ["ceo-brief"], output="ceo"),
+                          "{\"ceo_summary\": [三句], \"decisions\": [...]}，用詞避免技術術語。", skills=["ceo-brief"], **WRITER, output="ceo"),
         "intel-report-writer": _s("intel-report-writer", "情資比對報告的摘要、解法與通知（只處理新的命中事件）",
-                                  "任務內容附上程式算好的比對結果。不得改動版本、分數、結論。" + OUT_EXPLAIN, "sonnet", ["intel-report"]),
+                                  "任務內容附上程式算好的比對結果。不得改動版本、分數、結論。" + OUT_EXPLAIN, skills=["intel-report"], **WRITER),
     }),
     "incident": AgentSpec("incident", "你是即時告警的圍堵建議 Agent。請 containment-advisor 撰寫圍堵建議，等回報後彙整。只建議，不執行。",
                           [G, "remediation-playbooks"], 0.15, {
         "containment-advisor": _s("containment-advisor", "從告警資產出發撰寫圍堵建議（撤銷權杖、暫停管線、隔離設備等；只建議）",
                                   "任務內容附上告警、相關訊號與攻擊路徑。依 remediation-playbooks 的 incident-containment 劇本撰寫。" + OUT_EXPLAIN,
-                                  "sonnet", ["remediation-playbooks"], graph=True, read_references=True),
+                                  skills=["remediation-playbooks"], **WRITER, graph=True, read_references=True),
     }),
 }
 
@@ -236,7 +251,7 @@ def agent_definitions(spec: AgentSpec) -> dict:
         if s.read_references:
             tools.append("Read")
         defs[name] = AgentDefinition(description=s.description, prompt=s.prompt, tools=tools, skills=list(s.skills),
-                                     model=MODELS[s.model], maxTurns=s.max_turns, effort=s.effort,
+                                     model=model_id(s.model), maxTurns=s.max_turns, effort=s.effort,
                                      disallowedTools=["Bash", "Write", "Edit", "NotebookEdit", "WebSearch", "WebFetch"])
     return defs
 
@@ -248,7 +263,7 @@ def make_options(*, system_prompt: str, skills: list[str], agents: dict, budget:
     graph_tools = graph_server is not None
     hooks, _ = build_guard_hooks(agents, skills=skills, graph_tools=graph_tools, scope_assets=scope_assets)
     return ClaudeAgentOptions(
-        model=MODELS["haiku"],
+        model=model_id("haiku"),
         cwd=str(SENTINEL_ROOT),
         system_prompt=system_prompt,
         setting_sources=["project"],

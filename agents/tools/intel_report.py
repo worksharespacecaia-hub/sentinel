@@ -55,7 +55,7 @@ def build_report(match: dict, risks_by_id: dict[str, dict], graph_nodes: dict, *
     summary = text.get("summary") or ev.get("summary") or "；".join(ev.get("attack_chain", [])) or ev["title"]
     summary_source = text.get("source", "template")
     if not affected:
-        summary_source = "template"   # 不受影響的事件不呼叫 Sonnet
+        summary_source = "template"   # 不受影響的事件不呼叫 LLM
     blocks = {
         "1_summary": {"title": ev["title"], "date": ev["date"], "industry": ev.get("industry"),
                       "attack_chain": ev.get("attack_chain", []), "attck": ev.get("attck", []), "cves": ev.get("cves", []),
