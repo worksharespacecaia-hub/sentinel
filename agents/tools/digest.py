@@ -12,12 +12,17 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 import re
+import shutil
+import tempfile
 from collections import defaultdict, deque
 from datetime import date, datetime, timedelta, timezone
+from pathlib import Path
 from urllib.parse import parse_qsl, unquote, urlencode, urlsplit, urlunsplit
 
 from llm import SECRET_RE
+from schemas import DigestLatest, DigestSeen, DigestStore
 from tools.common import TAIPEI, iso, parse_time, sha256_text
 from tools.findings import SECRET_VALUE_RE
 
@@ -616,3 +621,118 @@ def prune_latest(latest: dict, as_of: datetime, days: int = WINDOW_DAYS, *, seen
     if future:
         keep.append(_issue("future_first_seen", f"{future} 件事件的收錄日期晚於今天，已排除", future))
     return {**latest, "data_issues": [*keep, *link], "counts": counts, "days": out_days}
+
+
+# ── T4：A5 整合：暫存 bundle → 驗證 → 整組提交（失敗回復前版） ───────────────────
+
+FILES = ("seen.json", "store.json", "latest.json")     # 提交順序；任何一步失敗都整組回復
+
+
+class DigestError(Exception):
+    """只帶安全錯誤碼（不含原始輸入、金鑰或個資），會寫進報告與 trace。"""
+
+    def __init__(self, code: str):
+        super().__init__(code)
+        self.code = code
+
+
+def safe_error_code(exc: BaseException) -> str:
+    return exc.code if isinstance(exc, DigestError) else type(exc).__name__
+
+
+MODELS = {"seen.json": DigestSeen, "store.json": DigestStore, "latest.json": DigestLatest}
+
+
+def load_valid(path: Path, name: str) -> dict | None:
+    """讀取並驗證既有檔案；不存在回傳 None，格式錯誤丟出 DigestError（不覆寫無法辨識的前版）。"""
+    if not path.is_file():
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        MODELS[name].model_validate(data)
+    except Exception as exc:
+        raise DigestError(f"invalid_previous_{name.split('.')[0]}") from exc
+    return data
+
+
+def validated_bytes(name: str, value: dict) -> bytes:
+    """schema、容量與金鑰檢查都通過才回傳序列化結果（UTF-8 位元組）。"""
+    stem = name.split(".")[0]
+    try:
+        MODELS[name].model_validate(value)
+    except Exception as exc:
+        raise DigestError(f"schema_{stem}") from exc
+    data = serialize(value)
+    if name != "seen.json":
+        if len(data) > MAX_BYTES:
+            raise DigestError(f"size_{stem}")
+        text = data.decode("utf-8")
+        if any(r.search(text) for r in (SECRET_RE, SECRET_VALUE_RE, EXTRA_SECRET_RE)):
+            raise DigestError(f"sensitive_{stem}")
+    return data
+
+
+def prepare_bundle(digest_dir: Path, report: dict, intel_reports: list[dict], *, as_of: datetime, generated_at: datetime,
+                   run_id: str, asset_labels: dict[str, str], stats: dict | None = None) -> dict[str, bytes]:
+    """在記憶體中產生新的 seen／store／latest 並逐檔驗證；不寫任何檔案。
+
+    資料不完整時不重建 latest：沿用前版並只做到期移除（不改 updated_at／as_of／run_id／next_update_at）。
+    """
+    stats = stats if stats is not None else {}
+    digest_dir = Path(digest_dir)
+    prev = {name: load_valid(digest_dir / name, name) for name in FILES}
+    complete = report.get("completeness") == "complete"
+    store, seen = merge_store(prev["store.json"], prev["seen.json"], report, intel_reports, as_of, complete=complete,
+                              asset_labels=asset_labels, generated_at=generated_at, run_id=run_id, stats=stats)
+    if complete:
+        latest, stats["latest"] = build_latest(store, report, as_of, generated_at, run_id), "rebuilt"
+    elif prev["latest.json"] is not None:
+        latest, stats["latest"] = prune_latest(prev["latest.json"], as_of), "pruned"
+    else:
+        latest, stats["latest"] = None, "absent"
+    values = {"seen.json": seen, "store.json": store, "latest.json": latest}
+    return {name: validated_bytes(name, values[name]) for name in FILES if values[name] is not None}
+
+
+def _replace(src: Path, dst: Path) -> None:
+    os.replace(src, dst)
+
+
+def commit_bundle(digest_dir: Path, files: dict[str, bytes], staging_parent: Path) -> None:
+    """整組提交：先寫到資料樹之外的暫存目錄並讀回確認，再逐檔原子替換；任何一步失敗都回復前版整組檔案。
+
+    暫存目錄（staging_parent）不得在 publisher 會複製的 dashboard/public/data 之下。首次產生失敗則三檔皆維持不存在。
+    """
+    digest_dir = Path(digest_dir)
+    staging_parent = Path(staging_parent)
+    staging_parent.mkdir(parents=True, exist_ok=True)
+    staging = Path(tempfile.mkdtemp(prefix="digest-", dir=staging_parent))
+    created_dir = not digest_dir.exists()
+    touched: list[str] = []
+    try:
+        new, backup = staging / "new", staging / "backup"
+        new.mkdir()
+        backup.mkdir()
+        for name, data in files.items():
+            (new / name).write_bytes(data)
+            if (new / name).read_bytes() != data:
+                raise DigestError("staging_mismatch")
+        for name in files:
+            if (digest_dir / name).is_file():
+                shutil.copy2(digest_dir / name, backup / name)
+        digest_dir.mkdir(parents=True, exist_ok=True)
+        for name in FILES:
+            if name in files:
+                touched.append(name)
+                _replace(new / name, digest_dir / name)
+    except BaseException:
+        for name in touched:
+            if (backup / name).is_file():
+                shutil.copy2(backup / name, digest_dir / name)
+            else:
+                (digest_dir / name).unlink(missing_ok=True)
+        if created_dir and digest_dir.is_dir() and not any(digest_dir.iterdir()):
+            digest_dir.rmdir()
+        raise
+    finally:
+        shutil.rmtree(staging, ignore_errors=True)

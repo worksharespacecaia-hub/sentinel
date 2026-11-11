@@ -4,11 +4,12 @@
 """
 from __future__ import annotations
 
-from datetime import timedelta
+from datetime import datetime, timedelta, timezone
 
 from agents.common import finish, load
 from context import RunCtx
 from llm import Task, _validate
+from tools import digest
 from tools.cache import merge_cache
 from tools.common import AGENTS_DIR, iso, read_json, write_json
 from tools.graph_query import GraphQuery
@@ -147,6 +148,7 @@ def run(ctx: RunCtx) -> dict:
     if daily_intel == "ok" and skipped:
         built["report"]["data_issues"].append({"source": "daily-intel", "status": "partial",
                                                "impact": f"每日情資有 {len(skipped)} 項問題（格式不符略過或來源抓取失敗，詳見 A1 執行紀錄）"})
+    _digest(ctx, tr, built, res, output_dir)        # 報告寫出前：失敗原因要能寫進 daily 報告與合併後的 trace
 
     out_dir = ctx.data_dir / output_dir
     scope_dir = ctx.scope if ctx.scope != "scenario" else f"scenario/{ctx.scenario}"   # 情境之間也不互相覆蓋
@@ -168,6 +170,39 @@ def run(ctx: RunCtx) -> dict:
         mark_done(ctx.data_dir / "intel-watch.json", ctx.advisory_id, ctx.run_id)
     finish(ctx, "a5")
     return {"output_dir": output_dir, "light": built["report"]["light"]}
+
+
+def _clock() -> datetime:
+    """整理實際產生時間（updated_at）；與評估的邏輯時間 as_of 分開。測試以 monkeypatch 凍結。"""
+    return datetime.now(timezone.utc)
+
+
+def _digest(ctx: RunCtx, tr, built: dict, res: dict, output_dir: str) -> None:
+    """資安事件整理（純程式，不呼叫 LLM）：只有 daily 的 schedule／manual 來源產生新整理，輸出到 data_dir/digest（與 daily 同層）。
+
+    web daily 與其他 scope 不寫 digest；到期移除由發布端（publish_merge）獨立執行。
+    產生或寫入失敗時保留前一版整組檔案，安全錯誤碼記到 report 的 data_issues 與 trace，A5 照常完成。
+    """
+    if ctx.scope != "daily" or output_dir != "daily":
+        return
+    if not digest.eligible_run(ctx.scope, ctx.trigger_source):
+        tr.emit("skip", "網站觸發的每日評估不更新資安事件整理（到期內容由發布端移除）")
+        return
+    stats: dict = {}
+    try:
+        labels = digest.public_asset_labels(res["data"].services, res["data"].vendors, dict(res["graph"].nodes(data=True)))
+        bundle = digest.prepare_bundle(ctx.data_dir / "digest", built["report"], built["intel_reports"], as_of=ctx.as_of,
+                                       generated_at=_clock(), run_id=ctx.run_id, asset_labels=labels, stats=stats)
+        digest.commit_bundle(ctx.data_dir / "digest", bundle, ctx.out / "a5" / "digest-staging")
+    except Exception as exc:                         # noqa: BLE001 - 整理失敗不讓 A5 失敗
+        code = digest.safe_error_code(exc)
+        built["report"]["data_issues"].append({"source": "digest", "status": "failed", "required": False,
+                                               "impact": f"資安事件整理未更新，保留前一版（{code}）"})
+        tr.emit("error", f"資安事件整理未更新，保留前一版：{code}")
+        return
+    latest = {"rebuilt": "已重建", "pruned": "資料不完整，沿用前版並只移除到期內容", "absent": "尚未產生（資料不完整）"}[stats["latest"]]
+    tr.emit("result", f"資安事件整理：新增 {stats['new']}、重新評估 {stats['assessed']}、沿用 {stats['observed_only']}、"
+                      f"待評估 {stats['pending']}、到期移除 {stats['removed']}、容量省略 {stats['omitted']}；latest {latest}")
 
 
 def _collect_costs(ctx: RunCtx) -> dict:

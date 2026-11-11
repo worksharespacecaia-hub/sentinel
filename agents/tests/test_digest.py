@@ -580,3 +580,53 @@ def test_latest_size_limit_trims_flat_set_before_grouping(monkeypatch):
 def test_empty_digest_has_no_days():
     latest = build({"schema_version": 1, "updated_at": "2026-11-01T00:20:00Z", "data_issues": [], "events": {}}, day(0))
     assert latest["days"] == [] and latest["counts"]["total"] == 0
+
+
+# ── T4：暫存 bundle 與整組提交 ─────────────────────────────────────────────────
+
+def _bundle(tmp_path, reps, as_of, *, completeness="complete", run_id="run-1"):
+    stats = {}
+    files = dg.prepare_bundle(tmp_path / "digest", {**daily_report(run_id, completeness)}, reps, as_of=as_of,
+                              generated_at=as_of + timedelta(minutes=20), run_id=run_id, asset_labels={}, stats=stats)
+    return files, stats
+
+
+def test_first_commit_failure_leaves_no_files(tmp_path, monkeypatch):
+    files, _ = _bundle(tmp_path, [make_report()], day(0))
+    calls = {"n": 0}
+    real = dg._replace
+
+    def flaky(src, dst):
+        calls["n"] += 1
+        if calls["n"] == 3:
+            raise OSError("disk full")
+        real(src, dst)
+    monkeypatch.setattr(dg, "_replace", flaky)
+    with pytest.raises(OSError):
+        dg.commit_bundle(tmp_path / "digest", files, tmp_path / "staging")
+    assert not (tmp_path / "digest").exists()                          # 首次失敗：三檔皆不存在
+    assert not any((tmp_path / "staging").iterdir())
+
+
+def test_incomplete_bundle_without_previous_latest_has_no_latest(tmp_path):
+    files, stats = _bundle(tmp_path, [make_report()], day(0), completeness="partial")
+    assert set(files) == {"seen.json", "store.json"} and stats["latest"] == "absent"
+    dg.commit_bundle(tmp_path / "digest", files, tmp_path / "staging")
+    store = json.loads((tmp_path / "digest" / "store.json").read_text(encoding="utf-8"))
+    assert next(iter(store["events"].values()))["assessment"] is None
+
+
+def test_invalid_previous_file_is_not_overwritten(tmp_path):
+    (tmp_path / "digest").mkdir()
+    (tmp_path / "digest" / "store.json").write_text("{\"events\": 1}", encoding="utf-8")
+    with pytest.raises(dg.DigestError) as exc:
+        _bundle(tmp_path, [make_report()], day(0))
+    assert exc.value.code == "invalid_previous_store"
+
+
+def test_bundle_rejects_secret_left_in_content(tmp_path, monkeypatch):
+    monkeypatch.setattr(dg, "public_text", lambda value, limit: str(value or "")[:limit])   # 模擬去敏被繞過
+    with pytest.raises(dg.DigestError) as exc:
+        _bundle(tmp_path, [make_report(summary="外洩 ghp_abcdefghijklmnopqrstuvwxyz")], day(0))
+    assert exc.value.code.startswith("sensitive_")
+    assert dg.safe_error_code(RuntimeError("ghp_secret")) == "RuntimeError"

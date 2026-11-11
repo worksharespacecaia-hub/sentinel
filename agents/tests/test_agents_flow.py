@@ -155,3 +155,143 @@ def test_no_pr_or_push_to_target_in_code():
     code = "\n".join(p.read_text(encoding="utf-8") for p in AGENTS_DIR.rglob("*.py") if "tests" not in p.parts)
     for pattern in ("pulls.create", "create_pull", "gh pr create", "git push", "createPullRequest"):
         assert pattern not in code, pattern
+
+
+# ── 資安事件整理（specs/security-digest T4）：A5 在報告寫出前準備與提交 digest ─────────────
+
+from datetime import datetime, timezone  # noqa: E402
+
+from schemas import DigestLatest, DigestSeen, DigestStore  # noqa: E402
+from tools import digest as dg  # noqa: E402
+
+GENERATED = datetime(2026, 11, 9, 1, 20, tzinfo=timezone.utc)   # 凍結的實際產生時間（as_of 為 01:00Z）
+DIGEST_FILES = ("store.json", "latest.json", "seen.json")
+
+
+@pytest.fixture()
+def frozen_clock(monkeypatch):
+    monkeypatch.setattr(a5_report, "_clock", lambda: GENERATED)
+
+
+def _digest_files(ctx):
+    d = ctx.data_dir / "digest"
+    return {n: (d / n).read_bytes() for n in DIGEST_FILES if (d / n).is_file()}
+
+
+def _digest_trace(ctx):
+    return [e for e in read_trace(ctx.data_dir / "daily" / "trace.jsonl") if "資安事件整理" in e["detail"]]
+
+
+def test_daily_replay_writes_digest_beside_daily(ctx, frozen_clock):
+    run_all(ctx)
+    d = ctx.data_dir / "digest"
+    store = DigestStore.model_validate_json((d / "store.json").read_text(encoding="utf-8"))
+    latest = DigestLatest.model_validate_json((d / "latest.json").read_text(encoding="utf-8"))
+    seen = DigestSeen.model_validate_json((d / "seen.json").read_text(encoding="utf-8"))
+    assert not (ctx.data_dir / "daily" / "digest").exists()            # 不落入 daily/（每次發布會整個覆蓋）
+    rep = _report(ctx)
+    assert rep["completeness"] == "complete"
+    real = [e for e in rep["events"] if e["kind"] in ("live", "archive", "advisory") and not e["demo"]]
+    assert sorted(store.events) == sorted(e["id"] for e in real) and len(seen.first_seen_by_key) == len(real)
+    # 首次建置：收錄事件都放在上線當天（台灣日期）
+    assert [day.date for day in latest.days] == ["2026-11-09"] and latest.counts.total == len(real)
+    assert latest.as_of == "2026-11-09T01:00:00Z" and latest.updated_at == "2026-11-09T01:20:00Z"
+    assert latest.next_update_at == "2026-11-10T00:00:00Z" and latest.run_id == "test-run"
+    assert latest.daily_intel_status == rep["daily_intel_status"]
+    for ev in store.events.values():
+        assert ev.assessment is not None and ev.assessment.run_id == "test-run"
+        for imp in ev.assessment.impacts:
+            assert imp.asset_label != imp.asset_id                       # 內部 ID 不作顯示名稱
+    text = "".join(b.decode("utf-8") for b in _digest_files(ctx).values())
+    assert "DEMO-FAKE" not in text and "quote" not in text
+    # trace：整理結果在合併後的 daily trace，且沒有新增任何 LLM 來源節點
+    entries = _digest_trace(ctx)
+    assert entries and all(e["agent"] == "a5" and e["source"] is None and e["subagent"] is None for e in entries)
+    assert any(e["kind"] == "result" and "latest 已重建" in e["detail"] for e in entries)
+
+
+def test_web_daily_and_other_scopes_do_not_write_digest(ctx, frozen_clock):
+    run_all(replace(ctx, trigger_source="web"))
+    assert not (ctx.data_dir / "digest").exists()
+    assert any(e["kind"] == "skip" for e in _digest_trace(ctx))
+    sc = replace(ctx, scenario="intel-demo", scope="scenario", output_dir="scenarios/intel-demo")
+    run_all(sc)
+    assert not (ctx.data_dir / "digest").exists()
+
+
+def test_advisory_run_does_not_write_digest(ctx, frozen_clock):
+    adv = replace(ctx, scenario="advisory", scope="advisory", trigger_source="intel-watch",
+                  output_dir="advisories/adv-opsbuilder-2026-001/test-run", advisory_id="adv-opsbuilder-2026-001",
+                  assets=["internal-tool"])
+    a5_report.run(adv)
+    assert not (ctx.data_dir / "digest").exists()
+
+
+def test_digest_prepare_failure_keeps_nothing_and_reports_safe_reason(ctx, frozen_clock, monkeypatch):
+    def boom(*a, **k):
+        raise RuntimeError("ghp_abcdefghijklmnopqrstuvwxyz 原始輸入")
+    monkeypatch.setattr(dg, "merge_store", boom)
+    run_all(ctx)
+    assert not (ctx.data_dir / "digest").exists()                     # 首次產生失敗：三檔皆不存在
+    rep = _report(ctx)
+    issue = next(i for i in rep["data_issues"] if i["source"] == "digest")
+    assert issue["required"] is False and issue["status"] == "failed" and "RuntimeError" in issue["impact"]
+    assert "ghp_" not in json.dumps(rep, ensure_ascii=False)          # 只記安全錯誤碼
+    err = [e for e in _digest_trace(ctx) if e["kind"] == "error"]
+    assert err and "ghp_" not in err[0]["detail"]                      # 已發布（合併後）的 trace 可見原因
+
+
+@pytest.mark.parametrize("failure", ["serialize", "second_commit"])
+def test_digest_commit_failure_restores_previous_bundle(ctx, frozen_clock, monkeypatch, failure):
+    run_all(ctx)                                                       # 第一次成功：建立前版
+    before = _digest_files(ctx)
+    assert set(before) == set(DIGEST_FILES)
+    if failure == "serialize":
+        real = dg.serialize
+
+        def bad(value):
+            if isinstance(value, dict) and "days" in value:
+                raise ValueError("cannot serialize")
+            return real(value)
+        monkeypatch.setattr(dg, "serialize", bad)
+    else:
+        calls = {"n": 0}
+        real_replace = dg._replace
+
+        def flaky(src, dst):
+            calls["n"] += 1
+            if calls["n"] == 2:
+                raise OSError("disk full")
+            real_replace(src, dst)
+        monkeypatch.setattr(dg, "_replace", flaky)
+    later = datetime(2026, 11, 10, 1, 20, tzinfo=timezone.utc)
+    monkeypatch.setattr(a5_report, "_clock", lambda: later)
+    run_all(replace(ctx, as_of=datetime(2026, 11, 10, 1, 0, tzinfo=timezone.utc), run_id="test-run-2"))
+    assert _digest_files(ctx) == before                                # 沒有半套新資料
+    assert not list((ctx.data_dir / "digest").glob("*.tmp*")) and sorted(p.name for p in (ctx.data_dir / "digest").iterdir()) == \
+        sorted(DIGEST_FILES)
+    assert not any((ctx.out / "a5" / "digest-staging").iterdir())      # 暫存目錄已清除
+    rep = _report(ctx)
+    expected = "ValueError" if failure == "serialize" else "OSError"
+    assert any(i["source"] == "digest" and expected in i["impact"] for i in rep["data_issues"])
+    assert any(e["kind"] == "error" and expected in e["detail"] for e in _digest_trace(ctx))
+
+
+def test_incomplete_daily_keeps_latest_times_and_content(ctx, frozen_clock, monkeypatch):
+    run_all(ctx)
+    before = json.loads((ctx.data_dir / "digest" / "latest.json").read_text(encoding="utf-8"))
+    from tools import report_builder
+    real = report_builder.assemble
+
+    def partial(*a, **k):
+        built = real(*a, **k)
+        built["report"]["completeness"] = "partial"
+        return built
+    monkeypatch.setattr(a5_report, "assemble", partial)
+    run_all(replace(ctx, as_of=datetime(2026, 11, 10, 1, 0, tzinfo=timezone.utc), run_id="test-run-2"))
+    after = json.loads((ctx.data_dir / "digest" / "latest.json").read_text(encoding="utf-8"))
+    assert after == before                                             # 不重建、不改最後更新時間
+    store = json.loads((ctx.data_dir / "digest" / "store.json").read_text(encoding="utf-8"))
+    ev = next(iter(store["events"].values()))
+    assert ev["observed_run_id"] == "test-run-2" and ev["assessment"]["run_id"] == "test-run"
+    assert any("沿用前版" in e["detail"] for e in _digest_trace(ctx))
