@@ -17,7 +17,15 @@ def test_all_subagents_default_to_haiku(monkeypatch):
     assert model_id("haiku") == MODELS["haiku"]
     assert model_id("sonnet") == MODELS["sonnet"]
     for spec in AGENTS.values():
-        assert {d.model for d in agent_definitions(spec).values()} == {MODELS["haiku"]}
+        if spec.subagents:                     # Orchestrator 是純程式，沒有 Subagent
+            assert {d.model for d in agent_definitions(spec).values()} == {MODELS["haiku"]}
+
+
+def test_planner_moved_to_a1_with_shared_budget():
+    """動態派工：planner 在 A1 取得情資後執行（Orchestrator 看不到當天情資）；A1 上限 $0.10。"""
+    assert "planner" in AGENTS["a1"].subagents and AGENTS["a1"].subagents["planner"].output == "plan"
+    assert AGENTS["orchestrator"].subagents == {}
+    assert AGENTS["a1"].budget == 0.10
 
 
 def test_writer_subagents_keep_measured_settings():
@@ -31,7 +39,7 @@ def test_writer_subagents_keep_measured_settings():
 
 def test_override_forces_haiku_everywhere(monkeypatch):
     monkeypatch.setenv("SENTINEL_MODEL_OVERRIDE", "haiku")
-    for spec in AGENTS.values():
+    for spec in [s for s in AGENTS.values() if s.subagents]:
         assert {d.model for d in agent_definitions(spec).values()} == {MODELS["haiku"]}
 
 

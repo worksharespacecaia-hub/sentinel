@@ -4,6 +4,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
@@ -14,6 +15,8 @@ INTEL_DIR = AGENTS_DIR / "intel"
 RULES_DIR = SENTINEL_ROOT / "rules"
 TAIPEI = timezone(timedelta(hours=8))
 SCHEMA_VERSION = 1
+# LLM 輸出的機敏值檢查（llm._validate、動態派工的建議格式檢查共用）
+SECRET_RE = re.compile(r"DEMO-FAKE-[A-Z0-9-]{4,}|-----BEGIN [A-Z ]*PRIVATE KEY-----|sk-ant-[A-Za-z0-9_-]{10,}|ghp_[A-Za-z0-9]{20,}")
 
 
 def target_dir() -> Path:
