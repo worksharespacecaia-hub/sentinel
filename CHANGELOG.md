@@ -2,7 +2,7 @@
 
 ## 0.10.0 — 2026-11-11（資安事件整理）
 
-規格：`specs/security-digest/`（requirements／design／tasks）。
+規格文件（requirements／design／tasks）保存在 Repo 之外（專案資料夾的 `specs/security-digest/`），未納入版本控制。
 
 - **新頁面 `/digest`（資安事件整理）**：主導覽由 3 項改為 4 項（今日重點、行動報告、資安事件整理、異常行為偵測）；「外部事件」`/intel` 仍在「工程細節」，行為不變
   - 近 30 天外部事件依收錄日期分組（新到舊），同日依與我們的關係、最高等級排序；收錄事件與其他事件同樣放在收錄日期底下
