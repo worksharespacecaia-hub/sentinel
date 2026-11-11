@@ -7,6 +7,7 @@ KIND_LABEL = {"live": "真實", "archive": "真實・已收錄", "demo": "示範
 LEVEL_ZH = {"high": "高", "medium": "中", "low": "低"}
 VERDICT_ZH = {"affected": "受影響", "not_affected": "不受影響", "need_check": "需確認"}
 STATUS_ZH = {"open": "待處理", "fixed": "已修復", "not_affected": "不受影響", "need_check": "需確認"}
+CHECK_ZH = {"pass": "符合", "fail": "不符合", "unknown": "資料不足"}
 
 
 def build_report(match: dict, risks_by_id: dict[str, dict], graph_nodes: dict, *, verification: dict | None = None,
@@ -80,6 +81,10 @@ def build_report(match: dict, risks_by_id: dict[str, dict], graph_nodes: dict, *
         blocks.pop("3_affected")
         blocks.pop("5_solutions")
         blocks.pop("6_notice")
+    checks = match.get("planner_checks") or []
+    if checks:
+        # 動態派工：AI 建議、程式核准的加查（程式已算好的檢查結果，不影響結論與分數）
+        blocks["8_extra_checks"] = [{**c, "status_label": CHECK_ZH.get(c["status"], "資料不足")} for c in checks]
     return {
         "event": {k: ev.get(k) for k in ("id", "kind", "title", "date", "industry", "attack_chain", "attck", "cves", "products",
                                          "revision", "controls", "confidence", "sources", "demo", "is_update_of", "proposed_controls")},
@@ -120,6 +125,12 @@ def to_markdown(rep: dict) -> str:
         lines += [f"- {i['asset_id']}：{i['our_state']}，{i['reason']}" for i in u["not_affected"]]
         lines += [f"- 需確認：{i['asset_id']}：{'；'.join(i['to_verify']) or i['reason']}" for i in u["need_check"]]
         lines += [f"- {n}" for n in u["notes"]]
+        lines.append("")
+    if b.get("8_extra_checks"):
+        lines += ["## AI 建議加查（程式檢查結果，不影響結論與分數）", "| 控制項 | 檢查結果 | 資產 | 建議理由 |", "|------|------|------|------|"]
+        for c in b["8_extra_checks"]:
+            assets = "、".join(a["asset_id"] for a in c["assets"]) or "無列出資產"
+            lines.append(f"| {c['title']} | {c['status_label']} | {assets} | {c['suggested_reason']} |")
         lines.append("")
     for sol in b.get("5_solutions", []):
         lines += [f"## 可能的解法：{sol['risk_id']}", "| 選項 | 做法 | 代價 | 時效 |", "|------|------|------|------|"]

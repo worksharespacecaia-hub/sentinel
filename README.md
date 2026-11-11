@@ -16,7 +16,7 @@ Repo ① shopsaas-demo-platform（被評估的虛構系統）
         ▲ 唯讀 Token                                   │
 Repo ② sentinel（本 Repo）                             │
    intel-watch.yml：每小時比對公告（觸發 ②）           │
-   sentinel.yml：Orchestrator → A0 → A1/A2/A3 → A4 → A5（觸發 ②③）
+   sentinel.yml：Orchestrator → A0 → A1/A2/A3 → A4 → A5（觸發 ②③）；A1 取得情資後動態派工（AI 建議、程式核准）
    incident.yml：從告警資產推演攻擊路徑 → 圍堵建議 → Issue 留言（觸發 ④）
    A5 commit 到 dashboard/public/data/ → Vercel 自動重新部署
         ▼                                              ▼
@@ -28,7 +28,8 @@ Vercel：Dashboard、/api/run、/api/status、/api/webhooks/github、/api/events
 |------|------|
 | Agent 層 | 每個 Agent 是一個 GitHub Actions Job，以 `needs:` 串接；Actions 的 Job 圖就是多 Agent 流程圖 |
 | Subagent 層 | Job 內以 Claude Agent SDK 定義 Subagents 與 Skills（主 Agent 與所有 Subagent 都用 Haiku 5.5；撰寫型 Subagent 用 effort medium）；每日排程與手動 daily 時，A2、A4、A5 的說明文字由 `claude-analysis` Job（claude-code-action，訂閱方案）撰寫 |
-| 每日情資層 | `daily-intel` Job：程式先從可信資安網站的 RSS 與 CISA KEV 抓近 72 小時文章（`news_collect.py`），再由 claude-code-action（訂閱方案）判讀；只在預設分支的每日排程與手動 `daily` 執行 |
+| 每日情資層 | `daily-intel` Job：程式先從可信資安網站的 RSS 與 CISA KEV 抓近 72 小時文章（`news_collect.py`），再由 claude-code-action（訂閱方案）判讀，並寫出動態派工建議 `agent_plan`；只在預設分支的每日排程與手動 `daily` 執行 |
+| 動態派工 | Orchestrator 維持純程式（它在 A0 之前，看不到當天情資）。A1 驗證完情資後，依新同業事件取得 AI 建議：加查哪些控制項、請 A4 多說明哪些風險；由程式逐項核准（白名單、本次範圍、上限、只能追加），不影響分數、燈號與結論 |
 | 工具層 | Trivy、Gitleaks、Checkov、CISA KEV 全集、NVD（依 CPE 查執行環境與設備的 CVE，本地重新比對版本）與確定性 Python：圖譜、對帳、控制項、評分、攻擊路徑、燈號、報告 |
 | 網站與即時層 | Next.js（Vercel）＋ Upstash Redis：Dashboard、即時規則、告警交付與結案 |
 
@@ -138,6 +139,21 @@ python agents/run_agent.py all --replay           # A1 清理格式，引用比�
 4. A5 採用通過驗證的結果，其餘用程式範本；「AI 分析過程」頁標示「即時呼叫・訂閱方案」
 
 不需要額外設定（使用每日情資的 `CLAUDE_CODE_OAUTH_TOKEN`），不產生 API 費用，會使用訂閱額度。同一次執行的所有 Job 使用 Orchestrator 決定的同一個邏輯時間（`AS_OF`），任務鍵才會一致。A1（公告抽取）與 A3（客訴分類）的結果在各自的 Job 內使用，仍是範本；網站觸發與情境不使用訂閱方案。
+
+#### 動態派工（AI 建議、程式核准）
+
+A1 驗證完情資後，若有新的同業事件（live／demo，最多 5 件），會取得一份 AI 建議並由程式核准（規格：專案資料夾的 `specs/dynamic-planner/`）：
+
+| 範圍 | 建議來源 | 費用 |
+|------|---------|------|
+| 每日排程、手動 daily | `daily-intel`（訂閱方案）寫在 `intel-daily.json` 的 `agent_plan` | 訂閱額度，不產生 API 費用 |
+| daily 但每日情資沒有可用建議、情境、公告調查 | A1 的 `planner` Subagent：live 呼叫 API；replay 只查錄製／快取，沒有就用範本 | live 時才有 API 費用（A1 上限 $0.10） |
+| 沒有新同業事件、純公告 | 不觸發 | $0 |
+
+- 建議只有兩種：**加查控制項**（列出本次已算好的檢查結果，事件頁「AI 建議加查」）與**請 A4 說明相關風險**（程式挑風險，每件事件最多 3 個）
+- 程式逐項核准：控制項須在 `controls.yaml`、事件須在本次範圍、每件最多 3 個控制項（總共 8 個）、追加工作最多 3 項；要求跳過或改分數一律拒絕，每個拒絕都有原因
+- 結果寫在 `out/a1/agent-plan.json`（綁定本次執行與 `verified.json` 雜湊），A4、A5 核對不符就停用；「AI 分析過程」頁顯示「AI 建議 N 項、核准 M 項、拒絕 K 項」與來源
+- 可追加工作清單與上限由 `scripts/build-agent-plan-reference.py` 產生 `.claude/skills/daily-intel/references/agent-plan.md`（`--check` 檢查是否過期）
 
 #### 啟用 live（A1～A5 改用 Claude API，選用）
 
@@ -296,4 +312,5 @@ BASELINE_SHA=9a36cf036c436295c08a54d38789029e29d0f9ea scripts/reset-demo.sh
 - 只有「非 Pipeline 部署」接真實 Webhook，其他即時事件以模擬器代替
 - 圍堵建議的完成時間取決於 GitHub Actions 排隊，目標約 3 分鐘；GitHub 排程也可能延遲
 - 執行層資料是快照；正式導入需串接雲端 API、裝置管理與 SIEM
+- 動態派工：「新同業事件」以 checkout 進來的 `dashboard/public/data/daily/state/intel.json`（上一次發布的 daily）比對；這個檔案缺失或損壞時，會把當天所有 live／demo 事件都當成新事件（最多 5 件），執行紀錄會註明。AI 建議第一版只列出檢查結果，不影響分數
 - 尚未實作：LINE 通知與 App 頁（P2）、`nas`／`insider-path`／`mobile-sdk` 情境（P2）、Neon 趨勢圖（選配）

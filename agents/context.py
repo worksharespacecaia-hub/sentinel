@@ -97,7 +97,8 @@ class RunCtx:
                          replay=self.replay, budget=budget_for(self.mode, f"{self.run_id}-{os.environ.get('GITHUB_RUN_ATTEMPT', '1')}/{agent}"),
                          cost=self.cost, collected=self.llm_results(), plan=self.llm_plan)
 
-    def eval_input(self, **kw) -> EvalInput:
+    def eval_input(self, *, daily_events: list[dict] | None = None, **kw) -> EvalInput:
+        """daily_events：A1 已從同一份快照清理好的每日情資事件；明確傳入（含空列表）時不再讀 intel-daily.json。"""
         cfg = self.scenario_cfg
         kinds = tuple(cfg.get("intel_kinds") or ("archive", "advisory"))
         extra = [self.scenario_dir / d for d in cfg.get("extra_event_dirs", [])]
@@ -107,7 +108,12 @@ class RunCtx:
             overrides[name] = list(csv.DictReader(io.StringIO(text))) if name.endswith(".csv") else \
                 [json.loads(x) for x in text.splitlines() if x.strip()]
         # daily-intel（LLM）的輸出不可信：先清理、驗證格式，強制為 live 事件
-        live = load_daily_intel(self.out / "intel-daily.json")[0] if self.scenario == "daily" else []
+        if self.scenario != "daily":
+            live = []
+        elif daily_events is not None:
+            live = list(daily_events)
+        else:
+            live = load_daily_intel(self.out / "intel-daily.json")[0]
         prev = read_json(self.data_dir / "daily" / "state" / "risks.json", {}) if self.scope == "daily" else {}
         # intel-watch 由 CISA KEV＋NVD 產生的公告只在正式執行帶入；情境使用凍結資料，不混入當下的真實公告
         auto = load_auto_advisories(self.data_dir / "intel-watch.json") \

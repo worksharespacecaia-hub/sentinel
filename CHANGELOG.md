@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.11.0 — 2026-11-12（動態派工：AI 建議、程式核准）
+
+規格文件（requirements／design／tasks）保存在 Repo 之外（專案資料夾的 `specs/dynamic-planner/`），未納入版本控制。
+
+- **動態派工**：Orchestrator 維持純程式（它在 A0 之前，看不到當天情資）；A1 驗證完情資後，依新同業事件（live／demo，最多 5 件）取得 AI 建議，由程式逐項核准後執行。建議只有兩種：加查控制項、請 A4 說明相關風險；只能追加，不能跳過任何評估
+- **建議來源**：daily（排程、手動）優先採用 `daily-intel`（訂閱方案）在 `intel-daily.json` 寫的 `agent_plan`，不呼叫 API；每日情資沒有可用建議、情境與公告調查改用 A1 的 `planner` Subagent（從 orchestrator 搬到 a1），live 呼叫 API、replay 只查錄製／快取，沒有就用範本。合法的 `{}` 或全部被拒絕不會改呼叫 API
+- **程式核准**：控制項須在 `controls.yaml`、事件須在本次範圍、每件最多 3 個控制項（總共 8 個）、追加工作最多 3 項且只開放 A4 `impact-analyst`；多寫的欄位、重複、空白理由都拒絕並記錄原因。事件 ID 用同一份 `intel-daily.json` 快照對應，歧義 ID 一律拒絕
+- **不影響判定**：加查只列出本次已算好的控制項檢查結果（情資報告新區塊 `8_extra_checks`），不進事件的控制項對應、impacts 與評分；分數、等級、燈號、結論與沒有建議時完全相同（測試逐欄比較）
+- **A4 追加說明**：依核准的工作挑出這件事件命中、且不在原本前 10 個的風險（每件最多 3 個），以原本的任務格式追加；replay 時會一併交給 `claude-analysis` 撰寫
+- **計畫檔**：`out/a1/agent-plan.json` 開始時先寫「處理未完成」，完成後原子替換；綁定執行識別與 `verified.json` 雜湊，A4、A5／llm-plan 讀到舊檔、壞檔或不符就停用並記錄原因，原有評估不受影響
+- **預算**：A1 上限 $0.05 → $0.10（公告抽取與 planner 共用）；所有 Agent 的呼叫與重試改為只用「上限扣掉本次已花費」的餘額，用完就改用範本；planner 每次嘗試 60 秒
+- **快取**：錄製結果無效時改查同鍵快取，兩者都無效才用範本
+- **網站**：「AI 分析過程」頁顯示一行摘要（AI 建議 N 項、核准 M 項、拒絕 K 項與來源），可展開核准與拒絕明細；事件頁新增「AI 建議加查（程式檢查結果，不影響結論與分數）」。今日重點與行動報告頁不變；舊報告沒有這個欄位時照常顯示
+- **daily-intel Skill**：輸出格式加上 `agent_plan`，規則與上限在 `references/agent-plan.md`（由 `scripts/build-agent-plan-reference.py` 產生，`--check` 檢查過期）。不新增 Subagent，guard hook、工具設定與 workflow 都沒有變更
+- **新事件判斷**：以 checkout 進來的 `dashboard/public/data/daily/state/intel.json`（上一次發布的 daily）比對事件 ID；這個檔案缺失或損壞時，當天所有 live／demo 事件都視為新事件（最多 5 件），執行紀錄註明「讀不到上次清單」（使用者 2026-11-12 接受此降級）
+- **驗證**（本機，只用 replay 與 fixture，未呼叫任何付費 API）：
+  - pytest 全部通過（新增 `test_agent_plan.py`、`test_dynamic_planner_flow.py`、`test_dynamic_planner_rules.py` 與 `test_daily_intel.py` 的快照／ID 對應測試）；dashboard `npm test`、`tsc --noEmit` 通過
+  - peer-incident 隔離空快取：planner 走範本，0 項建議；注入快取建議（1 個合法控制項、1 個未知控制項、1 個 A4 追加工作）：核准 2、拒絕 1，A4 追加 1 個風險說明，風險分數、等級、燈號與事件結論與基準相同
+  - daily fixture：合法建議 → 採用訂閱方案、不建立 planner 任務；`{}`、全部拒絕不退回；缺欄位、null、錯結構 → 退回 A1 planner；沒有新事件 → 未觸發
+  - 計畫檔被改壞、狀態未完成、不同執行、雜湊不符、核准值非法、verified 損壞時，A4、A5 都停用計畫並照常產出報告
+  - 網站：以 Chrome（DevTools 精確模擬 390px）檢查事件頁與執行紀錄頁無橫向捲動，桌面與深色模式正常
+  - **尚未在 GitHub 實跑**：訂閱方案的 Claude 是否實際寫出合格的 `agent_plan`，要等下一次每日排程確認
+
 ## 0.10.2 — 2026-11-11（摘要數字滑過顯示包含哪幾項）
 
 - **今日重點、行動報告**：摘要與決策裡有底線的數字，滑鼠移上去（或用鍵盤聚焦）會顯示小卡，列出前 5 項與「還有幾項」；點數字仍跳到「數字從哪來」

@@ -8,6 +8,7 @@ from pathlib import Path
 
 from schemas import Report
 from tools.common import SCHEMA_VERSION, iso, sha256_file, sha256_json, write_json
+from tools.agent_plan import public_plan
 from tools.intel_report import build_report, to_markdown
 from tools.templates import ceo_summary, decisions, solution_for
 
@@ -77,6 +78,7 @@ def assemble(result: dict, *, run_id: str, scenario: str, trigger_source: str, s
         "cost": cost or {"total_usd": 0.0, "per_agent": {}, "cache_hit_rate": None},
         "signals": result["signals"], "reconcile": result["recon"]["records"], "app_impact": app_impact,
         "execution_mode": execution_mode, "scoring": result.get("scoring"),
+        "agent_plan": public_plan(result.get("agent_plan")),
     }
     Report.model_validate(report)
     return {"report": report, "intel_reports": intel_reports, "risks_full": result["risks"]}

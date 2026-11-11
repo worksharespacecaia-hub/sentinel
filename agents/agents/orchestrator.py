@@ -27,7 +27,8 @@ def run(ctx: RunCtx) -> dict:
     tr.emit("start", f"scenario={ctx.scenario} trigger={ctx.trigger_source} mode={ctx.mode}")
     d = decide(ctx, event_name=os.environ.get("EVENT_NAME", "local"), ref_name=os.environ.get("GITHUB_REF_NAME"),
                default_branch=os.environ.get("DEFAULT_BRANCH"))
-    tr.emit("skip", "planner 只在有新同業事件時呼叫（本次不需要）", subagent="planner", source="template")
+    # 動態派工的 planner 需要當天情資，改在 A1 驗證完情資後執行（Orchestrator 跑在 A0 之前，派工維持純程式）
+    tr.emit("skip", "AI 建議改在 A1 取得情資後執行", subagent="planner")
     if not d["daily_intel"]:
         tr.emit("skip", "daily-intel 不執行（只在預設分支的每日排程或手動 daily 執行）")
     save(ctx, "orchestrator", "plan.json", d)

@@ -275,6 +275,7 @@ class Report(_Model):
     app_impact: dict = Field(default_factory=dict)
     scoring: dict | None = None                # 本次使用的燈號權重（rules/scoring.json）
     execution_mode: Literal["replay", "record", "live", "template"] = "template"
+    agent_plan: dict | None = None             # 動態派工：AI 建議、程式核准的計數與明細（不影響分數、燈號、結論）
 
 
 class IntelWatchResult(_Model):

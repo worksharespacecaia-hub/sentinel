@@ -45,6 +45,24 @@ def load(ctx: RunCtx, agent: str, name: str, default=None):
     return read_json(ctx.out / agent / name, default)
 
 
+def load_a1(ctx: RunCtx, tr) -> tuple[list[dict] | None, dict | None]:
+    """安全讀取 A1 的 verified.json 與動態派工計畫（A4、A5／llm-plan 共用）。
+
+    verified 缺失或損壞時回傳 None：確定性評估改由本 Job 離線重建，且不採用無法核對的計畫。
+    回傳的 verified 是獨立拷貝（evaluate 會套用新進度繼承，不能改到用來核對雜湊的原始資料）。
+    """
+    import copy
+
+    from tools.agent_plan import load_agent_plan, load_verified
+    verified, why = load_verified(ctx)
+    if verified is None:
+        tr.emit("error", "A1 結果缺失或無法讀取：改由本 Job 重新驗證情資（離線）")
+    plan, reason = load_agent_plan(ctx, verified)
+    if plan is None and verified is not None:
+        tr.emit("skip", f"不採用動態派工計畫（{reason}）", subagent="planner")
+    return (copy.deepcopy(verified) if verified is not None else None), plan
+
+
 def finish(ctx: RunCtx, agent: str) -> None:
     ctx.cache.save_delta(ctx.out / agent / "llm-delta.json")
     # 改用範本的任務：claude-analysis Job（訂閱方案）會撰寫，A5 再採用通過驗證的結果

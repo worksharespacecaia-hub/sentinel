@@ -1,6 +1,8 @@
 """claude-analysis Job（訂閱方案）的前後處理：純程式，不呼叫 LLM。
 
 - plan：收集 A2、A4 改用範本的任務（各 Job 已存的 llm-tasks.json），再依 A5 的流程算出 A5 的任務，寫成 out/llm/tasks.json
+  （A4 依動態派工追加的風險說明屬於一般 A4 任務，會一併收集；A1 的 planner 任務不收集：claude-analysis 在 A4 之後才執行，
+  來不及供 A4 使用，daily 的 AI 建議改由 daily-intel 在 intel-daily.json 的 agent_plan 提供）
 - validate：以每個任務原本的範圍與輸出格式驗證 Claude 寫的 out/llm/results.json，通過的寫成 out/llm/validated.json
   （A5 再以同樣規則驗證一次才採用；分數、等級、狀態一律以程式判定為準）
 """
