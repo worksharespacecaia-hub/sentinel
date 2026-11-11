@@ -10,12 +10,15 @@
 """
 from __future__ import annotations
 
+import copy
+import json
 import re
 from collections import defaultdict, deque
+from datetime import date, datetime, timedelta
 from urllib.parse import parse_qsl, unquote, urlencode, urlsplit, urlunsplit
 
 from llm import SECRET_RE
-from tools.common import sha256_text
+from tools.common import TAIPEI, iso, parse_time, sha256_text
 from tools.findings import SECRET_VALUE_RE
 
 WINDOW_DAYS = 30
@@ -23,6 +26,9 @@ SUMMARY_LIMIT = 300
 TITLE_LIMIT = 200
 LABEL_LIMIT = 60
 MAX_IMPACTS = 20
+PER_DAY_LIMIT = 50                    # 每個收錄日期最多保留的完整事件內容
+MAX_BYTES = 1024 * 1024               # store／latest 各最多 1 MiB（UTF-8 實際序列化位元組）
+SEEN_WARN_BYTES = 1024 * 1024         # seen 不裁切，只監測大小
 UNNAMED_ASSET = "未命名系統"
 PENDING_ASSET = "待確認系統"
 REDACTED = "［已遮蔽］"
@@ -274,3 +280,191 @@ def eligible_run(scope: str, trigger_source: str) -> bool:
 def seen_key(event_id: str) -> str:
     """最小去重鍵：sha256(UTF-8 事件 ID)。只供去重，不是加密保護。"""
     return sha256_text(event_id)
+
+
+# ── T2：累積資料合併、清理、最小去重與容量限制 ────────────────────────────────
+
+REL_RANK = {"affected": 0, "need_check": 1, "not_affected": 2, "fixed": 3, None: 4}   # None＝待評估
+LEVEL_RANK = {"high": 0, "medium": 1, "low": 2, None: 3}
+
+
+def serialize(value) -> bytes:
+    """與 tools.common.write_json 相同的格式（indent=2、LF 結尾）；容量以這個實際位元組數計算。"""
+    return (json.dumps(value, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+
+
+def taipei_date(dt: datetime) -> str:
+    return dt.astimezone(TAIPEI).date().isoformat()
+
+
+def window_bounds(as_of: datetime, days: int = WINDOW_DAYS) -> tuple[str, str]:
+    """保留窗口：以台灣日曆日計算，包含基準當日與前 days-1 日（D-29～D），不是再往前 30 日。"""
+    end = as_of.astimezone(TAIPEI).date()
+    return (end - timedelta(days=days - 1)).isoformat(), end.isoformat()
+
+
+def _issue(code: str, impact: str, omitted: int = 0, day: str | None = None) -> dict:
+    return {"code": code, "impact": impact, "omitted": omitted, "date": day}
+
+
+def _rank(ev: dict) -> tuple:
+    """容量裁切順序：受影響 → 需確認 → 不受影響 → 已修復 → 待評估，等級高到低，收錄日期新到舊，ID。"""
+    a = ev.get("assessment") or {}
+    return (REL_RANK[a.get("relation")], LEVEL_RANK[a.get("max_level")],
+            -date.fromisoformat(ev["first_seen"]).toordinal(), ev["id"])
+
+
+def _obs_key(ev: dict) -> tuple:
+    return (parse_time(ev["last_seen_at"]), ev["observed_run_id"])
+
+
+def _eval_key(a: dict | None) -> tuple | None:
+    return None if a is None else (parse_time(a["evaluated_at"]), a["run_id"])
+
+
+def prune(store: dict, as_of: datetime, days: int = WINDOW_DAYS) -> dict:
+    """只保留收錄日期在窗口內的事件；未來日期的 first_seen 一併移除並記錄問題。不改 updated_at 與評估時間。"""
+    start, end = window_bounds(as_of, days)
+    out = copy.deepcopy(store)
+    future = [k for k, ev in out["events"].items() if ev["first_seen"] > end]
+    out["events"] = {k: ev for k, ev in out["events"].items() if start <= ev["first_seen"] <= end}
+    issues = [i for i in out.get("data_issues") or []
+              if i.get("code") != "future_first_seen" and (i.get("date") is None or start <= i["date"] <= end)]
+    if future:
+        issues.append(_issue("future_first_seen", f"{len(future)} 件事件的收錄日期晚於今天，已排除", len(future)))
+    out["data_issues"] = issues
+    return out
+
+
+def _event_bytes(ev: dict, depth: int) -> int:
+    """單一事件在檔案中約佔的位元組（含巢狀縮排）；只用來估算，最後仍以實際序列化大小確認。"""
+    body = serialize(ev)
+    return len(body) + depth * 2 * body.count(b"\n") + len(ev["id"].encode("utf-8")) + 8
+
+
+def trim_events(events: dict, fits, *, per_day: int = PER_DAY_LIMIT, depth: int = 2) -> tuple[dict, int]:
+    """先在扁平事件集合套用每個收錄日期 50 件，再依優先順序從最後面移除，直到 fits(events) 為真。
+
+    回傳 (保留的事件, 省略數)。只在扁平集合裁切，不會因為父事件被裁而連帶刪除子事件。
+    """
+    by_day: dict[str, list[dict]] = defaultdict(list)
+    for ev in events.values():
+        by_day[ev["first_seen"]].append(ev)
+    kept: list[dict] = []
+    for day_events in by_day.values():
+        kept += sorted(day_events, key=_rank)[:per_day]
+    kept.sort(key=_rank)
+    result = {ev["id"]: ev for ev in kept}
+    if not fits(result):
+        excess = len(serialize(result)) - MAX_BYTES
+        while kept and excess > 0:                 # 先以估算移除，再逐件確認實際大小
+            excess -= _event_bytes(kept.pop(), depth)
+        result = {ev["id"]: ev for ev in kept}
+        while kept and not fits(result):
+            kept.pop()
+            result = {ev["id"]: ev for ev in kept}
+    return result, len(events) - len(result)
+
+
+def store_issues(store: dict, seen: dict, as_of: datetime, days: int = WINDOW_DAYS) -> list[dict]:
+    """容量省略數由去重紀錄推得：窗口內每個收錄日期「曾收錄」減「實際保留」，不需保存被省略事件的任何內容。"""
+    start, end = window_bounds(as_of, days)
+    seen_by_day: dict[str, int] = defaultdict(int)
+    for d in seen["first_seen_by_key"].values():
+        if start <= d <= end:
+            seen_by_day[d] += 1
+    kept_by_day: dict[str, int] = defaultdict(int)
+    for ev in store["events"].values():
+        kept_by_day[ev["first_seen"]] += 1
+    issues = [i for i in store.get("data_issues") or [] if i.get("code") in ("future_first_seen", "merge_conflict")]
+    for d in sorted(seen_by_day, reverse=True):
+        n = seen_by_day[d] - kept_by_day.get(d, 0)
+        if n > 0:
+            issues.append(_issue("capacity", f"{d} 收錄的事件超過容量上限，省略 {n} 件", n, d))
+    pending = sum(1 for ev in store["events"].values() if ev.get("assessment") is None)
+    if pending:
+        issues.append(_issue("pending_assessment", f"{pending} 件事件尚待完整評估，暫不列入整理", pending))
+    if len(serialize(seen)) > SEEN_WARN_BYTES:
+        issues.append(_issue("seen_size", "去重紀錄超過 1 MiB，需要檢查（不影響首次收錄日期）"))
+    return issues
+
+
+def finalize_store(store: dict, seen: dict, as_of: datetime, days: int = WINDOW_DAYS) -> tuple[dict, int, int]:
+    """清理窗口 → 容量限制 → 重新計算資料狀態。回傳 (store, 到期移除數, 容量省略數)。不改 updated_at。"""
+    before = len(store["events"])
+    store = prune(store, as_of, days)
+    removed = before - len(store["events"])
+
+    def fits(events: dict) -> bool:
+        trial = {**store, "events": events}
+        return len(serialize({**trial, "data_issues": store_issues(trial, seen, as_of, days)})) <= MAX_BYTES
+
+    events, omitted = trim_events(store["events"], fits)
+    store["events"] = dict(sorted(events.items()))
+    store["data_issues"] = store_issues(store, seen, as_of, days)
+    return store, removed, omitted
+
+
+def merge_store(prev: dict | None, seen: dict | None, report: dict, intel_reports: list[dict], as_of: datetime, *,
+                complete: bool, asset_labels: dict[str, str], generated_at: datetime | None = None,
+                run_id: str | None = None, stats: dict | None = None) -> tuple[dict, dict]:
+    """把本次 daily 的比對報告併入累積資料（純函式，不寫檔）。回傳 (store, seen)。
+
+    - 新 ID 先查 seen：曾收錄者沿用原 first_seen；已過期 ID 不重新加入；只有從未收錄者才以 as_of 的台灣日期新增去重鍵
+    - 收錄資料（last_seen／last_seen_at／observed_run_id）每次觀察都更新
+    - 評估快照只在 complete=True 且該份報告 complete=True 時整組替換；事件內容與快照一起更新，避免摘要與結論來自不同 run
+    - 首次只有不完整評估的事件 assessment=None（待評估，不進 latest）
+    """
+    run_id = run_id or report["run_id"]
+    generated_at = generated_at or as_of
+    stats = stats if stats is not None else {}
+    for k in ("new", "assessed", "observed_only", "expired_skipped", "removed", "omitted", "pending"):
+        stats.setdefault(k, 0)
+    today = taipei_date(as_of)
+    start, _ = window_bounds(as_of)
+    store = copy.deepcopy(prev) if prev else {"schema_version": 1, "updated_at": iso(generated_at), "data_issues": [], "events": {}}
+    seen_map = dict((seen or {}).get("first_seen_by_key") or {})
+    events = store["events"]
+    for ev in events.values():                     # 去重紀錄先於清理與容量裁切產生
+        k = seen_key(ev["id"])
+        seen_map[k] = min(seen_map.get(k, ev["first_seen"]), ev["first_seen"])
+    obs = {"last_seen": today, "last_seen_at": iso(as_of), "observed_run_id": run_id}
+    this_key = (parse_time(iso(as_of)), run_id)
+    for rep in intel_reports:
+        if not eligible_report(rep):
+            continue
+        eid = rep["event"]["id"]
+        key = seen_key(eid)
+        full = complete and bool(rep.get("complete"))
+        old = events.get(eid)
+        if old is None:
+            first = seen_map.get(key)
+            if first is not None and first > today:    # 去重日期晚於今天（不合理）：改用今天，仍視為同一事件
+                first = today
+            if first is not None and first < start:
+                stats["expired_skipped"] += 1          # 已過期：不重設收錄日期、不重新收錄
+                continue
+            first = first or today
+            seen_map[key] = first
+            a = assessment_from_report(rep, asset_labels, run_id=run_id, evaluated_at=iso(as_of)) if full else None
+            events[eid] = {**event_content(rep), "first_seen": first, **obs, "assessment": a}
+            stats["new"] += 1
+            continue
+        if this_key >= _obs_key(old):
+            old.update(obs)
+        prev_a = old.get("assessment")
+        if full and (prev_a is None or this_key >= _eval_key(prev_a)):
+            a = assessment_from_report(rep, asset_labels, run_id=run_id, evaluated_at=iso(as_of))
+            if prev_a is not None:
+                a["relation_changed_at"] = iso(as_of) if prev_a["relation"] != a["relation"] else prev_a.get("relation_changed_at")
+            old.update({**event_content(rep), "assessment": a})
+            stats["assessed"] += 1
+        else:
+            stats["observed_only"] += 1
+    store["updated_at"] = iso(generated_at)
+    seen_out = {"schema_version": 1, "first_seen_by_key": dict(sorted(seen_map.items()))}
+    store, removed, omitted = finalize_store(store, seen_out, as_of)
+    stats["removed"] += removed
+    stats["omitted"] += omitted
+    stats["pending"] = sum(1 for ev in store["events"].values() if ev.get("assessment") is None)
+    return store, seen_out

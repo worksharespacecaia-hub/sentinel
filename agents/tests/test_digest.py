@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime, timedelta, timezone
 
 import pytest
 from pydantic import ValidationError
@@ -220,3 +221,210 @@ def test_eligibility_excludes_demo_and_non_daily_runs():
     assert dg.eligible_run("daily", "schedule") and dg.eligible_run("daily", "manual")
     assert not dg.eligible_run("daily", "web")
     assert not dg.eligible_run("scenario", "manual") and not dg.eligible_run("advisory", "intel-watch")
+
+
+# ── T2：累積資料合併、清理、最小去重與容量 ────────────────────────────────────
+
+D0 = datetime(2026, 11, 1, 0, 0, tzinfo=timezone.utc)     # 台灣 2026-11-01 08:00（每日排程時間）
+
+
+def day(n, hours=0):
+    return D0 + timedelta(days=n, hours=hours)
+
+
+def daily_report(run_id="run-1", completeness="complete", status="ok"):
+    return {"run_id": run_id, "completeness": completeness, "daily_intel_status": status}
+
+
+def merge(prev, seen, reps, as_of, *, run_id="run-1", complete=True, labels=None, stats=None):
+    store, seen = dg.merge_store(prev, seen, daily_report(run_id, "complete" if complete else "partial"), reps, as_of,
+                                 complete=complete, asset_labels=labels or {}, generated_at=as_of + timedelta(minutes=20),
+                                 run_id=run_id, stats=stats)
+    DigestStore.model_validate(store)
+    DigestSeen.model_validate(seen)
+    return store, seen
+
+
+def test_new_event_recorded_with_taipei_first_seen_and_full_assessment():
+    stats = {}
+    rep = make_report("live-a-2026-11", status="open", impacts=[_impact("live-a-2026-11", "storefront", "affected", "r")],
+                      levels={("storefront", "affected"): "high"}, max_level="high")
+    store, seen = merge(None, None, [rep], day(0), labels={"storefront": "商店網站"}, stats=stats)
+    ev = store["events"]["live-a-2026-11"]
+    assert ev["first_seen"] == ev["last_seen"] == "2026-11-01" and ev["last_seen_at"] == "2026-11-01T00:00:00Z"
+    assert ev["observed_run_id"] == "run-1" and store["updated_at"] == "2026-11-01T00:20:00Z"
+    a = ev["assessment"]                                           # 關係、數量、等級、明細皆來自同一份報告
+    assert (a["relation"], a["affected_count"], a["max_level"], a["run_id"], a["evaluated_at"]) == \
+        ("affected", 1, "high", "run-1", "2026-11-01T00:00:00Z")
+    assert a["impacts"] == [{"asset_id": "storefront", "asset_label": "商店網站", "verdict": "affected", "level": "high"}]
+    assert a["relation_changed_at"] is None and stats["new"] == 1
+    assert seen["first_seen_by_key"] == {dg.seen_key("live-a-2026-11"): "2026-11-01"}
+
+
+def test_relation_change_records_time_and_keeps_first_seen():
+    eid = "live-b-2026-11"
+    need = make_report(eid, status="need_check")
+    hit = make_report(eid, status="open", impacts=[_impact(eid, "storefront", "affected", "r")], max_level="medium",
+                      levels={("storefront", "affected"): "medium"})
+    s, seen = merge(None, None, [need], day(0))
+    s, seen = merge(s, seen, [hit], day(1), run_id="run-2")
+    ev = s["events"][eid]
+    assert ev["first_seen"] == "2026-11-01" and ev["last_seen"] == "2026-11-02"
+    assert ev["assessment"]["relation"] == "affected" and ev["assessment"]["relation_changed_at"] == "2026-11-02T00:00:00Z"
+    s, seen = merge(s, seen, [hit], day(2), run_id="run-3")
+    assert s["events"][eid]["assessment"]["relation_changed_at"] == "2026-11-02T00:00:00Z"   # 未改變則沿用
+    assert s["events"][eid]["assessment"]["evaluated_at"] == "2026-11-03T00:00:00Z"
+
+
+def test_archive_seen_32_days_never_resets_first_seen():
+    eid = "evt-archive-2026-10"
+    rep = make_report(eid, kind="archive", status="not_affected", impacts=[_impact(eid, "storefront", "not_affected")])
+    store = seen = None
+    for n in range(32):
+        stats = {}
+        store, seen = merge(store, seen, [rep], day(n), run_id=f"run-{n}", stats=stats)
+        if n <= 29:                                                # 2026-11-01～2026-11-30：仍在窗口內
+            assert store["events"][eid]["first_seen"] == "2026-11-01"
+        else:                                                      # 第 31、32 天：過期移除，不重新收錄
+            assert eid not in store["events"] and stats["new"] == 0
+            assert stats["expired_skipped"] == (0 if n == 30 else 1) and stats["removed"] == (1 if n == 30 else 0)
+        assert seen["first_seen_by_key"][dg.seen_key(eid)] == "2026-11-01"   # seen 不裁成 30 天
+    assert not any(i["code"] == "capacity" for i in store["data_issues"])    # 過期不是容量省略
+
+
+def test_window_is_taipei_calendar_d_minus_29_to_d():
+    base = datetime(2026, 11, 29, 16, 0, tzinfo=timezone.utc)        # 台灣 2026-11-30 00:00
+    assert dg.window_bounds(base) == ("2026-11-01", "2026-11-30")
+    assert dg.window_bounds(base - timedelta(seconds=1)) == ("2026-10-31", "2026-11-29")   # 跨台灣午夜前一秒
+
+    def ev(i, d):
+        return {**dg.event_content(make_report(i)), "first_seen": d, "last_seen": d,
+                "last_seen_at": "2026-11-01T00:00:00Z", "observed_run_id": "r", "assessment": None}
+    store = {"schema_version": 1, "updated_at": "2026-11-29T00:20:00Z", "data_issues": [],
+             "events": {"evt-old-1": ev("evt-old-1", "2026-10-31"), "evt-in-1": ev("evt-in-1", "2026-11-01"),
+                        "evt-now-1": ev("evt-now-1", "2026-11-30"), "evt-fut-1": ev("evt-fut-1", "2026-12-01")}}
+    out = dg.prune(store, base)
+    assert sorted(out["events"]) == ["evt-in-1", "evt-now-1"]
+    assert [i["code"] for i in out["data_issues"]] == ["future_first_seen"]      # 未來日期拒絕並記錄
+    assert out["updated_at"] == store["updated_at"]                              # 清理不刷新時間
+
+
+def test_utc_crossing_taipei_midnight_sets_first_seen_by_taipei_date():
+    before = datetime(2026, 11, 10, 15, 59, 59, tzinfo=timezone.utc)   # 台灣 11/10 23:59:59
+    after = datetime(2026, 11, 10, 16, 0, 0, tzinfo=timezone.utc)      # 台灣 11/11 00:00:00
+    s1, _ = merge(None, None, [make_report("live-m1-2026")], before)
+    s2, _ = merge(None, None, [make_report("live-m2-2026")], after)
+    assert s1["events"]["live-m1-2026"]["first_seen"] == "2026-11-10"
+    assert s2["events"]["live-m2-2026"]["first_seen"] == "2026-11-11"
+
+
+def test_incomplete_run_only_updates_observation():
+    eid = "live-c-2026-11"
+    full = make_report(eid, status="open", impacts=[_impact(eid, "storefront", "affected", "r")], max_level="high",
+                       levels={("storefront", "affected"): "high"}, title="原標題", summary="原摘要")
+    s, seen = merge(None, None, [full], day(0))
+    before = json.loads(json.dumps(s["events"][eid]))
+    changed = make_report(eid, status="not_affected", impacts=[_impact(eid, "storefront", "not_affected")],
+                          title="新標題", summary="新摘要")
+    newcomer = make_report("live-d-2026-11", status="not_affected", impacts=[_impact("live-d-2026-11", "x", "not_affected")])
+    stats = {}
+    s2, seen2 = merge(s, seen, [changed, newcomer], day(1, 2), run_id="run-partial", complete=False, stats=stats)
+    ev = s2["events"][eid]
+    assert ev["assessment"] == before["assessment"]                       # 任何結論欄位都不被覆寫
+    assert (ev["title"], ev["summary"]) == ("原標題", "原摘要")            # 內容跟著評估快照，不混用
+    assert (ev["last_seen"], ev["last_seen_at"], ev["observed_run_id"]) == ("2026-11-02", "2026-11-02T02:00:00Z", "run-partial")
+    assert s2["events"]["live-d-2026-11"]["assessment"] is None            # 首次不完整：只記收錄資料，待評估
+    assert stats["pending"] == 1 and stats["observed_only"] == 1
+    pending = next(i for i in s2["data_issues"] if i["code"] == "pending_assessment")
+    assert pending["omitted"] == 1
+    # 整體 complete 但該份 IntelMatchReport 不完整：同樣不更新評估
+    s3, _ = merge(s2, seen2, [make_report(eid, status="not_affected", complete=False,
+                                          impacts=[_impact(eid, "storefront", "not_affected")])], day(2), run_id="run-x")
+    assert s3["events"][eid]["assessment"] == before["assessment"]
+    # 之後取得完整評估才補上
+    s4, _ = merge(s3, seen2, [make_report("live-d-2026-11", status="need_check")], day(3), run_id="run-4")
+    assert s4["events"]["live-d-2026-11"]["assessment"]["run_id"] == "run-4"
+    assert s4["events"]["live-d-2026-11"]["first_seen"] == "2026-11-02"
+
+
+def test_older_run_does_not_overwrite_newer_assessment_or_observation():
+    eid = "live-e-2026-11"
+    s, seen = merge(None, None, [make_report(eid, status="need_check")], day(1, 5), run_id="run-new")
+    s2, _ = merge(s, seen, [make_report(eid, status="open", impacts=[_impact(eid, "a", "affected", "r")])], day(1),
+                  run_id="run-old")
+    ev = s2["events"][eid]
+    assert ev["assessment"]["run_id"] == "run-new" and ev["observed_run_id"] == "run-new"
+
+
+def test_same_day_rerun_takes_later_complete_snapshot():
+    eid = "live-f-2026-11"
+    s, seen = merge(None, None, [make_report(eid, status="need_check")], day(0), run_id="run-a")
+    s, seen = merge(s, seen, [make_report(eid, status="not_affected", impacts=[_impact(eid, "s", "not_affected")])],
+                    day(0, 3), run_id="run-b")
+    a = s["events"][eid]["assessment"]
+    assert (a["run_id"], a["relation"], a["evaluated_at"]) == ("run-b", "not_affected", "2026-11-01T03:00:00Z")
+    assert s["events"][eid]["first_seen"] == "2026-11-01"
+
+
+def test_demo_events_never_recorded():
+    s, seen = merge(None, None, [make_report("demo-x-2026", kind="demo"),
+                                 make_report("evt-d-2026-10", kind="archive", demo=True)], day(0))
+    assert s["events"] == {} and seen["first_seen_by_key"] == {}
+
+
+def test_seen_contains_only_hash_and_date():
+    rep = make_report("live-secret-title-2026", title="很長的標題", summary="摘要")
+    _, seen = merge(None, None, [rep], day(0))
+    text = json.dumps(seen, ensure_ascii=False)
+    assert "live-secret-title-2026" not in text and "很長的標題" not in text and "摘要" not in text
+    assert list(seen) == ["schema_version", "first_seen_by_key"]
+
+
+def _many(prefix, n, status="not_affected"):
+    out = []
+    for i in range(n):
+        eid = f"{prefix}-{i:03d}"
+        if status == "open":
+            out.append(make_report(eid, status="open", impacts=[_impact(eid, "s", "affected", "r")], max_level="low",
+                                   levels={("s", "affected"): "low"}))
+        else:
+            out.append(make_report(eid, status=status, impacts=[_impact(eid, "s", status)]))
+    return out
+
+
+def test_per_day_capacity_50_keeps_priority_and_never_resets_first_seen():
+    reps = _many("live-na", 52) + _many("live-hit", 3, "open")
+    stats = {}
+    s, seen = merge(None, None, reps, day(0), stats=stats)
+    assert len(s["events"]) == 50 and stats["omitted"] == 5
+    assert all(f"live-hit-{i:03d}" in s["events"] for i in range(3))        # 受影響優先保留
+    assert "live-na-051" not in s["events"] and "live-na-050" not in s["events"]   # 同級依 ID 穩定裁切
+    issue = next(i for i in s["data_issues"] if i["code"] == "capacity")
+    assert (issue["date"], issue["omitted"]) == ("2026-11-01", 5) and "5" in issue["impact"]
+    assert len(seen["first_seen_by_key"]) == 55                              # 去重紀錄先於容量裁切產生
+    # 隔天同樣的事件再出現：不能被當成新事件、不能出現在 11/02
+    s2, seen2 = merge(s, seen, reps, day(1), run_id="run-2")
+    assert {ev["first_seen"] for ev in s2["events"].values()} == {"2026-11-01"}
+    assert seen2["first_seen_by_key"][dg.seen_key("live-na-051")] == "2026-11-01"
+    assert next(i for i in s2["data_issues"] if i["code"] == "capacity")["omitted"] == 5
+
+
+def test_size_limit_trims_lowest_priority_and_records_omissions(monkeypatch):
+    monkeypatch.setattr(dg, "MAX_BYTES", 40_000)
+    reps = []
+    for n in range(40):
+        eid = f"live-big-{n:03d}"
+        reps.append(make_report(eid, status="need_check" if n < 5 else "not_affected", summary="長" * 290,
+                                impacts=[_impact(eid, "s", "need_check" if n < 5 else "not_affected")],
+                                sources=[{"url": f"https://news.example.com/{eid}/{k}", "title": "來源" * 30, "quote": None,
+                                          "published": None, "verified": True} for k in range(3)]))
+    stats = {}
+    s, _ = merge(None, None, reps, day(0), stats=stats)
+    assert len(dg.serialize(s)) <= 40_000 and stats["omitted"] > 0
+    assert all(f"live-big-{n:03d}" in s["events"] for n in range(5))       # 需確認優先保留
+    issue = next(i for i in s["data_issues"] if i["code"] == "capacity")
+    assert issue["omitted"] == stats["omitted"] == 40 - len(s["events"])
+
+
+def test_real_limits_are_1mib_and_50_per_day():
+    assert dg.MAX_BYTES == 1024 * 1024 and dg.PER_DAY_LIMIT == 50 and dg.WINDOW_DAYS == 30
