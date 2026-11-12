@@ -1596,5 +1596,140 @@
       "task": "remediation",
       "scope": "advisory"
     }
+  },
+  "929edee12b9978530a71789955c5c8edd1d5aef5176da65ab3ef6af89041d169": {
+    "output": [
+      {
+        "id": "gitlab:C-SECRET-IN-GIT",
+        "explanation": "類型推定為資料庫連線資訊，位於 config/db.yml:4，環境未知，權限範圍無法由現有證據判定。風險視為高，因正式環境金鑰已進入 Git；建議立即輪替、撤銷舊憑證，並清除 Git 歷史中的副本。",
+        "confidence": "low"
+      },
+      {
+        "id": "brand-app:C-SECRET-IN-GIT",
+        "explanation": "類型與權限範圍未知，位於 services/brand-app/src/config.ts:3，環境未知。風險視為高，因正式環境金鑰已進入 Git；建議立即輪替、撤銷舊憑證、改由環境變數或金鑰管理服務注入，並清除 Git 歷史。",
+        "confidence": "low"
+      },
+      {
+        "id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "explanation": "類型為第三方服務 API 金鑰，已 459 天未輪替且無 IP 白名單，超過 90 天輪替規範，環境未知。風險高，權限範圍需向服務商確認；建議立即輪替、設定 IP 白名單、確認舊金鑰已撤銷，並建立定期輪替機制。",
+        "confidence": "high"
+      },
+      {
+        "id": "order-db-test-cred:test-secret-in-git",
+        "explanation": "類型為資料庫測試環境憑證，位於 config/db.yml:7，環境為測試。風險中等，但仍不應存於 Git；建議移除檔案中的憑證、改用環境變數注入，並輪替該測試憑證以確認舊值失效。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "secret-analyst",
+      "task": "secret-analyst#0",
+      "scope": "daily"
+    }
+  },
+  "2cb0441357c7a130799b5a51a6151a5c2e75012a18f9ee5c6c6c48ecc3c84c3f": {
+    "output": [
+      {
+        "id": "internal-tool:opsbuilder:vuln",
+        "explanation": "基礎分 3 分來自 CVSS 9.8 的漏洞；已遭利用 2 分來自 KEV 或官方確認；對外暴露 2 分因資產可從 internet 經 443 連入；同業事件 1 分對應 evt-91app-2026-10 與 live-91app-impact-update-2026-11；位於完整攻擊鏈 3 分因為攻擊路徑的必要一步。圖譜顯示此資產為未登記的 shadow IT，無負責人，且是以手動 docker run 啟動。影響面：攻擊路徑經 GitLab 讀取 token 後可取得 order-db-prod 的認證並連到生產訂單資料庫（5432），業務影響是訂單資料外洩或被竄改的風險。圖譜未提供品牌數、安裝數與資料欄位（data_classes 為空），這些數字需另行確認。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "internal-tool:opsbuilder:vuln",
+      "scope": "daily"
+    }
+  },
+  "191105f90dd4e00b1bff5379891b87ae1a98baec8786a0febf9f0add74999605": {
+    "output": [
+      {
+        "id": "brand-app:C-SECRET-IN-GIT",
+        "explanation": "圖譜顯示 brand-app 為對外暴露的正式環境 App（平台層，資料類別為 pii），並透過 app-api-key 連到 api-gateway 與 member-db-prod，故金鑰外洩可能影響會員資料。圖譜未提供品牌數與安裝數，無法量化影響範圍；分數依輸入 breakdown 沿用（基礎分 2、對外暴露 2、資料敏感 1、影響範圍 1、同業事件命中 1、完整攻擊鏈 3）。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "brand-app:C-SECRET-IN-GIT",
+      "scope": "daily"
+    }
+  },
+  "ca9923a31fdaf772b9de052e22710fcfaa16992e4ea89dbc799d4db43968bb90": {
+    "output": [
+      {
+        "id": "gitlab:C-SECRET-IN-GIT",
+        "explanation": "此控制項因 gitlab（prod）的 Git 中存在正式環境金鑰而不符，依攻擊路徑 internet → internal-tool → gitlab-read-token → gitlab → order-db-prod-cred → order-db-prod 可取得訂單庫（order、pii 欄位，crown jewel）的憑證，因此列為高風險。圖譜未提供品牌數與安裝數，無法量化影響；輸入稱 gitlab 為「平台層」，但圖譜顯示 gitlab 非平台層（order-db-prod 為平台層），且 gitlab 本身不對外網開放。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "gitlab:C-SECRET-IN-GIT",
+      "scope": "daily"
+    }
+  },
+  "ae4ceea9093d2336eb3548e6c489540900d6b3e6fa1de2a49b78b9a49e518822": {
+    "output": [
+      {
+        "id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+        "explanation": "分數拆解為基礎分 2、對外暴露 2、同業事件命中 1、位於完整攻擊鏈 3，合計 8，依程式結果採用。圖譜顯示 internal-tool 可由 internet 經 443 連入，攻擊路徑可經 GitLab 讀取權杖抵達 prod 訂單資料庫（5432），但圖譜未提供品牌數、安裝數與資料欄位（data_classes 為空），因此無法量化這些影響。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+      "scope": "daily"
+    }
+  },
+  "793b427bf90e9098f0dade603541315ff3baf3c3e2b603298f272c327bfc13c6": {
+    "output": [
+      {
+        "id": "internal-tool:node:vuln",
+        "explanation": "分數拆解為基礎漏洞 3 分（CVSS 9.8）、已遭實際利用 2 分（KEV 或官方確認）、對外暴露 2 分（可從 internet 連到）、同業事件命中 1 分（evt-91app-2026-10、live-91app-impact-update-2026-11），合計 8 分。圖譜查無此資產（不在本次資產範圍），無法確認品牌數、安裝數與資料欄位等業務影響，需由資產負責人補充。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "internal-tool:node:vuln",
+      "scope": "daily"
+    }
+  },
+  "5bbc8d7ee4906aea0803bbcf2debdf79a38440f8985b031f1c7c03db5b3f1961": {
+    "output": [
+      {
+        "id": "nas-office-01:synology-dsm:vuln",
+        "explanation": "拆解分數為漏洞基礎 3 分（CVSS 9.8）、已遭實際利用 2 分、對外暴露 2 分、同業事件命中 1 分，合計以程式結果為準。圖譜顯示此 NAS 可從 internet 經 5001 連入、帶有管理介面，但未登錄（shadow_it）、無負責人、非 crown jewel，且未記錄資料類別，因此無法從現有資料確認品牌數、安裝數、資料欄位或具體業務影響。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "nas-office-01:synology-dsm:vuln",
+      "scope": "daily"
+    }
+  },
+  "6e11081a7eed5eb05ee2549cc5389a7b46eb57708104d4548bd3b6a834969089": {
+    "output": [
+      {
+        "id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "explanation": "依 breakdown：基礎分 2 分來自控制項不符（第三方金鑰未在 90 天內輪替且未設 IP 白名單）；對外暴露 2 分因無 IP 白名單，外部任何來源都可使用該金鑰；資料敏感 1 分涉及 order、pii 欄位；同業事件 1 分因命中 evt-1shop-2026-10。輸入未提供品牌數、安裝數與業務影響數據，故無法說明這些面向。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+      "scope": "daily"
+    }
   }
 }

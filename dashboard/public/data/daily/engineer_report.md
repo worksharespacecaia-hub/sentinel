@@ -1,6 +1,6 @@
-# 工程師報告（daily，2026-11-11T08:28:41Z）
+# 工程師報告（daily，2026-11-12T04:38:17Z）
 
-燈號：red；21 個未處理的高風險
+燈號：red；20 個未處理的高風險
 
 | 等級 | 分數 | 風險 | 資產 | 期限 | 證據 |
 |---|---:|---|---|---|---|
@@ -17,7 +17,6 @@
 | high | 7 | 雲端儲存空間不得公開讀取：firebase-brand-app-storage | firebase-brand-app-storage | 24h | firebase-config.json: /user-uploads/{allPaths=**} read if true；external-scan.json: storage.shopsaas-demo.example 可匿名列出內容 |
 | high | 7 | 員工電腦不得持有正式部署權杖：laptop-eng-07 | laptop-eng-07 | 24h | mdm.json: laptop-eng-07 有 ~/.config/pipeline/token；secrets.json: deploy-token-eng07 → deploy-pipeline |
 | high | 7 | apache-httpd 2.4.57 有 68 個已知漏洞（NVD，最高 CVSS 9.8，CVE-2024-38474） | marketing-site | 24h | nvd: apache-httpd@2.4.57 依 CPE 取得候選後，本地重新比對版本（68 確定、2 需確認）；修補版本：無法確定（部分漏洞沒有修補版本或範圍不明） |
-| high | 7 | wordpress 6.4.3 有 3 個已知漏洞（NVD，最高 CVSS 8.1，CVE-2026-119977） | marketing-site | 24h | nvd: wordpress@6.4.3 依 CPE 取得候選後，本地重新比對版本（3 確定、1 需確認）；修補版本：無法確定（部分漏洞沒有修補版本或範圍不明） |
 | high | 7 | node 22.11.0 有 17 個已知漏洞（NVD，最高 CVSS 9.8，CVE-2026-111497） | member-api | 24h | nvd: node@22.11.0 依 CPE 取得候選後，本地重新比對版本（17 確定、1 需確認）；修補版本：無法確定（部分漏洞沒有修補版本或範圍不明） |
 | high | 7 | 雲端儲存空間不得公開讀取：order-exports-bucket | order-exports-bucket | 24h | external-scan.json: shopsaas-demo-order-exports.s3.example 可匿名列出內容；infra/terraform/main.tf: aws_s3_bucket_acl acl = "public-read" |
 | high | 7 | postcss 8.4.31 有 4 個已知漏洞（最高 CVSS 9.1，CVE-2026-45623） | storefront | 24h | trivy: services/storefront postcss@8.4.31；修補版本：8.5.12 |
@@ -27,7 +26,8 @@
 | high | 2 | 未登記的資產：QuickSite Builder | saas-quicksite-builder | 24h | 對帳：QuickSite Builder 出現在 payments, sso，但不在第三方清冊 |
 | medium | 6 | 影子 API：GET /internal/v1/members/export（7 天 95 次） | api-gateway | 168h | api-inventory.json: Gateway 實際流量中有，但未列在 OpenAPI 規格 |
 | medium | 6 | 正式版 App 開啟 debuggable | brand-app | 168h | AndroidManifest.xml: android:debuggable="true" |
-| medium | 6 | 第三方服務金鑰 90 天內輪替且有 IP 白名單：mail-api-key | mail-api-key | 168h | secrets.json: mail-api-key：458 天未輪替、無 IP 白名單 |
+| medium | 6 | 第三方服務金鑰 90 天內輪替且有 IP 白名單：mail-api-key | mail-api-key | 168h | secrets.json: mail-api-key：459 天未輪替、無 IP 白名單 |
+| medium | 6 | wordpress 6.4.3 有 3 個已知漏洞（NVD，最高 CVSS 8.1，CVE-2026-119977） | marketing-site | 168h | nvd: wordpress@6.4.3 依 CPE 取得候選後，本地重新比對版本（3 確定、1 需確認）；修補版本：無法確定（部分漏洞沒有修補版本或範圍不明） |
 | medium | 5 | App 允許明文傳輸 | brand-app | 168h | AndroidManifest.xml: android:usesCleartextTraffic="true" |
 | medium | 5 | 對外開放且無權限保護的元件 | brand-app | 168h | AndroidManifest.xml: activity .DeepLinkOrderActivity、receiver .PushCommandReceiver |
 | medium | 5 | targetSdkVersion 31 低於商店要求 | brand-app | 168h | build.gradle: targetSdkVersion 31（政策 2025-08-31 起最低 35） |

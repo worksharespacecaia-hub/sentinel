@@ -1254,7 +1254,7 @@
           "impact": "other"
         }
       ],
-      "revision": "2026-11-10T13:18:20.647",
+      "revision": "2026-11-10T20:25:59.130",
       "controls": [],
       "confidence": "confirmed",
       "sources": [
@@ -1265,7 +1265,7 @@
           "published": "2026-10-27",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-10T17:04:44Z",
+          "verified_at": "2026-11-11T18:42:51Z",
           "content_hash": null,
           "verification_basis": "official_api"
         },
@@ -1276,7 +1276,7 @@
           "published": "2026-10-22",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-10T17:04:44Z",
+          "verified_at": "2026-11-11T18:42:51Z",
           "content_hash": null,
           "verification_basis": "official_api"
         }
@@ -1287,7 +1287,7 @@
       "summary": "A buffer overflow vulnerability in the Brotli decoder (c/dec/decode.c) in Google Brotli versions 1.0.3 through 1.2.0 on all platforms allows a remote unauthenticated attacker to corrupt adjacent decoder state memory, disclose sensitive memory contents, cause a denial of service, or potentially execu",
       "fixture_note": null,
       "generated_by": "kev-nvd",
-      "generated_at": "2026-11-10T17:04:44Z"
+      "generated_at": "2026-11-11T18:42:51Z"
     },
     {
       "id": "kev-cve-2026-119977",
@@ -1518,110 +1518,20 @@
       "generated_at": "2026-11-10T17:04:44Z"
     },
     {
-      "id": "live-nitori-member-breach-2026-11",
+      "id": "live-cyberbiz-vendor-breach-2026-11",
       "kind": "live",
       "is_update_of": null,
-      "title": "日本宜得利（Nitori）系統遭非法存取，最多 3,762 萬筆會員與網購客戶個資外洩",
-      "date": "2026-11-11",
-      "industry": "零售",
-      "attack_chain": [
-        "第三方未經授權存取公司管理的系統",
-        "伺服器上的會員與網購客戶個資外流"
-      ],
-      "attck": [],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "confirmed",
-      "sources": [
-        {
-          "url": "https://www.ithome.com.tw/news/180409",
-          "title": "日本宜得利系統遭非法存取，外洩企業會員、客戶個資近3,800萬筆",
-          "quote": "日本宜得利系統遭非法存取，外洩企業會員、客戶個資近3,800萬筆",
-          "published": "2026-11-11",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-11T08:28:41Z",
-          "content_hash": "sha256:353d24bbdcf6e9518ff066de08d37f7bcf7276cb25dcae97c02b2b908c2cfaa8",
-          "verification_basis": "live"
-        },
-        {
-          "url": "https://www.cna.com.tw/news/ait/202611110191.aspx",
-          "title": "日本宜得利3762萬筆個資恐外洩 代理式AI助長網路攻擊",
-          "quote": "日本宜得利3762萬筆個資恐外洩 代理式AI助長網路攻擊",
-          "published": "2026-11-11",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-11T08:28:41Z",
-          "content_hash": "sha256:313b562a2887c23bd45df07a3fc388a1a11c4d07c27e095456067bb11713aef8",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [
-        {
-          "title": "會員資料庫所在伺服器需限制存取來源並偵測異常存取",
-          "reason": "來源指出公司管理的伺服器遭未經授權存取，致近 3,800 萬筆會員個資外洩，現有控制項沒有涵蓋會員資料伺服器的存取控制與異常偵測"
-        }
-      ],
-      "demo": false,
-      "facts": [],
-      "summary": "宜得利於 11 月 6 日確認管理的系統遭第三方未經授權存取，最多 3,762 萬筆個人與法人會員及線上商店消費者資料可能外流，內容含會員編號、姓名、電子郵件、住址、出生日期等。報導稱系統未保存信用卡資訊；非法存取的原因、路徑與影響範圍仍在調查。",
-      "fixture_note": null
-    },
-    {
-      "id": "live-sharefull-admin-breach-2026-11",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "日本打工媒合平台 Sharefull 管理系統遭非法存取，約 750 萬名使用者資料恐外洩",
-      "date": "2026-11-11",
-      "industry": "SaaS",
-      "attack_chain": [
-        "管理系統遭非法存取",
-        "使用者帳號與個資可能外洩"
-      ],
-      "attck": [],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://www.cna.com.tw/news/ait/202611110191.aspx",
-          "title": "日本宜得利3762萬筆個資恐外洩 代理式AI助長網路攻擊",
-          "quote": "另外，短期打工媒合平台Sharefull也傳出約750萬名使用者的個資可能外洩，甚至涉及銀行帳戶資料。",
-          "published": "2026-11-11",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-11T08:28:41Z",
-          "content_hash": "sha256:313b562a2887c23bd45df07a3fc388a1a11c4d07c27e095456067bb11713aef8",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [
-        {
-          "title": "平台管理系統需限制存取來源並偵測異常登入",
-          "reason": "來源指出平台管理系統遭非法存取，可能外洩約 750 萬名使用者個資（含銀行帳戶），現有控制項沒有涵蓋管理後台的存取控制"
-        }
-      ],
-      "demo": false,
-      "facts": [],
-      "summary": "Sharefull 於 11 月 4 日深夜發現管理系統遭非法存取，已封鎖入侵途徑。最多約 750 萬名使用者的帳號資訊可能外洩，含姓名、電話、電子郵件、臉部照片、銀行帳戶等。",
-      "fixture_note": null
-    },
-    {
-      "id": "live-cyberbiz-shop-db-2026-11",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "電商 SaaS 順立智慧（Cyberbiz）資料庫遭異常存取，漢來美食、黑松訂單資料受影響",
+      "title": "順立智慧（Cyberbiz）委外商城資料庫遭異常存取，漢來美食、黑松訂單資料受影響",
       "date": "2026-11-10",
       "industry": "電商",
       "attack_chain": [
-        "委外商城服務商資料庫遭未經授權的異常存取",
-        "多家客戶線上商店的訂單資料受影響"
+        "委外商城服務廠商順立智慧的資料庫遭未經授權的異常存取",
+        "漢來美食與黑松線上商店的訂單相關資料被涉及",
+        "品牌端接獲廠商通知後發布重大訊息，並通知消費者"
       ],
-      "attck": [],
+      "attck": [
+        "T1199"
+      ],
       "cves": [],
       "products": [],
       "revision": "1",
@@ -1635,8 +1545,8 @@
           "published": "2026-11-11",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-11T08:28:41Z",
-          "content_hash": "sha256:087496d7ce9131484c2085fc81acdb36a759f6fc1221bc4c2de03811e10c07ef",
+          "verified_at": "2026-11-12T04:38:17Z",
+          "content_hash": "sha256:d053ab46b17edbd6fd70b0387283f70358a6b926ad3799bda602a8d457eb1c70",
           "verification_basis": "live"
         },
         {
@@ -1646,111 +1556,111 @@
           "published": "2026-11-11",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-11T08:28:41Z",
-          "content_hash": "sha256:ca2b8f408bf0ec54d4537ad148a93e80d61702e2c06db74730eadbf4dbbee619",
+          "verified_at": "2026-11-12T04:38:17Z",
+          "content_hash": "sha256:70eeccfb3431a00eaafffb9afdd9c5c9f0cae49e087b26cce75d6a0b9df38bf5",
           "verification_basis": "live"
         }
       ],
       "proposed_controls": [
         {
-          "title": "委外電商平台的訂單資料庫需有存取控制與異常存取告警",
-          "reason": "來源指出委外商城服務商的資料庫遭異常存取，連帶影響多家客戶的訂單資料，現有控制項沒有涵蓋委外電商平台資料庫的防護"
+          "title": "委外電商平台廠商的資安事件通報與資料存取範圍需盤點",
+          "reason": "來源指出品牌端的訂單資料因委外商城廠商資料庫被異常存取而受影響，現有控制項沒有涵蓋委外電商平台廠商的事件通報與資料範圍。"
         }
       ],
       "demo": false,
       "facts": [],
-      "summary": "漢來美食與黑松於 11 月 10 日在公開資訊觀測站發布重大訊息，指委外購物商城服務商順立智慧（Cyberbiz）通知其資料庫遭未經授權的異常存取，涉及線上商店的訂單相關資料。兩家公司已通知消費者或會員並加強防詐宣導。",
+      "summary": "漢來美食與黑松於 11 月 10 日發布重大訊息，指委外商城服務廠商順立智慧（Cyberbiz）資料庫遭未經授權的異常存取，涉及線上商店訂單相關資料。兩家公司已啟動應變並通知消費者與會員，提醒防範詐騙。來源未說明入侵手法與影響筆數。",
       "fixture_note": null
     },
     {
-      "id": "live-neticrm-provider-breach-2026-11",
+      "id": "live-nitori-breach-2026-11",
       "kind": "live",
       "is_update_of": null,
-      "title": "netiCRM 服務商網絡行動科技遭入侵，30 多個非營利組織捐款人個資恐外洩",
+      "title": "日本宜得利（Nitori）系統遭非法存取，最多 3,762 萬筆會員與網購個資恐外洩",
       "date": "2026-11-09",
-      "industry": "SaaS",
+      "industry": "零售",
       "attack_chain": [
-        "服務商部分伺服器遭外部攻擊者入侵",
-        "服務商切斷連線、修補漏洞並更換金鑰與密碼"
+        "10 月中下旬發現異常，11 月 6 日確認系統遭第三方未經授權存取",
+        "伺服器上保存的會員與網購客戶個資最多 3,762 萬筆可能外流"
       ],
       "attck": [],
       "cves": [],
       "products": [],
       "revision": "1",
-      "controls": [
-        "C-THIRD-PARTY-KEY-ROTATION"
-      ],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://www.ithome.com.tw/news/180384",
-          "title": "捐款人個資恐外洩！netiCRM服務商遭駭，公督盟、司改會等超過30個非營利組織接連示警",
-          "quote": "捐款人個資恐外洩！netiCRM服務商遭駭，公督盟、司改會等超過30個非營利組織接連示警",
-          "published": "2026-11-10",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-11T08:28:41Z",
-          "content_hash": "sha256:e40b84df11310195226604aca12cfccbb6511d4a085e98e47ad2da46e42f7043",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [],
-      "demo": false,
-      "facts": [],
-      "summary": "臺灣非營利組織使用的捐款管理系統 netiCRM，其服務商網絡行動科技部分伺服器遭外部攻擊者入侵；超過 30 個非營利組織發布公告提醒捐款人。業者表示已切斷攻擊者連線、完成漏洞修補，並更新伺服器金鑰與系統密碼。是否涉及個資外洩仍在調查。",
-      "fixture_note": null
-    },
-    {
-      "id": "live-wordpress-core-upgrade-race-2026-11",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "CISA 確認 WordPress 核心升級流程漏洞（CVE-2026-119977）遭利用",
-      "date": "2026-11-11",
-      "industry": "SaaS",
-      "attack_chain": [
-        "在 WordPress 核心升級期間利用競態條件漏洞"
-      ],
-      "attck": [
-        "T1190"
-      ],
-      "cves": [
-        "CVE-2026-119977"
-      ],
-      "products": [
-        {
-          "name": "wordpress",
-          "ecosystem": "generic",
-          "affected": [
-            {
-              "introduced": "4.7",
-              "fixed": "7.1.4"
-            }
-          ],
-          "cvss": 8.1,
-          "impact": "other"
-        }
-      ],
-      "revision": "1",
       "controls": [],
-      "confidence": "provisional",
+      "confidence": "confirmed",
       "sources": [
         {
-          "url": "https://thehackernews.com/2026/11/cisa-confirms-hackers-exploiting.html",
-          "title": "CISA Confirms Hackers Exploiting WordPress Core Flaw During Software Upgrades",
-          "quote": "CISA Confirms Hackers Exploiting WordPress Core Flaw During Software Upgrades",
+          "url": "https://www.ithome.com.tw/news/180409",
+          "title": "日本宜得利系統遭非法存取，外洩企業會員、客戶個資近3,800萬筆",
+          "quote": "宜得利是10月中下旬發現異常，11月6日確認公司管理的系統遭到來自第三方未經授權的存取。",
           "published": "2026-11-11",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-11T08:28:41Z",
-          "content_hash": "sha256:b65a5fa1f8ac06d34db0b6e422d755a62f168e74519539383c09731aea788b59",
+          "verified_at": "2026-11-12T04:38:17Z",
+          "content_hash": "sha256:3037d0b24ef12fe7d142012e4b0ca5d7c8ffa35ce442fb15aa9439e18e1eb242",
+          "verification_basis": "live"
+        },
+        {
+          "url": "https://www.cna.com.tw/news/ait/202611110191.aspx",
+          "title": "日本宜得利3762萬筆個資恐外洩 代理式AI助長網路攻擊",
+          "quote": "朝日電視台報導，宜得利控股表示，6日確認伺服器遭到非法存取，最多可能有約3762萬筆會員及網路購物使用者的個人資料外洩。",
+          "published": "2026-11-11",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-12T04:38:17Z",
+          "content_hash": "sha256:7c22a1c12ce7eab1755ac96044419df714ddb3595d2262fc05e97d655f0ca2a4",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [
+        {
+          "title": "會員個資需有保存期限與定期刪除機制",
+          "reason": "來源顯示集中保存的大量會員資料一旦被存取，外洩規模可達數千萬筆，現有控制項沒有涵蓋會員資料的保存期限與盤點。"
+        }
+      ],
+      "demo": false,
+      "facts": [],
+      "summary": "宜得利於 11 月 9 日公告，11 月 6 日確認系統遭第三方未經授權存取，最多 3,762 萬筆個人與法人會員及網購客戶資料可能外洩。系統未保存信用卡資訊。入侵原因與路徑仍在調查中。",
+      "fixture_note": null
+    },
+    {
+      "id": "live-91app-impact-update-2026-11",
+      "kind": "live",
+      "is_update_of": "evt-91app-2026-10",
+      "title": "91APP 公布調查結果：最大影響範圍 1,329 個品牌、約 480 萬名消費者",
+      "date": "2026-11-12",
+      "industry": "電商",
+      "attack_chain": [],
+      "attck": [],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [
+        "C-INTERNAL-TOOL-EXPOSED",
+        "C-SECRET-IN-GIT",
+        "C-NET-SEGMENT"
+      ],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://infosecu.technews.tw/2026/11/12/membership-information-data-governance/",
+          "title": "收集會員資料愈多愈好？電商個資外洩突顯資料治理盲點",
+          "quote": "91APP 日前公布資安事件調查結果，最大可能影響範圍涉及 1,329 個品牌、約 480 萬名消費者，資料包含姓名、電話、配送地址及訂單紀錄等。",
+          "published": "2026-11-12",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-12T04:38:17Z",
+          "content_hash": "sha256:a7e994c95ffae2a2d437b5e762ed206d7753bd8dc33cf68134b453e7c25cca72",
           "verification_basis": "live"
         }
       ],
       "proposed_controls": [],
       "demo": false,
       "facts": [],
-      "summary": "The Hacker News 標題指出 CISA 確認駭客在軟體升級期間利用 WordPress 核心漏洞。搜尋摘要列出影響 WordPress 4.7 至 7.1.3，7.1.4 修補，CVSS 8.1，為核心升級流程的競態條件問題。",
-      "fixture_note": null
+      "summary": "TechNews 報導 91APP 公布資安事件調查結果，最大可能影響範圍涉及 1,329 個品牌、約 480 萬名消費者，資料包含姓名、電話、配送地址及訂單紀錄。來源未說明入侵手法。",
+      "fixture_note": null,
+      "inherited_from": "evt-91app-2026-10"
     }
   ],
   "verification": {
@@ -1825,31 +1735,19 @@
       "max_level": null,
       "note": "程式取自 CISA KEV 與 NVD API"
     },
-    "live-nitori-member-breach-2026-11": {
+    "live-cyberbiz-vendor-breach-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-sharefull-admin-breach-2026-11": {
+    "live-nitori-breach-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-cyberbiz-shop-db-2026-11": {
-      "status": "ok",
-      "issues": [],
-      "max_level": null,
-      "note": null
-    },
-    "live-neticrm-provider-breach-2026-11": {
-      "status": "ok",
-      "issues": [],
-      "max_level": null,
-      "note": null
-    },
-    "live-wordpress-core-upgrade-race-2026-11": {
+    "live-91app-impact-update-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,

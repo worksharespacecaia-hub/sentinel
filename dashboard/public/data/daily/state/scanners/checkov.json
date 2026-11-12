@@ -38,12 +38,6 @@
       "check_name": "Ensure that Security Groups are attached to another resource"
     },
     {
-      "check_id": "CKV2_AWS_61",
-      "resource": "aws_s3_bucket.order_exports",
-      "file": "/main.tf",
-      "check_name": "Ensure that an S3 bucket has a lifecycle configuration"
-    },
-    {
       "check_id": "CKV2_AWS_62",
       "resource": "aws_s3_bucket.order_exports",
       "file": "/main.tf",
@@ -54,12 +48,6 @@
       "resource": "aws_vpc.main",
       "file": "/main.tf",
       "check_name": "Ensure the default security group of every VPC restricts all traffic"
-    },
-    {
-      "check_id": "CKV_AWS_20",
-      "resource": "aws_s3_bucket.order_exports",
-      "file": "/main.tf",
-      "check_name": "S3 Bucket has an ACL defined which allows public READ access."
     },
     {
       "check_id": "CKV2_AWS_6",
@@ -80,6 +68,18 @@
       "check_name": "Ensure VPC flow logging is enabled in all VPCs"
     },
     {
+      "check_id": "CKV2_AWS_61",
+      "resource": "aws_s3_bucket.order_exports",
+      "file": "/main.tf",
+      "check_name": "Ensure that an S3 bucket has a lifecycle configuration"
+    },
+    {
+      "check_id": "CKV2_AWS_50",
+      "resource": "aws_elasticache_replication_group.cache",
+      "file": "/main.tf",
+      "check_name": "Ensure AWS ElastiCache Redis cluster with Multi-AZ Automatic Failover feature set to enabled"
+    },
+    {
       "check_id": "CKV_AWS_145",
       "resource": "aws_s3_bucket.order_exports",
       "file": "/main.tf",
@@ -98,10 +98,10 @@
       "check_name": "Ensure all data stored in the S3 bucket have versioning enabled"
     },
     {
-      "check_id": "CKV2_AWS_50",
-      "resource": "aws_elasticache_replication_group.cache",
+      "check_id": "CKV_AWS_20",
+      "resource": "aws_s3_bucket.order_exports",
       "file": "/main.tf",
-      "check_name": "Ensure AWS ElastiCache Redis cluster with Multi-AZ Automatic Failover feature set to enabled"
+      "check_name": "S3 Bucket has an ACL defined which allows public READ access."
     }
   ]
 }
