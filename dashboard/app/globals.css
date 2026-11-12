@@ -239,3 +239,25 @@ a.button.primary { background: var(--accent); color: #fff; }
 .digest-marker { border: 1px dashed var(--line); border-radius: 8px; padding: 6px 10px; overflow-wrap: anywhere; }
 .digest-issues { overflow-wrap: anywhere; }
 @media (max-width: 560px) { .digest-updates { margin-left: 4px; padding-left: 8px; } }
+
+/* 運作原理：整體架構圖（桌機橫向、960px 以下改直式） */
+.arch { margin: 0; }
+.arch-svg { display: block; width: 100%; height: auto; margin: 0 auto; }
+.arch-wide { max-width: 1120px; }
+.arch-narrow { display: none; max-width: 400px; }
+@media (max-width: 959px) { .arch-wide { display: none; } .arch-narrow { display: block; } }
+.arch figcaption { margin-top: 10px; }
+.arch-svg text { fill: var(--text); font-size: 14px; }
+.arch-svg .t { font-weight: 700; }
+.arch-svg .s, .arch-svg .lbl { fill: var(--muted); font-size: 12px; }
+.arch-svg .lbl.ro { fill: var(--accent); font-weight: 700; }
+.arch-svg .zone { fill: none; stroke: var(--line); stroke-width: 1.5; }
+.arch-svg .zone-title { font-weight: 700; }
+.arch-svg .box { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
+.arch-svg .pill { fill: var(--panel); stroke: var(--accent); stroke-width: 1.2; }
+.arch-svg .ai { fill: var(--panel); stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.arch-svg .edge { fill: none; stroke: var(--muted); stroke-width: 1.5; }
+.arch-svg .edge.ro { stroke: var(--accent); stroke-width: 2; }
+.arch-svg .edge.ai-link { stroke-dasharray: 4 4; }
+.arch-svg .head { fill: var(--muted); }
+.arch-svg .head.ro { fill: var(--accent); }
