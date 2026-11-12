@@ -1,19 +1,7 @@
 {
-  "checked_at": "2026-11-11T18:42:51Z",
+  "checked_at": "2026-11-12T01:32:58Z",
   "advisories_checked": 6,
-  "hits": [
-    {
-      "advisory_id": "kev-cve-2026-111497",
-      "asset_ids": [
-        "internal-tool",
-        "member-api",
-        "storefront"
-      ],
-      "matched_component": [
-        "node"
-      ]
-    }
-  ],
+  "hits": [],
   "dispatched": false,
   "items": [
     {
@@ -504,17 +492,17 @@
       "revision": null
     },
     "CVE-2025-61624": {
-      "checked_at": "2026-11-10T22:23:55Z",
+      "checked_at": "2026-11-12T01:32:58Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-0322": {
-      "checked_at": "2026-11-10T22:23:55Z",
+      "checked_at": "2026-11-12T01:32:58Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-102764": {
-      "checked_at": "2026-11-10T22:23:55Z",
+      "checked_at": "2026-11-12T01:32:58Z",
       "mapped": false,
       "revision": null
     },
@@ -524,17 +512,17 @@
       "revision": null
     },
     "CVE-2026-104935": {
-      "checked_at": "2026-11-10T22:23:55Z",
+      "checked_at": "2026-11-12T01:32:58Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-105133": {
-      "checked_at": "2026-11-10T22:23:55Z",
+      "checked_at": "2026-11-12T01:32:58Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-105134": {
-      "checked_at": "2026-11-10T22:23:55Z",
+      "checked_at": "2026-11-12T01:32:58Z",
       "mapped": false,
       "revision": null
     },
@@ -559,7 +547,7 @@
       "revision": null
     },
     "CVE-2026-110936": {
-      "checked_at": "2026-11-10T22:23:55Z",
+      "checked_at": "2026-11-12T01:32:58Z",
       "mapped": false,
       "revision": null
     },
@@ -574,12 +562,12 @@
       "revision": "2026-11-10T20:25:59.130"
     },
     "CVE-2026-111560": {
-      "checked_at": "2026-11-10T22:23:55Z",
+      "checked_at": "2026-11-12T01:32:58Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-111793": {
-      "checked_at": "2026-11-10T22:23:55Z",
+      "checked_at": "2026-11-12T01:32:58Z",
       "mapped": false,
       "revision": null
     },
@@ -589,7 +577,7 @@
       "revision": null
     },
     "CVE-2026-116606": {
-      "checked_at": "2026-11-10T22:23:55Z",
+      "checked_at": "2026-11-12T01:32:58Z",
       "mapped": false,
       "revision": null
     },
@@ -619,12 +607,12 @@
       "revision": null
     },
     "CVE-2026-124194": {
-      "checked_at": "2026-11-10T22:23:55Z",
+      "checked_at": "2026-11-12T01:32:58Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-125350": {
-      "checked_at": "2026-11-10T22:23:55Z",
+      "checked_at": "2026-11-12T01:32:58Z",
       "mapped": false,
       "revision": null
     },
@@ -634,12 +622,12 @@
       "revision": null
     },
     "CVE-2026-20320": {
-      "checked_at": "2026-11-10T22:23:55Z",
+      "checked_at": "2026-11-12T01:32:58Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-21589": {
-      "checked_at": "2026-11-10T22:23:55Z",
+      "checked_at": "2026-11-12T01:32:58Z",
       "mapped": false,
       "revision": null
     },
@@ -664,32 +652,32 @@
       "revision": null
     },
     "CVE-2026-76519": {
-      "checked_at": "2026-11-10T22:23:55Z",
+      "checked_at": "2026-11-12T01:32:58Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-96652": {
-      "checked_at": "2026-11-10T22:23:55Z",
+      "checked_at": "2026-11-12T01:32:58Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-96654": {
-      "checked_at": "2026-11-10T22:23:55Z",
+      "checked_at": "2026-11-12T01:32:58Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-96655": {
-      "checked_at": "2026-11-10T22:23:55Z",
+      "checked_at": "2026-11-12T01:32:58Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-96656": {
-      "checked_at": "2026-11-10T22:23:55Z",
+      "checked_at": "2026-11-12T01:32:58Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-96951": {
-      "checked_at": "2026-11-10T22:23:55Z",
+      "checked_at": "2026-11-12T01:32:58Z",
       "mapped": false,
       "revision": null
     },
@@ -707,9 +695,7 @@
   "auto_status": {
     "status": "ok",
     "new": [],
-    "updated": [
-      "kev-cve-2026-111497"
-    ],
+    "updated": [],
     "remaining": 0,
     "errors": []
   }
