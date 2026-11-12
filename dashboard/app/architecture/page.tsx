@@ -1,9 +1,14 @@
+import ArchitectureDiagram from "@/components/ArchitectureDiagram";
 import { PAGES } from "@/lib/nav";
 
 export default function Architecture() {
   return (
     <>
       <h1>{PAGES.architecture.label}</h1>
+      <div className="panel">
+        <h2 style={{ marginTop: 0 }}>整體架構</h2>
+        <ArchitectureDiagram />
+      </div>
       <div className="panel">
         <h2 style={{ marginTop: 0 }}>流程</h2>
         <ol>
