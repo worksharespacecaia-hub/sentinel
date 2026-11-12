@@ -261,3 +261,28 @@ a.button.primary { background: var(--accent); color: #fff; }
 .arch-svg .edge.ai-link { stroke-dasharray: 4 4; }
 .arch-svg .head { fill: var(--muted); }
 .arch-svg .head.ro { fill: var(--accent); }
+
+/* 運作原理：每個 Agent 底下的 Subagent（桌機橫向流程、900px 以下改直式） */
+.sa-map { margin: 0; }
+.sa-flow { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1fr) minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 12px 30px; align-items: center; }
+.sa-stage { position: relative; display: grid; gap: 8px; min-width: 0; }
+.sa-stage + .sa-stage::before { content: "→"; position: absolute; left: -24px; top: 50%; transform: translateY(-50%);
+  color: var(--muted); font-size: 18px; }
+.sa-card { border: 1px solid var(--muted); border-radius: 8px; background: var(--bg); padding: 8px 10px; min-width: 0; overflow-wrap: anywhere; }
+.sa-card.side { border-style: dashed; background: var(--panel); }
+.sa-head { font-weight: 700; font-size: 15px; }
+.sa-id { color: var(--accent); }
+.sa-count { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+.sa-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 14px; }
+.sa-list li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 6px; border-top: 1px solid var(--line); padding-top: 4px; }
+.sa-list code { font-size: 11px; color: var(--muted); }
+.sa-note { font-size: 12px; color: var(--muted); margin-top: 6px; }
+.sa-side { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 14px; align-items: start; }
+.sa-par-label { font-size: 12px; color: var(--muted); text-align: center; grid-column: 1 / -1; }
+.sa-map figcaption { margin-top: 10px; }
+@media (max-width: 900px) {
+  .sa-flow { grid-template-columns: 1fr; gap: 26px; }
+  .sa-stage.parallel { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); align-items: start; }
+  .sa-stage + .sa-stage::before { content: "↓"; left: 50%; top: -24px; transform: translateX(-50%); }
+}

@@ -171,7 +171,7 @@ export default function ArchitectureDiagram() {
       <Narrow />
       <figcaption className="muted">
         ①～④ 是四種觸發時機。藍色箭頭代表系統只「讀取」電商平台，不持有能修改它的權限；
-        Claude AI 只負責判讀新聞與撰寫白話說明，分數、燈號與結論一律由程式計算。
+        Claude AI 只負責判讀新聞與撰寫白話說明，分數、燈號與結論一律由程式計算。各 Agent 底下的 Subagent 見下一段。
       </figcaption>
     </figure>
   );
