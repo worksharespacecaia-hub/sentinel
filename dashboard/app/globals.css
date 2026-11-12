@@ -242,7 +242,8 @@ a.button.primary { background: var(--accent); color: #fff; }
 
 /* 運作原理：整體架構圖（桌機橫向、960px 以下改直式） */
 .arch { margin: 0; }
-.arch-svg { display: block; width: 100%; height: auto; margin: 0 auto; }
+.arch-svg { display: block; width: 100%; height: auto; }
+.arch-wide, .arch-narrow { position: relative; margin: 0 auto; }
 .arch-wide { max-width: 1120px; }
 .arch-narrow { display: none; max-width: 400px; }
 @media (max-width: 959px) { .arch-wide { display: none; } .arch-narrow { display: block; } }
@@ -261,6 +262,21 @@ a.button.primary { background: var(--accent); color: #fff; }
 .arch-svg .edge.ai-link { stroke-dasharray: 4 4; }
 .arch-svg .head { fill: var(--muted); }
 .arch-svg .head.ro { fill: var(--accent); }
+/* 可點開 Subagent 的方塊 */
+.arch-svg .hit { cursor: pointer; outline: none; }
+.arch-svg .hit:hover > rect, .arch-svg .hit:focus-visible > rect, .arch-svg .hit.on > rect { stroke: var(--accent); stroke-width: 2.5; }
+.arch-svg .hit:focus-visible > rect { stroke-width: 3; }
+.arch-svg .badge { fill: var(--accent); }
+.arch-svg .badge-t { fill: var(--panel); font-size: 11px; font-weight: 700; }
+.arch-pop { position: absolute; z-index: 5; width: min(300px, 100%); background: var(--panel); border: 1px solid var(--accent);
+  border-radius: 10px; padding: 8px 12px 10px; box-shadow: 0 8px 24px rgb(0 0 0 / 18%); overflow-wrap: anywhere; outline: none; }
+.arch-narrow .arch-pop { width: auto; left: 0; right: 0; }
+.arch-pop-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; }
+.arch-pop-close { padding: 0 10px; line-height: 1.5; font-size: 18px; }
+.sa-all { margin-top: 10px; }
+.sa-all summary { color: var(--accent); }
+.sa-all > p { margin: 8px 0 12px; }
+@media print { .arch-pop { display: none; } }
 
 /* 運作原理：每個 Agent 底下的 Subagent（桌機橫向流程、900px 以下改直式） */
 .sa-map { margin: 0; }

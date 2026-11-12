@@ -1,20 +1,89 @@
+"use client";
+
 // 運作原理頁的整體架構圖：桌機橫向、手機直式，內容相同。
+// 有 Subagent 的方塊右上角顯示數量，點一下（或 Enter／空白鍵）在方塊旁顯示 Subagent 清單。
 // 顏色全走 globals.css 的 .arch-svg 類別（跟著淺色／深色主題）。
 
-type BoxProps = { x: number; y: number; w: number; h: number; lines: string[]; cls?: string; rx?: number };
+import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
+import SubagentMap, { SubagentList } from "@/components/SubagentMap";
+import { AGENT_SUBAGENTS, SDK_SUBAGENT_COUNT, type AgentKey } from "@/lib/subagents";
 
-function Box({ x, y, w, h, lines, cls = "box", rx = 8 }: BoxProps) {
+type Rect = { x: number; y: number; w: number; h: number };
+type Variant = "w" | "n";
+type Layout = { W: number; H: number; boxes: Record<AgentKey, Rect> };
+
+const WIDE: Layout = {
+  W: 1120, H: 560, boxes: {
+    a0: { x: 400, y: 130, w: 84, h: 80 },
+    a1: { x: 504, y: 97, w: 104, h: 42 },
+    a2: { x: 504, y: 149, w: 104, h: 42 },
+    a3: { x: 504, y: 201, w: 104, h: 42 },
+    a4: { x: 628, y: 130, w: 92, h: 80 },
+    a5: { x: 736, y: 130, w: 80, h: 80 },
+    daily: { x: 504, y: 276, w: 312, h: 56 },
+    incident: { x: 504, y: 460, w: 312, h: 56 },
+  },
+};
+
+const NARROW: Layout = {
+  W: 320, H: 704, boxes: {
+    a0: { x: 20, y: 176, w: 260, h: 44 },
+    a1: { x: 20, y: 236, w: 88, h: 44 },
+    a2: { x: 116, y: 236, w: 88, h: 44 },
+    a3: { x: 212, y: 236, w: 88, h: 44 },
+    a4: { x: 20, y: 296, w: 280, h: 44 },
+    a5: { x: 20, y: 356, w: 156, h: 56 },
+    daily: { x: 192, y: 356, w: 108, h: 56 },
+    incident: { x: 20, y: 428, w: 128, h: 44 },
+  },
+};
+
+type Pick = { open: AgentKey | null; toggle: (k: AgentKey, el: Element) => void };
+
+function Lines({ x, y, w, h, lines }: Rect & { lines: string[] }) {
   const cx = x + w / 2;
   const blockH = 14 + 20 * (lines.length - 1);
   const first = y + h / 2 - blockH / 2 + 12;
   return (
-    <g>
-      <rect className={cls} x={x} y={y} width={w} height={h} rx={rx} />
+    <>
       {lines.map((line, i) => (
         <text key={i} className={i === 0 ? "t" : "s"} x={cx} y={first + i * 20} textAnchor="middle">
           {line}
         </text>
       ))}
+    </>
+  );
+}
+
+type BoxProps = Rect & { lines: string[]; cls?: string; rx?: number };
+
+function Box({ cls = "box", rx = 8, ...p }: BoxProps) {
+  return (
+    <g>
+      <rect className={cls} x={p.x} y={p.y} width={p.w} height={p.h} rx={rx} />
+      <Lines {...p} />
+    </g>
+  );
+}
+
+/** 有 Subagent 的方塊：右上角數量徽章，可點擊展開 */
+function AgentBox({ k, layout, variant, pick, lines, cls = "box" }: {
+  k: AgentKey; layout: Layout; variant: Variant; pick: Pick; lines: string[]; cls?: string;
+}) {
+  const r = layout.boxes[k];
+  const info = AGENT_SUBAGENTS[k];
+  const on = pick.open === k;
+  const onKey = (e: KeyboardEvent<SVGGElement>) => {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick.toggle(k, e.currentTarget); }
+  };
+  return (
+    <g className={`hit${on ? " on" : ""}`} role="button" tabIndex={0} aria-expanded={on} aria-controls={`arch-pop-${variant}`}
+      aria-label={`${info.id} ${info.title}：${info.subs.length} 個 Subagent`}
+      onClick={(e) => pick.toggle(k, e.currentTarget)} onKeyDown={onKey}>
+      <rect className={cls} x={r.x} y={r.y} width={r.w} height={r.h} rx={8} />
+      <Lines {...r} lines={lines} />
+      <circle className="badge" cx={r.x + r.w - 8} cy={r.y} r={9} />
+      <text className="badge-t" x={r.x + r.w - 8} y={r.y + 4} textAnchor="middle">{info.subs.length}</text>
     </g>
   );
 }
@@ -34,13 +103,42 @@ function Markers({ id }: { id: string }) {
 
 const CLAIM =
   "外部情資每小時比對、每天 08:00 全面評估，依序盤點系統、找弱點、推演入侵路徑並評分，再把燈號與建議發布到網站；" +
-  "分析流程只讀取電商平台、不修改。部署通知等即時事件由網站規則直接判斷並告警，再觸發告警調查。";
+  "分析流程只讀取電商平台、不修改。部署通知等即時事件由網站規則直接判斷並告警，再觸發告警調查。" +
+  "有 Subagent 的方塊可以點開查看。";
 
-function Wide() {
+/** 點開後的小卡：上半部的方塊往下開、下半部的往上開；桌機依方塊位置靠左或靠右，手機佔滿寬度 */
+function Popover({ layout, variant, open, close }: { layout: Layout; variant: Variant; open: AgentKey | null; close: () => void }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => { if (open) ref.current?.focus({ preventScroll: true }); }, [open]);
+  if (!open) return <div id={`arch-pop-${variant}`} hidden />;
+  const { W, H } = layout;
+  const b = layout.boxes[open];
+  const info = AGENT_SUBAGENTS[open];
+  const style: CSSProperties = {};
+  if (b.y + b.h / 2 < H * 0.55) style.top = `${((b.y + b.h + 10) / H) * 100}%`;
+  else style.bottom = `${((H - b.y + 10) / H) * 100}%`;
+  if (variant === "w") {
+    if (b.x + b.w / 2 < W / 2) style.left = `${(b.x / W) * 100}%`;
+    else style.right = `${((W - b.x - b.w) / W) * 100}%`;
+  }
+  return (
+    <div id={`arch-pop-${variant}`} ref={ref} className="arch-pop" style={style} role="region" tabIndex={-1}
+      aria-label={`${info.id} ${info.title} 的 Subagent`}>
+      <div className="arch-pop-head">
+        <span><span className="sa-id">{info.id}</span> {info.title}</span>
+        <button type="button" className="arch-pop-close" aria-label="關閉" onClick={close}>×</button>
+      </div>
+      <SubagentList a={info} />
+    </div>
+  );
+}
+
+function Wide({ pick }: { pick: Pick }) {
   const A = "url(#arch-w-a)";
   const R = "url(#arch-w-r)";
+  const L = WIDE;
   return (
-    <svg className="arch-svg arch-wide" viewBox="0 0 1120 560" role="img" aria-label={CLAIM}>
+    <svg className="arch-svg" viewBox="0 0 1120 560" role="group" aria-label={CLAIM}>
       <Markers id="arch-w" />
 
       {/* 左：外部情資、被評估的系統 */}
@@ -64,23 +162,24 @@ function Wide() {
 
       <Box x={296} y={130} w={84} h={80} lines={["派工", "程式決定"]} />
       <path className="edge" d="M380 170H400" markerEnd={A} />
-      <Box x={400} y={130} w={84} h={80} lines={["盤點系統", "A0 對帳"]} />
+      <AgentBox k="a0" layout={L} variant="w" pick={pick} lines={["盤點系統", "A0 對帳"]} />
 
-      <path className="edge" d="M484 170H494V128H504" markerEnd={A} />
+      <path className="edge" d="M484 170H494V118H504" markerEnd={A} />
       <path className="edge" d="M484 170H504" markerEnd={A} />
-      <path className="edge" d="M484 170H494V212H504" markerEnd={A} />
-      <Box x={504} y={109} w={104} h={38} lines={["外部情資 A1"]} />
-      <Box x={504} y={151} w={104} h={38} lines={["弱點掃描 A2"]} />
-      <Box x={504} y={193} w={104} h={38} lines={["早期訊號 A3"]} />
-      <path className="edge" d="M608 128H618V170M608 212H618V170" />
+      <path className="edge" d="M484 170H494V222H504" markerEnd={A} />
+      <AgentBox k="a1" layout={L} variant="w" pick={pick} lines={["外部情資 A1"]} />
+      <AgentBox k="a2" layout={L} variant="w" pick={pick} lines={["弱點掃描 A2"]} />
+      <AgentBox k="a3" layout={L} variant="w" pick={pick} lines={["早期訊號 A3"]} />
+      <path className="edge" d="M608 118H618V170M608 222H618V170" />
       <path className="edge" d="M608 170H628" markerEnd={A} />
 
-      <Box x={628} y={130} w={92} h={80} lines={["入侵路徑", "評分 · A4"]} />
+      <AgentBox k="a4" layout={L} variant="w" pick={pick} lines={["入侵路徑", "評分 · A4"]} />
       <path className="edge" d="M720 170H736" markerEnd={A} />
-      <Box x={736} y={130} w={80} h={80} lines={["報告與建議", "A5"]} />
+      <AgentBox k="a5" layout={L} variant="w" pick={pick} lines={["報告與建議", "A5"]} />
 
-      <path className="edge ai-link" d="M556 231V276M674 210V276M776 210V276" />
-      <Box x={504} y={276} w={312} h={56} cls="ai" lines={["Claude AI：判讀新聞、撰寫白話說明", "分數與燈號一律由程式計算"]} />
+      <path className="edge ai-link" d="M556 243V276M674 210V276M776 210V276" />
+      <AgentBox k="daily" layout={L} variant="w" pick={pick} cls="ai"
+        lines={["Claude AI：判讀新聞、撰寫白話說明", "分數與燈號一律由程式計算"]} />
 
       <path className="edge ro" d="M216 330H442V210" markerEnd={R} />
       <text className="lbl ro" x={290} y={320}>唯讀讀取（不修改）</text>
@@ -88,7 +187,7 @@ function Wide() {
       <path className="edge" d="M216 430H912" markerEnd={A} />
       <text className="lbl" x={290} y={420}>④ 部署通知（即時）</text>
 
-      <Box x={504} y={460} w={312} h={56} lines={["告警調查", "推演入侵路徑 → 圍堵建議（留言到 Issue）"]} />
+      <AgentBox k="incident" layout={L} variant="w" pick={pick} lines={["告警調查", "推演入侵路徑 → 圍堵建議（留言到 Issue）"]} />
 
       {/* 右：網站 */}
       <rect className="zone" x={896} y={16} width={208} height={528} rx={12} />
@@ -105,11 +204,12 @@ function Wide() {
   );
 }
 
-function Narrow() {
+function Narrow({ pick }: { pick: Pick }) {
   const A = "url(#arch-n-a)";
   const R = "url(#arch-n-r)";
+  const L = NARROW;
   return (
-    <svg className="arch-svg arch-narrow" viewBox="0 0 320 704" role="img" aria-label={CLAIM}>
+    <svg className="arch-svg" viewBox="0 0 320 704" role="group" aria-label={CLAIM}>
       <Markers id="arch-n" />
 
       <Box x={6} y={6} w={308} h={52} lines={["外部資安情資", "資安新聞、公告、CISA KEV、NVD"]} />
@@ -124,26 +224,26 @@ function Narrow() {
       <path className="edge" d="M176 138H148" markerEnd={A} />
 
       <path className="edge" d="M84 160V176" markerEnd={A} />
-      <Box x={20} y={176} w={260} h={44} lines={["盤點系統", "A0 對帳"]} />
+      <AgentBox k="a0" layout={L} variant="n" pick={pick} lines={["盤點系統", "A0 對帳"]} />
 
       <path className="edge" d="M64 220V236" markerEnd={A} />
       <path className="edge" d="M160 220V236" markerEnd={A} />
       <path className="edge" d="M256 220V236" markerEnd={A} />
-      <Box x={20} y={236} w={88} h={44} lines={["外部情資", "A1"]} />
-      <Box x={116} y={236} w={88} h={44} lines={["弱點掃描", "A2"]} />
-      <Box x={212} y={236} w={88} h={44} lines={["早期訊號", "A3"]} />
+      <AgentBox k="a1" layout={L} variant="n" pick={pick} lines={["外部情資", "A1"]} />
+      <AgentBox k="a2" layout={L} variant="n" pick={pick} lines={["弱點掃描", "A2"]} />
+      <AgentBox k="a3" layout={L} variant="n" pick={pick} lines={["早期訊號", "A3"]} />
 
       <path className="edge" d="M64 280V296" markerEnd={A} />
       <path className="edge" d="M160 280V296" markerEnd={A} />
       <path className="edge" d="M256 280V296" markerEnd={A} />
-      <Box x={20} y={296} w={280} h={44} lines={["入侵路徑與評分", "A4"]} />
+      <AgentBox k="a4" layout={L} variant="n" pick={pick} lines={["入侵路徑與評分", "A4"]} />
 
       <path className="edge" d="M98 340V356" markerEnd={A} />
-      <Box x={20} y={356} w={156} h={56} lines={["報告與建議", "A5"]} />
+      <AgentBox k="a5" layout={L} variant="n" pick={pick} lines={["報告與建議", "A5"]} />
       <path className="edge ai-link" d="M246 340V356M176 384H192" />
-      <Box x={192} y={356} w={108} h={56} cls="ai" lines={["Claude AI", "只寫說明"]} />
+      <AgentBox k="daily" layout={L} variant="n" pick={pick} cls="ai" lines={["Claude AI", "只寫說明"]} />
 
-      <Box x={20} y={428} w={128} h={44} lines={["告警調查", "→ 圍堵建議"]} />
+      <AgentBox k="incident" layout={L} variant="n" pick={pick} lines={["告警調查", "→ 圍堵建議"]} />
 
       <path className="edge" d="M164 412V536" markerEnd={A} />
       <text className="lbl" x={172} y={452}>每天發布</text>
@@ -165,14 +265,55 @@ function Narrow() {
 }
 
 export default function ArchitectureDiagram() {
+  const [open, setOpen] = useState<AgentKey | null>(null);
+  const trigger = useRef<Element | null>(null);
+
+  const close = (refocus = true) => {
+    setOpen(null);
+    if (refocus) (trigger.current as SVGGElement | null)?.focus?.();
+  };
+  const pick: Pick = {
+    open,
+    toggle: (k, el) => { trigger.current = el; setOpen((cur) => (cur === k ? null : k)); },
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: globalThis.KeyboardEvent) => { if (e.key === "Escape") close(); };
+    const onDown = (e: PointerEvent) => {
+      const t = e.target as Element | null;
+      if (!t?.closest?.(".arch-pop, .hit")) close(false);
+    };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onDown);
+    return () => { document.removeEventListener("keydown", onKey); document.removeEventListener("pointerdown", onDown); };
+  });
+
   return (
-    <figure className="arch">
-      <Wide />
-      <Narrow />
+    <>
+      <figure className="arch">
+      <div className="arch-wide">
+        <Wide pick={pick} />
+        <Popover layout={WIDE} variant="w" open={open} close={() => close()} />
+      </div>
+      <div className="arch-narrow">
+        <Narrow pick={pick} />
+        <Popover layout={NARROW} variant="n" open={open} close={() => close()} />
+      </div>
       <figcaption className="muted">
-        ①～④ 是四種觸發時機。藍色箭頭代表系統只「讀取」電商平台，不持有能修改它的權限；
-        Claude AI 只負責判讀新聞與撰寫白話說明，分數、燈號與結論一律由程式計算。各 Agent 底下的 Subagent 見下一段。
+        {"①～④ 是四種觸發時機。藍色箭頭代表系統只「讀取」電商平台，不持有能修改它的權限；" +
+          "Claude AI 只負責判讀新聞與撰寫白話說明，分數、燈號與結論一律由程式計算。" +
+          "方塊右上角的藍色數字是它派發的 Subagent 數量，點一下就能查看。"}
       </figcaption>
     </figure>
+      <details className="sa-all">
+        <summary>列出全部 Subagent（A0～A5 與告警調查共 {SDK_SUBAGENT_COUNT} 個，每日情資 {AGENT_SUBAGENTS.daily.subs.length} 個）</summary>
+        <p className="muted">
+          {"每個 Agent 是一個 GitHub Actions Job，Job 內再派發 Subagent 分工（A0～A5 與告警調查由 Agent SDK 派發，每日情資由 Claude Code 派發）。" +
+            "Subagent 只負責判讀與撰寫說明，不計分、不定燈號。"}
+        </p>
+        <SubagentMap />
+      </details>
+    </>
   );
 }
