@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.11.3 — 2026-11-12（架構圖點方塊顯示 Subagent）
+
+- **架構圖互動**：有 Subagent 的方塊（A0～A5、Claude AI＝每日情資、告警調查）右上角顯示藍色數量徽章，點一下在方塊旁顯示 Subagent 小卡（白話名稱＋程式名稱）
+  - 再點一次、按 ×、按 Esc 或點外面關閉；鍵盤可用 Tab 移到方塊、Enter／空白鍵開啟，Esc 關閉後焦點回到方塊
+  - 小卡位置：上半部的方塊往下開、下半部往上開；桌機依方塊位置靠左或靠右，手機佔滿圖寬；列印時不顯示
+- **頁面結構**：0.11.2 的「每個 Agent 底下的 Subagent」獨立段落改為架構圖下方「列出全部 Subagent」（預設收合）
+- **資料與測試**：Subagent 清單移到 `dashboard/lib/subagents.ts`；新增 `subagents.test.ts`，比對 `agents/registry.py` 的 AGENTS 與 `.claude/agents/`，兩邊不一致時 `npm test` 失敗
+- **修正**：說明文字因 JSX 換行多出的空格（例如「權限； Claude」，0.11.1 起）；橫向圖 A1～A3 方塊加高、拉開間距，徽章不壓到相鄰方塊
+- **驗證**：`npm test`（76 項）、`next build` 通過；本機以 Chrome（DevTools 模擬）在 360、414、768、959、960、1024、1280、1920 寬度逐一點開全部 8 個方塊，小卡皆在畫面內、頁面無橫向捲動，959／960 切換直式／橫向正確；1280、360 檢查深色模式；鍵盤開啟與 Esc 關閉、焦點返回正常。未呼叫任何付費 API
+
 ## 0.11.2 — 2026-11-12（運作原理頁加入各 Agent 的 Subagent）
 
 - **運作原理頁**：整體架構圖下方新增「每個 Agent 底下的 Subagent」（`components/SubagentMap.tsx`）
