@@ -1,4 +1,5 @@
 import ArchitectureDiagram from "@/components/ArchitectureDiagram";
+import SubagentMap from "@/components/SubagentMap";
 import { PAGES } from "@/lib/nav";
 
 export default function Architecture() {
@@ -8,6 +9,10 @@ export default function Architecture() {
       <div className="panel">
         <h2 style={{ marginTop: 0 }}>整體架構</h2>
         <ArchitectureDiagram />
+      </div>
+      <div className="panel">
+        <h2 style={{ marginTop: 0 }}>每個 Agent 底下的 Subagent</h2>
+        <SubagentMap />
       </div>
       <div className="panel">
         <h2 style={{ marginTop: 0 }}>流程</h2>
