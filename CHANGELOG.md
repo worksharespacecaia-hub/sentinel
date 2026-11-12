@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.11.2 — 2026-11-12（運作原理頁加入各 Agent 的 Subagent）
+
+- **運作原理頁**：整體架構圖下方新增「每個 Agent 底下的 Subagent」（`components/SubagentMap.tsx`）
+  - 依流程順序：派工（純程式，不派 Subagent）→ A0 → A1～A3（同時進行）→ A4 → A5，每個 Agent 列出 Subagent 的白話名稱與程式名稱
+  - 另列每日情資（Claude Code・訂閱方案，4 個 Subagent，結果交給 A1）與告警調查（由即時告警觸發，1 個 Subagent）
+  - A0～A5 與告警調查共 21 個 Subagent（Agent SDK 派發），數量由清單計算；清單對應 `agents/registry.py` 與 `.claude/agents/`，兩處增減時需一併更新
+- **RWD**：桌機橫向流程，900px 以下改直式；平板寬度時 A1～A3 並排
+- **驗證**：`tsc --noEmit`、`npm test`、`next build` 通過；本機以 Chrome（DevTools 模擬）檢查 1280px、768px、390px（深色），頁面無橫向捲動。未呼叫任何付費 API
+
 ## 0.11.1 — 2026-11-12（運作原理頁加入整體架構圖）
 
 - **運作原理頁**：最上方新增「整體架構」圖（`components/ArchitectureDiagram.tsx`，內嵌 SVG），原本的「流程」與「設計理由」不變
