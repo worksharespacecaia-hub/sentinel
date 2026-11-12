@@ -94,7 +94,7 @@
     "kind": "advisory",
     "title": "CISA KEV：WordPress WordPress Core Time-of-check Time-of-use (TOCTOU) Race Condition Vulnerability（CVE-2026-119977）",
     "affected_count": 1,
-    "max_level": "high",
+    "max_level": "medium",
     "status": "open",
     "demo": false
   },
@@ -108,46 +108,28 @@
     "demo": false
   },
   {
-    "id": "live-nitori-member-breach-2026-11",
+    "id": "live-cyberbiz-vendor-breach-2026-11",
     "kind": "live",
-    "title": "日本宜得利（Nitori）系統遭非法存取，最多 3,762 萬筆會員與網購客戶個資外洩",
+    "title": "順立智慧（Cyberbiz）委外商城資料庫遭異常存取，漢來美食、黑松訂單資料受影響",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
     "demo": false
   },
   {
-    "id": "live-sharefull-admin-breach-2026-11",
+    "id": "live-nitori-breach-2026-11",
     "kind": "live",
-    "title": "日本打工媒合平台 Sharefull 管理系統遭非法存取，約 750 萬名使用者資料恐外洩",
+    "title": "日本宜得利（Nitori）系統遭非法存取，最多 3,762 萬筆會員與網購個資恐外洩",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
     "demo": false
   },
   {
-    "id": "live-cyberbiz-shop-db-2026-11",
+    "id": "live-91app-impact-update-2026-11",
     "kind": "live",
-    "title": "電商 SaaS 順立智慧（Cyberbiz）資料庫遭異常存取，漢來美食、黑松訂單資料受影響",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "need_check",
-    "demo": false
-  },
-  {
-    "id": "live-neticrm-provider-breach-2026-11",
-    "kind": "live",
-    "title": "netiCRM 服務商網絡行動科技遭入侵，30 多個非營利組織捐款人個資恐外洩",
-    "affected_count": 1,
-    "max_level": "medium",
-    "status": "open",
-    "demo": false
-  },
-  {
-    "id": "live-wordpress-core-upgrade-race-2026-11",
-    "kind": "live",
-    "title": "CISA 確認 WordPress 核心升級流程漏洞（CVE-2026-119977）遭利用",
-    "affected_count": 1,
+    "title": "91APP 公布調查結果：最大影響範圍 1,329 個品牌、約 480 萬名消費者",
+    "affected_count": 5,
     "max_level": "high",
     "status": "open",
     "demo": false

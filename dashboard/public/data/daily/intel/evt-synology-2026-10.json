@@ -182,7 +182,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "Synology 勒索事件命中 nas-office-01 的 3 項問題：管理介面對外且版本受影響（高風險，8 分），以及備份未與設備隔離且從未做過還原測試、內部工具對外開放（各為中風險，5 分）。",
+  "summary": "Synology 事件為 DSM 登入頁對外暴露而遭勒索軟體加密；我們的 nas-office-01 版本受影響且對外，為高風險（8 分），另有備份未隔離與管理介面對外兩項中風險（各 5 分）。建議關閉對外連線、更新 DSM 並隔離備份。",
   "blocks": {
     "1_summary": {
       "title": "Synology NAS 遭 C3RB3R 勒索軟體加密：DSM 登入頁對外暴露，常駐連接的備份碟一併被加密",
@@ -223,7 +223,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "Synology 勒索事件命中 nas-office-01 的 3 項問題：管理介面對外且版本受影響（高風險，8 分），以及備份未與設備隔離且從未做過還原測試、內部工具對外開放（各為中風險，5 分）。",
+      "summary": "Synology 事件為 DSM 登入頁對外暴露而遭勒索軟體加密；我們的 nas-office-01 版本受影響且對外，為高風險（8 分），另有備份未隔離與管理介面對外兩項中風險（各 5 分）。建議關閉對外連線、更新 DSM 並隔離備份。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -261,12 +261,12 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、evt-synology-2026-10"
+            "reason": "evt-91app-2026-10、evt-synology-2026-10、live-91app-impact-update-2026-11"
           }
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-11T08:28:41Z"
+        "observed_at": "2026-11-12T04:38:17Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -296,7 +296,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-11T08:28:41Z"
+        "observed_at": "2026-11-12T04:38:17Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -321,12 +321,12 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、evt-synology-2026-10"
+            "reason": "evt-91app-2026-10、evt-synology-2026-10、live-91app-impact-update-2026-11"
           }
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-11T08:28:41Z"
+        "observed_at": "2026-11-12T04:38:17Z"
       }
     ],
     "4_unaffected_and_check": {
