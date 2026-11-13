@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.12.5 — 2026-11-13（AI 分析過程頁標示 Orchestrator 上線狀態）
+
+- **背景**：面試簡報與「運作原理」架構圖已改為新架構，Orchestrator 指 AI 的派工與驗收。但「AI 分析過程」頁仍把純程式的開工步驟標成「Orchestrator」，審查者點 Demo 連結時會看到矛盾
+- **修正**：
+  - 執行紀錄與執行進度中的 `orchestrator` 步驟，標示改為「開工路由（程式）」
+  - 「AI 分析過程」頁的執行紀錄上方加上說明：Orchestrator（AI 派工與驗收）上線中；上線前下方紀錄仍是前一版做法（每日情資提出建議、A1 程式核准）。v0.13.0 上線時移除這段說明
+- **驗證**：`npm test`、`tsc --noEmit`、`next build` 通過；本機截圖確認頁面
+
 ## 0.12.4 — 2026-11-13（標示尚未實作的 Subagent）
 
 - **背景**：面試簡報第 3 頁把 A1 的 `sdk-advisory`、`app-store-monitor` 標為「尚未實作」，網站沒有標示。兩者只在 `agents/registry.py` 登錄，沒有任何 Agent 派發；v0.13.0 規格 R11.4 也明定本版不實作
