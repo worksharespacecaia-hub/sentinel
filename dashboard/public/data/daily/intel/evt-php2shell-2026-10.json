@@ -218,7 +218,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "PHP2Shell 為 PHP 核心的免驗證遠端程式碼執行漏洞；marketing-site 使用 php 8.1.27、對外且已停止支援無修補，為高風險（9 分），phpmyadmin 因只允許公司 VPN 連入而為中風險（4 分）。建議 marketing-site 遷移到受支援版本或暫時下架。",
+  "summary": "marketing-site 的 php 8.1.27 對外、條件成立且已停止支援無修補，為高風險（9 分），建議由管理層決定緩解或暫時下架；phpmyadmin 因僅允許公司 VPN 連入，程式扣減補償措施分，評為中風險（4 分），仍建議升級。",
   "blocks": {
     "1_summary": {
       "title": "PHP2Shell：PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619）",
@@ -270,7 +270,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "PHP2Shell 為 PHP 核心的免驗證遠端程式碼執行漏洞；marketing-site 使用 php 8.1.27、對外且已停止支援無修補，為高風險（9 分），phpmyadmin 因只允許公司 VPN 連入而為中風險（4 分）。建議 marketing-site 遷移到受支援版本或暫時下架。",
+      "summary": "marketing-site 的 php 8.1.27 對外、條件成立且已停止支援無修補，為高風險（9 分），建議由管理層決定緩解或暫時下架；phpmyadmin 因僅允許公司 VPN 連入，程式扣減補償措施分，評為中風險（4 分），仍建議升級。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -318,7 +318,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-12T04:38:17Z"
+        "observed_at": "2026-11-13T03:51:03Z"
       },
       {
         "asset_id": "phpmyadmin",
@@ -358,7 +358,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-12T04:38:17Z"
+        "observed_at": "2026-11-13T03:51:03Z"
       }
     ],
     "4_unaffected_and_check": {

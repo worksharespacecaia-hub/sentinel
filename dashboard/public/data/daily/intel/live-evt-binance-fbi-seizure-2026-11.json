@@ -1,0 +1,259 @@
+{
+  "event": {
+    "id": "live-evt-binance-fbi-seizure-2026-11",
+    "kind": "live",
+    "title": "FBI：美國查扣遭竊自 Binance 的 12 億美元加密貨幣",
+    "date": "2026-11-13",
+    "industry": "支付",
+    "attack_chain": [],
+    "attck": [],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [
+      "C-DEV-DEVICE-TOKEN",
+      "C-NON-CI-DEPLOY"
+    ],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.securityweek.com/fbi-says-us-seized-1-2-billion-worth-of-cryptocurrency-stolen-from-binance/",
+        "title": "FBI Says US Seized $1.2 Billion Worth of Cryptocurrency Stolen From Binance",
+        "quote": "FBI Says US Seized $1.2 Billion Worth of Cryptocurrency Stolen From Binance",
+        "published": "2026-11-13",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-13T03:51:03Z",
+        "content_hash": "sha256:f6e7e35183966a8c9a075bf07c1550f2893b7618393efea407e7bc744afa1081",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": "evt-binance-2026-10",
+    "proposed_controls": []
+  },
+  "conclusion": "2 項受影響，最高風險為高。laptop-eng-07：mdm.json: laptop-eng-07 有 ~/.config/pipeline/token；secrets.json: deploy-token-eng07 → deploy-pipeline。",
+  "affected_count": 2,
+  "max_level": "high",
+  "impacts": [
+    {
+      "event_id": "live-evt-binance-fbi-seizure-2026-11",
+      "asset_id": "laptop-eng-07",
+      "basis": "control",
+      "our_state": "mdm.json: laptop-eng-07 有 ~/.config/pipeline/token；secrets.json: deploy-token-eng07 → deploy-pipeline",
+      "verdict": "affected",
+      "risk_id": "laptop-eng-07:C-DEV-DEVICE-TOKEN",
+      "reason": "不符合 C-DEV-DEVICE-TOKEN（員工電腦不得持有正式部署權杖）"
+    },
+    {
+      "event_id": "live-evt-binance-fbi-seizure-2026-11",
+      "asset_id": "ai-code-assistant",
+      "basis": "control",
+      "our_state": "secrets.json: ai-assistant-token 存放於 ai-code-assistant，可直接觸發 deploy-pipeline（繞過 Pipeline 審核）",
+      "verdict": "affected",
+      "risk_id": "ai-code-assistant:C-NON-CI-DEPLOY",
+      "reason": "不符合 C-NON-CI-DEPLOY（正式部署必須來自 Pipeline）"
+    }
+  ],
+  "solutions": [
+    {
+      "risk_id": "laptop-eng-07:C-DEV-DEVICE-TOKEN",
+      "temporary": "撤銷並輪替 laptop-eng-07，確認撤銷後舊值無法使用",
+      "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "撤銷並輪替金鑰",
+          "cost": "使用該金鑰的服務需同步更新",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "eng-07",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template"
+    },
+    {
+      "risk_id": "ai-code-assistant:C-NON-CI-DEPLOY",
+      "temporary": "確認 ai-code-assistant 的狀況並限制存取",
+      "permanent": "依控制項要求修正，並在下次掃描確認",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "依控制項修正",
+          "cost": "依項目而定",
+          "timing": "168 小時內"
+        }
+      ],
+      "suggested_owner": "devops-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template"
+    }
+  ],
+  "notice": {
+    "needed": false,
+    "draft": null
+  },
+  "status": "open",
+  "evaluated_asset_ids": [
+    "ai-code-assistant",
+    "laptop-eng-07"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "此事件與先前幣安事件相關：laptop-eng-07 持有正式部署權杖（高風險 7 分），ai-code-assistant 可繞過 Pipeline 直接部署（中風險 4 分）。建議撤銷權杖並限制部署只經由 Pipeline。",
+  "blocks": {
+    "1_summary": {
+      "title": "FBI：美國查扣遭竊自 Binance 的 12 億美元加密貨幣",
+      "date": "2026-11-13",
+      "industry": "支付",
+      "attack_chain": [],
+      "attck": [],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.securityweek.com/fbi-says-us-seized-1-2-billion-worth-of-cryptocurrency-stolen-from-binance/",
+          "title": "FBI Says US Seized $1.2 Billion Worth of Cryptocurrency Stolen From Binance",
+          "quote": "FBI Says US Seized $1.2 Billion Worth of Cryptocurrency Stolen From Binance",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-13T03:51:03Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "此事件與先前幣安事件相關：laptop-eng-07 持有正式部署權杖（高風險 7 分），ai-code-assistant 可繞過 Pipeline 直接部署（中風險 4 分）。建議撤銷權杖並限制部署只經由 Pipeline。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "2 項受影響，最高風險為高。laptop-eng-07：mdm.json: laptop-eng-07 有 ~/.config/pipeline/token；secrets.json: deploy-token-eng07 → deploy-pipeline。",
+      "affected_count": 2,
+      "max_level": "high"
+    },
+    "3_affected": [
+      {
+        "asset_id": "laptop-eng-07",
+        "our_state": "mdm.json: laptop-eng-07 有 ~/.config/pipeline/token；secrets.json: deploy-token-eng07 → deploy-pipeline",
+        "basis": "control",
+        "verdict": "affected",
+        "reason": "不符合 C-DEV-DEVICE-TOKEN（員工電腦不得持有正式部署權杖）",
+        "risk_id": "laptop-eng-07:C-DEV-DEVICE-TOKEN",
+        "level": "high",
+        "score": 7,
+        "breakdown": [
+          {
+            "factor": "基礎分：控制項不符",
+            "points": 2,
+            "reason": "controls.yaml base_points"
+          },
+          {
+            "factor": "影響範圍",
+            "points": 1,
+            "reason": "平台層，影響所有品牌"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-binance-2026-10、live-evt-binance-fbi-seizure-2026-11"
+          },
+          {
+            "factor": "位於完整攻擊鏈",
+            "points": 3,
+            "reason": "攻擊路徑前提的必要一步"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-13T03:51:03Z"
+      },
+      {
+        "asset_id": "ai-code-assistant",
+        "our_state": "secrets.json: ai-assistant-token 存放於 ai-code-assistant，可直接觸發 deploy-pipeline（繞過 Pipeline 審核）",
+        "basis": "control",
+        "verdict": "affected",
+        "reason": "不符合 C-NON-CI-DEPLOY（正式部署必須來自 Pipeline）",
+        "risk_id": "ai-code-assistant:C-NON-CI-DEPLOY",
+        "level": "medium",
+        "score": 4,
+        "breakdown": [
+          {
+            "factor": "基礎分：控制項不符",
+            "points": 2,
+            "reason": "controls.yaml base_points"
+          },
+          {
+            "factor": "影響範圍",
+            "points": 1,
+            "reason": "平台層，影響所有品牌"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-binance-2026-10、live-evt-binance-fbi-seizure-2026-11"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-13T03:51:03Z"
+      }
+    ],
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": []
+    },
+    "5_solutions": [
+      {
+        "risk_id": "laptop-eng-07:C-DEV-DEVICE-TOKEN",
+        "temporary": "撤銷並輪替 laptop-eng-07，確認撤銷後舊值無法使用",
+        "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "撤銷並輪替金鑰",
+            "cost": "使用該金鑰的服務需同步更新",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "eng-07",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      {
+        "risk_id": "ai-code-assistant:C-NON-CI-DEPLOY",
+        "temporary": "確認 ai-code-assistant 的狀況並限制存取",
+        "permanent": "依控制項要求修正，並在下次掃描確認",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "依控制項修正",
+            "cost": "依項目而定",
+            "timing": "168 小時內"
+          }
+        ],
+        "suggested_owner": "devops-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      }
+    ],
+    "6_notice": {
+      "needed": false,
+      "draft": null
+    },
+    "7_status": {
+      "status": "open",
+      "label": "待處理"
+    }
+  },
+  "update_of": {
+    "id": "evt-binance-2026-10",
+    "title": "幣安 63.4 億美元駭案：假面試惡意程式入侵開發者電腦，取得容器部署憑證後攻陷錢包簽章服務",
+    "status": "open"
+  }
+}

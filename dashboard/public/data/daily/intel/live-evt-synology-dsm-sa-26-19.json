@@ -1,0 +1,235 @@
+{
+  "event": {
+    "id": "live-evt-synology-dsm-sa-26-19",
+    "kind": "live",
+    "title": "Synology DSM 登入介面 SQL 注入漏洞 CVE-2026-76954（CVSS 9.8）",
+    "date": "2026-11-10",
+    "industry": "通用",
+    "attack_chain": [
+      "遠端未登入的攻擊者對 DSM Auth API 利用 SQL 注入",
+      "讀寫機器上的任意檔案，或造成阻斷服務"
+    ],
+    "attck": [
+      "T1190",
+      "T1499"
+    ],
+    "cves": [
+      "CVE-2026-76954",
+      "CVE-2026-85101"
+    ],
+    "products": [
+      {
+        "name": "synology-dsm",
+        "ecosystem": "synology-dsm",
+        "affected": [
+          {
+            "introduced": "7.2.1",
+            "fixed": null
+          },
+          {
+            "introduced": "7.2.2",
+            "fixed": null
+          },
+          {
+            "introduced": "7.3.0",
+            "fixed": null
+          },
+          {
+            "introduced": "7.4.0",
+            "fixed": null
+          }
+        ],
+        "cvss": 9.8,
+        "impact": "remote_code_execution"
+      }
+    ],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://cyberq.tw/2026/11/12/synology-sa-26-19-dsm-auth-api-sql-injection/",
+        "title": "Synology DSM 登入介面 SQL 注入漏洞 9.8 分：不必登入就能讀寫 NAS 檔案，官方表示只能更新",
+        "quote": "DSM 7.4、7.3、7.2.2、7.2.1 全部受影響，官方在緩解措施一欄寫的是無，也就是沒有暫時的應對方法，只能更新。",
+        "published": "2026-11-12",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-13T03:51:03Z",
+        "content_hash": "sha256:06b72d66fbc2d390aae5fb1e0720245aac8beb049c1efabb96c15ef916eb91bb",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "1 項受影響，最高風險為高。nas-office-01：synology-dsm 7.2.1-69057 Update 5，對外。",
+  "affected_count": 1,
+  "max_level": "high",
+  "impacts": [
+    {
+      "event_id": "live-evt-synology-dsm-sa-26-19",
+      "asset_id": "nas-office-01",
+      "basis": "version",
+      "our_state": "synology-dsm 7.2.1-69057 Update 5，對外",
+      "verdict": "affected",
+      "risk_id": "nas-office-01:synology-dsm:vuln",
+      "to_verify": [],
+      "reason": "版本落在受影響範圍"
+    }
+  ],
+  "solutions": [
+    {
+      "risk_id": "nas-office-01:synology-dsm:vuln",
+      "temporary": "確認 nas-office-01 的暴露範圍，先以 WAF 或存取限制降低風險",
+      "permanent": "將 nas-office-01 的受影響元件升級到修補版本",
+      "options": [
+        {
+          "name": "修補",
+          "action": "升級到修補版本",
+          "cost": "需回歸測試",
+          "timing": "24 小時內"
+        },
+        {
+          "name": "緩解",
+          "action": "限制來源、關閉受影響功能",
+          "cost": "部分功能受限",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "it-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template"
+    }
+  ],
+  "notice": {
+    "needed": false,
+    "draft": null
+  },
+  "status": "open",
+  "evaluated_asset_ids": [
+    "nas-office-01"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "nas-office-01 的 synology-dsm 7.2.1-69057 Update 5 落在受影響範圍且對外，已被實際利用，程式評為高風險（8 分）。建議限制管理介面對外並升級至修補版本。",
+  "blocks": {
+    "1_summary": {
+      "title": "Synology DSM 登入介面 SQL 注入漏洞 CVE-2026-76954（CVSS 9.8）",
+      "date": "2026-11-10",
+      "industry": "通用",
+      "attack_chain": [
+        "遠端未登入的攻擊者對 DSM Auth API 利用 SQL 注入",
+        "讀寫機器上的任意檔案，或造成阻斷服務"
+      ],
+      "attck": [
+        "T1190",
+        "T1499"
+      ],
+      "cves": [
+        "CVE-2026-76954",
+        "CVE-2026-85101"
+      ],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://cyberq.tw/2026/11/12/synology-sa-26-19-dsm-auth-api-sql-injection/",
+          "title": "Synology DSM 登入介面 SQL 注入漏洞 9.8 分：不必登入就能讀寫 NAS 檔案，官方表示只能更新",
+          "quote": "DSM 7.4、7.3、7.2.2、7.2.1 全部受影響，官方在緩解措施一欄寫的是無，也就是沒有暫時的應對方法，只能更新。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-13T03:51:03Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "nas-office-01 的 synology-dsm 7.2.1-69057 Update 5 落在受影響範圍且對外，已被實際利用，程式評為高風險（8 分）。建議限制管理介面對外並升級至修補版本。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "1 項受影響，最高風險為高。nas-office-01：synology-dsm 7.2.1-69057 Update 5，對外。",
+      "affected_count": 1,
+      "max_level": "high"
+    },
+    "3_affected": [
+      {
+        "asset_id": "nas-office-01",
+        "our_state": "synology-dsm 7.2.1-69057 Update 5，對外",
+        "basis": "version",
+        "verdict": "affected",
+        "reason": "版本落在受影響範圍",
+        "risk_id": "nas-office-01:synology-dsm:vuln",
+        "level": "high",
+        "score": 8,
+        "breakdown": [
+          {
+            "factor": "基礎分：漏洞",
+            "points": 3,
+            "reason": "CVSS 9.8"
+          },
+          {
+            "factor": "已遭實際利用",
+            "points": 2,
+            "reason": "KEV 或官方確認"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "可從 internet 連到"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-91app-2026-10、evt-synology-2026-10、live-evt-synology-dsm-sa-26-19"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-13T03:51:03Z"
+      }
+    ],
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": []
+    },
+    "5_solutions": [
+      {
+        "risk_id": "nas-office-01:synology-dsm:vuln",
+        "temporary": "確認 nas-office-01 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "permanent": "將 nas-office-01 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "24 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "it-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      }
+    ],
+    "6_notice": {
+      "needed": false,
+      "draft": null
+    },
+    "7_status": {
+      "status": "open",
+      "label": "待處理"
+    }
+  }
+}
