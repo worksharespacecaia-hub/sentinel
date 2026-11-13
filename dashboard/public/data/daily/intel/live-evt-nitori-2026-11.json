@@ -57,21 +57,17 @@
       "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
       "suggestions": [
         {
-          "id": "db-exposed",
-          "source": "rule",
+          "id": "ai-1",
+          "source": "ai",
           "inferred": true,
-          "target": "database",
-          "hypothesis": "資料庫或資料庫管理工具可以從外部或其他環境直接連線",
-          "why": "資料庫遭大量讀取的事件，常見原因是資料庫或管理工具允許的連線範圍過寬",
-          "check": "確認存放個資與訂單的資料庫及資料庫管理工具，只允許必要的來源連線",
-          "how": "查防火牆與安全群組規則、資料庫的允許來源設定，以及資料庫管理工具是否對外",
-          "plain": "資料庫或管理工具可能可以被直接連上",
-          "basis": "事件標題提到「個資」",
+          "target": null,
+          "hypothesis": "存放會員個資的伺服器可能可以從外部或其他環境直接連線",
+          "why": null,
+          "check": "確認正式會員資料庫與訂單資料庫只允許應用程式來源連線，並查近期異常登入與大量匯出",
+          "how": null,
+          "plain": "存放會員個資的伺服器可能可以從外部或其他環境直接連線",
+          "basis": "AI 依事件推測：攻擊過程第 1 步只說伺服器遭非法存取，未交代手法；外流的是會員個資",
           "systems": [
-            {
-              "asset_id": "firebase-brand-app-storage",
-              "label": "App 雲端檔案儲存區"
-            },
             {
               "asset_id": "member-db-prod",
               "label": "正式會員資料庫"
@@ -81,131 +77,34 @@
               "label": "正式訂單資料庫"
             },
             {
-              "asset_id": "order-exports-bucket",
-              "label": "訂單匯出檔案儲存區"
-            },
-            {
-              "asset_id": "phpmyadmin",
-              "label": "資料庫網頁管理工具"
-            }
-          ],
-          "controls": [
-            {
-              "control_id": "C-INTERNAL-TOOL-EXPOSED",
-              "title": "內部工具不得對外開放",
-              "status": "fail",
-              "status_label": "不符合"
-            },
-            {
-              "control_id": "C-NET-SEGMENT",
-              "title": "非正式環境不得連線正式資料庫",
-              "status": "fail",
-              "status_label": "不符合"
-            },
-            {
-              "control_id": "C-CLOUD-STORAGE-PUBLIC",
-              "title": "雲端儲存空間不得公開讀取",
-              "status": "fail",
-              "status_label": "不符合"
-            }
-          ]
-        },
-        {
-          "id": "server-unpatched",
-          "source": "rule",
-          "inferred": true,
-          "target": "server",
-          "hypothesis": "對外系統有未修補的漏洞被利用",
-          "why": "對外系統的已知漏洞是常見的入侵入口",
-          "check": "列出對外系統與元件版本，對照近期安全公告並排定修補",
-          "how": "查弱點掃描報告、元件版本清單與修補紀錄",
-          "plain": "對外系統可能有沒修補的漏洞",
-          "basis": "事件標題提到「伺服器」",
-          "systems": [
-            {
-              "asset_id": "api-gateway",
-              "label": "API 閘道"
-            },
-            {
-              "asset_id": "internal-tool",
-              "label": "內部營運工具"
-            },
-            {
-              "asset_id": "marketing-site",
-              "label": "行銷官網"
-            },
-            {
-              "asset_id": "nas-office-01",
-              "label": "辦公室 NAS"
-            },
-            {
-              "asset_id": "storefront",
-              "label": "商店網站"
+              "asset_id": "member-api",
+              "label": "會員服務 API"
             }
           ],
           "controls": []
         },
         {
-          "id": "db-cred-leak",
-          "source": "rule",
+          "id": "ai-2",
+          "source": "ai",
           "inferred": true,
-          "target": "database",
-          "hypothesis": "資料庫帳密或連線字串外洩（放在程式碼、設定檔或員工電腦上）",
-          "why": "拿到資料庫帳密就能不靠漏洞直接讀取資料",
-          "check": "確認資料庫帳密沒有放在程式碼或設定檔中，疑似外洩時立即輪替",
-          "how": "查程式碼倉庫的金鑰掃描結果、設定檔，以及部署用的機密管理設定",
-          "plain": "資料庫的帳號密碼可能外流被拿來登入",
-          "basis": "事件標題提到「個資」",
+          "target": null,
+          "hypothesis": "對外網站或服務的弱點可能被利用，再進一步讀取會員資料",
+          "why": null,
+          "check": "檢查商店網站與 API 閘道的元件版本與修補狀態，並查存取紀錄中的異常查詢",
+          "how": null,
+          "plain": "對外網站或服務的弱點可能被利用，再進一步讀取會員資料",
+          "basis": "AI 依事件推測：攻擊過程第 2 步指出外流的是會員與網購使用者個資，網購資料多經由對外網站存取",
           "systems": [
             {
-              "asset_id": "order-db-prod-cred",
-              "label": "正式訂單資料庫帳密"
+              "asset_id": "storefront",
+              "label": "商店網站"
             },
             {
-              "asset_id": "order-db-test-cred",
-              "label": "測試訂單資料庫帳密"
+              "asset_id": "api-gateway",
+              "label": "API 閘道"
             }
           ],
-          "controls": [
-            {
-              "control_id": "C-SECRET-IN-GIT",
-              "title": "Git 中不得有正式環境金鑰",
-              "status": "fail",
-              "status_label": "不符合"
-            },
-            {
-              "control_id": "C-DEV-DEVICE-TOKEN",
-              "title": "員工電腦不得持有正式部署權杖",
-              "status": "fail",
-              "status_label": "不符合"
-            }
-          ]
-        },
-        {
-          "id": "server-remote-admin",
-          "source": "rule",
-          "inferred": true,
-          "target": "server",
-          "hypothesis": "伺服器的遠端管理帳密被猜中或外洩",
-          "why": "遠端管理服務對外時，弱密碼與外洩帳密常被利用",
-          "check": "確認遠端管理只允許公司網路或 VPN 連線，並停用純密碼登入或啟用雙因素驗證",
-          "how": "查防火牆規則、遠端管理服務設定與登入紀錄",
-          "plain": "伺服器的遠端管理帳號可能被猜中",
-          "basis": "事件標題提到「伺服器」",
-          "systems": [
-            {
-              "asset_id": "nas-office-01",
-              "label": "辦公室 NAS"
-            }
-          ],
-          "controls": [
-            {
-              "control_id": "C-INTERNAL-TOOL-EXPOSED",
-              "title": "內部工具不得對外開放",
-              "status": "fail",
-              "status_label": "不符合"
-            }
-          ]
+          "controls": []
         }
       ]
     }
@@ -280,21 +179,17 @@
           "observed_at": "2026-11-13T03:51:03Z",
           "suggestions": [
             {
-              "id": "db-exposed",
-              "source": "rule",
+              "id": "ai-1",
+              "source": "ai",
               "inferred": true,
-              "target": "database",
-              "hypothesis": "資料庫或資料庫管理工具可以從外部或其他環境直接連線",
-              "why": "資料庫遭大量讀取的事件，常見原因是資料庫或管理工具允許的連線範圍過寬",
-              "check": "確認存放個資與訂單的資料庫及資料庫管理工具，只允許必要的來源連線",
-              "how": "查防火牆與安全群組規則、資料庫的允許來源設定，以及資料庫管理工具是否對外",
-              "plain": "資料庫或管理工具可能可以被直接連上",
-              "basis": "事件標題提到「個資」",
+              "target": null,
+              "hypothesis": "存放會員個資的伺服器可能可以從外部或其他環境直接連線",
+              "why": null,
+              "check": "確認正式會員資料庫與訂單資料庫只允許應用程式來源連線，並查近期異常登入與大量匯出",
+              "how": null,
+              "plain": "存放會員個資的伺服器可能可以從外部或其他環境直接連線",
+              "basis": "AI 依事件推測：攻擊過程第 1 步只說伺服器遭非法存取，未交代手法；外流的是會員個資",
               "systems": [
-                {
-                  "asset_id": "firebase-brand-app-storage",
-                  "label": "App 雲端檔案儲存區"
-                },
                 {
                   "asset_id": "member-db-prod",
                   "label": "正式會員資料庫"
@@ -304,131 +199,34 @@
                   "label": "正式訂單資料庫"
                 },
                 {
-                  "asset_id": "order-exports-bucket",
-                  "label": "訂單匯出檔案儲存區"
-                },
-                {
-                  "asset_id": "phpmyadmin",
-                  "label": "資料庫網頁管理工具"
-                }
-              ],
-              "controls": [
-                {
-                  "control_id": "C-INTERNAL-TOOL-EXPOSED",
-                  "title": "內部工具不得對外開放",
-                  "status": "fail",
-                  "status_label": "不符合"
-                },
-                {
-                  "control_id": "C-NET-SEGMENT",
-                  "title": "非正式環境不得連線正式資料庫",
-                  "status": "fail",
-                  "status_label": "不符合"
-                },
-                {
-                  "control_id": "C-CLOUD-STORAGE-PUBLIC",
-                  "title": "雲端儲存空間不得公開讀取",
-                  "status": "fail",
-                  "status_label": "不符合"
-                }
-              ]
-            },
-            {
-              "id": "server-unpatched",
-              "source": "rule",
-              "inferred": true,
-              "target": "server",
-              "hypothesis": "對外系統有未修補的漏洞被利用",
-              "why": "對外系統的已知漏洞是常見的入侵入口",
-              "check": "列出對外系統與元件版本，對照近期安全公告並排定修補",
-              "how": "查弱點掃描報告、元件版本清單與修補紀錄",
-              "plain": "對外系統可能有沒修補的漏洞",
-              "basis": "事件標題提到「伺服器」",
-              "systems": [
-                {
-                  "asset_id": "api-gateway",
-                  "label": "API 閘道"
-                },
-                {
-                  "asset_id": "internal-tool",
-                  "label": "內部營運工具"
-                },
-                {
-                  "asset_id": "marketing-site",
-                  "label": "行銷官網"
-                },
-                {
-                  "asset_id": "nas-office-01",
-                  "label": "辦公室 NAS"
-                },
-                {
-                  "asset_id": "storefront",
-                  "label": "商店網站"
+                  "asset_id": "member-api",
+                  "label": "會員服務 API"
                 }
               ],
               "controls": []
             },
             {
-              "id": "db-cred-leak",
-              "source": "rule",
+              "id": "ai-2",
+              "source": "ai",
               "inferred": true,
-              "target": "database",
-              "hypothesis": "資料庫帳密或連線字串外洩（放在程式碼、設定檔或員工電腦上）",
-              "why": "拿到資料庫帳密就能不靠漏洞直接讀取資料",
-              "check": "確認資料庫帳密沒有放在程式碼或設定檔中，疑似外洩時立即輪替",
-              "how": "查程式碼倉庫的金鑰掃描結果、設定檔，以及部署用的機密管理設定",
-              "plain": "資料庫的帳號密碼可能外流被拿來登入",
-              "basis": "事件標題提到「個資」",
+              "target": null,
+              "hypothesis": "對外網站或服務的弱點可能被利用，再進一步讀取會員資料",
+              "why": null,
+              "check": "檢查商店網站與 API 閘道的元件版本與修補狀態，並查存取紀錄中的異常查詢",
+              "how": null,
+              "plain": "對外網站或服務的弱點可能被利用，再進一步讀取會員資料",
+              "basis": "AI 依事件推測：攻擊過程第 2 步指出外流的是會員與網購使用者個資，網購資料多經由對外網站存取",
               "systems": [
                 {
-                  "asset_id": "order-db-prod-cred",
-                  "label": "正式訂單資料庫帳密"
+                  "asset_id": "storefront",
+                  "label": "商店網站"
                 },
                 {
-                  "asset_id": "order-db-test-cred",
-                  "label": "測試訂單資料庫帳密"
+                  "asset_id": "api-gateway",
+                  "label": "API 閘道"
                 }
               ],
-              "controls": [
-                {
-                  "control_id": "C-SECRET-IN-GIT",
-                  "title": "Git 中不得有正式環境金鑰",
-                  "status": "fail",
-                  "status_label": "不符合"
-                },
-                {
-                  "control_id": "C-DEV-DEVICE-TOKEN",
-                  "title": "員工電腦不得持有正式部署權杖",
-                  "status": "fail",
-                  "status_label": "不符合"
-                }
-              ]
-            },
-            {
-              "id": "server-remote-admin",
-              "source": "rule",
-              "inferred": true,
-              "target": "server",
-              "hypothesis": "伺服器的遠端管理帳密被猜中或外洩",
-              "why": "遠端管理服務對外時，弱密碼與外洩帳密常被利用",
-              "check": "確認遠端管理只允許公司網路或 VPN 連線，並停用純密碼登入或啟用雙因素驗證",
-              "how": "查防火牆規則、遠端管理服務設定與登入紀錄",
-              "plain": "伺服器的遠端管理帳號可能被猜中",
-              "basis": "事件標題提到「伺服器」",
-              "systems": [
-                {
-                  "asset_id": "nas-office-01",
-                  "label": "辦公室 NAS"
-                }
-              ],
-              "controls": [
-                {
-                  "control_id": "C-INTERNAL-TOOL-EXPOSED",
-                  "title": "內部工具不得對外開放",
-                  "status": "fail",
-                  "status_label": "不符合"
-                }
-              ]
+              "controls": []
             }
           ]
         }

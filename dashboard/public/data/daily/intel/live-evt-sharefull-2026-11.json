@@ -57,106 +57,58 @@
       "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
       "suggestions": [
         {
-          "id": "admin-exposed",
-          "source": "rule",
+          "id": "ai-1",
+          "source": "ai",
           "inferred": true,
-          "target": "admin",
-          "hypothesis": "管理後台可以從外部連線，而且只靠帳號密碼保護",
-          "why": "管理系統遭非法存取的事件，常見原因是後台對外開放",
-          "check": "確認後台與管理介面只允許公司網路或 VPN 連線，並啟用雙因素驗證",
-          "how": "查後台的對外設定、反向代理與防火牆規則，以及登入方式",
-          "plain": "管理後台可能從外部就連得到",
-          "basis": "事件標題提到「管理系統」",
+          "target": null,
+          "hypothesis": "管理後台可以從外部連線，帳號遭盜用後被直接登入",
+          "why": null,
+          "check": "確認內部營運工具、資料庫網頁管理工具與辦公室 NAS 只允許公司網路或 VPN 連線，啟用多因素驗證，並查登入來源 IP",
+          "how": null,
+          "plain": "管理後台可以從外部連線，帳號遭盜用後被直接登入",
+          "basis": "AI 依事件推測：攻擊過程第 1、2 步指出遭非法存取的是管理系統，公司需封鎖入侵途徑",
           "systems": [
             {
               "asset_id": "internal-tool",
               "label": "內部營運工具"
             },
             {
-              "asset_id": "nas-office-01",
-              "label": "辦公室 NAS"
-            },
-            {
               "asset_id": "phpmyadmin",
               "label": "資料庫網頁管理工具"
+            },
+            {
+              "asset_id": "nas-office-01",
+              "label": "辦公室 NAS"
             }
           ],
-          "controls": [
-            {
-              "control_id": "C-INTERNAL-TOOL-EXPOSED",
-              "title": "內部工具不得對外開放",
-              "status": "fail",
-              "status_label": "不符合"
-            }
-          ]
+          "controls": []
         },
         {
-          "id": "admin-unpatched",
-          "source": "rule",
+          "id": "ai-2",
+          "source": "ai",
           "inferred": true,
-          "target": "admin",
-          "hypothesis": "後台或管理工具使用的軟體有未修補的漏洞",
-          "why": "後台軟體常較少更新，已知漏洞容易被利用",
-          "check": "確認後台與管理工具的軟體版本，對照原廠的修補公告",
-          "how": "查後台軟體的版本資訊、更新紀錄與原廠安全公告",
-          "plain": "管理後台的軟體可能沒有更新到最新",
-          "basis": "事件標題提到「管理系統」",
+          "target": null,
+          "hypothesis": "後台權限過大，一個帳號就能讀取全部使用者的敏感資料",
+          "why": null,
+          "check": "檢查後台帳號權限與可匯出的資料範圍，確認敏感欄位有額外權限控管與大量匯出告警",
+          "how": null,
+          "plain": "後台權限過大，一個帳號就能讀取全部使用者的敏感資料",
+          "basis": "AI 依事件推測：攻擊過程第 3 步指出最多約 750 萬名使用者的帳號與敏感資訊可能外洩",
           "systems": [
             {
               "asset_id": "internal-tool",
               "label": "內部營運工具"
             },
             {
-              "asset_id": "nas-office-01",
-              "label": "辦公室 NAS"
-            },
-            {
               "asset_id": "phpmyadmin",
               "label": "資料庫網頁管理工具"
-            }
-          ],
-          "controls": [
-            {
-              "control_id": "C-INTERNAL-TOOL-EXPOSED",
-              "title": "內部工具不得對外開放",
-              "status": "fail",
-              "status_label": "不符合"
-            }
-          ]
-        },
-        {
-          "id": "admin-account",
-          "source": "rule",
-          "inferred": true,
-          "target": "admin",
-          "hypothesis": "員工或委外人員的後台帳號被盜用",
-          "why": "用合法帳號登入後台，比找漏洞容易，也比較不容易被發現",
-          "check": "檢查後台帳號清單、權限與最近登入紀錄，停用不需要的帳號",
-          "how": "查後台的帳號與權限清單，以及登入紀錄的來源與時間",
-          "plain": "員工或廠商的後台帳號可能被盜用",
-          "basis": "事件標題提到「管理系統」",
-          "systems": [
-            {
-              "asset_id": "internal-tool",
-              "label": "內部營運工具"
             },
             {
-              "asset_id": "nas-office-01",
-              "label": "辦公室 NAS"
-            },
-            {
-              "asset_id": "phpmyadmin",
-              "label": "資料庫網頁管理工具"
+              "asset_id": "member-db-prod",
+              "label": "正式會員資料庫"
             }
           ],
-          "controls": [
-            {
-              "control_id": "C-INTERNAL-TOOL-EXPOSED",
-              "title": "內部工具不得對外開放",
-              "status": "fail",
-              "status_label": "不符合"
-            }
-          ]
+          "controls": []
         }
       ]
     }
@@ -231,106 +183,58 @@
           "observed_at": "2026-11-13T03:51:03Z",
           "suggestions": [
             {
-              "id": "admin-exposed",
-              "source": "rule",
+              "id": "ai-1",
+              "source": "ai",
               "inferred": true,
-              "target": "admin",
-              "hypothesis": "管理後台可以從外部連線，而且只靠帳號密碼保護",
-              "why": "管理系統遭非法存取的事件，常見原因是後台對外開放",
-              "check": "確認後台與管理介面只允許公司網路或 VPN 連線，並啟用雙因素驗證",
-              "how": "查後台的對外設定、反向代理與防火牆規則，以及登入方式",
-              "plain": "管理後台可能從外部就連得到",
-              "basis": "事件標題提到「管理系統」",
+              "target": null,
+              "hypothesis": "管理後台可以從外部連線，帳號遭盜用後被直接登入",
+              "why": null,
+              "check": "確認內部營運工具、資料庫網頁管理工具與辦公室 NAS 只允許公司網路或 VPN 連線，啟用多因素驗證，並查登入來源 IP",
+              "how": null,
+              "plain": "管理後台可以從外部連線，帳號遭盜用後被直接登入",
+              "basis": "AI 依事件推測：攻擊過程第 1、2 步指出遭非法存取的是管理系統，公司需封鎖入侵途徑",
               "systems": [
                 {
                   "asset_id": "internal-tool",
                   "label": "內部營運工具"
                 },
                 {
-                  "asset_id": "nas-office-01",
-                  "label": "辦公室 NAS"
-                },
-                {
                   "asset_id": "phpmyadmin",
                   "label": "資料庫網頁管理工具"
+                },
+                {
+                  "asset_id": "nas-office-01",
+                  "label": "辦公室 NAS"
                 }
               ],
-              "controls": [
-                {
-                  "control_id": "C-INTERNAL-TOOL-EXPOSED",
-                  "title": "內部工具不得對外開放",
-                  "status": "fail",
-                  "status_label": "不符合"
-                }
-              ]
+              "controls": []
             },
             {
-              "id": "admin-unpatched",
-              "source": "rule",
+              "id": "ai-2",
+              "source": "ai",
               "inferred": true,
-              "target": "admin",
-              "hypothesis": "後台或管理工具使用的軟體有未修補的漏洞",
-              "why": "後台軟體常較少更新，已知漏洞容易被利用",
-              "check": "確認後台與管理工具的軟體版本，對照原廠的修補公告",
-              "how": "查後台軟體的版本資訊、更新紀錄與原廠安全公告",
-              "plain": "管理後台的軟體可能沒有更新到最新",
-              "basis": "事件標題提到「管理系統」",
+              "target": null,
+              "hypothesis": "後台權限過大，一個帳號就能讀取全部使用者的敏感資料",
+              "why": null,
+              "check": "檢查後台帳號權限與可匯出的資料範圍，確認敏感欄位有額外權限控管與大量匯出告警",
+              "how": null,
+              "plain": "後台權限過大，一個帳號就能讀取全部使用者的敏感資料",
+              "basis": "AI 依事件推測：攻擊過程第 3 步指出最多約 750 萬名使用者的帳號與敏感資訊可能外洩",
               "systems": [
                 {
                   "asset_id": "internal-tool",
                   "label": "內部營運工具"
                 },
                 {
-                  "asset_id": "nas-office-01",
-                  "label": "辦公室 NAS"
-                },
-                {
                   "asset_id": "phpmyadmin",
                   "label": "資料庫網頁管理工具"
-                }
-              ],
-              "controls": [
-                {
-                  "control_id": "C-INTERNAL-TOOL-EXPOSED",
-                  "title": "內部工具不得對外開放",
-                  "status": "fail",
-                  "status_label": "不符合"
-                }
-              ]
-            },
-            {
-              "id": "admin-account",
-              "source": "rule",
-              "inferred": true,
-              "target": "admin",
-              "hypothesis": "員工或委外人員的後台帳號被盜用",
-              "why": "用合法帳號登入後台，比找漏洞容易，也比較不容易被發現",
-              "check": "檢查後台帳號清單、權限與最近登入紀錄，停用不需要的帳號",
-              "how": "查後台的帳號與權限清單，以及登入紀錄的來源與時間",
-              "plain": "員工或廠商的後台帳號可能被盜用",
-              "basis": "事件標題提到「管理系統」",
-              "systems": [
-                {
-                  "asset_id": "internal-tool",
-                  "label": "內部營運工具"
                 },
                 {
-                  "asset_id": "nas-office-01",
-                  "label": "辦公室 NAS"
-                },
-                {
-                  "asset_id": "phpmyadmin",
-                  "label": "資料庫網頁管理工具"
+                  "asset_id": "member-db-prod",
+                  "label": "正式會員資料庫"
                 }
               ],
-              "controls": [
-                {
-                  "control_id": "C-INTERNAL-TOOL-EXPOSED",
-                  "title": "內部工具不得對外開放",
-                  "status": "fail",
-                  "status_label": "不符合"
-                }
-              ]
+              "controls": []
             }
           ]
         }

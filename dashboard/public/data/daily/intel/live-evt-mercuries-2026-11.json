@@ -58,32 +58,24 @@
       "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
       "suggestions": [
         {
-          "id": "server-unpatched",
-          "source": "rule",
+          "id": "ai-1",
+          "source": "ai",
           "inferred": true,
-          "target": "server",
-          "hypothesis": "對外系統有未修補的漏洞被利用",
-          "why": "對外系統的已知漏洞是常見的入侵入口",
-          "check": "列出對外系統與元件版本，對照近期安全公告並排定修補",
-          "how": "查弱點掃描報告、元件版本清單與修補紀錄",
-          "plain": "對外系統可能有沒修補的漏洞",
-          "basis": "攻擊過程第 4 步提到「漏洞」",
+          "target": null,
+          "hypothesis": "會員訂單 API 可能缺少存取控制或限流，被外部 IP 大量查詢",
+          "why": null,
+          "check": "檢查訂單相關 API 是否驗證資料擁有者、有無頻率限制，並查 API 閘道與會員服務存取紀錄中的異常 IP 與大量請求",
+          "how": null,
+          "plain": "會員訂單 API 可能缺少存取控制或限流，被外部 IP 大量查詢",
+          "basis": "AI 依事件推測：攻擊過程第 2、3 步指出外部特定 IP 異常存取電商系統，部分請求涉及會員訂單相關 API",
           "systems": [
             {
               "asset_id": "api-gateway",
               "label": "API 閘道"
             },
             {
-              "asset_id": "internal-tool",
-              "label": "內部營運工具"
-            },
-            {
-              "asset_id": "marketing-site",
-              "label": "行銷官網"
-            },
-            {
-              "asset_id": "nas-office-01",
-              "label": "辦公室 NAS"
+              "asset_id": "member-api",
+              "label": "會員服務 API"
             },
             {
               "asset_id": "storefront",
@@ -93,30 +85,31 @@
           "controls": []
         },
         {
-          "id": "server-remote-admin",
-          "source": "rule",
+          "id": "ai-2",
+          "source": "ai",
           "inferred": true,
-          "target": "server",
-          "hypothesis": "伺服器的遠端管理帳密被猜中或外洩",
-          "why": "遠端管理服務對外時，弱密碼與外洩帳密常被利用",
-          "check": "確認遠端管理只允許公司網路或 VPN 連線，並停用純密碼登入或啟用雙因素驗證",
-          "how": "查防火牆規則、遠端管理服務設定與登入紀錄",
-          "plain": "伺服器的遠端管理帳號可能被猜中",
-          "basis": "攻擊過程第 4 步提到「漏洞」",
+          "target": null,
+          "hypothesis": "取得的訂單資料已被拿去寄詐騙信給消費者",
+          "why": null,
+          "check": "查寄信服務近期寄送紀錄有無不明寄件，並確認訂單通知信帶出的個資是否過多",
+          "how": null,
+          "plain": "取得的訂單資料已被拿去寄詐騙信給消費者",
+          "basis": "AI 依事件推測：攻擊過程第 1 步指出消費者收到疑似詐騙電子郵件，公司才回溯發現異常存取",
           "systems": [
             {
-              "asset_id": "nas-office-01",
-              "label": "辦公室 NAS"
+              "asset_id": "mail-service",
+              "label": "寄信服務"
+            },
+            {
+              "asset_id": "mail-api-key",
+              "label": "寄信服務金鑰"
+            },
+            {
+              "asset_id": "order-db-prod",
+              "label": "正式訂單資料庫"
             }
           ],
-          "controls": [
-            {
-              "control_id": "C-INTERNAL-TOOL-EXPOSED",
-              "title": "內部工具不得對外開放",
-              "status": "fail",
-              "status_label": "不符合"
-            }
-          ]
+          "controls": []
         }
       ]
     }
@@ -192,32 +185,24 @@
           "observed_at": "2026-11-13T03:51:03Z",
           "suggestions": [
             {
-              "id": "server-unpatched",
-              "source": "rule",
+              "id": "ai-1",
+              "source": "ai",
               "inferred": true,
-              "target": "server",
-              "hypothesis": "對外系統有未修補的漏洞被利用",
-              "why": "對外系統的已知漏洞是常見的入侵入口",
-              "check": "列出對外系統與元件版本，對照近期安全公告並排定修補",
-              "how": "查弱點掃描報告、元件版本清單與修補紀錄",
-              "plain": "對外系統可能有沒修補的漏洞",
-              "basis": "攻擊過程第 4 步提到「漏洞」",
+              "target": null,
+              "hypothesis": "會員訂單 API 可能缺少存取控制或限流，被外部 IP 大量查詢",
+              "why": null,
+              "check": "檢查訂單相關 API 是否驗證資料擁有者、有無頻率限制，並查 API 閘道與會員服務存取紀錄中的異常 IP 與大量請求",
+              "how": null,
+              "plain": "會員訂單 API 可能缺少存取控制或限流，被外部 IP 大量查詢",
+              "basis": "AI 依事件推測：攻擊過程第 2、3 步指出外部特定 IP 異常存取電商系統，部分請求涉及會員訂單相關 API",
               "systems": [
                 {
                   "asset_id": "api-gateway",
                   "label": "API 閘道"
                 },
                 {
-                  "asset_id": "internal-tool",
-                  "label": "內部營運工具"
-                },
-                {
-                  "asset_id": "marketing-site",
-                  "label": "行銷官網"
-                },
-                {
-                  "asset_id": "nas-office-01",
-                  "label": "辦公室 NAS"
+                  "asset_id": "member-api",
+                  "label": "會員服務 API"
                 },
                 {
                   "asset_id": "storefront",
@@ -227,30 +212,31 @@
               "controls": []
             },
             {
-              "id": "server-remote-admin",
-              "source": "rule",
+              "id": "ai-2",
+              "source": "ai",
               "inferred": true,
-              "target": "server",
-              "hypothesis": "伺服器的遠端管理帳密被猜中或外洩",
-              "why": "遠端管理服務對外時，弱密碼與外洩帳密常被利用",
-              "check": "確認遠端管理只允許公司網路或 VPN 連線，並停用純密碼登入或啟用雙因素驗證",
-              "how": "查防火牆規則、遠端管理服務設定與登入紀錄",
-              "plain": "伺服器的遠端管理帳號可能被猜中",
-              "basis": "攻擊過程第 4 步提到「漏洞」",
+              "target": null,
+              "hypothesis": "取得的訂單資料已被拿去寄詐騙信給消費者",
+              "why": null,
+              "check": "查寄信服務近期寄送紀錄有無不明寄件，並確認訂單通知信帶出的個資是否過多",
+              "how": null,
+              "plain": "取得的訂單資料已被拿去寄詐騙信給消費者",
+              "basis": "AI 依事件推測：攻擊過程第 1 步指出消費者收到疑似詐騙電子郵件，公司才回溯發現異常存取",
               "systems": [
                 {
-                  "asset_id": "nas-office-01",
-                  "label": "辦公室 NAS"
+                  "asset_id": "mail-service",
+                  "label": "寄信服務"
+                },
+                {
+                  "asset_id": "mail-api-key",
+                  "label": "寄信服務金鑰"
+                },
+                {
+                  "asset_id": "order-db-prod",
+                  "label": "正式訂單資料庫"
                 }
               ],
-              "controls": [
-                {
-                  "control_id": "C-INTERNAL-TOOL-EXPOSED",
-                  "title": "內部工具不得對外開放",
-                  "status": "fail",
-                  "status_label": "不符合"
-                }
-              ]
+              "controls": []
             }
           ]
         }
