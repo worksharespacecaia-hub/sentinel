@@ -182,9 +182,10 @@ class Source(_Model):
 
 
 class EntryPoint(_Model):
-    """daily-intel 的 AI 推測「可能從哪裡進來」（specs/check-hints R4）：只用於顯示，不進比對與評分。"""
-    topic: str | None = None                       # rules/check-hints.json 的 target ID
-    text: str = Field(min_length=1, max_length=100)
+    """daily-intel 的 AI 推測「可能從哪裡進來」（specs/check-hints-ai R2）：只用於顯示，不進比對與評分。"""
+    text: str = Field(min_length=1, max_length=80)          # 可能的破口（白話，給 CEO 看）
+    check: str = Field(min_length=1, max_length=160)        # 我們要查什麼、怎麼查
+    systems: list[str] = Field(default_factory=list, max_length=5)   # stack.json assets[].id；是否存在由使用端驗證
     basis: str = Field(min_length=1, max_length=120)
 
 
@@ -319,9 +320,13 @@ class DigestImpact(_Model):
 
 
 class DigestSuggestion(_Model):
-    """需確認事件的公開查核建議（specs/check-hints R6.1）：只有白話文字與系統白話名稱。"""
+    """需確認事件的公開查核建議（specs/check-hints R6.1）：只有白話文字與系統白話名稱。
+
+    source（specs/check-hints-ai R5.1）：ai 為 AI 推測、rule 為規則推測；舊資料沒有時視為規則推測。
+    """
     text: str = Field(max_length=300)
     systems: list[str] = Field(default_factory=list, max_length=5)
+    source: Literal["ai", "rule"] = "rule"
 
 
 class DigestAssessment(_Model):

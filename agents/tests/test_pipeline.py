@@ -210,11 +210,20 @@ def _frozen_events():
     return json.loads(p.read_text(encoding="utf-8"))
 
 
+def _frozen_ai_events():
+    """specs/check-hints-ai R7.1：2026-11-13 的 5 件需確認事件（帶新格式 possible_entry_points，check／systems 為測試資料補值）。"""
+    import json
+    from pathlib import Path
+    p = Path(__file__).parent / "fixtures" / "check-hints" / "events-2026-11-13.json"
+    return json.loads(p.read_text(encoding="utf-8"))["events"]
+
+
 AI_ONLY_EVENT = {
     "id": "live-ai-only-test-2026-11", "kind": "live", "title": "某公司遭駭，影響範圍仍在確認", "date": "2026-11-11",
     "revision": "1", "confidence": "provisional", "sources": [], "products": [], "cves": [], "controls": [],
     "attack_chain": ["攻擊者取得存取權"], "summary": "公司公告遭駭。", "proposed_controls": [],
-    "possible_entry_points": [{"topic": "admin", "text": "可能是後台帳號遭盜用；查後台登入紀錄", "basis": "攻擊過程第 1 步"}],
+    "possible_entry_points": [{"text": "可能是後台帳號遭盜用", "check": "查後台登入紀錄",
+                               "systems": ["internal-tool", "brand-app@3.1.0"], "basis": "攻擊過程第 1 步"}],
 }
 
 
@@ -265,7 +274,7 @@ def test_r82_daily_same_with_and_without_rules(monkeypatch, tmp_path):
 
 
 def test_r82_frozen_and_ai_events_same_with_and_without_rules(monkeypatch, tmp_path):
-    live = [*_frozen_events(), AI_ONLY_EVENT]
+    live = [*_frozen_events(), *_frozen_ai_events(), AI_ONLY_EVENT]
 
     def run():
         return evaluate(EvalInput(target_root=FIXTURE_TARGET, as_of=AS_OF, scanners_dir=FIXTURE_SCANNERS,
@@ -282,8 +291,32 @@ def test_r82_frozen_and_ai_events_same_with_and_without_rules(monkeypatch, tmp_p
         assert all(s["source"] == "rule" and s["inferred"] for s in sugs(ok_res, e["id"]))
         assert [s["id"] for s in sugs(bad_res, e["id"])][:2] == ["generic-1", "generic-2"]   # 規則無效 → 通用建議
     ai_ok, ai_bad = sugs(ok_res, AI_ONLY_EVENT["id"]), sugs(bad_res, AI_ONLY_EVENT["id"])
-    assert [(s["source"], s["target"]) for s in ai_ok] == [("ai", "admin")] and ai_ok[0]["systems"]
-    assert [(s["source"], s["target"], s["systems"]) for s in ai_bad] == [("ai", None, [])]   # 規則無效時 topic 移除
+    assert [(s["source"], s["target"]) for s in ai_ok] == [("ai", None)]
+    assert [x["asset_id"] for x in ai_ok[0]["systems"]] == ["internal-tool"]       # app_version 不在 ai_assets → 移除
+    assert ai_bad == ai_ok                                                          # AI 推測不依賴規則表
+    for e in _frozen_ai_events():                                                   # R7.1：5 件都只有 AI 推測
+        assert {s["source"] for s in sugs(ok_res, e["id"])} == {"ai"} == {s["source"] for s in sugs(bad_res, e["id"])}
+
+
+def test_r82_same_with_and_without_ai_entry_points(monkeypatch):
+    """specs/check-hints-ai R7.2：有沒有 AI 推測，判定、分數、燈號、結論、完整性都不變；拿掉 AI 後退回規則推測。"""
+    monkeypatch.delenv("SENTINEL_CHECK_HINTS_FILE", raising=False)
+    with_ai = [*_frozen_ai_events(), AI_ONLY_EVENT]
+    without_ai = [{k: v for k, v in e.items() if k != "possible_entry_points"} for e in copy.deepcopy(with_ai)]
+
+    def run(live):
+        return evaluate(EvalInput(target_root=FIXTURE_TARGET, as_of=AS_OF, scanners_dir=FIXTURE_SCANNERS,
+                                  live_events=copy.deepcopy(live)))
+    a_res, b_res = run(with_ai), run(without_ai)
+    (a, a_built), (b, _) = _r82(a_res), _r82(b_res)
+    assert a == b
+    _validate_impacts(a_built)
+
+    def sources(res, eid):
+        m = next(m for m in res["matches"] if m["event"]["id"] == eid)
+        return {s["source"] for i in m["impacts"] if i["verdict"] == "need_check" for s in i["suggestions"]}
+    for e in _frozen_ai_events():
+        assert sources(a_res, e["id"]) == {"ai"} and sources(b_res, e["id"]) == {"rule"}
 
 
 def test_r82_scenarios_same_with_and_without_rules(monkeypatch, tmp_path):

@@ -16,7 +16,9 @@ export interface DigestAssessment {
   /** 需確認事件的公開查核建議（0.12.0，specs/check-hints）。舊資料沒有；不經 isEvent 檢查，建模時由 parseSuggestions 轉成安全陣列 */
   suggestions?: unknown;
 }
-export interface DigestSuggestion { text: string; systems: string[] }
+/** source：ai 為 AI 推測、rule 為程式規則推測（0.12.1，specs/check-hints-ai R5.1）；舊資料沒有 source 時視為 rule（R5.3） */
+export type SuggestionSource = "ai" | "rule";
+export interface DigestSuggestion { text: string; systems: string[]; source: SuggestionSource }
 export interface DigestEvent {
   id: string; kind: "live" | "archive" | "advisory"; title: string; event_date: string | null; first_seen: string; last_seen: string;
   last_seen_at: string; observed_run_id: string; confidence: "confirmed" | "provisional"; is_update_of: string | null; cves: string[];
@@ -318,6 +320,7 @@ const clip = (text: string, n: number) => {
 /**
  * assessment.suggestions → 安全陣列：不是陣列為 []；元素不是物件或 text 不是非空字串就略過；
  * systems 不是陣列為 []、只保留字串；截斷為 text 300 字、systems 5 個、整體 3 項。
+ * source 只接受 "ai"／"rule"；缺值或其他值一律當成 "rule"（specs/check-hints-ai R5.3）。
  */
 export function parseSuggestions(raw: unknown): DigestSuggestion[] {
   if (!Array.isArray(raw)) return [];
@@ -326,9 +329,20 @@ export function parseSuggestions(raw: unknown): DigestSuggestion[] {
     if (out.length >= SUGGESTION_LIMIT) break;
     if (!isObj(item) || !isStr(item.text) || !item.text.trim()) continue;
     const systems = Array.isArray(item.systems) ? item.systems.filter(isStr).slice(0, SUGGESTION_SYSTEM_LIMIT) : [];
-    out.push({ text: clip(item.text, SUGGESTION_TEXT_LIMIT), systems });
+    const source: SuggestionSource = item.source === "ai" ? "ai" : "rule";
+    out.push({ text: clip(item.text, SUGGESTION_TEXT_LIMIT), systems, source });
   }
   return out;
+}
+
+/**
+ * 卡片推測區塊的來源標示（specs/check-hints-ai R5.1）：全部 ai 為 ai、全部 rule 為 rule、其他為 mixed。
+ * 後端不混用來源（R3），mixed 只為舊資料或異常資料保留顯示方式；空清單回傳 rule，但畫面不顯示區塊。
+ */
+export function hintsSourceOf(suggestions: DigestSuggestion[]): SuggestionSource | "mixed" {
+  if (suggestions.length === 0) return "rule";
+  const first = suggestions[0].source;
+  return suggestions.every((s) => s.source === first) ? first : "mixed";
 }
 
 // ── 頁面用的檢視模型（伺服器端先格式化時間，避免 client 端時區或語系差異） ──
@@ -341,6 +355,8 @@ export interface Card extends FilterItem {
   standaloneText: string | null; detail: DetailLink | null;
   /** 查核建議（已由 parseSuggestions 清理）；畫面只在 relation 為 need_check 時顯示 */
   suggestions: DigestSuggestion[];
+  /** 推測區塊標題用的來源（hintsSourceOf）；suggestions 為空時不顯示 */
+  hintsSource: SuggestionSource | "mixed";
 }
 
 export interface DigestView {
@@ -353,6 +369,7 @@ export interface DigestView {
 function card(ev: DigestEvent, daily: DailyInfo | null, available: ReadonlySet<string>, reason: DigestGroup["standalone_reason"]): Card {
   const a = ev.assessment;
   const evaluated = fmtTime(a.evaluated_at);
+  const suggestions = parseSuggestions(a.suggestions);
   return {
     id: ev.id, relation: a.relation, title: ev.title, kindText: DIGEST_KIND_TEXT[ev.kind] ?? "外部事件",
     confidenceText: CONFIDENCE_TEXT[ev.confidence] ?? "未提供", eventDate: ev.event_date ?? "未提供",
@@ -366,7 +383,8 @@ function card(ev: DigestEvent, daily: DailyInfo | null, available: ReadonlySet<s
     relationChangedText: a.relation_changed_at ? `結論更新於 ${fmtTime(a.relation_changed_at)}` : null,
     standaloneText: reason === "parent_missing" ? "較早事件的新進度" : reason === "link_invalid" ? "新進度的關聯有誤，獨立顯示" : null,
     detail: detailLink(ev, daily, available),
-    suggestions: parseSuggestions(a.suggestions),
+    suggestions,
+    hintsSource: hintsSourceOf(suggestions),
   };
 }
 

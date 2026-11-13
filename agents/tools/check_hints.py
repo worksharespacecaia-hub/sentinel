@@ -1,9 +1,10 @@
-"""需確認項目的可能破口與查核建議（0.12.0，specs/check-hints）：純程式產生，不連網路、不呼叫 LLM。
+"""需確認項目的可能破口與查核建議（0.12.0 specs/check-hints；0.12.1 specs/check-hints-ai）：不連網路、不呼叫 LLM。
 
 - R2：依 need_check 的原因（intel_match 寫的私有欄位 _need）產生具體建議，範本寫在程式中，不讀規則表
-- R3：無比對依據事件，依 rules/check-hints.json 判斷「被打到的地方」，列出破口假設（推測，非來源事實）
-- R4：R3 沒有命中時，採用 daily-intel 寫在事件上的 possible_entry_points（AI 推測），使用前再檢查一次
-- 都沒有時，退回寫在程式內的通用建議（與既有 to_verify 相同）
+- 無比對依據事件的破口推測，採用順序（specs/check-hints-ai R3）：
+  1. daily-intel 寫在事件上的 possible_entry_points（AI 推測），使用前再檢查一次；systems 只留本次 ai_assets 中的 ID
+  2. 沒有合格的 AI 推測時，依 rules/check-hints.json 判斷「被打到的地方」，列出破口假設（規則推測，備援）
+  3. 都沒有時，退回寫在程式內的通用建議（與既有 to_verify 相同）
 
 建議只附在 impact 的 suggestions，不改 verdict／reason／risk_id／to_verify，也不影響分數、等級、燈號與結論。
 規則表、事件內容與 AI 推測都只當資料。
@@ -18,6 +19,7 @@ from pathlib import Path
 import yaml
 
 from tools.common import INTEL_DIR, RULES_DIR
+from tools.stack import ai_assets, nodes_of
 
 CHECK_HINTS_FILE = RULES_DIR / "check-hints.json"
 RULES_SOURCE = "rules/check-hints.json"
@@ -32,10 +34,11 @@ LIMITS = {"hypothesis": 120, "why": 120, "check": 160, "how": 200, "plain": 80, 
 LABEL_LIMIT = 40
 KEYWORD_LIMIT = 40
 MAX_SYSTEMS = 5
-MAX_INFERRED = 4          # R3.6：R3＋R4 合計
+MAX_INFERRED = 4          # 規則推測上限（v0.12.0 R3.6）
 MAX_REASON_BASED = 6      # R2.7：依原因的建議與通用建議
-MAX_AI_ITEMS = 3          # R4.1
-AI_TEXT_LIMIT = 100
+MAX_AI_ITEMS = 3          # specs/check-hints-ai R2.1、R3
+AI_TEXT_LIMIT = 80
+AI_CHECK_LIMIT = 160
 AI_BASIS_LIMIT = 120
 
 STATUS_LABEL = {"pass": "符合", "fail": "不符合", "unknown": "資料不足"}
@@ -182,13 +185,6 @@ def load_rules(path: Path | None = None) -> tuple[dict | None, dict | None]:
         return None, dict(INVALID_ISSUE)
 
 
-def topic_ids(rules: dict | None = None) -> list[str]:
-    """規則表 target ID 白名單；沒給 rules 時自行載入，規則表無效時為空清單。"""
-    if rules is None:
-        rules, _ = load_rules()
-    return [t["id"] for t in (rules or {}).get("targets", [])]
-
-
 # ── 共用 ───────────────────────────────────────────────────────
 
 def _clip(value, limit: int):
@@ -213,19 +209,6 @@ def _cap_reason_based(items: list[dict]) -> list[dict]:
         return items
     rest = len(items) - (MAX_REASON_BASED - 1)
     return [*items[: MAX_REASON_BASED - 1], _suggestion("more", check=f"另有 {rest} 項待確認，見原始待確認清單")]
-
-
-def _iter_nodes(graph):
-    """支援 networkx 圖、graph_to_json 的 {"nodes": [...]}，以及 {asset_id: 屬性}。"""
-    if graph is None:
-        return []
-    if hasattr(graph, "nodes") and callable(getattr(graph, "nodes")):
-        return [(nid, attrs) for nid, attrs in graph.nodes(data=True)]
-    if isinstance(graph, dict) and isinstance(graph.get("nodes"), list):
-        return [(n.get("id"), n) for n in graph["nodes"] if isinstance(n, dict) and n.get("id")]
-    if isinstance(graph, dict):
-        return [(k, v) for k, v in graph.items() if isinstance(v, dict)]
-    return []
 
 
 def _clause_ok(asset_id: str, node: dict, clause: dict) -> bool:
@@ -253,7 +236,7 @@ def _clause_ok(asset_id: str, node: dict, clause: dict) -> bool:
 
 def select_systems(graph, selector: list[dict], labels: dict[str, str]) -> list[dict]:
     """selector 子句之間 OR、子句內 AND；排除 zone，依 asset_id 排序，最多 5 個。"""
-    hits = sorted(nid for nid, node in _iter_nodes(graph)
+    hits = sorted(nid for nid, node in nodes_of(graph)
                   if node.get("type") != "zone" and any(_clause_ok(nid, node, c) for c in selector))
     return [{"asset_id": a, "label": labels.get(a)} for a in hits[:MAX_SYSTEMS]]
 
@@ -344,7 +327,7 @@ def reason_suggestions(imp: dict, need: dict, *, controls: dict, labels: dict[st
     return _cap_reason_based(out)
 
 
-# ── R3／R4 ───────────────────────────────────────────────────
+# ── 規則推測（備援）與 AI 推測 ─────────────────────────────────
 
 def _segments(ev: dict) -> list[tuple[int, int, str, str]]:
     """(出處層級, 段落序號, 出處名稱, 文字)：標題 0 → 攻擊過程 1 → 摘要 2 → 建議新增的控制項 3。"""
@@ -446,37 +429,57 @@ def _clean_ai_text(value) -> str | None:
     return value or None
 
 
-def ai_suggestions(ev: dict, rules: dict | None, *, graph, controls, labels) -> list[dict]:
-    """R4／R4.3a：possible_entry_points 轉成建議；結構、長度、機敏檢查不合格的項目丟掉。"""
+def _valid_items(raw) -> list[dict]:
+    """合格的 AI 推測項目（specs/check-hints-ai R4.2，比照 v0.12.0 R4.3a 再檢查一次）；不合格的整項丟掉。
+
+    text、basis 為非空字串；check 為字串或空值；清理後長度在上限內；原文與清理後都不含機敏內容；systems 是陣列。
+    """
     from tools.digest import has_sensitive   # 延遲匯入：digest 會匯入 llm
 
-    raw = ev.get("possible_entry_points")
     if not isinstance(raw, list):
         return []
-    targets = {t["id"]: t for t in (rules or {}).get("targets", [])}
     out = []
     for item in raw:
         if hasattr(item, "model_dump"):
             item = item.model_dump()
         if not isinstance(item, dict):
             continue
-        topic = item.get("topic")
-        if topic is not None and not isinstance(topic, str):
+        raw_text, raw_check, raw_basis = item.get("text"), item.get("check"), item.get("basis")
+        if raw_check is not None and not isinstance(raw_check, str):
             continue
-        text, basis = _clean_ai_text(item.get("text")), _clean_ai_text(item.get("basis"))
+        if not isinstance(item.get("systems"), list):
+            continue
+        text, check, basis = _clean_ai_text(raw_text), _clean_ai_text(raw_check), _clean_ai_text(raw_basis)
         if not text or not basis or len(text) > AI_TEXT_LIMIT or len(basis) > AI_BASIS_LIMIT:
             continue
-        if has_sensitive(item.get("text")) or has_sensitive(item.get("basis")) or has_sensitive(text) or has_sensitive(basis):
+        if check is not None and len(check) > AI_CHECK_LIMIT:
             continue
-        t = targets.get(topic) if topic else None          # 規則表無效或不在白名單 → topic 一律移除
-        first = t["hypotheses"][0] if t else None
-        out.append(_suggestion(f"ai-{len(out) + 1}", source="ai", inferred=True, target=t["id"] if t else None,
-                               hypothesis=text, check=text, plain=text, basis=f"AI 依事件推測：{basis}",
-                               systems=select_systems(graph, first["selector"], labels) if first else [],
-                               controls=_control_results(first["related_controls"], controls) if first else []))
-        if len(out) >= MAX_AI_ITEMS:
-            break
-    return out[:MAX_INFERRED]
+        if any(has_sensitive(v) for v in (raw_text, raw_check, raw_basis, text, check, basis) if isinstance(v, str)):
+            continue
+        out.append({"text": text, "check": check, "basis": basis,
+                    "systems": [a for a in item["systems"] if isinstance(a, str)]})
+    return out
+
+
+def ai_suggestions(ev: dict, *, graph, labels: dict[str, str]) -> list[dict]:
+    """possible_entry_points 轉成建議（specs/check-hints-ai R4）。
+
+    回傳 list（不是 generator），呼叫端用 `if ai:` 判斷才正確（R4.3）。systems 只保留本次 ai_assets 中的 ID（R4.2）：
+    graph 不存在的、被排除的類型（app_version、sdk、zone 等）、值驗證不合格的都移除。
+    """
+    labels = labels or {}
+    items = _valid_items(ev.get("possible_entry_points"))[:MAX_AI_ITEMS]
+    if not items:
+        return []
+    allowed = {a["id"] for a in ai_assets(graph, labels)}
+    out: list[dict] = []
+    for item in items:
+        systems = [a for a in dict.fromkeys(item["systems"]) if a in allowed][:MAX_SYSTEMS]
+        out.append(_suggestion(f"ai-{len(out) + 1}", source="ai", inferred=True, target=None,
+                               hypothesis=item["text"], plain=item["text"], check=item.get("check") or item["text"],
+                               how=None, basis=f"AI 依事件推測：{item['basis']}",
+                               systems=[{"asset_id": a, "label": labels.get(a)} for a in systems], controls=[]))
+    return out
 
 
 def generic_suggestions(ev: dict) -> list[dict]:
@@ -489,13 +492,15 @@ def generic_suggestions(ev: dict) -> list[dict]:
 
 
 def suggest_for_event(ev: dict, *, graph, controls, rules, labels) -> list[dict]:
-    """R3／R4：無比對依據事件的破口推測；都沒有時退回通用建議。"""
+    """無比對依據事件的破口推測（specs/check-hints-ai R3）：AI 推測 → 規則推測 → 通用建議，不混用。"""
     labels = labels or {}
+    ai = ai_suggestions(ev, graph=graph, labels=labels)
+    if ai:
+        return ai
     hits = detect_targets(ev, rules)
     if hits:
         return _rule_suggestions(ev, hits, rules, graph=graph, controls=controls, labels=labels)
-    ai = ai_suggestions(ev, rules, graph=graph, controls=controls, labels=labels)
-    return ai or generic_suggestions(ev)
+    return generic_suggestions(ev)
 
 
 # ── 對外 ───────────────────────────────────────────────────────

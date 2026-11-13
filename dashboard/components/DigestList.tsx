@@ -3,9 +3,17 @@
 // 時間文字已在伺服器端格式化；只顯示白話名稱，不顯示事件或系統的內部 ID（R8.1）。
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { RELATION_FILTERS, filterDigest, type Card, type RelationFilter, type ViewDay } from "@/lib/digest";
+import { RELATION_FILTERS, filterDigest, type Card, type DigestSuggestion, type RelationFilter, type ViewDay } from "@/lib/digest";
 import { fmtDateHeading } from "@/lib/labels";
 import { LevelText } from "@/components/ui";
+
+// 推測區塊標題依來源標示（specs/check-hints-ai R5.1）；mixed 時每條前另外標「AI：」或「規則：」
+const HINTS_TITLE: Record<Card["hintsSource"], string> = {
+  ai: "可能的破口與先查的地方（AI 推測）",
+  rule: "可能的破口與先查的地方（規則推測）",
+  mixed: "可能的破口與先查的地方（推測）",
+};
+const HINT_PREFIX: Record<DigestSuggestion["source"], string> = { ai: "AI：", rule: "規則：" };
 
 export default function DigestList({ days }: { days: ViewDay<Card>[] }) {
   const [filter, setFilter] = useState<RelationFilter>("all");
@@ -74,8 +82,8 @@ function EventCard({ c, update = false }: { c: Card; update?: boolean }) {
       )}
       {c.relation === "need_check" && c.suggestions.length > 0 && (
         <div className="digest-hints">
-          <strong>可能的破口與先查的地方（推測）</strong>
-          <ul>{c.suggestions.map((s, i) => <li key={i}>{s.text}</li>)}</ul>
+          <strong>{HINTS_TITLE[c.hintsSource]}</strong>
+          <ul>{c.suggestions.map((s, i) => <li key={i}>{c.hintsSource === "mixed" && HINT_PREFIX[s.source]}{s.text}</li>)}</ul>
         </div>
       )}
       <details open={!c.detail}>
