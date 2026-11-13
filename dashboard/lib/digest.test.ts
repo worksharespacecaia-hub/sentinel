@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import {
   NEWS_FAILED_TEXT, NEWS_UNKNOWN_TEXT, buildDigestView, detailLink, filterDigest, groupEvents, isDigestLatest, isStale,
-  mergeImpacts, newsNotice, pruneForView, relationLabel, safeHref, windowBounds,
+  mergeImpacts, newsNotice, parseSuggestions, pruneForView, relationLabel, safeHref, windowBounds,
   type Card, type DailyInfo, type DigestAssessment, type DigestEvent, type DigestLatest,
 } from "./digest.ts";
 import { fmtDateHeading, fmtTime, taipeiDate } from "./labels.ts";
@@ -300,5 +300,56 @@ test("getDigestView：整理不存在／格式不合；daily 被取代後重新�
   } finally {
     process.chdir(cwd);
     rmSync(root, { recursive: true, force: true });
+  }
+});
+
+// ── 查核建議（specs/check-hints R5.2、R5.4、R6.5） ─────────────────────────
+
+test("parseSuggestions：缺欄位、null、字串、錯誤項目都視為空陣列或略過；超量截斷", () => {
+  for (const raw of [undefined, null, "委外廠商被入侵", 3, {}, { text: "x" }]) assert.deepEqual(parseSuggestions(raw), [], String(raw));
+  assert.deepEqual(parseSuggestions([
+    null, "字串", 1, [], { text: "" }, { text: "   " }, { text: 5, systems: ["寄信服務"] }, { systems: ["寄信服務"] },
+    { text: "沒有系統欄位" },
+    { text: "系統不是陣列", systems: "寄信服務" },
+    { text: "只留字串系統", systems: ["寄信服務", 1, null, { label: "x" }, "商店網站"] },
+  ]), [
+    { text: "沒有系統欄位", systems: [] },
+    { text: "系統不是陣列", systems: [] },
+    { text: "只留字串系統", systems: ["寄信服務", "商店網站"] },
+  ]);
+  const many = parseSuggestions([
+    { text: "長".repeat(400), systems: Array.from({ length: 8 }, (_, i) => `系統${i}`) },
+    { text: "第二條" }, { text: "第三條" }, { text: "第四條" }, { text: "第五條" },
+  ]);
+  assert.equal(many.length, 3);
+  assert.equal(Array.from(many[0].text).length, 300);
+  assert.deepEqual(many[0].systems, ["系統0", "系統1", "系統2", "系統3", "系統4"]);
+  assert.deepEqual(many.map((s) => s.text.slice(0, 3)), ["長長長", "第二條", "第三條"]);
+  // 字數以 Unicode 字元計算，不切開代理字元對
+  assert.equal(parseSuggestions([{ text: "𠀋".repeat(301) }])[0].text, "𠀋".repeat(300));
+});
+
+test("卡片：父事件與新進度都帶出查核建議；沒有建議的舊資料為空陣列", () => {
+  const s1 = [{ text: "委外廠商被入侵，連帶外流我們交給它的資料；先查：寄信服務", systems: ["寄信服務"] }];
+  const s2 = [{ text: "資料庫或管理工具可能可以被直接連上", systems: [] }];
+  const parent = ev("evt-p", {}, { relation: "need_check", suggestions: s1 });
+  const child = ev("evt-c", { is_update_of: "evt-p" }, { relation: "need_check", suggestions: s2 });
+  const old = ev("evt-old", {}, { relation: "need_check" });                  // 0.12.0 之前的資料：沒有 suggestions
+  const view = buildDigestView(latestOf([parent, child, old]), NOW, DAILY, new Set());
+  const groups = view.days[0].groups;
+  const g = groups.find((x) => x.head.id === "evt-p")!;
+  assert.deepEqual(g.head.suggestions, s1);
+  assert.deepEqual(g.updates.map((u) => [u.id, u.suggestions]), [["evt-c", s2]]);
+  assert.deepEqual(groups.find((x) => x.head.id === "evt-old")!.head.suggestions, []);
+});
+
+test("suggestions 格式錯誤不讓整份整理無效：isDigestLatest 仍通過，該卡片的建議為空陣列", () => {
+  for (const bad of [null, "字串", { text: "x" }, [1, "x", { text: 2 }], 42]) {
+    const latest = latestOf([ev("evt-a", {}, { relation: "need_check", suggestions: bad }),
+      ev("evt-b", { is_update_of: "evt-a" }, { relation: "need_check", suggestions: [null, { text: "保留這條", systems: "x" }] })]);
+    assert.equal(isDigestLatest(latest), true, JSON.stringify(bad));
+    const g = buildDigestView(latest, NOW, DAILY, new Set()).days[0].groups[0];
+    assert.deepEqual(g.head.suggestions, []);
+    assert.deepEqual(g.updates[0].suggestions, [{ text: "保留這條", systems: [] }]);
   }
 });

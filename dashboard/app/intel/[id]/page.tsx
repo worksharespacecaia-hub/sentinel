@@ -9,6 +9,48 @@ import { extraCheckRows } from "@/lib/agentplan";
 export const dynamic = "force-dynamic";
 
 const VERDICT: Record<string, string> = { affected: "受影響", not_affected: "不受影響", need_check: "需確認" };
+const HINT_SOURCE: Record<string, string> = { rule: "規則", ai: "AI 推測" };
+
+interface HintRow { hypothesis: string; check: string; systems: string; how: string; controls: string; basis: string; source: string; inferred: boolean }
+
+const txt = (x: unknown): string | null => (typeof x === "string" && x.trim() ? x : null);
+const objs = (x: unknown): Record<string, unknown>[] =>
+  Array.isArray(x) ? x.filter((v): v is Record<string, unknown> => typeof v === "object" && v !== null && !Array.isArray(v)) : [];
+
+/** 需確認項目的查核建議（specs/check-hints R5.1）：只當文字顯示，不產生連結；格式不符的欄位顯示「—」。 */
+function hintRows(raw: unknown): HintRow[] {
+  return objs(raw).map((s) => {
+    const systems = objs(s.systems).map((x) => txt(x.label) ?? txt(x.asset_id)).filter((x): x is string => x !== null);
+    const controls = objs(s.controls).map((c) => `${txt(c.title) ?? txt(c.control_id) ?? "—"}：${txt(c.status_label) ?? "資料不足"}`);
+    const source = txt(s.source);
+    return {
+      hypothesis: txt(s.hypothesis) ?? "—",
+      check: txt(s.check) ?? "—",
+      systems: systems.length ? systems.join("、") : source === "rule" && txt(s.target) ? "盤點中沒有對應系統" : "—",
+      how: txt(s.how) ?? "—",
+      controls: controls.length ? controls.join("；") : "—",
+      basis: txt(s.basis) ?? "—",
+      source: (source && HINT_SOURCE[source]) ?? "—",
+      inferred: s.inferred === true,
+    };
+  });
+}
+
+function HintTable({ raw }: { raw: unknown }) {
+  const rows = hintRows(raw);
+  if (rows.length === 0) return null;
+  return (
+    <>
+      {rows.some((r) => r.inferred) && <p className="muted check-hints-note">以下為推測，非來源事實，供人工查核</p>}
+      <div className="table-wrap"><table>
+        <thead><tr><th>可能破口</th><th>我們要查什麼</th><th>相關系統</th><th>怎麼查</th><th>相關控制項結果</th><th>依據</th><th>來源</th></tr></thead>
+        <tbody>{rows.map((r, i) => (
+          <tr key={i}><td>{r.hypothesis}</td><td>{r.check}</td><td>{r.systems}</td><td>{r.how}</td><td>{r.controls}</td>
+            <td>{r.basis}</td><td>{r.source === "AI 推測" ? <span className="tag">{r.source}</span> : r.source}</td></tr>))}</tbody>
+      </table></div>
+    </>
+  );
+}
 
 export default async function IntelDetail({ params, searchParams }: {
   params: Promise<{ id: string }>; searchParams: Promise<Record<string, string | string[]>>;
@@ -73,7 +115,9 @@ export default async function IntelDetail({ params, searchParams }: {
         <h2 style={{ marginTop: 0 }}>不受影響與需確認</h2>
         <ul>
           {b["4_unaffected_and_check"].not_affected.map((r: any, i: number) => <li key={`n${i}`}>{r.asset_id}：{r.our_state}，{r.reason}</li>)}
-          {b["4_unaffected_and_check"].need_check.map((r: any, i: number) => <li key={`c${i}`}>需確認：{r.asset_id}：{(r.to_verify ?? []).join("；") || r.reason}</li>)}
+          {b["4_unaffected_and_check"].need_check.map((r: any, i: number) => (
+            <li key={`c${i}`}>需確認：{r.asset_id}：{(r.to_verify ?? []).join("；") || r.reason}
+              <HintTable raw={r.suggestions} /></li>))}
           {b["4_unaffected_and_check"].notes.map((n: string, i: number) => <li key={`m${i}`}>{n}</li>)}
         </ul>
       </div>

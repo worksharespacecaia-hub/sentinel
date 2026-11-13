@@ -5,6 +5,7 @@
 - 來源只保留網址、標題、引用與日期；驗證欄位清空，交給 intel_verify 實際抓頁面確認
 - 產品只保留名稱、生態系、版本範圍、CVSS 與影響類型；「已遭利用」「已確認」與觸發條件無法由程式驗證，不採用
 - 控制項只接受 controls.yaml 中已有的 ID；建議新增的控制項（proposed_controls）只保留標題與理由文字；文字欄位限制長度
+- 可能的破口（possible_entry_points）是唯一允許推測的欄位，只用於顯示：先對原文做機敏檢查再截斷，topic 只收規則表的 target ID
 - 沒有產品也沒有控制項的事件由 intel_match 判為「需確認」，不會因為沒東西可比就變成「不受影響」
 - 格式不符的事件略過並記錄原因；數量設上限，避免大量抓取
 - impacts（LLM 的初步判斷）不採用：受影響與否以程式比對為準
@@ -21,7 +22,8 @@ import yaml
 from pydantic import ValidationError
 
 from schemas import IntelEvent
-from tools.common import INTEL_DIR
+from tools import check_hints
+from tools.common import INTEL_DIR, SECRET_RE
 
 MAX_EVENTS = 30
 MAX_SOURCES = 5
@@ -32,6 +34,10 @@ CVE_RE = re.compile(r"^CVE-\d{4}-\d{4,7}$")
 ATTCK_RE = re.compile(r"^T\d{4}(\.\d{3})?$")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 ECOSYSTEMS = {"npm", "pypi", "maven", "php", "composer", "go", "nuget", "rubygems", "deb", "rpm", "docker", "synology-dsm", "generic"}
+MAX_ENTRY_POINTS = 3          # specs/check-hints R4.1
+ENTRY_TEXT_LIMIT = 100
+ENTRY_BASIS_LIMIT = 120
+CONTROL_CHARS_RE = re.compile(r"[\x00-\x1f\x7f]")
 IMPACTS = {"remote_code_execution", "account_takeover", "authorization_bypass", "data_exposure", "privilege_escalation",
            "denial_of_service", "other"}
 
@@ -84,14 +90,60 @@ def _proposed_controls(value) -> list[dict]:
     return [i for i in out if i["title"]][:3]
 
 
+def _entry_text(value, limit: int) -> str | None:
+    """去除控制字元、合併空白，再截斷到字數上限（R4.3 第 4 步）。"""
+    if not isinstance(value, str):
+        return None
+    value = " ".join(CONTROL_CHARS_RE.sub(" ", value).split())[:limit].strip()
+    return value or None
+
+
+def _entry_points(value, topics) -> list[dict]:
+    """AI 推測的可能破口（specs/check-hints R4.3），依下列順序清理；結果一定能通過 IntelEvent 驗證，不讓整件事件被略過。
+
+    1. 非陣列視為空陣列，非物件項目略過
+    2. 對原始（未截斷）的 text 與 basis 做機敏檢查，任一命中就整項略過（避免截斷後偵測不到半段金鑰）
+    3. text 或 basis 空白的項目略過（一定要寫依據）
+    4. 去除控制字元、合併空白，再截斷到字數上限
+    5. topic 不在規則表白名單時移除 topic，項目保留
+    6. 只取前 3 項
+    """
+    from tools.digest import has_sensitive   # 延遲匯入：digest 會匯入 llm
+
+    def sensitive(v) -> bool:
+        return isinstance(v, str) and (has_sensitive(v) or bool(SECRET_RE.search(v)))
+
+    allowed = set(topics or ())
+    out = []
+    for item in value if isinstance(value, list) else []:
+        if not isinstance(item, dict):
+            continue
+        raw_text, raw_basis = item.get("text"), item.get("basis")
+        if sensitive(raw_text) or sensitive(raw_basis):
+            continue
+        if not isinstance(raw_text, str) or not raw_text.strip() or not isinstance(raw_basis, str) or not raw_basis.strip():
+            continue
+        text, basis = _entry_text(raw_text, ENTRY_TEXT_LIMIT), _entry_text(raw_basis, ENTRY_BASIS_LIMIT)
+        if not text or not basis or sensitive(text) or sensitive(basis):   # 只有控制字元的文字；清理後再檢查一次（R7.3）
+            continue
+        topic = item.get("topic")
+        out.append({"topic": topic if isinstance(topic, str) and topic in allowed else None, "text": text, "basis": basis})
+    return out[:MAX_ENTRY_POINTS]
+
+
 def _live_id(raw_id: object, index: int) -> str:
     slug = SLUG_RE.sub("-", str(raw_id or "").lower()).strip("-.")[:60]
     slug = slug.removeprefix("live-") or f"event-{index + 1}"
     return f"live-{slug}"
 
 
-def sanitize_event(raw: dict, index: int, controls: set[str]) -> dict:
-    """回傳可交給 intel_verify 的事件；格式不符時丟出 ValueError。"""
+def sanitize_event(raw: dict, index: int, controls: set[str], topics: set[str] | None = None) -> dict:
+    """回傳可交給 intel_verify 的事件；格式不符時丟出 ValueError。
+
+    topics：possible_entry_points 的 topic 白名單（規則表 target ID）；None 時自行載入，規則表無效時為空集合。
+    """
+    if topics is None:
+        topics = set(check_hints.topic_ids())
     if not isinstance(raw, dict):
         raise ValueError("不是物件")
     sources = raw.get("sources")
@@ -108,6 +160,7 @@ def sanitize_event(raw: dict, index: int, controls: set[str]) -> dict:
         "attack_chain": _strings(raw.get("attack_chain")), "attck": _strings(raw.get("attck"), ATTCK_RE),
         "cves": _strings(raw.get("cves"), CVE_RE), "controls": [c for c in _strings(raw.get("controls")) if c in controls],
         "proposed_controls": _proposed_controls(raw.get("proposed_controls")),
+        "possible_entry_points": _entry_points(raw.get("possible_entry_points"), topics),
         "confidence": "confirmed" if raw.get("confidence") == "confirmed" else "provisional",   # 未驗證通過會再被降為暫定
         "products": [p for p in map(_product, (raw.get("products") or [])[:10] if isinstance(raw.get("products"), list) else []) if p],
         "sources": [{"url": _text(s.get("url"), 500), "title": _text(s.get("title"), 200) or "",
@@ -163,6 +216,7 @@ def load_daily_snapshot(path: Path) -> DailyIntelSnapshot:
     if len(raw_events) > MAX_EVENTS:
         issues.append(f"事件超過 {MAX_EVENTS} 件，只處理前 {MAX_EVENTS} 件")
     controls = _known_controls()
+    topics = set(check_hints.topic_ids())              # 規則表無效時為空集合：topic 全部移除，項目保留
     # 先掃描所有原始 ID（含超額事件）找出歧義別名：同一個別名指向兩個以上位置時，相關事件的所有別名都不收
     aliases = _id_aliases(raw_events)
     owners: dict[str, set[int]] = {}
@@ -173,7 +227,7 @@ def load_daily_snapshot(path: Path) -> DailyIntelSnapshot:
     events, seen, id_map = [], set(), {}
     for i, raw in enumerate(raw_events[:MAX_EVENTS]):
         try:
-            ev = sanitize_event(raw, i, controls)
+            ev = sanitize_event(raw, i, controls, topics)
         except ValueError as exc:
             issues.append(f"第 {i + 1} 件略過：{exc}")
             continue

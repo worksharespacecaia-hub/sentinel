@@ -181,6 +181,13 @@ class Source(_Model):
     verification_basis: Literal["live", "archived", "demo", "unverified", "official_api"] = "unverified"
 
 
+class EntryPoint(_Model):
+    """daily-intel 的 AI 推測「可能從哪裡進來」（specs/check-hints R4）：只用於顯示，不進比對與評分。"""
+    topic: str | None = None                       # rules/check-hints.json 的 target ID
+    text: str = Field(min_length=1, max_length=100)
+    basis: str = Field(min_length=1, max_length=120)
+
+
 class IntelEvent(_Model):
     id: str
     kind: Literal["live", "archive", "demo", "advisory"]
@@ -201,6 +208,8 @@ class IntelEvent(_Model):
     facts: list[dict] = Field(default_factory=list)
     summary: str | None = None
     fixture_note: str | None = None
+    # 只有 daily-intel 入口可帶（pipeline.event_sources 移除其他來源的這個欄位，R4.6）
+    possible_entry_points: list[EntryPoint] = Field(default_factory=list, max_length=3)
 
 
 class StackImpact(_Model):
@@ -213,6 +222,7 @@ class StackImpact(_Model):
     risk_id: str | None = None
     to_verify: list[str] = Field(default_factory=list)
     reason: str = ""
+    suggestions: list[dict] = Field(default_factory=list)   # 查核建議：只有 need_check 有內容；由 tools/check_hints 產生（specs/check-hints）
 
 
 class IntelMatchReport(_Model):
@@ -308,6 +318,12 @@ class DigestImpact(_Model):
     level: Level | None                        # 由同份報告 blocks 依 (asset_id, verdict) 對應；StackImpact 本身沒有 level
 
 
+class DigestSuggestion(_Model):
+    """需確認事件的公開查核建議（specs/check-hints R6.1）：只有白話文字與系統白話名稱。"""
+    text: str = Field(max_length=300)
+    systems: list[str] = Field(default_factory=list, max_length=5)
+
+
 class DigestAssessment(_Model):
     """最近一次完整評估的不可拆分快照：整組替換，不與其他 run 混用。"""
     evaluated_at: str = Field(pattern=_UTC)
@@ -319,6 +335,7 @@ class DigestAssessment(_Model):
     impacts: list[DigestImpact] = Field(max_length=20)
     impacts_total: int = Field(ge=0)
     impacts_truncated: bool
+    suggestions: list[DigestSuggestion] = Field(default_factory=list, max_length=3)   # 選填：舊 store／latest 沒有時為空陣列
     relation_changed_at: str | None = Field(default=None, pattern=_UTC)
 
     @model_validator(mode="after")
