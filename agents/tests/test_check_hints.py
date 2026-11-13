@@ -1,4 +1,8 @@
-"""需確認項目的查核建議（specs/check-hints，T1～T3）：規則表驗證、R2 依原因、R3 破口推測、R4 AI 推測消費端、R8.1 固定資料、情資報告 markdown。"""
+"""需確認項目的查核建議（specs/check-hints，T1～T3）：規則表驗證、R2 依原因、R3 破口推測、R4 AI 推測消費端、R8.1 固定資料、情資報告 markdown。
+
+v0.12.1（specs/check-hints-ai）：採用順序改為 AI 推測 → 規則推測 → 通用建議。v0.12.0 的規則測試都是「沒有 AI 推測時」的情境
+（事件不帶 possible_entry_points）；AI 優先、systems 驗證與 R7.1 的 5 件 2026-11-13 事件在檔案後段。
+"""
 import copy
 import json
 import re
@@ -30,6 +34,12 @@ def fx_graph():
     return json.loads((FIXTURES / "graph.json").read_text(encoding="utf-8"))
 
 
+@pytest.fixture(scope="module")
+def fx_ai_doc():
+    """R7.1：2026-11-13 daily 的 5 件需確認事件（check、systems 為測試資料補值，見檔頭 note）。"""
+    return json.loads((FIXTURES / "events-2026-11-13.json").read_text(encoding="utf-8"))
+
+
 def ev(**kw):
     base = {"id": "live-test", "kind": "live", "title": "某公司事件", "attack_chain": [], "attck": [], "summary": None,
             "proposed_controls": [], "products": [], "controls": []}
@@ -45,8 +55,9 @@ def write_rules(tmp_path, data, name="rules.json"):
 # ── 規則表 ─────────────────────────────────────────────────────
 
 def test_shipped_rules_are_valid_and_ordered(rules):
-    assert ch.topic_ids(rules) == ["vendor", "mail", "database", "member-portal", "admin", "code-repo", "endpoint", "server"]
-    assert ch.topic_ids() == ch.topic_ids(rules)
+    assert [t["id"] for t in rules["targets"]] == ["vendor", "mail", "database", "member-portal", "admin", "code-repo",
+                                                   "endpoint", "server"]
+    assert not hasattr(ch, "topic_ids")                                  # v0.12.1 R6：AI 不再需要 topic 白名單
     ids = [h["id"] for t in rules["targets"] for h in t["hypotheses"]]
     assert len(ids) == len(set(ids)) and all(re.fullmatch(r"[a-z0-9-]{2,40}", i) and "_" not in i for i in ids)
     assert all(2 <= len(t["hypotheses"]) <= 3 for t in rules["targets"])
@@ -127,9 +138,9 @@ def test_minimal_valid_rules_and_env_override(tmp_path, monkeypatch):
     p = write_rules(tmp_path, _valid_rules())
     assert ch.load_rules(p)[1] is None
     monkeypatch.setenv("SENTINEL_CHECK_HINTS_FILE", str(p))
-    assert ch.topic_ids() == ["vendor"]
+    assert [t["id"] for t in ch.load_rules()[0]["targets"]] == ["vendor"]
     monkeypatch.setenv("SENTINEL_CHECK_HINTS_FILE", str(tmp_path / "nope.json"))
-    assert ch.load_rules() == (None, ch.INVALID_ISSUE) and ch.topic_ids() == []
+    assert ch.load_rules() == (None, ch.INVALID_ISSUE)
 
 
 # ── R2：依原因 ─────────────────────────────────────────────────
@@ -221,7 +232,7 @@ def test_r2_does_not_read_rules():
     assert m["impacts"][0]["suggestions"][0]["check"] == "確認我們是否使用 x"
 
 
-# ── R3：被打到的地方 ──────────────────────────────────────────
+# ── R3：被打到的地方（規則推測；以下事件都不帶 possible_entry_points，即「沒有 AI 推測時」）──────
 
 def test_target_keyword_case_insensitive_and_basis_sources(rules):
     hits = ch.detect_targets(ev(title="某 saas 平台", attack_chain=["一", "後台遭存取"], summary="主要伺服器遭入侵",
@@ -350,51 +361,139 @@ def test_control_results_missing_means_unknown(rules, fx_graph):
     assert db["controls"][0]["title"] == "內部工具不得對外開放"           # 沒有結果時標題取自 controls.yaml
 
 
-# ── R4：AI 推測（消費端）與 R3.7 通用退回 ──────────────────────
+# ── AI 推測優先（specs/check-hints-ai R3、R4）與 R3.7 通用退回 ─────────────
 
-def test_ai_used_only_when_rules_miss(rules, fx_graph):
-    pep = [{"topic": "admin", "text": "可能是後台帳號被盜用；查後台登入紀錄", "basis": "攻擊過程第 1 步"}]
-    miss = ev(title="某公司遭駭", possible_entry_points=pep)
-    [s] = ch.suggest_for_event(miss, graph=fx_graph, controls={}, rules=rules, labels={})
-    assert s["id"] == "ai-1" and s["source"] == "ai" and s["inferred"] is True and s["target"] == "admin"
-    assert s["hypothesis"] == s["check"] == s["plain"] == pep[0]["text"]
-    assert s["basis"] == "AI 依事件推測：攻擊過程第 1 步"
-    assert [x["asset_id"] for x in s["systems"]] == ["internal-tool", "nas-office-01", "phpmyadmin"]   # admin 第一個假設
-    assert s["controls"][0]["control_id"] == "C-INTERNAL-TOOL-EXPOSED"
-    hit = {**miss, "title": "某公司會員中心遭駭"}
-    assert all(x["source"] == "rule" for x in ch.suggest_for_event(hit, graph=fx_graph, controls={}, rules=rules, labels={}))
+def ai_item(text="會員訂單 API 可能缺少存取控制或限流", check="查訂單 API 是否驗證資料擁有者，並查存取紀錄中的異常 IP",
+            systems=("api-gateway", "storefront"), basis="攻擊過程第 3 步提到異常請求涉及會員訂單相關 API", **kw):
+    systems = list(systems) if isinstance(systems, (list, tuple)) else systems   # 非陣列原樣保留（測試不合格值）
+    return {"text": text, "check": check, "systems": systems, "basis": basis, **kw}
+
+
+RULE_HIT_TITLE = "某公司會員中心遭駭"                                     # 規則會命中 member-portal
+
+
+def test_rule_hit_title_really_hits_rules(rules):
+    assert [h["target"]["id"] for h in ch.detect_targets(ev(title=RULE_HIT_TITLE), rules)] == ["member-portal"]
+
+
+def test_ai_first_and_not_mixed_with_rules(rules, fx_graph):
+    """R3.1：有合格的 AI 推測 → 只用 AI，不再加入規則推測（規則就算命中也一樣）。"""
+    labels = {"api-gateway": "API 閘道", "storefront": "商店網站"}
+    out = ch.suggest_for_event(ev(title=RULE_HIT_TITLE, possible_entry_points=[ai_item()]), graph=fx_graph, controls={},
+                               rules=rules, labels=labels)
+    assert [s["source"] for s in out] == ["ai"]
+    [s] = out
+    assert s == {"id": "ai-1", "source": "ai", "inferred": True, "target": None,             # R4.1 欄位對應
+                 "hypothesis": "會員訂單 API 可能缺少存取控制或限流", "why": None,
+                 "check": "查訂單 API 是否驗證資料擁有者，並查存取紀錄中的異常 IP", "how": None,
+                 "plain": "會員訂單 API 可能缺少存取控制或限流",
+                 "basis": "AI 依事件推測：攻擊過程第 3 步提到異常請求涉及會員訂單相關 API",
+                 "systems": [{"asset_id": "api-gateway", "label": "API 閘道"}, {"asset_id": "storefront", "label": "商店網站"}],
+                 "controls": []}
+    # 規則表無效時 AI 推測不受影響
+    assert ch.suggest_for_event(ev(title=RULE_HIT_TITLE, possible_entry_points=[ai_item()]), graph=fx_graph, controls={},
+                                rules=None, labels=labels) == out
+
+
+def test_ai_check_missing_or_blank_uses_text(fx_graph):
+    for check in (None, "", "  \n "):
+        [s] = ch.ai_suggestions(ev(possible_entry_points=[ai_item(check=check)]), graph=fx_graph, labels={})
+        assert s["check"] == s["plain"] == s["hypothesis"] == "會員訂單 API 可能缺少存取控制或限流"
+    item = ai_item()
+    item.pop("check")
+    assert ch.ai_suggestions(ev(possible_entry_points=[item]), graph=fx_graph, labels={})[0]["check"] == item["text"]
+
+
+def test_ai_suggestions_returns_list():
+    assert ch.ai_suggestions(ev(), graph={}, labels={}) == [] and isinstance(ch.ai_suggestions(ev(), graph={}, labels={}), list)
+
+
+def test_ai_systems_only_from_ai_assets(fx_graph, baseline):
+    """R4.2／R7.5：systems 只保留本次 ai_assets 中的 ID；graph 有但被排除的類型（app_version、sdk、zone）也移除。"""
+    picked = ["brand-app@3.1.0", "@demo-vendor/push-sdk@2.3.1", "internet", "corp-vpn", "no-such-system",
+              "storefront", "storefront", "api-gateway", "Storefront", 7, None, {"id": "x"}]
+    graph_ids = {n["id"] for n in fx_graph["nodes"]}
+    assert {"brand-app@3.1.0", "@demo-vendor/push-sdk@2.3.1", "internet", "corp-vpn"} <= graph_ids   # 這些都在 graph 中
+    [s] = ch.ai_suggestions(ev(possible_entry_points=[ai_item(systems=picked)]), graph=fx_graph, labels={})
+    assert [x["asset_id"] for x in s["systems"]] == ["storefront", "api-gateway"]                    # 依 AI 給的順序、去重
+    many = ["storefront", "api-gateway", "member-api", "order-db-prod", "phpmyadmin", "gitlab", "mail-service"]
+    [s] = ch.ai_suggestions(ev(possible_entry_points=[ai_item(systems=many)]), graph=fx_graph, labels={})
+    assert [x["asset_id"] for x in s["systems"]] == many[:5]                                         # 最多 5 個
+    # graph 沒有任何節點時全部移除，推測本身保留
+    [s] = ch.ai_suggestions(ev(possible_entry_points=[ai_item()]), graph={"nodes": []}, labels={})
+    assert s["systems"] == [] and s["source"] == "ai"
+    # networkx 圖同樣驗證
+    [s] = ch.ai_suggestions(ev(possible_entry_points=[ai_item(systems=["mail-service", "brand-app@3.1.0"])]),
+                            graph=baseline["graph"], labels={"mail-service": "寄信服務"})
+    assert s["systems"] == [{"asset_id": "mail-service", "label": "寄信服務"}]
+
+
+def test_ai_systems_drop_ids_failing_value_checks():
+    """值驗證不合格的資產（ID 含 IP、連接埠、路徑）就算在 graph 中，也不能被 AI 挑到。"""
+    graph = {"nodes": [{"id": "db192.0.2.1", "type": "datastore"}, {"id": "web:8080", "type": "service"},
+                       {"id": "ok-svc", "type": "service"}, {"id": "odd-type", "type": "identity"}]}
+    [s] = ch.ai_suggestions(ev(possible_entry_points=[ai_item(systems=["db192.0.2.1", "web:8080", "odd-type", "ok-svc"])]),
+                            graph=graph, labels={})
+    assert [x["asset_id"] for x in s["systems"]] == ["ok-svc"]
 
 
 def test_ai_items_rechecked(rules, fx_graph):
-    long_text = "長" * 101
     pep = [
         "不是物件",
-        {"text": "", "basis": "x"},
-        {"text": "缺依據", "basis": "  "},
-        {"text": long_text, "basis": "x"},
-        {"text": "x", "basis": "長" * 121},
-        {"text": "金鑰 ghp_" + "a" * 30, "basis": "x"},
-        {"text": "聯絡 someone@example.com", "basis": "x"},
-        {"topic": 3, "text": "錯型別 topic", "basis": "x"},
-        {"topic": "not-a-target", "text": "topic 不在白名單", "basis": "摘要"},
-        {"text": "沒有 topic\n\t的推測", "basis": "標題"},
+        ai_item(text=""),
+        ai_item(basis="  "),
+        ai_item(text=None),
+        ai_item(text="長" * 81),                                        # text 超過 80 字：整項丟掉
+        ai_item(check="長" * 161),                                      # check 超過 160 字
+        ai_item(basis="長" * 121),                                      # basis 超過 120 字
+        ai_item(text="金鑰 ghp_" + "a" * 30),
+        ai_item(check="聯絡 someone@example.com"),                      # 機敏內容在 check
+        ai_item(basis="sk-ant-" + "x" * 30),
+        ai_item(check=123),                                             # check 不是字串
+        {k: v for k, v in ai_item().items() if k != "systems"},          # 缺 systems
+        ai_item(systems="storefront"),                                  # systems 不是陣列
+        {"topic": "admin", "text": "v0.12.0 舊格式", "basis": "攻擊過程第 1 步"},
+        ai_item(text="可能是後台\n\t帳號遭盜用", systems=()),
+        ai_item(text="第二項", topic="admin"),                          # 多出的 topic 不影響（R6：不再讀取）
     ]
     out = ch.suggest_for_event(ev(possible_entry_points=pep), graph=fx_graph, controls={}, rules=rules, labels={})
-    assert ids(out) == ["ai-1", "ai-2"]
-    assert out[0]["target"] is None and out[0]["systems"] == [] and out[0]["controls"] == []
-    assert out[1]["check"] == "沒有 topic 的推測"
-    assert ch.suggest_for_event(ev(possible_entry_points="字串"), graph=fx_graph, controls={}, rules=rules,
-                                labels={})[0]["id"] == "generic-1"
-    many = [{"text": f"推測 {i}", "basis": "x"} for i in range(5)]
-    assert len(ch.suggest_for_event(ev(possible_entry_points=many), graph=fx_graph, controls={}, rules=rules,
-                                    labels={})) == 3
+    assert ids(out) == ["ai-1", "ai-2"] and {s["source"] for s in out} == {"ai"}
+    assert out[0]["plain"] == "可能是後台 帳號遭盜用" and out[0]["systems"] == [] and out[0]["target"] is None
+    assert out[1]["plain"] == "第二項" and out[1]["target"] is None
+    many = [ai_item(text=f"推測 {i}") for i in range(5)]
+    assert [s["plain"] for s in ch.suggest_for_event(ev(possible_entry_points=many), graph=fx_graph, controls={},
+                                                     rules=rules, labels={})] == ["推測 0", "推測 1", "推測 2"]
 
 
-def test_invalid_rules_drop_ai_topic(fx_graph):
-    pep = [{"topic": "admin", "text": "後台帳號被盜用", "basis": "攻擊過程第 1 步"}]
-    [s] = ch.suggest_for_event(ev(title="某公司管理後台遭駭", possible_entry_points=pep), graph=fx_graph, controls={},
-                               rules=None, labels={})
-    assert s["source"] == "ai" and s["target"] is None and s["systems"] == [] and s["controls"] == []
+def test_ai_accepts_pydantic_entry_points(fx_graph):
+    from schemas import IntelEvent
+    e = IntelEvent.model_validate({"id": "live-x", "kind": "live", "title": "t", "date": "2026-11-13", "revision": "1",
+                                   "confidence": "provisional", "sources": [], "possible_entry_points": [ai_item()]})
+    [s] = ch.ai_suggestions({"possible_entry_points": e.possible_entry_points}, graph=fx_graph, labels={})
+    assert s["source"] == "ai" and [x["asset_id"] for x in s["systems"]] == ["api-gateway", "storefront"]
+
+
+NO_AI = {
+    "absent": lambda e: e.pop("possible_entry_points", None),
+    "empty": lambda e: e.update(possible_entry_points=[]),
+    "all_invalid": lambda e: e.update(possible_entry_points=[ai_item(text=""), ai_item(basis=None), ai_item(systems=None),
+                                                             ai_item(text="長" * 81), "x"]),
+}
+
+
+@pytest.mark.parametrize("case", sorted(NO_AI))
+def test_no_valid_ai_falls_back_to_rules(case, rules, fx_graph):
+    """R4.3／R7.6：欄位不存在、空陣列、全部項目不合格，三種都進入規則備援（source=rule、inferred=true）。"""
+    e = ev(title=RULE_HIT_TITLE, possible_entry_points=[ai_item()])
+    NO_AI[case](e)
+    out = ch.suggest_for_event(e, graph=fx_graph, controls={}, rules=rules, labels={})
+    assert out == ch.suggest_for_event(ev(title=RULE_HIT_TITLE), graph=fx_graph, controls={}, rules=rules, labels={})
+    assert ids(out) == ["member-credential-stuffing", "member-idor", "member-scraping"]
+    assert all(s["source"] == "rule" and s["inferred"] is True for s in out)
+    # 規則也沒命中 → 通用建議
+    miss = ev(title="某公司遭駭", possible_entry_points=[ai_item()])
+    NO_AI[case](miss)
+    assert ids(ch.suggest_for_event(miss, graph=fx_graph, controls={}, rules=rules, labels={})) == ["generic-1", "generic-2"]
 
 
 @pytest.mark.parametrize("n", [0, 3, 5])
@@ -484,6 +583,60 @@ def test_r81_arara_and_false_positive_rules(rules, fx_events, fx_graph):
     assert "mail" not in ez and not {"mail", "member-portal"} & sf
 
 
+# ── R7.1（specs/check-hints-ai）：凍結的 2026-11-13 5 件需確認事件與 AI 推測 ─────────
+
+R71 = ["live-evt-cyberbiz-2026-11", "live-evt-mercuries-2026-11", "live-evt-nitori-2026-11",
+       "live-evt-sharefull-2026-11", "live-evt-amadeus-2026-11"]
+
+
+def _r71_labels():
+    from tools.digest import load_asset_label_file
+    return load_asset_label_file()[0]
+
+
+def test_r71_fixture_frozen_from_commit(fx_ai_doc):
+    from schemas import IntelEvent
+    from tools.daily_intel import _entry_points
+    assert fx_ai_doc["frozen_from"].startswith("662fbfd3deece733de9e194cd8a26f5a493d3e0d:")
+    assert "測試資料補值" in fx_ai_doc["note"]
+    assert [e["id"] for e in fx_ai_doc["events"]] == R71
+    for e in fx_ai_doc["events"]:
+        assert e["kind"] == "live" and e["products"] == [] and e["cves"] == [] and e["controls"] == []
+        assert "測試資料補值" in e["fixture_note"] and e["possible_entry_points"]
+        IntelEvent.model_validate(e)                                     # 新格式通過 EntryPoint 驗證
+        assert _entry_points(e["possible_entry_points"]) == e["possible_entry_points"]   # daily_intel 清理不改內容
+
+
+@pytest.mark.parametrize("event_id", R71)
+def test_r71_only_ai_suggestions(event_id, rules, fx_ai_doc, fx_graph):
+    e = next(x for x in fx_ai_doc["events"] if x["id"] == event_id)
+    out = ch.suggest_for_event(e, graph=fx_graph, controls={}, rules=rules, labels=_r71_labels())
+    assert out and all(s["source"] == "ai" and s["inferred"] is True for s in out)
+    assert [s["plain"] for s in out] == [p["text"] for p in e["possible_entry_points"]]
+    assert [x["asset_id"] for x in out[0]["systems"]] == e["possible_entry_points"][0]["systems"]
+    assert all(x["label"] for s in out for x in s["systems"])            # 都有白話名稱
+
+
+def test_r71_mercuries_ai_not_rule_boilerplate(rules, fx_ai_doc, fx_graph):
+    e = next(x for x in fx_ai_doc["events"] if x["id"] == "live-evt-mercuries-2026-11")
+    out = ch.suggest_for_event(e, graph=fx_graph, controls={}, rules=rules, labels=_r71_labels())
+    blob = json.dumps(out, ensure_ascii=False)
+    assert {s["source"] for s in out} == {"ai"}
+    assert "會員訂單 API" in blob and "遠端管理帳號" not in blob
+    # v0.12.0 的問題：規則因「潛在漏洞」命中伺服器類（證明這個測試有意義）
+    rule_only = ch.suggest_for_event({**e, "possible_entry_points": []}, graph=fx_graph, controls={}, rules=rules, labels={})
+    assert "遠端管理帳號" in json.dumps(rule_only, ensure_ascii=False)
+
+
+@pytest.mark.parametrize("event_id", R71)
+def test_r71_without_ai_falls_back_to_rules(event_id, rules, fx_ai_doc, fx_graph):
+    e = copy.deepcopy(next(x for x in fx_ai_doc["events"] if x["id"] == event_id))
+    e.pop("possible_entry_points")
+    out = ch.suggest_for_event(e, graph=fx_graph, controls={}, rules=rules, labels={})
+    assert out and all(s["source"] == "rule" and s["inferred"] is True for s in out)
+    assert not any(s["id"].startswith(("ai-", "generic")) for s in out)
+
+
 # ── R5.3：情資報告（intel_report）──────────────────────────────
 
 def _report_match(need_suggestions=None):
@@ -522,7 +675,7 @@ def test_markdown_suggestion_subitems_and_inferred_mark(rules, fx_graph):
     from tools.intel_report import build_report, to_markdown
     labels = {"mail-service": "寄信服務"}
     rule = ch.suggest_for_event(ev(title="某寄信服務商遭入侵"), graph=fx_graph, controls={}, rules=rules, labels=labels)
-    pep = [{"text": "可能是後台帳號遭盜用；查後台登入紀錄", "basis": "攻擊過程第 1 步"}]
+    pep = [{"text": "可能是後台帳號遭盜用；查後台登入紀錄", "systems": [], "basis": "攻擊過程第 1 步"}]   # 沒寫 check → 用 text
     ai = ch.suggest_for_event(ev(title="某公司遭駭", possible_entry_points=pep), graph=fx_graph, controls={}, rules=rules,
                               labels=labels)
     r2 = ch.reason_suggestions({"asset_id": "cache-redis"}, {"kind": "version_unknown", "product": "redis",
@@ -540,7 +693,7 @@ def test_markdown_suggestion_subitems_and_inferred_mark(rules, fx_graph):
     names = "、".join(x["label"] or x["asset_id"] for x in first["systems"])
     assert sub[0] == f"  - （推測）{first['hypothesis']}；查：{first['check']}；系統：{names}"
     assert "寄信服務" in names and any(x["label"] is None and x["asset_id"] in names for x in first["systems"])
-    # AI 推測：標「（推測）」；hypothesis 與 check 同文不重複；沒有 topic 時不列系統
+    # AI 推測：標「（推測）」；hypothesis 與 check 同文不重複；沒有系統時不列系統
     assert sub[len(rule)] == f"  - （推測）{pep[0]['text']}"
     # 通用建議（R3.7）不加「（推測）」
     assert sub[len(rule) + 1:] == [f"  - 查：{GENERIC_1}", f"  - 查：{GENERIC_2}"]

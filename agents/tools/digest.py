@@ -285,8 +285,12 @@ MAX_SUGGESTION_SYSTEMS = 5
 def public_suggestions(rep: dict, labels: dict[str, str], internal_ids: set[str] | None = None) -> list[dict]:
     """需確認項目的公開查核建議（R6.2）：只用 plain 與系統白話名稱；不合格的整項丟掉，不嘗試修補。
 
+    只收破口推測（specs/check-hints-ai R5.1）：inferred 為 true，而且 plain 不是程式通用句；
+    通用建議與依原因的建議（inferred 為 false）不進公開卡片。輸出帶 source（ai 或 rule，其他值視為 rule）。
     labels：A5 的 public_asset_labels 結果；internal_ids：本次圖譜的全部節點 ID（None 時略過 ID 比對，其他檢查照做）。
     """
+    from tools.check_hints import GENERIC_PLAIN
+
     id_res = [_id_re(aid) for aid in sorted(internal_ids or ()) if isinstance(aid, str) and aid and aid != "*"]
 
     def unsafe(s: str) -> bool:
@@ -301,8 +305,10 @@ def public_suggestions(rep: dict, labels: dict[str, str], internal_ids: set[str]
         for s in impact.get("suggestions") or []:
             if len(out) >= MAX_SUGGESTIONS:
                 return out
-            plain = s.get("plain") if isinstance(s, dict) else None
-            if not isinstance(plain, str) or not plain.strip() or unsafe(plain):          # 1～3：plain 不安全 → 整項丟掉
+            if not isinstance(s, dict) or s.get("inferred") is not True:                  # 只收推測（R5.1）
+                continue
+            plain = s.get("plain")
+            if not isinstance(plain, str) or not plain.strip() or plain == GENERIC_PLAIN or unsafe(plain):   # 1～3
                 continue
             systems: list[str] = []
             for sys_ in s.get("systems") or []:                                           # 4：只列安全的白話名稱
@@ -320,7 +326,7 @@ def public_suggestions(rep: dict, labels: dict[str, str], internal_ids: set[str]
             if text in seen:                                                                # 7：去重、最多 3 項
                 continue
             seen.add(text)
-            out.append({"text": text, "systems": systems})
+            out.append({"text": text, "systems": systems, "source": "ai" if s.get("source") == "ai" else "rule"})
     return out
 
 

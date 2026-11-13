@@ -798,19 +798,19 @@ def test_public_suggestion_drops_unsafe_plain(plain):
 def test_public_suggestion_drops_only_unsafe_system_name(name):
     labels = {**LABELS, "phpmyadmin": name}
     out = _pub(_need_rep(_sugg(systems=("phpmyadmin", "mail-service"))), labels)
-    assert out == [{"text": f"{PLAIN_OK}；先查：寄信服務", "systems": ["寄信服務"]}]
+    assert out == [{"text": f"{PLAIN_OK}；先查：寄信服務", "systems": ["寄信服務"], "source": "rule"}]
     only_bad = _pub(_need_rep(_sugg(systems=("phpmyadmin",))), labels)
-    assert only_bad == [{"text": PLAIN_OK, "systems": []}]              # 名稱不安全時只移除該系統，建議保留
+    assert only_bad == [{"text": PLAIN_OK, "systems": [], "source": "rule"}]              # 名稱不安全時只移除該系統，建議保留
 
 
 @pytest.mark.parametrize("plain", ["確認 API: 存取是否受限", PLAIN_OK, "資料庫或管理工具可能可以被直接連上", "確認 App 版本是否需要更新"])
 def test_public_suggestion_keeps_normal_plain_text(plain):
-    assert _pub(_need_rep(_sugg(plain, systems=()))) == [{"text": plain, "systems": []}]
+    assert _pub(_need_rep(_sugg(plain, systems=()))) == [{"text": plain, "systems": [], "source": "rule"}]
 
 
 def test_public_suggestion_system_names_only_public_labels():
     out = _pub(_need_rep(_sugg(systems=("*", "unnamed-node", "order-db-prod", "storefront", "order-db-prod"))))
-    assert out == [{"text": f"{PLAIN_OK}；先查：正式訂單資料庫、商店網站", "systems": ["正式訂單資料庫", "商店網站"]}]
+    assert out == [{"text": f"{PLAIN_OK}；先查：正式訂單資料庫、商店網站", "systems": ["正式訂單資料庫", "商店網站"], "source": "rule"}]
     many = {f"sys-{i}": f"系統{i}" for i in range(7)}
     [s] = dg.public_suggestions(_need_rep(_sugg(systems=tuple(many))), many, set(many))
     assert s["systems"] == [f"系統{i}" for i in range(5)]                # 最多 5 個
@@ -834,13 +834,13 @@ def test_public_suggestion_text_limited_and_rechecked(monkeypatch):
 
 def test_public_suggestion_without_internal_ids_still_checks_patterns():
     assert dg.public_suggestions(_need_rep(_sugg("確認 config/db.yml")), LABELS, None) == []
-    assert dg.public_suggestions(_need_rep(_sugg()), LABELS, None) == [{"text": f"{PLAIN_OK}；先查：寄信服務", "systems": ["寄信服務"]}]
+    assert dg.public_suggestions(_need_rep(_sugg()), LABELS, None) == [{"text": f"{PLAIN_OK}；先查：寄信服務", "systems": ["寄信服務"], "source": "rule"}]
 
 
 def test_assessment_writes_suggestions_only_for_need_check():
     eid = "live-hint-2026-11"
     a = dg.assessment_from_report(_need_rep(_sugg()), LABELS, run_id=RUN, evaluated_at=EVAL_AT, internal_ids=NODES)
-    assert a["suggestions"] == [{"text": f"{PLAIN_OK}；先查：寄信服務", "systems": ["寄信服務"]}]
+    assert a["suggestions"] == [{"text": f"{PLAIN_OK}；先查：寄信服務", "systems": ["寄信服務"], "source": "rule"}]
     DigestAssessment.model_validate(a)
     aff = {**_impact(eid, "storefront", "affected", "r"), "suggestions": [_sugg("受影響項目不該出現")]}
     rep = make_report(eid, status="open", impacts=[aff, {**_impact(eid, "*", "need_check"), "suggestions": [_sugg()]}],
@@ -929,6 +929,86 @@ def test_frozen_fixture_public_suggestions_pass_filter():
             assert len(one[0]["systems"]) == len({labels[x["asset_id"]] for x in s["systems"] if x["asset_id"] in labels})
         blob = json.dumps(pub, ensure_ascii=False)
         assert not any(dg._id_re(i).search(blob) for i in ids) and not dg.SUGGESTION_BLOCK_RE.search(blob)
+
+
+# ── check-hints-ai（specs/check-hints-ai R5.1、R5.3）：公開卡片只收推測，並帶 source ─────────
+
+def test_public_suggestion_writes_source():
+    ai = _sugg("會員訂單 API 可能缺少存取控制或限流", id="ai-1", source="ai", target=None)
+    assert _pub(_need_rep(ai)) == [{"text": "會員訂單 API 可能缺少存取控制或限流；先查：寄信服務", "systems": ["寄信服務"],
+                                    "source": "ai"}]
+    assert _pub(_need_rep(_sugg()))[0]["source"] == "rule"
+    weird = _sugg(source="something-else")                               # 不認得的來源視為規則推測
+    assert _pub(_need_rep(weird))[0]["source"] == "rule"
+
+
+def test_public_suggestion_only_inferred_and_not_generic():
+    from tools import check_hints as ch
+    generic = ch.generic_suggestions({"proposed_controls": []})
+    assert generic[0]["plain"] == ch.GENERIC_PLAIN
+    assert _pub(_need_rep(*generic)) == []                              # 通用建議不進公開卡片
+    r2 = ch.reason_suggestions({"asset_id": "storefront"}, {"kind": "version_unknown", "product": "next",
+                                                            "ecosystem": "npm", "affected": []}, controls={}, labels={})
+    assert r2[0]["plain"] and r2[0]["inferred"] is False
+    assert _pub(_need_rep(*r2)) == []                                   # R2 依原因的建議不是推測
+    for bad in (_sugg(inferred=False), _sugg(inferred="true"), _sugg(inferred=1), _sugg(inferred=None),
+                {k: v for k, v in _sugg().items() if k != "inferred"}):
+        assert _pub(_need_rep(bad)) == []                               # 只收 inferred is True
+    # 標成 AI 推測、inferred=True，但 plain 是程式通用句：仍排除
+    fake = _sugg(ch.GENERIC_PLAIN, id="ai-1", source="ai", systems=())
+    assert fake["source"] == "ai" and fake["inferred"] is True
+    assert _pub(_need_rep(fake)) == []
+    assert _pub(_need_rep(fake, *generic, _sugg())) == [{"text": f"{PLAIN_OK}；先查：寄信服務", "systems": ["寄信服務"],
+                                                         "source": "rule"}]
+
+
+def test_frozen_ai_fixture_public_suggestions_are_ai():
+    """R7.1 的 5 件 2026-11-13 事件：公開卡片只有 AI 推測（source=ai），白話文字與系統名稱都通過過濾。"""
+    from tools import check_hints as ch
+    doc = json.loads((FX_CHECK_HINTS / "events-2026-11-13.json").read_text(encoding="utf-8"))
+    graph = json.loads((FX_CHECK_HINTS / "graph.json").read_text(encoding="utf-8"))
+    rules, _ = ch.load_rules()
+    file_labels, _ = dg.load_asset_label_file()
+    labels = dg.public_asset_labels(graph_nodes={n["id"]: n for n in graph["nodes"]}, file_labels=file_labels)
+    ids = {n["id"] for n in graph["nodes"]}
+    for e in doc["events"]:
+        sugg = ch.suggest_for_event(e, graph=graph, controls={}, rules=rules, labels=file_labels)
+        pub = dg.assessment_from_report(_need_rep(*sugg, eid=e["id"]), labels, run_id=RUN, evaluated_at=EVAL_AT,
+                                        internal_ids=ids)["suggestions"]
+        assert len(pub) == len(e["possible_entry_points"]) and {p["source"] for p in pub} == {"ai"}, e["id"]
+        assert pub[0]["text"].startswith(e["possible_entry_points"][0]["text"])
+        assert pub[0]["systems"] == [labels[a] for a in e["possible_entry_points"][0]["systems"]]
+
+
+def test_need_check_without_inference_has_no_public_card():
+    """沒有推測的需確認事件（只有通用建議），整理頁的快照沒有建議區塊。"""
+    from tools import check_hints as ch
+    rep = _need_rep(*ch.generic_suggestions({"proposed_controls": [{"title": "某控制項"}]}))
+    assert dg.assessment_from_report(rep, LABELS, run_id=RUN, evaluated_at=EVAL_AT, internal_ids=NODES)["suggestions"] == []
+
+
+def test_old_store_suggestions_without_source_still_readable(tmp_path):
+    """0.12.0 寫出的 store／latest 的 suggestions 沒有 source：仍可讀，視為規則推測（R5.3）。"""
+    from schemas import DigestSuggestion
+    assert DigestSuggestion.model_validate({"text": "x", "systems": []}).source == "rule"
+    with pytest.raises(ValidationError):
+        DigestSuggestion.model_validate({"text": "x", "systems": [], "source": "llm"})
+    s, seen = merge(None, None, [_need_rep(_sugg())], day(0), labels=LABELS)
+    for ev in s["events"].values():
+        for item in ev["assessment"]["suggestions"]:
+            item.pop("source")                                          # 模擬 0.12.0 寫出的 store
+    assert s["events"]["live-hint-2026-11"]["assessment"]["suggestions"] == [
+        {"text": f"{PLAIN_OK}；先查：寄信服務", "systems": ["寄信服務"]}]
+    latest = build(s, day(0))
+    d = tmp_path / "digest"
+    d.mkdir()
+    for name, value in (("store.json", s), ("seen.json", seen), ("latest.json", latest)):
+        (d / name).write_text(json.dumps(value, ensure_ascii=False), encoding="utf-8")
+        assert dg.load_valid(d / name, name) is not None
+    files = dg.prepare_bundle(d, daily_report("run-2"), [], as_of=day(1), generated_at=day(1, 1), run_id="run-2",
+                              asset_labels=LABELS, internal_ids=NODES)
+    DigestStore.model_validate(json.loads(files["store.json"]))
+    DigestLatest.model_validate(json.loads(files["latest.json"]))
 
 
 def test_suggestion_block_re_uses_ascii_boundaries():

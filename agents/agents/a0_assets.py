@@ -5,12 +5,28 @@ from agents.common import finish, save
 from context import RunCtx
 from llm import Task
 from tools.common import INTEL_DIR, read_json, write_json
+from tools.digest import _label_text, load_asset_label_file
 from tools.graph_builder import build_graph, graph_to_json
 from tools.graph_diff import diff
 from tools.intel_verify import load_events
 from tools.loaders import load_target
 from tools.reconcile import reconcile
 from tools.stack import build_seen, build_stack
+
+
+def _stack_labels(g) -> dict[str, str]:
+    """stack.json assets 的白話名稱（specs/check-hints-ai R1.2）：先取 rules/asset-labels.json，沒有的再用圖譜 display_name。
+
+    兩者都經 digest._label_text 過濾（對照檔在載入時已過濾）；名稱是否可給 AI 由 ai_assets 再檢查一次。
+    """
+    labels, _ = load_asset_label_file()
+    labels = dict(labels)
+    for nid, attrs in g.nodes(data=True):
+        if nid not in labels:
+            text = _label_text(nid, (attrs or {}).get("display_name"))
+            if text:
+                labels[nid] = text
+    return labels
 
 
 def run(ctx: RunCtx) -> dict:
@@ -34,7 +50,7 @@ def run(ctx: RunCtx) -> dict:
     if not tasks:
         tr.emit("skip", "所有設備都已由特徵規則辨識，不呼叫 device-identifier", subagent="device-identifier", source="template")
 
-    stack = build_stack(g, as_of=ctx.as_of)
+    stack = build_stack(g, as_of=ctx.as_of, labels=_stack_labels(g))
     seen = build_seen(read_json(INTEL_DIR / "seen.json"), load_events(INTEL_DIR / "archive"), as_of=ctx.as_of)
     write_json(ctx.out / "stack.json", stack)
     write_json(ctx.out / "seen.json", seen)
