@@ -4,7 +4,7 @@ import { getIntelReport, resolveSource } from "@/lib/data";
 import { LevelText, SimNotice } from "@/components/ui";
 import { SOURCE_TEXT, STATUS_TEXT } from "@/lib/labels";
 import { PAGES } from "@/lib/nav";
-import { extraCheckRows } from "@/lib/agentplan";
+import { extraCheckRows, noticeExtra, resultRows, reviewSummarySource } from "@/lib/agentplan";
 
 export const dynamic = "force-dynamic";
 
@@ -71,6 +71,10 @@ export default async function IntelDetail({ params, searchParams }: {
   const b = rep.blocks;
   const s1 = b["1_summary"];
   const back = source.simulated ? `/intel?source=${encodeURIComponent(source.key)}` : "/intel";
+  const runs = `/runs${source.simulated ? `?source=${encodeURIComponent(source.key)}` : ""}`;
+  // Orchestrator 追加結果（specs/orchestrator R5.8）：只含 target 為這件事件的項目；通知草稿不在這裡重複列出，另外顯示
+  const { extra } = resultRows(rep.orchestrator_results);
+  const draftExtra = noticeExtra(b["6_notice"]);
   return (
     <>
       <p><Link href={back}>← 回{PAGES.intel.label}</Link></p>
@@ -98,7 +102,7 @@ export default async function IntelDetail({ params, searchParams }: {
         <h2 style={{ marginTop: 0 }}>事件摘要</h2>
         <p>{s1.summary}</p>
         {s1.summary_note && <p className="muted">{s1.summary_note}</p>}
-        <p className="muted">日期 {s1.date}｜產業 {s1.industry ?? "—"}｜ATT&CK {s1.attck.join("、") || "—"}｜摘要來源：{SOURCE_TEXT[rep.summary_source]}</p>
+        <p className="muted">日期 {s1.date}｜產業 {s1.industry ?? "—"}｜ATT&CK {s1.attck.join("、") || "—"}｜摘要來源：{reviewSummarySource(rep.status, rep.summary_source) ?? SOURCE_TEXT[rep.summary_source]}</p>
         {s1.attack_chain.length > 0 && <ol>{s1.attack_chain.map((x: string, i: number) => <li key={i}>{x}</li>)}</ol>}
         <h3>來源與原文引用</h3>
         <ul>{s1.sources.map((src: any, i: number) => (
@@ -135,12 +139,23 @@ export default async function IntelDetail({ params, searchParams }: {
         <div className="panel">
           <h2 style={{ marginTop: 0 }}>AI 建議加查</h2>
           <p className="muted">程式檢查結果，不影響結論與分數。AI 依這件事件建議一併確認的控制項，結果取自本次已算好的檢查。
-            <Link href={`/runs${source.simulated ? `?source=${encodeURIComponent(source.key)}` : ""}`}>查看本次的核准與拒絕明細</Link></p>
+            <Link href={runs}>查看本次的核准與拒絕明細</Link></p>
           <div className="table-wrap"><table>
             <thead><tr><th>控制項</th><th>檢查結果</th><th>資產</th><th>檢查說明</th><th>建議理由</th></tr></thead>
             <tbody>{extraCheckRows(b["8_extra_checks"]).map((r, i) => (
               <tr key={i}><td>{r.title}</td><td>{r.status}</td><td>{r.assets}</td><td>{r.checkReason}</td><td>{r.suggestedReason}</td></tr>))}</tbody>
           </table></div>
+        </div>
+      )}
+
+      {extra.length > 0 && (
+        <div className="panel">
+          <h2 style={{ marginTop: 0 }}>Orchestrator 追加結果</h2>
+          <p className="muted">Orchestrator 依這件事件追加的 AI 說明，只補充說明，不影響結論與分數；標「程式範本」的是 AI 沒有寫出時的通用文字。
+            <Link href={runs}>查看本次的派工與驗收</Link></p>
+          <ul>{extra.map((r, i) => (
+            <li key={i}><span className="tag">{r.stage}</span>{r.label} <span className="tag">{r.source}</span>
+              <div>{r.text}</div></li>))}</ul>
         </div>
       )}
 
@@ -156,6 +171,13 @@ export default async function IntelDetail({ params, searchParams }: {
       ))}
 
       {b["6_notice"]?.needed && <div className="panel"><h2 style={{ marginTop: 0 }}>建議通知</h2><p>{b["6_notice"].draft}</p></div>}
+      {draftExtra && (
+        <div className="panel">
+          <h2 style={{ marginTop: 0 }}>AI 建議的通知草稿（程式未要求）</h2>
+          <p>{draftExtra.text}</p>
+          <p className="muted"><span className="tag">{draftExtra.source}</span>程式沒有要求這件事件發通知，這是 Orchestrator 驗收追加的草稿，不改變是否需要通知；發送前請人工確認。</p>
+        </div>
+      )}
       <div className="panel"><strong>處理狀態：</strong>{STATUS_TEXT[b["7_status"].status] ?? b["7_status"].label}</div>
     </>
   );

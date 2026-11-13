@@ -13,10 +13,20 @@ export const KIND_TEXT: Record<string, string> = { live: "真實", archive: "真
 export const SOURCE_TEXT: Record<string, string> = {
   live: "即時呼叫", replay: "重播錄製", template: "程式範本", subscription: "訂閱方案", skipped: "未觸發",
 };
+// Agent 執行紀錄（trace）的名稱。router 是純程式的開工路由，不屬於 Orchestrator；
+// v0.13 以前的報告把開工路由記成 orchestrator，一律顯示「開工路由（舊版）」，不標示成 AI 派工（specs/orchestrator R1.3）
 export const AGENT_TEXT: Record<string, string> = {
-  orchestrator: "開工路由（程式）", a0: "A0 資產探索與對帳", "daily-intel": "每日情資（程式抓新聞＋Claude 判讀）", "claude-analysis": "Claude 撰寫說明（訂閱方案）", a1: "A1 外部情資", a2: "A2 弱點掃描", a3: "A3 早期訊號",
-  a4: "A4 攻擊鏈與風險", a5: "A5 報告與建議", incident: "圍堵建議",
+  router: "開工路由（程式）", orchestrator: "開工路由（舊版）", a0: "A0 資產探索與對帳",
+  "daily-intel": "每日情資（程式抓新聞＋Claude 判讀）", "claude-analysis": "Claude 撰寫說明（訂閱方案）", a1: "A1 外部情資",
+  "orchestrator-dispatch": "Orchestrator 派工（AI 提案＋程式核准）", a2: "A2 弱點掃描", a3: "A3 早期訊號",
+  a4: "A4 攻擊鏈與風險", "orchestrator-review": "Orchestrator 驗收（AI 提案＋程式核准）", a5: "A5 報告與建議", incident: "圍堵建議",
 };
+
+/** 「AI 分析過程」頁執行紀錄的順序（design §3.7）；orchestrator 是舊報告的開工路由，與 router 不會同時出現 */
+export const TRACE_ORDER = [
+  "orchestrator", "router", "a0", "daily-intel", "a1", "orchestrator-dispatch", "a2", "a3", "a4", "orchestrator-review",
+  "claude-analysis", "a5", "incident",
+];
 
 export function deadlineText(hours: number): string {
   return hours <= 24 ? "24 小時內" : hours <= 168 ? "7 天內" : "30 天內";

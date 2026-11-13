@@ -180,5 +180,5 @@ def test_p2_scenarios_are_explicitly_disabled(monkeypatch, capsys, name):
     monkeypatch.delenv("TARGET_DIR", raising=False)
     with pytest.raises(ScenarioDisabled):
         build_ctx(scenario=name)
-    assert run_agent.main(["orchestrator", "--scenario", name]) == 2
+    assert run_agent.main(["router", "--scenario", name]) == 2
     assert "P2" in capsys.readouterr().err

@@ -1,4 +1,9 @@
-"""情資比對報告（第 7.8 節）。區塊 2、3、4、7 由程式產出、每次重算；區塊 1、5、6 先用範本，LLM 只能改寫文字。"""
+"""情資比對報告（第 7.8 節）。區塊 2、3、4、7 由程式產出、每次重算；區塊 1、5、6 先用範本，LLM 只能改寫文字。
+
+Orchestrator（specs/orchestrator R5.6、R5.7）：需確認事件的摘要可由驗收追加的 intel-report-writer 撰寫（summary_source 照實標示）；
+程式未要求的通知草稿另放 6_notice.draft_extra（needed 不變）；orchestrator_results 只放 target 為這件事件的追加結果。
+結論、處理狀態、受影響數與完整性不受這些欄位影響。
+"""
 from __future__ import annotations
 
 from tools.templates import notice_draft, solution_for
@@ -8,10 +13,35 @@ LEVEL_ZH = {"high": "高", "medium": "中", "low": "低"}
 VERDICT_ZH = {"affected": "受影響", "not_affected": "不受影響", "need_check": "需確認"}
 STATUS_ZH = {"open": "待處理", "fixed": "已修復", "not_affected": "不受影響", "need_check": "需確認"}
 CHECK_ZH = {"pass": "符合", "fail": "不符合", "unknown": "資料不足"}
+# Orchestrator 追加結果的白話標籤（Markdown；網站沿用同樣的分類）
+RESULT_LABEL = {("a2", "dependency-analyst"): "依事件解讀套件漏洞", ("a2", "runtime-analyst"): "依事件解讀執行環境與支援期限",
+                ("a3", "retro-hunter"): "依事件回溯搜查", ("a5", "intel-report-writer"): "需確認事件的摘要",
+                ("a5", "key-rotation-advisor"): "金鑰輪替建議", ("a5", "brand-notice-writer"): "通知草稿"}
+RESULT_SOURCE_ZH = {"live": "AI 撰寫", "replay": "AI 撰寫（重播）", "template": "程式範本"}
+STAGE_ZH = {"dispatch": "派工", "review": "驗收"}
+
+
+def event_status(match: dict, risks_by_id: dict[str, dict]) -> tuple[str, bool]:
+    """情資報告的處理狀態與「程式是否要求通知」（build_report 與 Orchestrator 驗收的候選共用，見 tools/orchestration.py）。"""
+    ev = match["event"]
+    affected = [i for i in match["impacts"] if i["verdict"] == "affected"]
+    need = [i for i in match["impacts"] if i["verdict"] == "need_check"]
+    if affected:
+        status = "open"
+        if all((risks_by_id.get(i.get("risk_id") or "") or {}).get("status") == "fixed" for i in affected):
+            status = "fixed"
+    elif need:
+        status = "need_check"
+    else:
+        status = match["status"] if match["status"] in ("not_affected", "need_check") else "not_affected"
+    breakdowns = [(risks_by_id.get(i.get("risk_id") or "") or {}).get("breakdown") or [] for i in affected]
+    pii_platform = any("資料敏感" in [b["factor"] for b in bd] and "影響範圍" in [b["factor"] for b in bd] for bd in breakdowns)
+    return status, bool(affected) and (bool(ev.get("notice_required")) or pii_platform)
 
 
 def build_report(match: dict, risks_by_id: dict[str, dict], graph_nodes: dict, *, verification: dict | None = None,
-                 observed_at: str | None = None, llm_text: dict | None = None) -> dict:
+                 observed_at: str | None = None, llm_text: dict | None = None, notice_extra: dict | None = None,
+                 orchestrator_results: list[dict] | None = None) -> dict:
     ev = match["event"]
     affected = [i for i in match["impacts"] if i["verdict"] == "affected"]
     need = [i for i in match["impacts"] if i["verdict"] == "need_check"]
@@ -31,14 +61,7 @@ def build_report(match: dict, risks_by_id: dict[str, dict], graph_nodes: dict, *
             row["suggestions"] = i.get("suggestions") or []
         rows.append(row)
 
-    if affected:
-        status = "open"
-        if all((risks_by_id.get(i.get("risk_id") or "") or {}).get("status") == "fixed" for i in affected):
-            status = "fixed"
-    elif need:
-        status = "need_check"
-    else:
-        status = match["status"] if match["status"] in ("not_affected", "need_check") else "not_affected"
+    status, notice_needed = event_status(match, risks_by_id)
 
     if affected:
         top = rows[0]
@@ -53,14 +76,10 @@ def build_report(match: dict, risks_by_id: dict[str, dict], graph_nodes: dict, *
 
     solutions = [] if not affected else [solution_for(risks_by_id[i["risk_id"]], graph_nodes)
                                          for i in affected if i.get("risk_id") in risks_by_id]
-    pii_platform = any("資料敏感" in [b["factor"] for b in row["breakdown"]] and "影響範圍" in [b["factor"] for b in row["breakdown"]]
-                       for row in rows if row["verdict"] == "affected")
-    notice_needed = bool(affected) and (bool(ev.get("notice_required")) or pii_platform)
-    text = llm_text or {}
+    # 摘要：受影響事件（必要任務）與需確認事件（驗收追加的 intel-report-writer）才採用 LLM 文字；不受影響的事件不呼叫 LLM
+    text = (llm_text or {}) if affected or status == "need_check" else {}
     summary = text.get("summary") or ev.get("summary") or "；".join(ev.get("attack_chain", [])) or ev["title"]
-    summary_source = text.get("source", "template")
-    if not affected:
-        summary_source = "template"   # 不受影響的事件不呼叫 LLM
+    summary_source = text.get("source", "template") if text.get("summary") else "template"
     blocks = {
         "1_summary": {"title": ev["title"], "date": ev["date"], "industry": ev.get("industry"),
                       "attack_chain": ev.get("attack_chain", []), "attck": ev.get("attck", []), "cves": ev.get("cves", []),
@@ -85,6 +104,10 @@ def build_report(match: dict, risks_by_id: dict[str, dict], graph_nodes: dict, *
         blocks.pop("3_affected")
         blocks.pop("5_solutions")
         blocks.pop("6_notice")
+    elif notice_extra and notice_extra.get("text"):
+        # 驗收追加的通知草稿（程式未要求）：另外標示，needed 與 draft 不變（R5.6）
+        blocks["6_notice"]["draft_extra"] = notice_extra["text"]
+        blocks["6_notice"]["draft_extra_source"] = notice_extra.get("source") or "template"
     checks = match.get("planner_checks") or []
     if checks:
         # 動態派工：AI 建議、程式核准的加查（程式已算好的檢查結果，不影響結論與分數）
@@ -96,6 +119,7 @@ def build_report(match: dict, risks_by_id: dict[str, dict], graph_nodes: dict, *
         "impacts": match["impacts"], "solutions": blocks.get("5_solutions", []), "notice": blocks.get("6_notice"),
         "status": status, "evaluated_asset_ids": sorted({i["asset_id"] for i in match["impacts"]}),
         "complete": match.get("complete", False), "summary_source": summary_source, "summary": summary, "blocks": blocks,
+        "orchestrator_results": [dict(r) for r in orchestrator_results or []],
     }
 
 
@@ -154,6 +178,13 @@ def to_markdown(rep: dict) -> str:
             assets = "、".join(a["asset_id"] for a in c["assets"]) or "無列出資產"
             lines.append(f"| {c['title']} | {c['status_label']} | {assets} | {c['suggested_reason']} |")
         lines.append("")
+    extra = [r for r in rep.get("orchestrator_results") or [] if r.get("subagent") != "brand-notice-writer"]
+    if extra:
+        # 派工與驗收追加的結果（通知草稿另列在下方）：只補充說明，不影響結論與分數
+        lines += ["## Orchestrator 追加結果"]
+        lines += [f"- {STAGE_ZH.get(r['stage'], r['stage'])}・{RESULT_LABEL.get((r['agent'], r['subagent']), r['subagent'])}"
+                  f"（{RESULT_SOURCE_ZH.get(r['source'], r['source'])}）：{r['text']}" for r in extra]
+        lines.append("")
     for sol in b.get("5_solutions", []):
         lines += [f"## 可能的解法：{sol['risk_id']}", "| 選項 | 做法 | 代價 | 時效 |", "|------|------|------|------|"]
         lines += [f"| {o['name']} | {o['action']} | {o['cost']} | {o['timing']} |" for o in sol["options"]]
@@ -161,6 +192,9 @@ def to_markdown(rep: dict) -> str:
     n = b.get("6_notice")
     if n and n["needed"]:
         lines += ["## 建議通知", n["draft"], ""]
+    if n and n.get("draft_extra"):
+        lines += ["## AI 建議的通知草稿（程式未要求）", n["draft_extra"],
+                  f"_（{RESULT_SOURCE_ZH.get(n.get('draft_extra_source'), '程式範本')}；程式沒有要求通知，發送前請人工確認）_", ""]
     lines += ["## 處理狀態", b["7_status"]["label"], "", "## 來源"]
     for s in s1["sources"]:
         lines.append(f"- {s['title']}{'：' + s['url'] if s.get('url') else ''}")

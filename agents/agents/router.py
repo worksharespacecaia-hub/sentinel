@@ -1,4 +1,7 @@
-"""Orchestrator（程式為主）：讀取情境與觸發來源，決定派工，寫入 $GITHUB_OUTPUT。"""
+"""開工路由（router，純程式；v0.13.0 前名為 orchestrator）：讀取情境與觸發來源，決定要跑哪些 Job，寫入 $GITHUB_OUTPUT。
+
+不屬於 Orchestrator：AI 的派工與驗收由 orchestrator-dispatch、orchestrator-review 在取得情資後執行（specs/orchestrator）。
+"""
 from __future__ import annotations
 
 import json
@@ -23,15 +26,15 @@ def decide(ctx: RunCtx, *, event_name: str, ref_name: str | None, default_branch
 
 
 def run(ctx: RunCtx) -> dict:
-    tr = ctx.tracer("orchestrator")
+    tr = ctx.tracer("router")
     tr.emit("start", f"scenario={ctx.scenario} trigger={ctx.trigger_source} mode={ctx.mode}")
     d = decide(ctx, event_name=os.environ.get("EVENT_NAME", "local"), ref_name=os.environ.get("GITHUB_REF_NAME"),
                default_branch=os.environ.get("DEFAULT_BRANCH"))
-    # 動態派工的 planner 需要當天情資，改在 A1 驗證完情資後執行（Orchestrator 跑在 A0 之前，派工維持純程式）
-    tr.emit("skip", "AI 建議改在 A1 取得情資後執行", subagent="planner")
+    # 開工路由跑在 A0 之前，看不到當天情資：AI 派工與驗收由 Orchestrator 在取得情資後執行
+    tr.emit("skip", "AI 派工與驗收由 Orchestrator 在取得情資後執行（開工路由只決定要跑哪些 Job）")
     if not d["daily_intel"]:
         tr.emit("skip", "daily-intel 不執行（只在預設分支的每日排程或手動 daily 執行）")
-    save(ctx, "orchestrator", "plan.json", d)
+    save(ctx, "router", "plan.json", d)
     gh_out = os.environ.get("GITHUB_OUTPUT")
     if gh_out:
         with open(gh_out, "a", encoding="utf-8", newline="\n") as f:

@@ -48,6 +48,29 @@ def test_files_mounted_from_sentinel_are_tracked():
     assert not missing, f"workflow 掛載的檔案不在 repo 中：{missing}"
 
 
+def test_python_scripts_and_settings_used_by_workflows_are_tracked():
+    """workflow 以 python 執行的腳本、claude-code-action 的 --settings 與其中的 hook 都必須在 repo：缺少時 Actions 才會失敗。"""
+    import json
+    text = _workflow_text()
+    scripts = set(re.findall(r"\bpython3? ((?:scripts|agents)/[\w./-]+\.py)\b", text))
+    assert {"scripts/orchestrator-guard.py", "scripts/claude-error-summary.py", "agents/run_agent.py"} <= scripts
+    settings = set(re.findall(r"--settings (\.claude/[\w.-]+\.json)", text))
+    assert settings == {".claude/daily-intel-settings.json", ".claude/analysis-settings.json",
+                        ".claude/orchestrator-dispatch-settings.json", ".claude/orchestrator-review-settings.json"}
+    hooks = set()
+    for s in settings:
+        cfg = json.loads((ROOT / s).read_text(encoding="utf-8"))
+        for entry in cfg["hooks"]["PreToolUse"]:
+            for h in entry["hooks"]:
+                hooks |= set(re.findall(r"(\.claude/hooks/[\w.-]+\.py)", h["command"]))
+    assert hooks == {".claude/hooks/daily_intel_guard.py"}
+    skills = {f".claude/skills/{m}/SKILL.md" for m in re.findall(r'prompt: "/([a-z-]+)', text)}
+    assert ".claude/skills/orchestrator/SKILL.md" in skills
+    tracked = _git_modes()
+    missing = sorted(p for p in scripts | settings | hooks | skills if p not in tracked)
+    assert not missing, f"workflow 用到但不在 repo 的檔案：{missing}"
+
+
 def test_gitleaks_config_matches_target_baseline():
     # 規格 5.5：Repo ① 與 sentinel 的 scanners 共用同一份 .gitleaks.toml；sentinel 使用自己保存的副本，不讀受掃描 Repo 的設定
     ours = (ROOT / ".gitleaks.toml").read_text(encoding="utf-8")

@@ -1,6 +1,8 @@
 """A5 的確定性部分：組裝 report.json、情資比對報告、工程師報告與 state/，寫入指定的 output_dir。
 
 LLM 撰寫的文字（CEO 摘要、建議解法、通知）只能覆蓋文字欄位；燈號、分數、結論、處理狀態每次由程式重算。
+Orchestrator 的追加結果（specs/orchestrator R5.6、R5.7）只放在另外標示的欄位：頂層 orchestrator_results（全部）、
+情資報告的 orchestrator_results（target 為該事件的）、需確認事件的摘要與 6_notice.draft_extra；agent_plan 為 {dispatch, review}。
 """
 from __future__ import annotations
 
@@ -8,7 +10,7 @@ from pathlib import Path
 
 from schemas import Report
 from tools.common import SCHEMA_VERSION, iso, sha256_file, sha256_json, write_json
-from tools.agent_plan import public_plan
+from tools.orchestration import public_plan
 from tools.intel_report import build_report, to_markdown
 from tools.templates import ceo_summary, decisions, solution_for
 
@@ -35,8 +37,10 @@ def link_updates(intel_reports: list[dict], event_updates: dict[str, list[str]])
 
 def assemble(result: dict, *, run_id: str, scenario: str, trigger_source: str, scope: str, generated_at,
              execution_mode: str = "template", daily_intel_status: str = "skipped", llm: dict | None = None,
-             cost: dict | None = None, open_alerts: list[dict] | None = None) -> dict:
+             cost: dict | None = None, open_alerts: list[dict] | None = None,
+             orchestrator_results: list[dict] | None = None) -> dict:
     llm = llm or {}
+    extra = [dict(r) for r in orchestrator_results or []]
     nodes = dict(result["graph"].nodes(data=True))
     risks = []
     for r in result["risks"]:
@@ -49,8 +53,11 @@ def assemble(result: dict, *, run_id: str, scenario: str, trigger_source: str, s
     observed = iso(result["data"].as_of)
     intel_reports = []
     for m in result["matches"]:
-        rep = build_report(m, risks_by_id, nodes, verification=result["verification"].get(m["event"]["id"]),
-                           observed_at=observed, llm_text=(llm.get("intel") or {}).get(m["event"]["id"]))
+        eid = m["event"]["id"]
+        rep = build_report(m, risks_by_id, nodes, verification=result["verification"].get(eid),
+                           observed_at=observed, llm_text=(llm.get("intel") or {}).get(eid),
+                           notice_extra=(llm.get("notice_extra") or {}).get(eid),
+                           orchestrator_results=[dict(r) for r in extra if r["target_type"] == "event" and r["target_id"] == eid])
         intel_reports.append(rep)
     link_updates(intel_reports, result.get("event_updates") or {})
     real = [r for r in intel_reports if r["event"]["kind"] in ("archive", "live")]
@@ -79,6 +86,7 @@ def assemble(result: dict, *, run_id: str, scenario: str, trigger_source: str, s
         "signals": result["signals"], "reconcile": result["recon"]["records"], "app_impact": app_impact,
         "execution_mode": execution_mode, "scoring": result.get("scoring"),
         "agent_plan": public_plan(result.get("agent_plan")),
+        "orchestrator_results": extra,
     }
     Report.model_validate(report)
     return {"report": report, "intel_reports": intel_reports, "risks_full": result["risks"]}

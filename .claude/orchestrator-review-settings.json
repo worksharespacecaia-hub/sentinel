@@ -1,0 +1,18 @@
+{
+  "env": {
+    "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS": "1"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/daily_intel_guard.py --read out/orchestrator-review/review-input.json --read '.claude/skills/orchestrator/**' --write out/orchestrator-review/review-proposal.json --agents '' --no-websearch --skill orchestrator"
+          }
+        ]
+      }
+    ]
+  }
+}

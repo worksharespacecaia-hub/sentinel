@@ -77,9 +77,13 @@ def _validate(kind: str, output, task_ids: set[str]):
         if not isinstance(output, list):
             raise ValueError("需要 JSON 陣列")
     elif kind == "plan":
-        # 動態派工的建議：只檢查整份格式；未知鍵、欄位錯誤由 agent_plan.approve 逐項拒絕
-        from tools.agent_plan import validate_plan_shape
+        # Orchestrator 派工的提案：只檢查整份格式；未知鍵、欄位錯誤由 orchestration.approve 逐項拒絕
+        from tools.orchestration import validate_plan_shape
         validate_plan_shape(output)
+    elif kind == "review":
+        # Orchestrator 驗收的提案：與 plan 同層級的整份格式檢查
+        from tools.orchestration import validate_review_shape
+        validate_review_shape(output)
     return output
 
 
