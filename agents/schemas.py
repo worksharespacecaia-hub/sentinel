@@ -213,6 +213,7 @@ class StackImpact(_Model):
     risk_id: str | None = None
     to_verify: list[str] = Field(default_factory=list)
     reason: str = ""
+    suggestions: list[dict] = Field(default_factory=list)   # 查核建議：只有 need_check 有內容；由 tools/check_hints 產生（specs/check-hints）
 
 
 class IntelMatchReport(_Model):

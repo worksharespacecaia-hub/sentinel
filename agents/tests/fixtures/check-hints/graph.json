@@ -1,0 +1,760 @@
+{
+ "schema_version": 1,
+ "frozen_from": "dashboard/public/data/daily/graph.json",
+ "generated_at": "2026-11-12T04:38:17Z",
+ "nodes": [
+  {
+   "id": "@demo-vendor/push-sdk@1.9.2",
+   "type": "sdk",
+   "data_classes": [],
+   "exposed_to_internet": null,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "@demo-vendor/push-sdk@2.2.0",
+   "type": "sdk",
+   "data_classes": [],
+   "exposed_to_internet": null,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "@demo-vendor/push-sdk@2.3.1",
+   "type": "sdk",
+   "data_classes": [],
+   "exposed_to_internet": null,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "ai-assistant-token",
+   "type": "token",
+   "data_classes": [],
+   "exposed_to_internet": null,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "ai-code-assistant",
+   "type": "ai_tool",
+   "data_classes": [
+    "source_code"
+   ],
+   "exposed_to_internet": false,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "android-upload-key",
+   "type": "token",
+   "data_classes": [],
+   "exposed_to_internet": null,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "api-gateway",
+   "type": "api",
+   "data_classes": [
+    "pii"
+   ],
+   "exposed_to_internet": true,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "app-api-key",
+   "type": "token",
+   "data_classes": [],
+   "exposed_to_internet": null,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "brand-app",
+   "type": "app",
+   "data_classes": [
+    "pii"
+   ],
+   "exposed_to_internet": true,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "brand-app@2.9.1",
+   "type": "app_version",
+   "data_classes": [],
+   "exposed_to_internet": null,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "brand-app@3.1.0",
+   "type": "app_version",
+   "data_classes": [],
+   "exposed_to_internet": null,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "brand-app@3.2.0",
+   "type": "app_version",
+   "data_classes": [],
+   "exposed_to_internet": null,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "brand-app@3.4.0",
+   "type": "app_version",
+   "data_classes": [],
+   "exposed_to_internet": null,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "cache-redis",
+   "type": "datastore",
+   "data_classes": [
+    "session"
+   ],
+   "exposed_to_internet": false,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "corp-vpn",
+   "type": "zone",
+   "data_classes": [],
+   "exposed_to_internet": null,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": null,
+   "vendor": null
+  },
+  {
+   "id": "deploy-pipeline",
+   "type": "service",
+   "data_classes": [],
+   "exposed_to_internet": false,
+   "management_interface": false,
+   "crown_jewel": true,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "deploy-token-eng07",
+   "type": "token",
+   "data_classes": [],
+   "exposed_to_internet": null,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "fileserver-01",
+   "type": "device",
+   "data_classes": [],
+   "exposed_to_internet": false,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "office",
+   "vendor": null
+  },
+  {
+   "id": "firebase-brand-app-storage",
+   "type": "datastore",
+   "data_classes": [
+    "pii",
+    "order"
+   ],
+   "exposed_to_internet": true,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "gitlab",
+   "type": "service",
+   "data_classes": [
+    "source_code"
+   ],
+   "exposed_to_internet": false,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "gitlab-read-token-internal-tool",
+   "type": "token",
+   "data_classes": [],
+   "exposed_to_internet": null,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "internal-tool",
+   "type": "internal_tool",
+   "data_classes": [],
+   "exposed_to_internet": true,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "internet",
+   "type": "zone",
+   "data_classes": [],
+   "exposed_to_internet": null,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": null,
+   "vendor": null
+  },
+  {
+   "id": "ios-dist-cert",
+   "type": "token",
+   "data_classes": [],
+   "exposed_to_internet": null,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "laptop-eng-03",
+   "type": "device",
+   "data_classes": [],
+   "exposed_to_internet": false,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "office",
+   "vendor": null
+  },
+  {
+   "id": "laptop-eng-07",
+   "type": "device",
+   "data_classes": [],
+   "exposed_to_internet": false,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "office",
+   "vendor": null
+  },
+  {
+   "id": "laptop-ops-02",
+   "type": "device",
+   "data_classes": [],
+   "exposed_to_internet": false,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "office",
+   "vendor": null
+  },
+  {
+   "id": "mail-api-key",
+   "type": "token",
+   "data_classes": [],
+   "exposed_to_internet": null,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": "mail-service"
+  },
+  {
+   "id": "mail-service",
+   "type": "vendor",
+   "data_classes": [
+    "order",
+    "pii"
+   ],
+   "exposed_to_internet": false,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "marketing-site",
+   "type": "service",
+   "data_classes": [],
+   "exposed_to_internet": true,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "member-api",
+   "type": "service",
+   "data_classes": [
+    "pii"
+   ],
+   "exposed_to_internet": false,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "member-db-prod",
+   "type": "datastore",
+   "data_classes": [
+    "pii"
+   ],
+   "exposed_to_internet": false,
+   "management_interface": false,
+   "crown_jewel": true,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "nas-office-01",
+   "type": "device",
+   "data_classes": [],
+   "exposed_to_internet": true,
+   "management_interface": true,
+   "crown_jewel": false,
+   "env": "office",
+   "vendor": null
+  },
+  {
+   "id": "order-db-prod",
+   "type": "datastore",
+   "data_classes": [
+    "order",
+    "pii"
+   ],
+   "exposed_to_internet": false,
+   "management_interface": false,
+   "crown_jewel": true,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "order-db-prod-cred",
+   "type": "token",
+   "data_classes": [],
+   "exposed_to_internet": null,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "order-db-test",
+   "type": "datastore",
+   "data_classes": [],
+   "exposed_to_internet": false,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "test",
+   "vendor": null
+  },
+  {
+   "id": "order-db-test-cred",
+   "type": "token",
+   "data_classes": [],
+   "exposed_to_internet": null,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "test",
+   "vendor": null
+  },
+  {
+   "id": "order-exports-bucket",
+   "type": "datastore",
+   "data_classes": [
+    "order",
+    "pii"
+   ],
+   "exposed_to_internet": true,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "payment-service",
+   "type": "service",
+   "data_classes": [
+    "payment"
+   ],
+   "exposed_to_internet": false,
+   "management_interface": false,
+   "crown_jewel": true,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "phpmyadmin",
+   "type": "internal_tool",
+   "data_classes": [
+    "order",
+    "pii"
+   ],
+   "exposed_to_internet": false,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "push-key-fcm-apns",
+   "type": "token",
+   "data_classes": [],
+   "exposed_to_internet": null,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "push-service",
+   "type": "service",
+   "data_classes": [],
+   "exposed_to_internet": null,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "report-svc",
+   "type": "service",
+   "data_classes": [
+    "order"
+   ],
+   "exposed_to_internet": false,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  },
+  {
+   "id": "saas-quicksite-builder",
+   "type": "saas",
+   "data_classes": [],
+   "exposed_to_internet": false,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": null,
+   "vendor": null
+  },
+  {
+   "id": "storefront",
+   "type": "service",
+   "data_classes": [
+    "order",
+    "pii"
+   ],
+   "exposed_to_internet": true,
+   "management_interface": false,
+   "crown_jewel": false,
+   "env": "prod",
+   "vendor": null
+  }
+ ],
+ "edges": [
+  {
+   "from": "ai-assistant-token",
+   "to": "deploy-pipeline",
+   "kind": "authorizes"
+  },
+  {
+   "from": "ai-assistant-token",
+   "to": "gitlab",
+   "kind": "authorizes"
+  },
+  {
+   "from": "ai-code-assistant",
+   "to": "ai-assistant-token",
+   "kind": "stores"
+  },
+  {
+   "from": "ai-code-assistant",
+   "to": "deploy-pipeline",
+   "kind": "network"
+  },
+  {
+   "from": "ai-code-assistant",
+   "to": "gitlab",
+   "kind": "network"
+  },
+  {
+   "from": "api-gateway",
+   "to": "member-api",
+   "kind": "network"
+  },
+  {
+   "from": "api-gateway",
+   "to": "member-db-prod",
+   "kind": "api_data_access"
+  },
+  {
+   "from": "api-gateway",
+   "to": "member-db-prod",
+   "kind": "api_data_access"
+  },
+  {
+   "from": "api-gateway",
+   "to": "member-db-prod",
+   "kind": "network"
+  },
+  {
+   "from": "app-api-key",
+   "to": "api-gateway",
+   "kind": "authorizes"
+  },
+  {
+   "from": "brand-app",
+   "to": "api-gateway",
+   "kind": "network"
+  },
+  {
+   "from": "brand-app",
+   "to": "app-api-key",
+   "kind": "stores"
+  },
+  {
+   "from": "brand-app",
+   "to": "brand-app@2.9.1",
+   "kind": "contains"
+  },
+  {
+   "from": "brand-app",
+   "to": "brand-app@3.1.0",
+   "kind": "contains"
+  },
+  {
+   "from": "brand-app",
+   "to": "brand-app@3.2.0",
+   "kind": "contains"
+  },
+  {
+   "from": "brand-app",
+   "to": "brand-app@3.4.0",
+   "kind": "contains"
+  },
+  {
+   "from": "brand-app@2.9.1",
+   "to": "@demo-vendor/push-sdk@1.9.2",
+   "kind": "contains"
+  },
+  {
+   "from": "brand-app@3.1.0",
+   "to": "@demo-vendor/push-sdk@2.2.0",
+   "kind": "contains"
+  },
+  {
+   "from": "brand-app@3.2.0",
+   "to": "@demo-vendor/push-sdk@2.2.0",
+   "kind": "contains"
+  },
+  {
+   "from": "brand-app@3.4.0",
+   "to": "@demo-vendor/push-sdk@2.3.1",
+   "kind": "contains"
+  },
+  {
+   "from": "corp-vpn",
+   "to": "phpmyadmin",
+   "kind": "network"
+  },
+  {
+   "from": "deploy-token-eng07",
+   "to": "deploy-pipeline",
+   "kind": "authorizes"
+  },
+  {
+   "from": "fileserver-01",
+   "to": "push-key-fcm-apns",
+   "kind": "stores"
+  },
+  {
+   "from": "gitlab",
+   "to": "order-db-prod-cred",
+   "kind": "stores"
+  },
+  {
+   "from": "gitlab",
+   "to": "order-db-test-cred",
+   "kind": "stores"
+  },
+  {
+   "from": "gitlab-read-token-internal-tool",
+   "to": "gitlab",
+   "kind": "authorizes"
+  },
+  {
+   "from": "internal-tool",
+   "to": "gitlab",
+   "kind": "network"
+  },
+  {
+   "from": "internal-tool",
+   "to": "gitlab-read-token-internal-tool",
+   "kind": "stores"
+  },
+  {
+   "from": "internal-tool",
+   "to": "order-db-prod",
+   "kind": "network"
+  },
+  {
+   "from": "internet",
+   "to": "api-gateway",
+   "kind": "network"
+  },
+  {
+   "from": "internet",
+   "to": "brand-app",
+   "kind": "download"
+  },
+  {
+   "from": "internet",
+   "to": "firebase-brand-app-storage",
+   "kind": "network"
+  },
+  {
+   "from": "internet",
+   "to": "internal-tool",
+   "kind": "network"
+  },
+  {
+   "from": "internet",
+   "to": "marketing-site",
+   "kind": "network"
+  },
+  {
+   "from": "internet",
+   "to": "nas-office-01",
+   "kind": "network"
+  },
+  {
+   "from": "internet",
+   "to": "order-exports-bucket",
+   "kind": "network"
+  },
+  {
+   "from": "internet",
+   "to": "storefront",
+   "kind": "network"
+  },
+  {
+   "from": "laptop-eng-07",
+   "to": "deploy-pipeline",
+   "kind": "network"
+  },
+  {
+   "from": "laptop-eng-07",
+   "to": "deploy-token-eng07",
+   "kind": "stores"
+  },
+  {
+   "from": "laptop-eng-07",
+   "to": "fileserver-01",
+   "kind": "network"
+  },
+  {
+   "from": "laptop-eng-07",
+   "to": "gitlab",
+   "kind": "network"
+  },
+  {
+   "from": "mail-api-key",
+   "to": "mail-service",
+   "kind": "authorizes"
+  },
+  {
+   "from": "member-api",
+   "to": "mail-service",
+   "kind": "network"
+  },
+  {
+   "from": "member-api",
+   "to": "member-db-prod",
+   "kind": "network"
+  },
+  {
+   "from": "order-db-prod-cred",
+   "to": "order-db-prod",
+   "kind": "authorizes"
+  },
+  {
+   "from": "order-db-test",
+   "to": "order-db-prod",
+   "kind": "network"
+  },
+  {
+   "from": "order-db-test-cred",
+   "to": "order-db-test",
+   "kind": "authorizes"
+  },
+  {
+   "from": "phpmyadmin",
+   "to": "order-db-prod",
+   "kind": "network"
+  },
+  {
+   "from": "push-key-fcm-apns",
+   "to": "push-service",
+   "kind": "authorizes"
+  },
+  {
+   "from": "report-svc",
+   "to": "order-db-prod",
+   "kind": "network"
+  },
+  {
+   "from": "storefront",
+   "to": "cache-redis",
+   "kind": "network"
+  },
+  {
+   "from": "storefront",
+   "to": "order-db-prod",
+   "kind": "network"
+  },
+  {
+   "from": "storefront",
+   "to": "payment-service",
+   "kind": "network"
+  }
+ ]
+}

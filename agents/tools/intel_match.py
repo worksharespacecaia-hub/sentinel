@@ -92,13 +92,16 @@ def match_event(ev: dict, *, data: TargetData, g: nx.MultiDiGraph, control_resul
             else:
                 impacts.append({"event_id": ev["id"], "asset_id": "*", "basis": "version", "our_state": "資產清單不完整或過期",
                                 "verdict": "need_check", "risk_id": None, "to_verify": [f"確認是否使用 {p['name']}"],
-                                "reason": "資產清單不完整，不能判定不受影響"})
+                                "reason": "資產清單不完整，不能判定不受影響",
+                                "_need": {"kind": "stack_incomplete", "product": p["name"]}})
             continue
         for nid, comp in candidates:
             ver = comp.get("version")
             v = match(ver, p.get("affected"), eco)
+            below = False
             if v == NOT_AFFECTED and p.get("unknown_below") and ver and (compare(ver, p["unknown_below"], eco) or 0) < 0:
                 v = "unknown"   # 來源未涵蓋的舊分支：不能判定不受影響
+                below = True
             state = f"{comp['name']} {ver or '版本未知'}"
             if comp.get("sapi"):
                 state += f"（{comp['sapi']}）"
@@ -109,7 +112,10 @@ def match_event(ev: dict, *, data: TargetData, g: nx.MultiDiGraph, control_resul
             if v != AFFECTED:
                 impacts.append({"event_id": ev["id"], "asset_id": nid, "basis": "version", "our_state": state,
                                 "verdict": "need_check", "risk_id": None, "to_verify": ["版本未知或範圍無法判斷"],
-                                "reason": "版本未知或範圍無法判斷，不視為安全"})
+                                "reason": "版本未知或範圍無法判斷，不視為安全",
+                                "_need": {"kind": "unknown_below" if below else "version_unknown", "product": p["name"],
+                                          "ecosystem": eco, "affected": p.get("affected"), "version": ver,
+                                          **({"unknown_below": p["unknown_below"]} if below else {})}})
                 continue
             cstate, met, detail = _conditions_state(p.get("conditions", []), nid, data, g)
             agg = [f"{c['key']}={resolve_condition(c['key'], nid, data, g)}" for c in p.get("aggravating_conditions", [])
@@ -127,11 +133,14 @@ def match_event(ev: dict, *, data: TargetData, g: nx.MultiDiGraph, control_resul
             eol = eol_status(name, ver, data.as_of)
             no_fix = fixed_available(ver, p.get("affected") or [], eco) is False if isinstance(p.get("affected"), list) else False
             verdict = "affected" if cstate == "met" else "need_check"
-            impacts.append({"event_id": ev["id"], "asset_id": nid, "basis": "condition" if p.get("conditions") else "version",
-                            "our_state": state, "verdict": verdict, "risk_id": fid,
-                            "to_verify": [f"確認 {k}" for k in detail] if cstate == "unknown" else [],
-                            "reason": "版本落在受影響範圍" + ("，利用條件成立：" + "、".join(met) if met else "")
-                                      + ("；停止支援且無修補" if eol["eol"] and no_fix else "")})
+            imp = {"event_id": ev["id"], "asset_id": nid, "basis": "condition" if p.get("conditions") else "version",
+                   "our_state": state, "verdict": verdict, "risk_id": fid,
+                   "to_verify": [f"確認 {k}" for k in detail] if cstate == "unknown" else [],
+                   "reason": "版本落在受影響範圍" + ("，利用條件成立：" + "、".join(met) if met else "")
+                             + ("；停止支援且無修補" if eol["eol"] and no_fix else "")}
+            if verdict == "need_check":
+                imp["_need"] = {"kind": "conditions_unknown", "product": p["name"], "keys": list(detail)}
+            impacts.append(imp)
             new_findings.append({
                 "id": fid, "asset_id": nid, "category": "vuln", "control_id": None,
                 "title": f"{comp['name']} {ver}：{_short_title(ev)}",
@@ -154,7 +163,9 @@ def match_event(ev: dict, *, data: TargetData, g: nx.MultiDiGraph, control_resul
         if res["status"] == "unknown":
             impacts.append({"event_id": ev["id"], "asset_id": "*", "basis": "control", "our_state": res["reason"],
                             "verdict": "need_check", "risk_id": None, "to_verify": [f"{cid}：{res['reason']}"],
-                            "reason": "控制項資料不足"})
+                            "reason": "控制項資料不足",
+                            "_need": {"kind": "control_unknown", "control_id": cid, "title": res["title"],
+                                      "reason": res["reason"]}})
         elif res["status"] == "pass":
             notes.append(f"{cid}（{res['title']}）符合")
         else:
@@ -176,6 +187,7 @@ def match_event(ev: dict, *, data: TargetData, g: nx.MultiDiGraph, control_resul
             if imp["verdict"] == "affected":
                 imp["verdict"] = "need_check"
                 imp["to_verify"] = list(ev["requires_manual_check"])
+                imp["_need"] = {"kind": "manual_check", "items": list(ev["requires_manual_check"])}
 
     # 沒有產品、也沒有任何有檢查結果的控制項：程式其實沒比對任何資產，不能當成「不受影響」
     has_criteria = (bool(ev.get("products")) or bool(ev.get("match_finding_categories"))
@@ -187,7 +199,8 @@ def match_event(ev: dict, *, data: TargetData, g: nx.MultiDiGraph, control_resul
                         "to_verify": ["人工判斷事件的攻擊手法是否適用於我們的系統",
                                       "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
                                       *[f"建議新增控制項：{t}" for t in proposed if t]],
-                        "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產"})
+                        "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+                        "_need": {"kind": "no_criteria"}})
 
     affected = [i for i in impacts if i["verdict"] == "affected"]
     need = [i for i in impacts if i["verdict"] == "need_check"]

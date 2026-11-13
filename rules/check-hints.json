@@ -1,0 +1,292 @@
+{
+  "schema_version": 1,
+  "initial_access_attck": ["T1190", "T1078", "T1133", "T1199", "T1566", "T1195", "T1189", "T1200"],
+  "unstated_words": ["未說明", "不明", "調查中", "尚待", "未公布", "未經授權存取", "未授權存取", "異常存取", "非法存取"],
+  "targets": [
+    {
+      "id": "vendor",
+      "label": "委外服務商",
+      "keywords": ["委外", "服務商", "廠商", "供應商", "外包", "SaaS", "vendor", "supplier"],
+      "attck": ["T1199"],
+      "hypotheses": [
+        {
+          "id": "vendor-data-leak",
+          "hypothesis": "委外服務商自己的系統被入侵，我們交給它的客戶資料一起外流",
+          "why": "委外商遭入侵、多家客戶一起受波及，是這類事件常見的影響方式",
+          "check": "盤點我們交給委外商的資料欄位與筆數，確認對方是否已通知、資料是否已最小化",
+          "how": "查合約的事件通報時限、傳給委外商的 API 欄位，以及對方的資料保存期限",
+          "plain": "委外廠商被入侵，連帶外流我們交給它的資料",
+          "attck": ["T1199"],
+          "selector": [{"types": ["vendor", "saas"]}],
+          "related_controls": []
+        },
+        {
+          "id": "vendor-key-abuse",
+          "hypothesis": "我們給委外商的 API 金鑰在對方外洩，被拿來冒用呼叫服務",
+          "why": "委外商被入侵時，存放在對方的整合金鑰常一起外流",
+          "check": "確認給委外商的金鑰權限範圍與最近輪替時間，檢查近期呼叫紀錄有無異常",
+          "how": "查金鑰清冊的輪替日期與權限範圍，以及委外服務後台與我們 API 閘道的呼叫紀錄",
+          "plain": "我們交給廠商的連線金鑰可能被冒用",
+          "attck": ["T1199"],
+          "selector": [{"types": ["token"], "has_vendor": true}],
+          "related_controls": ["C-THIRD-PARTY-KEY-ROTATION"]
+        },
+        {
+          "id": "vendor-account",
+          "hypothesis": "委外人員的帳號可以登入我們的後台或內部工具，被盜用後直接進入",
+          "why": "委外人員帳號常有權限過大、結案後沒有停用的情況",
+          "check": "列出委外人員可登入的後台與內部工具帳號，確認是否最小權限、啟用雙因素驗證、停用不需要的帳號",
+          "how": "查內部工具與管理介面的帳號清單、最後登入時間與登入來源",
+          "plain": "委外人員的登入帳號可能被盜用",
+          "attck": ["T1078", "T1199"],
+          "selector": [{"management_interface": true}, {"types": ["internal_tool"]}],
+          "related_controls": ["C-INTERNAL-TOOL-EXPOSED"]
+        }
+      ]
+    },
+    {
+      "id": "mail",
+      "label": "寄信或電子報服務",
+      "keywords": ["郵件發送", "郵件服務", "電子報", "寄信", "寄送", "Mailgun", "SendGrid"],
+      "attck": [],
+      "hypotheses": [
+        {
+          "id": "mail-key-leak",
+          "hypothesis": "寄信服務的 API 金鑰外洩，被用來讀取寄信紀錄或寄出冒名信",
+          "why": "寄信服務商被入侵時，客戶的寄信金鑰與收件人清單常是主要目標",
+          "check": "確認寄信金鑰的權限與輪替時間，檢查近期是否有不明的寄信或讀取紀錄",
+          "how": "查寄信服務後台的金鑰清單、寄送紀錄與退信報表，以及金鑰的最近輪替日期",
+          "plain": "寄信服務的金鑰可能被拿去寄冒名信",
+          "attck": [],
+          "selector": [{"types": ["token"], "has_vendor": true}, {"types": ["vendor"], "id_contains": ["mail"]}],
+          "related_controls": ["C-THIRD-PARTY-KEY-ROTATION"]
+        },
+        {
+          "id": "mail-content-pii",
+          "hypothesis": "寄出的信件內容帶有過多個資，寄信商外洩時一起外流",
+          "why": "寄信商會保存信件內容與收件人資料，信裡帶的個資越多，外洩影響越大",
+          "check": "檢查交易通知信與電子報帶了哪些個資，能否只放必要欄位或改用登入後查看",
+          "how": "查寄信範本的欄位、傳給寄信服務的參數，以及寄信服務的資料保存設定",
+          "plain": "寄出的信件帶了太多個資，寄信商外洩時一起外流",
+          "attck": [],
+          "selector": [{"types": ["vendor"], "id_contains": ["mail"]}],
+          "related_controls": []
+        }
+      ]
+    },
+    {
+      "id": "database",
+      "label": "資料庫",
+      "keywords": ["資料庫", "database", "訂單資料", "個資", "伺服器上保存"],
+      "attck": [],
+      "hypotheses": [
+        {
+          "id": "db-exposed",
+          "hypothesis": "資料庫或資料庫管理工具可以從外部或其他環境直接連線",
+          "why": "資料庫遭大量讀取的事件，常見原因是資料庫或管理工具允許的連線範圍過寬",
+          "check": "確認存放個資與訂單的資料庫及資料庫管理工具，只允許必要的來源連線",
+          "how": "查防火牆與安全群組規則、資料庫的允許來源設定，以及資料庫管理工具是否對外",
+          "plain": "資料庫或管理工具可能可以被直接連上",
+          "attck": ["T1190", "T1133"],
+          "selector": [{"types": ["datastore"], "data_classes_any": ["pii", "order"]},
+                       {"types": ["internal_tool"], "data_classes_any": ["pii", "order"]}],
+          "related_controls": ["C-INTERNAL-TOOL-EXPOSED", "C-NET-SEGMENT", "C-CLOUD-STORAGE-PUBLIC"]
+        },
+        {
+          "id": "db-cred-leak",
+          "hypothesis": "資料庫帳密或連線字串外洩（放在程式碼、設定檔或員工電腦上）",
+          "why": "拿到資料庫帳密就能不靠漏洞直接讀取資料",
+          "check": "確認資料庫帳密沒有放在程式碼或設定檔中，疑似外洩時立即輪替",
+          "how": "查程式碼倉庫的金鑰掃描結果、設定檔，以及部署用的機密管理設定",
+          "plain": "資料庫的帳號密碼可能外流被拿來登入",
+          "attck": ["T1078"],
+          "selector": [{"types": ["token"], "id_contains": ["db"]}],
+          "related_controls": ["C-SECRET-IN-GIT", "C-DEV-DEVICE-TOKEN"]
+        },
+        {
+          "id": "db-app-vuln",
+          "hypothesis": "經由網站或 API 的漏洞（例如注入、越權）大量讀取資料庫內容",
+          "why": "對外網站與 API 是讀取後端資料庫最常見的入口",
+          "check": "檢查對外網站與 API 是否有注入或越權問題，以及是否出現大量讀取",
+          "how": "查網站應用防火牆與 API 存取紀錄中的大量查詢，以及最近一次弱點掃描報告",
+          "plain": "網站或系統介面的漏洞可能被用來大量讀取資料",
+          "attck": ["T1190"],
+          "selector": [{"types": ["service", "api"], "exposed": true, "data_classes_any": ["pii", "order"]}],
+          "related_controls": []
+        }
+      ]
+    },
+    {
+      "id": "member-portal",
+      "label": "會員中心與訂單查詢",
+      "keywords": ["會員中心", "會員系統", "會員帳號", "會員登入", "訂單查詢", "歷史訂單"],
+      "attck": [],
+      "hypotheses": [
+        {
+          "id": "member-credential-stuffing",
+          "hypothesis": "攻擊者用其他地方外洩的帳密撞庫，接管會員帳號",
+          "why": "會員中心遭攻擊時，撞庫與帳號接管是常見手法之一",
+          "check": "檢查會員登入失敗次數、同一來源的大量嘗試，以及是否有登入頻率限制與雙因素驗證",
+          "how": "查會員登入紀錄、登入失敗告警與頻率限制設定",
+          "plain": "會員帳號可能被人用外流的密碼盜登",
+          "attck": ["T1078", "T1110"],
+          "selector": [{"types": ["service", "api"], "exposed": true, "data_classes_any": ["pii"]}],
+          "related_controls": []
+        },
+        {
+          "id": "member-idor",
+          "hypothesis": "訂單查詢有越權問題，改編號就能看到別人的訂單",
+          "why": "訂單或聯絡資料遭大量取得，常見原因是查詢功能沒有檢查資料擁有者",
+          "check": "確認訂單查詢與會員資料 API 會檢查登入者是否為資料擁有者",
+          "how": "查訂單查詢 API 的授權檢查程式，以及存取紀錄中連續編號的查詢",
+          "plain": "訂單查詢可能改個編號就看得到別人的資料",
+          "attck": ["T1190"],
+          "selector": [{"types": ["service", "api"], "exposed": true, "data_classes_any": ["pii"]}],
+          "related_controls": []
+        },
+        {
+          "id": "member-scraping",
+          "hypothesis": "攻擊者用自動化程式大量讀取會員或訂單資料",
+          "why": "大量資料被取走時，常伴隨短時間內的大量查詢",
+          "check": "檢查會員中心與 API 是否有大量讀取的偵測與頻率限制",
+          "how": "查 API 閘道的頻率限制設定，以及存取紀錄中的異常流量",
+          "plain": "會員資料可能被自動化程式大量讀走",
+          "attck": [],
+          "selector": [{"types": ["service", "api"], "exposed": true, "data_classes_any": ["pii"]}],
+          "related_controls": []
+        }
+      ]
+    },
+    {
+      "id": "admin",
+      "label": "管理後台",
+      "keywords": ["管理系統", "管理後台", "後台", "管理介面", "管理者", "admin"],
+      "attck": [],
+      "hypotheses": [
+        {
+          "id": "admin-exposed",
+          "hypothesis": "管理後台可以從外部連線，而且只靠帳號密碼保護",
+          "why": "管理系統遭非法存取的事件，常見原因是後台對外開放",
+          "check": "確認後台與管理介面只允許公司網路或 VPN 連線，並啟用雙因素驗證",
+          "how": "查後台的對外設定、反向代理與防火牆規則，以及登入方式",
+          "plain": "管理後台可能從外部就連得到",
+          "attck": ["T1133", "T1078"],
+          "selector": [{"management_interface": true}, {"types": ["internal_tool"]}],
+          "related_controls": ["C-INTERNAL-TOOL-EXPOSED"]
+        },
+        {
+          "id": "admin-unpatched",
+          "hypothesis": "後台或管理工具使用的軟體有未修補的漏洞",
+          "why": "後台軟體常較少更新，已知漏洞容易被利用",
+          "check": "確認後台與管理工具的軟體版本，對照原廠的修補公告",
+          "how": "查後台軟體的版本資訊、更新紀錄與原廠安全公告",
+          "plain": "管理後台的軟體可能沒有更新到最新",
+          "attck": ["T1190"],
+          "selector": [{"management_interface": true}, {"types": ["internal_tool"]}],
+          "related_controls": ["C-INTERNAL-TOOL-EXPOSED"]
+        },
+        {
+          "id": "admin-account",
+          "hypothesis": "員工或委外人員的後台帳號被盜用",
+          "why": "用合法帳號登入後台，比找漏洞容易，也比較不容易被發現",
+          "check": "檢查後台帳號清單、權限與最近登入紀錄，停用不需要的帳號",
+          "how": "查後台的帳號與權限清單，以及登入紀錄的來源與時間",
+          "plain": "員工或廠商的後台帳號可能被盜用",
+          "attck": ["T1078"],
+          "selector": [{"management_interface": true}, {"types": ["internal_tool"]}],
+          "related_controls": ["C-INTERNAL-TOOL-EXPOSED"]
+        }
+      ]
+    },
+    {
+      "id": "code-repo",
+      "label": "程式碼管理平台",
+      "keywords": ["程式碼管理", "GitLab", "GitHub", "原始碼"],
+      "attck": ["T1552"],
+      "hypotheses": [
+        {
+          "id": "repo-secret",
+          "hypothesis": "程式碼或設定檔裡的金鑰被拿走，用來登入其他系統",
+          "why": "程式碼平台被存取時，裡面的金鑰常被拿來進一步入侵",
+          "check": "掃描程式碼與歷史紀錄中的金鑰，發現就立即輪替並移出程式碼",
+          "how": "查程式碼倉庫的金鑰掃描結果與機密管理設定",
+          "plain": "程式碼裡的金鑰可能被拿去登入其他系統",
+          "attck": ["T1552"],
+          "selector": [{"data_classes_any": ["source_code"]}],
+          "related_controls": ["C-SECRET-IN-GIT"]
+        },
+        {
+          "id": "repo-account",
+          "hypothesis": "程式碼平台的帳號或存取權杖外洩",
+          "why": "開發者帳號與存取權杖外洩，可讓攻擊者直接下載程式碼",
+          "check": "檢查程式碼平台的帳號、存取權杖與雙因素驗證，撤銷不需要的權杖",
+          "how": "查程式碼平台的使用者清單、存取權杖清單與稽核紀錄",
+          "plain": "程式碼平台的帳號可能外流",
+          "attck": ["T1078"],
+          "selector": [{"data_classes_any": ["source_code"]}],
+          "related_controls": ["C-SECRET-IN-GIT"]
+        }
+      ]
+    },
+    {
+      "id": "endpoint",
+      "label": "員工電腦與帳號",
+      "keywords": ["員工電腦", "釣魚", "惡意程式", "筆電", "帳號密碼", "帳密"],
+      "attck": ["T1566", "T1204", "T1078"],
+      "hypotheses": [
+        {
+          "id": "endpoint-token",
+          "hypothesis": "員工電腦中毒，電腦上存的登入權杖或金鑰被拿走",
+          "why": "員工電腦上常存有部署或雲端權杖，中毒後會一起外流",
+          "check": "確認員工電腦上沒有長期有效的部署或雲端權杖，並檢查端點防護告警",
+          "how": "查端點管理平台的告警、電腦上的權杖清單與權杖有效期限",
+          "plain": "員工電腦上的登入權杖可能被偷走",
+          "attck": ["T1204", "T1566"],
+          "selector": [{"types": ["device"]}],
+          "related_controls": ["C-DEV-DEVICE-TOKEN"]
+        },
+        {
+          "id": "endpoint-phishing",
+          "hypothesis": "員工帳號密碼被釣魚，攻擊者用它登入內部系統",
+          "why": "釣魚取得員工帳密是常見的初始入侵方式之一",
+          "check": "確認內部工具與管理介面都啟用雙因素驗證，檢查近期的異常登入",
+          "how": "查身分驗證服務的登入紀錄與雙因素驗證設定",
+          "plain": "員工的帳號密碼可能被釣魚騙走",
+          "attck": ["T1566", "T1078"],
+          "selector": [{"types": ["internal_tool"]}, {"management_interface": true}],
+          "related_controls": []
+        }
+      ]
+    },
+    {
+      "id": "server",
+      "label": "伺服器與對外系統",
+      "keywords": ["伺服器", "主機", "漏洞", "server"],
+      "attck": ["T1190", "T1133"],
+      "hypotheses": [
+        {
+          "id": "server-unpatched",
+          "hypothesis": "對外系統有未修補的漏洞被利用",
+          "why": "對外系統的已知漏洞是常見的入侵入口",
+          "check": "列出對外系統與元件版本，對照近期安全公告並排定修補",
+          "how": "查弱點掃描報告、元件版本清單與修補紀錄",
+          "plain": "對外系統可能有沒修補的漏洞",
+          "attck": ["T1190"],
+          "selector": [{"exposed": true, "types": ["service", "api", "internal_tool", "device"]}],
+          "related_controls": []
+        },
+        {
+          "id": "server-remote-admin",
+          "hypothesis": "伺服器的遠端管理帳密被猜中或外洩",
+          "why": "遠端管理服務對外時，弱密碼與外洩帳密常被利用",
+          "check": "確認遠端管理只允許公司網路或 VPN 連線，並停用純密碼登入或啟用雙因素驗證",
+          "how": "查防火牆規則、遠端管理服務設定與登入紀錄",
+          "plain": "伺服器的遠端管理帳號可能被猜中",
+          "attck": ["T1133", "T1078"],
+          "selector": [{"management_interface": true}],
+          "related_controls": ["C-INTERNAL-TOOL-EXPOSED"]
+        }
+      ]
+    }
+  ]
+}

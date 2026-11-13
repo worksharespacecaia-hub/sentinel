@@ -10,6 +10,8 @@ from pathlib import Path
 
 from tools.agent_plan import planner_checks
 from tools.attack_path import find_paths
+from tools.check_hints import attach as attach_check_hints
+from tools.check_hints import load_rules as load_check_rules
 from tools.common import INTEL_DIR, iso
 from tools.findings import build_findings
 from tools.graph_builder import build_graph, graph_to_json
@@ -96,6 +98,12 @@ def evaluate(inp: EvalInput) -> dict:
         if mx:
             for imp in m["impacts"]:
                 imp["level_cap"] = mx
+    # 需確認項目的查核建議（specs/check-hints）：只附在 impact 的 suggestions，不影響判定、分數、等級、燈號與結論
+    from tools.digest import load_asset_label_file   # 延遲匯入：digest 會匯入 llm
+    hint_rules, hint_issue = load_check_rules()
+    labels, _ = load_asset_label_file()               # 問題已由 A5 的整理流程回報，這裡不重複記錄
+    for m in matches:
+        attach_check_hints(m, graph=g, controls=a2["controls"], rules=hint_rules, labels=labels)
     # 動態派工的加查：只把核准的控制項轉成本次已算好的檢查結果，不進 impacts、事件連結與評分（R5）
     approved = [a for a in ((inp.agent_plan or {}).get("approved") or []) if isinstance(a, dict)]
     for m in matches:
@@ -122,7 +130,9 @@ def evaluate(inp: EvalInput) -> dict:
                 "last_evaluated": iso(inp.as_of), "verification_evidence": [], "evidence": s["evidence"]})
 
     # coverage_issues（KEV／NVD 涵蓋不足）只是註記：required=False，不影響完整性與燈號
-    data_issues = [*data.data_issues, *a2["data_issues"], *a2["coverage_issues"], *([scoring_issue] if scoring_issue else [])]
+    # 查核建議規則無效的註記同樣 required=False，只放在彙總 data_issues（不進 a2／data，complete 不受影響）
+    data_issues = [*data.data_issues, *a2["data_issues"], *a2["coverage_issues"], *([scoring_issue] if scoring_issue else []),
+                   *([hint_issue] if hint_issue else [])]
     complete = not any(i.get("required") and i["status"] in ("missing", "stale") for i in data.data_issues) and not a2["data_issues"]
     evaluated = set(g.nodes) | set(recon.get("saas_registered", []))
     risks += mark_fixed(risks, inp.prev_risks, complete=complete, evaluated_assets=evaluated, as_of=inp.as_of)
