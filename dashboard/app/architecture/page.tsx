@@ -13,7 +13,7 @@ export default function Architecture() {
         <h2 style={{ marginTop: 0 }}>流程</h2>
         <ol>
           <li>觸發：公告與同業事件（每小時）／每日排程（CI/CD 把關在 PR 階段完成）</li>
-          <li>Orchestrator（程式為主）：讀取情境與差異，決定派工</li>
+          <li>Orchestrator：讀取情境與差異，決定派工</li>
           <li>A0 資產探索與對帳 → 資安知識圖譜</li>
           <li>平行：A1 外部情資（每日情資用訂閱方案）、A2 弱點掃描、A3 早期訊號</li>
           <li>A4 攻擊鏈與風險（圖搜尋＋規則評分）</li>
