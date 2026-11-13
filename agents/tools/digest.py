@@ -266,6 +266,64 @@ def _id_re(aid: str) -> re.Pattern:
     return re.compile(rf"(?<![A-Za-z0-9_.-]){re.escape(aid)}(?![A-Za-z0-9_-])")
 
 
+# 公開查核建議（specs/check-hints design §5.4）：比 _INTERNAL_TOKEN_RE 更嚴格。邊界只用 ASCII lookaround，
+# 不用 \b（中文字也算 \w，「確認session.cookie_secure設定」用 \b 會漏掉）。副作用：node.js、網域名稱也會被擋，plain 本來就不該有
+SUGGESTION_BLOCK_RE = re.compile(
+    r"\\"                                                                       # 反斜線
+    r"|(?<![A-Za-z])[A-Za-z]:[\\/]"                                             # 磁碟代號（C:\、C:/）；不擋「API: 存取」
+    r"|/"                                                                       # 任何 /（路徑）
+    r"|(?<![A-Za-z0-9_.])[a-z_][a-z0-9_]*(?:\.[a-z0-9_]+)+(?![A-Za-z0-9_])"     # 點分隔設定鍵（不需接 =）
+    r"|:\d{2,5}"                                                                # 連接埠
+    r"|C-[A-Z0-9-]+"                                                            # 控制項 ID
+    r"|https?://"                                                               # 網址
+    r"|`")                                                                      # 反引號
+SUGGESTION_TEXT_LIMIT = 300
+MAX_SUGGESTIONS = 3
+MAX_SUGGESTION_SYSTEMS = 5
+
+
+def public_suggestions(rep: dict, labels: dict[str, str], internal_ids: set[str] | None = None) -> list[dict]:
+    """需確認項目的公開查核建議（R6.2）：只用 plain 與系統白話名稱；不合格的整項丟掉，不嘗試修補。
+
+    labels：A5 的 public_asset_labels 結果；internal_ids：本次圖譜的全部節點 ID（None 時略過 ID 比對，其他檢查照做）。
+    """
+    id_res = [_id_re(aid) for aid in sorted(internal_ids or ()) if isinstance(aid, str) and aid and aid != "*"]
+
+    def unsafe(s: str) -> bool:
+        return (has_sensitive(s) or bool(_INTERNAL_TOKEN_RE.search(s)) or bool(SUGGESTION_BLOCK_RE.search(s))
+                or any(r.search(s) for r in id_res))
+
+    out: list[dict] = []
+    seen: set[str] = set()
+    for impact in rep.get("impacts") or []:
+        if not isinstance(impact, dict) or impact.get("verdict") != "need_check":
+            continue
+        for s in impact.get("suggestions") or []:
+            if len(out) >= MAX_SUGGESTIONS:
+                return out
+            plain = s.get("plain") if isinstance(s, dict) else None
+            if not isinstance(plain, str) or not plain.strip() or unsafe(plain):          # 1～3：plain 不安全 → 整項丟掉
+                continue
+            systems: list[str] = []
+            for sys_ in s.get("systems") or []:                                           # 4：只列安全的白話名稱
+                aid = sys_.get("asset_id") if isinstance(sys_, dict) else None
+                name = labels.get(aid) if isinstance(aid, str) and aid != "*" else None
+                if not name or unsafe(name) or name in systems:
+                    continue
+                systems.append(name)
+                if len(systems) >= MAX_SUGGESTION_SYSTEMS:
+                    break
+            text = f"{plain}；先查：{'、'.join(systems)}" if systems else plain               # 5
+            text = public_text(text, SUGGESTION_TEXT_LIMIT)                                 # 6
+            if not text or unsafe(text) or any(unsafe(n) for n in systems):
+                continue
+            if text in seen:                                                                # 7：去重、最多 3 項
+                continue
+            seen.add(text)
+            out.append({"text": text, "systems": systems})
+    return out
+
+
 def public_conclusion(rep: dict, labels: dict[str, str], relation: str, internal_ids: set[str] | None = None) -> str:
     """結論：已知資產 ID 轉成可公開名稱；仍含內部 ID、檔案路徑、設定鍵或機敏內容時，改用依結構化結果產生的白話範本。
 
@@ -316,6 +374,7 @@ def assessment_from_report(rep: dict, labels: dict[str, str], *, run_id: str, ev
     return {"evaluated_at": evaluated_at, "run_id": run_id, "relation": relation, "max_level": rep.get("max_level"),
             "affected_count": int(rep.get("affected_count") or 0), "conclusion": public_conclusion(rep, labels, relation, internal_ids),
             "impacts": impacts, "impacts_total": total, "impacts_truncated": total > len(impacts),
+            "suggestions": public_suggestions(rep, labels, internal_ids) if relation == "need_check" else [],
             "relation_changed_at": None}
 
 

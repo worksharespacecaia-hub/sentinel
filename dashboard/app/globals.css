@@ -235,6 +235,9 @@ a.button.primary { background: var(--accent); color: #fff; }
 .digest-card p { margin: 6px 0; }
 .digest-card details { margin-top: 6px; }
 .digest-card details ul { margin: 6px 0; padding-left: 1.2em; }
+.digest-hints { margin: 8px 0; padding: 6px 10px; border: 1px dashed var(--yellow); border-radius: 6px; background: var(--yellow-bg); }
+.digest-hints ul { margin: 4px 0 0; padding-left: 1.2em; }
+.check-hints-note { margin: 6px 0 4px; }
 .digest-updates { margin: 8px 0 0 18px; padding-left: 10px; border-left: 2px dashed var(--line); display: grid; gap: 6px; }
 .digest-marker { border: 1px dashed var(--line); border-radius: 8px; padding: 6px 10px; overflow-wrap: anywhere; }
 .digest-issues { overflow-wrap: anywhere; }

@@ -318,6 +318,12 @@ class DigestImpact(_Model):
     level: Level | None                        # 由同份報告 blocks 依 (asset_id, verdict) 對應；StackImpact 本身沒有 level
 
 
+class DigestSuggestion(_Model):
+    """需確認事件的公開查核建議（specs/check-hints R6.1）：只有白話文字與系統白話名稱。"""
+    text: str = Field(max_length=300)
+    systems: list[str] = Field(default_factory=list, max_length=5)
+
+
 class DigestAssessment(_Model):
     """最近一次完整評估的不可拆分快照：整組替換，不與其他 run 混用。"""
     evaluated_at: str = Field(pattern=_UTC)
@@ -329,6 +335,7 @@ class DigestAssessment(_Model):
     impacts: list[DigestImpact] = Field(max_length=20)
     impacts_total: int = Field(ge=0)
     impacts_truncated: bool
+    suggestions: list[DigestSuggestion] = Field(default_factory=list, max_length=3)   # 選填：舊 store／latest 沒有時為空陣列
     relation_changed_at: str | None = Field(default=None, pattern=_UTC)
 
     @model_validator(mode="after")

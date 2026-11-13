@@ -72,6 +72,12 @@ function EventCard({ c, update = false }: { c: Card; update?: boolean }) {
       {c.detail && (
         <p><Link href={c.detail.href}>查看比對明細</Link>{c.detail.note && <> <span className="muted">{c.detail.note}</span></>}</p>
       )}
+      {c.relation === "need_check" && c.suggestions.length > 0 && (
+        <div className="digest-hints">
+          <strong>可能的破口與先查的地方（推測）</strong>
+          <ul>{c.suggestions.map((s, i) => <li key={i}>{s.text}</li>)}</ul>
+        </div>
+      )}
       <details open={!c.detail}>
         <summary>受影響系統與結論（保存的評估結果）</summary>
         <p>{c.conclusion}</p>

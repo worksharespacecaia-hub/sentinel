@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
 import pytest
 from pydantic import ValidationError
@@ -748,3 +749,192 @@ def test_bundle_rejects_secret_left_in_content(tmp_path, monkeypatch):
         _bundle(tmp_path, [make_report(summary="外洩 ghp_abcdefghijklmnopqrstuvwxyz")], day(0))
     assert exc.value.code.startswith("sensitive_")
     assert dg.safe_error_code(RuntimeError("ghp_secret")) == "RuntimeError"
+
+
+
+# ── check-hints（specs/check-hints T4）：公開查核建議（R6、R7） ─────────────────
+
+FX_CHECK_HINTS = Path(__file__).parent / "fixtures" / "check-hints"
+EVAL_AT = "2026-11-10T00:00:00Z"
+NODES = {"order-db-prod", "mail-service", "storefront", "phpmyadmin"}
+LABELS = {"order-db-prod": "正式訂單資料庫", "mail-service": "寄信服務", "storefront": "商店網站"}
+PLAIN_OK = "委外廠商被入侵，連帶外流我們交給它的資料"
+
+
+def _sugg(plain=PLAIN_OK, systems=("mail-service",), **kw):
+    return {"id": "vendor-data-leak", "source": "rule", "inferred": True, "target": "vendor", "hypothesis": "h", "why": "w",
+            "check": "c", "how": "查 config/db.yml", "plain": plain, "basis": "b",
+            "systems": [{"asset_id": a, "label": None} for a in systems], "controls": [], **kw}
+
+
+def _need_rep(*suggestions, eid="live-hint-2026-11"):
+    return make_report(eid, status="need_check", impacts=[{**_impact(eid, "*", "need_check"), "suggestions": list(suggestions)}])
+
+
+def _pub(rep, labels=None, ids=NODES):
+    return dg.public_suggestions(rep, LABELS if labels is None else labels, ids)
+
+
+UNSAFE = [
+    "order-db-prod 可能可以被直接連上",                    # 本次圖譜的內部 ID
+    "備份金鑰放在 C:\\Ops\\backup.pem",                    # 反斜線路徑與磁碟代號
+    "確認 config/db.yml 的連線設定",                       # 含 / 的路徑
+    "確認 session.cookie_secure 是否開啟",                 # 點分隔設定鍵（前後空白）
+    "確認session.cookie_secure設定",                       # 點分隔設定鍵（緊貼中文）
+    "資料庫可能開在 :5432 對外",                           # 連接埠
+    "對應 C-NET-SEGMENT 的網段隔離",                       # 控制項 ID
+    "請看 https://example.com 的說明",                     # 網址
+    "金鑰 ghp_abcdefghijklmnopqrstuvwxyz0123456789 外流",  # 金鑰
+    "用 `grep` 查紀錄",                                    # 反引號
+]
+
+
+@pytest.mark.parametrize("plain", UNSAFE)
+def test_public_suggestion_drops_unsafe_plain(plain):
+    assert _pub(_need_rep(_sugg(plain))) == []
+
+
+@pytest.mark.parametrize("name", UNSAFE)
+def test_public_suggestion_drops_only_unsafe_system_name(name):
+    labels = {**LABELS, "phpmyadmin": name}
+    out = _pub(_need_rep(_sugg(systems=("phpmyadmin", "mail-service"))), labels)
+    assert out == [{"text": f"{PLAIN_OK}；先查：寄信服務", "systems": ["寄信服務"]}]
+    only_bad = _pub(_need_rep(_sugg(systems=("phpmyadmin",))), labels)
+    assert only_bad == [{"text": PLAIN_OK, "systems": []}]              # 名稱不安全時只移除該系統，建議保留
+
+
+@pytest.mark.parametrize("plain", ["確認 API: 存取是否受限", PLAIN_OK, "資料庫或管理工具可能可以被直接連上", "確認 App 版本是否需要更新"])
+def test_public_suggestion_keeps_normal_plain_text(plain):
+    assert _pub(_need_rep(_sugg(plain, systems=()))) == [{"text": plain, "systems": []}]
+
+
+def test_public_suggestion_system_names_only_public_labels():
+    out = _pub(_need_rep(_sugg(systems=("*", "unnamed-node", "order-db-prod", "storefront", "order-db-prod"))))
+    assert out == [{"text": f"{PLAIN_OK}；先查：正式訂單資料庫、商店網站", "systems": ["正式訂單資料庫", "商店網站"]}]
+    many = {f"sys-{i}": f"系統{i}" for i in range(7)}
+    [s] = dg.public_suggestions(_need_rep(_sugg(systems=tuple(many))), many, set(many))
+    assert s["systems"] == [f"系統{i}" for i in range(5)]                # 最多 5 個
+
+
+def test_public_suggestion_skips_missing_plain_dedupes_and_caps_three():
+    rep = _need_rep(_sugg(None), _sugg(""), _sugg("   "), _sugg(), _sugg(), _sugg("第二條白話", systems=()),
+                    _sugg("第三條白話", systems=()), _sugg("第四條白話", systems=()))
+    rep["impacts"][0]["suggestions"] += ["不是物件", {"plain": 1}]
+    assert [s["text"] for s in _pub(rep)] == [f"{PLAIN_OK}；先查：寄信服務", "第二條白話", "第三條白話"]
+    two = _pub(_need_rep(_sugg(systems=("mail-service",)), _sugg(systems=("storefront",))))
+    assert len(two) == 2                                                # 同一段 plain、系統不同 → text 不同，各算一條
+
+
+def test_public_suggestion_text_limited_and_rechecked(monkeypatch):
+    [s] = _pub(_need_rep(_sugg("長" * 400, systems=())))
+    assert len(s["text"]) == 300 and s["text"].endswith("…")
+    monkeypatch.setattr(dg, "public_text", lambda value, limit: f"{value} config/db.yml")   # 組合後才出現的不安全內容
+    assert _pub(_need_rep(_sugg())) == []
+
+
+def test_public_suggestion_without_internal_ids_still_checks_patterns():
+    assert dg.public_suggestions(_need_rep(_sugg("確認 config/db.yml")), LABELS, None) == []
+    assert dg.public_suggestions(_need_rep(_sugg()), LABELS, None) == [{"text": f"{PLAIN_OK}；先查：寄信服務", "systems": ["寄信服務"]}]
+
+
+def test_assessment_writes_suggestions_only_for_need_check():
+    eid = "live-hint-2026-11"
+    a = dg.assessment_from_report(_need_rep(_sugg()), LABELS, run_id=RUN, evaluated_at=EVAL_AT, internal_ids=NODES)
+    assert a["suggestions"] == [{"text": f"{PLAIN_OK}；先查：寄信服務", "systems": ["寄信服務"]}]
+    DigestAssessment.model_validate(a)
+    aff = {**_impact(eid, "storefront", "affected", "r"), "suggestions": [_sugg("受影響項目不該出現")]}
+    rep = make_report(eid, status="open", impacts=[aff, {**_impact(eid, "*", "need_check"), "suggestions": [_sugg()]}],
+                      max_level="high")
+    assert dg.assessment_from_report(rep, LABELS, run_id=RUN, evaluated_at=EVAL_AT, internal_ids=NODES)["suggestions"] == []
+    na = make_report(eid, status="not_affected", impacts=[_impact(eid, "storefront", "not_affected")])
+    assert dg.assessment_from_report(na, LABELS, run_id=RUN, evaluated_at=EVAL_AT)["suggestions"] == []
+    mixed = make_report(eid, status="need_check", impacts=[
+        {**_impact(eid, "storefront", "not_affected"), "suggestions": [_sugg("不受影響項目不該出現", systems=())]},
+        {**_impact(eid, "*", "need_check"), "suggestions": []}])
+    assert dg.assessment_from_report(mixed, LABELS, run_id=RUN, evaluated_at=EVAL_AT)["suggestions"] == []
+
+
+def test_digest_suggestion_schema_limits():
+    a = dg.assessment_from_report(_need_rep(_sugg()), LABELS, run_id=RUN, evaluated_at=EVAL_AT, internal_ids=NODES)
+    for bad in ([{"text": "長" * 301, "systems": []}], [{"text": "x", "systems": [f"s{i}" for i in range(6)]}],
+                [{"text": f"x{i}", "systems": []} for i in range(4)], [{"text": "x", "systems": [], "extra": 1}]):
+        with pytest.raises(ValidationError):
+            DigestAssessment.model_validate({**a, "suggestions": bad})
+    assert DigestAssessment.model_validate({k: v for k, v in a.items() if k != "suggestions"}).suggestions == []
+
+
+def test_old_store_and_latest_without_suggestions_still_readable(tmp_path):
+    s, seen = merge(None, None, [make_report("live-old-2026-11")], day(0))
+    for ev in s["events"].values():
+        ev["assessment"].pop("suggestions")                            # 模擬 0.12.0 之前寫出的 store
+    latest = build(s, day(0))
+    assert "suggestions" not in json.dumps(latest, ensure_ascii=False)
+    d = tmp_path / "digest"
+    d.mkdir()
+    for name, value in (("store.json", s), ("seen.json", seen), ("latest.json", latest)):
+        (d / name).write_text(json.dumps(value, ensure_ascii=False), encoding="utf-8")
+        assert dg.load_valid(d / name, name) == value
+    # 前版沒有 suggestions：只被觀察的舊事件維持原樣仍有效；新事件的快照帶有建議
+    files = dg.prepare_bundle(d, daily_report("run-2"), [_need_rep(_sugg())], as_of=day(1),
+                              generated_at=day(1, 1), run_id="run-2", asset_labels=LABELS, internal_ids=NODES)
+    store = json.loads(files["store.json"])
+    assert "suggestions" not in store["events"]["live-old-2026-11"]["assessment"]
+    assert store["events"]["live-hint-2026-11"]["assessment"]["suggestions"][0]["systems"] == ["寄信服務"]
+    DigestLatest.model_validate(json.loads(files["latest.json"]))
+
+
+def test_capacity_check_counts_suggestions(monkeypatch):
+    def reps(with_sugg):
+        out = []
+        for n in range(30):
+            eid = f"live-cap-{n:03d}"
+            sugg = [_sugg(f"第{n}件第{k}條" + "白話" * 60, systems=("mail-service", "storefront")) for k in range(3)] \
+                if with_sugg else []
+            out.append(make_report(eid, status="need_check", impacts=[{**_impact(eid, "*", "need_check"), "suggestions": sugg}]))
+        return out
+    full_plain, _ = merge(None, None, reps(False), day(0), labels=LABELS)
+    full_sugg, _ = merge(None, None, reps(True), day(0), labels=LABELS)
+    size_plain, size_sugg = len(dg.serialize(full_plain)), len(dg.serialize(full_sugg))
+    assert size_sugg > size_plain + 30 * 3 * 100                       # 建議確實寫進 store
+    limit = (size_plain + size_sugg) // 2
+    monkeypatch.setattr(dg, "MAX_BYTES", limit)
+    stats = {}
+    s, _ = merge(None, None, reps(True), day(0), labels=LABELS, stats=stats)
+    assert len(dg.serialize(s)) <= limit and stats["omitted"] > 0         # 因為建議的大小而裁切
+    s2, _ = merge(None, None, reps(False), day(0), labels=LABELS)
+    assert len(s2["events"]) == 30                                      # 沒有建議時同樣的上限放得下
+    with pytest.raises(dg.DigestError) as exc:
+        dg.validated_bytes("store.json", full_sugg)
+    assert exc.value.code == "size_store"
+
+
+def test_frozen_fixture_public_suggestions_pass_filter():
+    """R8.1 的 9 件需確認事件：每件至少 1 條公開建議；規則表的 plain 沒有任何一條被過濾擋下。"""
+    from tools import check_hints as ch
+    events = json.loads((FX_CHECK_HINTS / "events.json").read_text(encoding="utf-8"))
+    graph = json.loads((FX_CHECK_HINTS / "graph.json").read_text(encoding="utf-8"))
+    rules, issue = ch.load_rules()
+    assert issue is None and len(events) == 9
+    file_labels, _ = dg.load_asset_label_file()
+    labels = dg.public_asset_labels(graph_nodes={n["id"]: n for n in graph["nodes"]}, file_labels=file_labels)
+    ids = {n["id"] for n in graph["nodes"]}
+    for e in events:
+        sugg = ch.suggest_for_event(e, graph=graph, controls={}, rules=rules, labels=file_labels)
+        pub = dg.assessment_from_report(_need_rep(*sugg, eid=e["id"]), labels, run_id=RUN, evaluated_at=EVAL_AT,
+                                        internal_ids=ids)["suggestions"]
+        assert 1 <= len(pub) <= 3, e["id"]
+        for s in sugg:                                                  # 每條 plain 單獨過濾都要保留
+            one = dg.public_suggestions(_need_rep(s, eid=e["id"]), labels, ids)
+            assert len(one) == 1 and one[0]["text"].startswith(s["plain"]), (e["id"], s["id"])
+            assert len(one[0]["systems"]) == len({labels[x["asset_id"]] for x in s["systems"] if x["asset_id"] in labels})
+        blob = json.dumps(pub, ensure_ascii=False)
+        assert not any(dg._id_re(i).search(blob) for i in ids) and not dg.SUGGESTION_BLOCK_RE.search(blob)
+
+
+def test_suggestion_block_re_uses_ascii_boundaries():
+    for s in UNSAFE[1:8] + UNSAFE[9:]:
+        assert dg.SUGGESTION_BLOCK_RE.search(s), s
+    assert dg.SUGGESTION_BLOCK_RE.search("請確認session.cookie_secure設定")          # 緊貼中文也要擋（不用 \b）
+    assert not dg._INTERNAL_TOKEN_RE.search("確認session.cookie_secure設定")         # 既有樣式擋不到，才需要建議專用樣式
+    for s in ("確認 API: 存取是否受限", PLAIN_OK, "確認 App 版本", "第 2 步"):
+        assert not dg.SUGGESTION_BLOCK_RE.search(s), s

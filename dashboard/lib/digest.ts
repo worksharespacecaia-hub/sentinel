@@ -13,7 +13,10 @@ export interface DigestImpact { asset_id: string; asset_label: string; verdict: 
 export interface DigestAssessment {
   evaluated_at: string; run_id: string; relation: Relation; max_level: Level | null; affected_count: number; conclusion: string;
   impacts: DigestImpact[]; impacts_total: number; impacts_truncated: boolean; relation_changed_at: string | null;
+  /** 需確認事件的公開查核建議（0.12.0，specs/check-hints）。舊資料沒有；不經 isEvent 檢查，建模時由 parseSuggestions 轉成安全陣列 */
+  suggestions?: unknown;
 }
+export interface DigestSuggestion { text: string; systems: string[] }
 export interface DigestEvent {
   id: string; kind: "live" | "archive" | "advisory"; title: string; event_date: string | null; first_seen: string; last_seen: string;
   last_seen_at: string; observed_run_id: string; confidence: "confirmed" | "provisional"; is_update_of: string | null; cves: string[];
@@ -300,6 +303,34 @@ export function mergeImpacts(impacts: DigestImpact[]): MergedImpact[] {
   return out;
 }
 
+// ── 查核建議（specs/check-hints R6.5）：格式錯誤只略過該項，不讓整份整理無效 ──
+
+export const SUGGESTION_LIMIT = 3;
+export const SUGGESTION_TEXT_LIMIT = 300;
+export const SUGGESTION_SYSTEM_LIMIT = 5;
+
+/** 字數以 Unicode 字元計算（與後端 Python 的 len 相同），不切開代理字元對。 */
+const clip = (text: string, n: number) => {
+  const chars = Array.from(text);
+  return chars.length > n ? chars.slice(0, n).join("") : text;
+};
+
+/**
+ * assessment.suggestions → 安全陣列：不是陣列為 []；元素不是物件或 text 不是非空字串就略過；
+ * systems 不是陣列為 []、只保留字串；截斷為 text 300 字、systems 5 個、整體 3 項。
+ */
+export function parseSuggestions(raw: unknown): DigestSuggestion[] {
+  if (!Array.isArray(raw)) return [];
+  const out: DigestSuggestion[] = [];
+  for (const item of raw) {
+    if (out.length >= SUGGESTION_LIMIT) break;
+    if (!isObj(item) || !isStr(item.text) || !item.text.trim()) continue;
+    const systems = Array.isArray(item.systems) ? item.systems.filter(isStr).slice(0, SUGGESTION_SYSTEM_LIMIT) : [];
+    out.push({ text: clip(item.text, SUGGESTION_TEXT_LIMIT), systems });
+  }
+  return out;
+}
+
 // ── 頁面用的檢視模型（伺服器端先格式化時間，避免 client 端時區或語系差異） ──
 
 export interface CardSource { title: string; domain: string | null; href: string | null; verified: boolean }
@@ -308,6 +339,8 @@ export interface Card extends FilterItem {
   levelText: string; affectedCount: number; summary: string; sources: CardSource[]; cves: string[]; conclusion: string;
   impacts: MergedImpact[]; impactsNote: string | null; evaluatedText: string; relationChangedText: string | null;
   standaloneText: string | null; detail: DetailLink | null;
+  /** 查核建議（已由 parseSuggestions 清理）；畫面只在 relation 為 need_check 時顯示 */
+  suggestions: DigestSuggestion[];
 }
 
 export interface DigestView {
@@ -333,6 +366,7 @@ function card(ev: DigestEvent, daily: DailyInfo | null, available: ReadonlySet<s
     relationChangedText: a.relation_changed_at ? `結論更新於 ${fmtTime(a.relation_changed_at)}` : null,
     standaloneText: reason === "parent_missing" ? "較早事件的新進度" : reason === "link_invalid" ? "新進度的關聯有誤，獨立顯示" : null,
     detail: detailLink(ev, daily, available),
+    suggestions: parseSuggestions(a.suggestions),
   };
 }
 
