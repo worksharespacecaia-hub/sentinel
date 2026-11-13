@@ -3,15 +3,19 @@
 import { AGENT_SUBAGENTS, type AgentInfo } from "@/lib/subagents";
 
 export function SubagentList({ a }: { a: AgentInfo }) {
+  const planned = a.subs.filter((s) => s.planned).length;
   return (
     <>
-      <div className="sa-count">{a.subs.length ? `${a.subs.length} 個 Subagent` : "沒有 Subagent"}</div>
+      <div className="sa-count">
+        {a.subs.length ? `${a.subs.length} 個 Subagent${planned ? `（${planned} 個尚未實作）` : ""}` : "沒有 Subagent"}
+      </div>
       {a.subs.length > 0 && (
         <ul className="sa-list">
           {a.subs.map((s) => (
-            <li key={s.name}>
+            <li key={s.name} className={s.planned ? "planned" : undefined}>
               <span>{s.label}</span>
               <code>{s.name}</code>
+              {s.planned && <span className="sa-tag">尚未實作</span>}
             </li>
           ))}
         </ul>
