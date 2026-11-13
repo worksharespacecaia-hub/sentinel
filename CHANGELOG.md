@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.12.4 — 2026-11-13（標示尚未實作的 Subagent）
+
+- **背景**：面試簡報第 3 頁把 A1 的 `sdk-advisory`、`app-store-monitor` 標為「尚未實作」，網站沒有標示。兩者只在 `agents/registry.py` 登錄，沒有任何 Agent 派發；v0.13.0 規格 R11.4 也明定本版不實作
+- **網站**：`lib/subagents.ts` 新增 `planned` 欄位，這兩個 Subagent 標為尚未實作
+  - Subagent 小卡與「列出全部 Subagent」：名稱轉灰並加上虛線的「尚未實作」標籤，數量寫成「4 個 Subagent（2 個尚未實作）」
+  - 「列出全部 Subagent」的摘要改為「共 21 個，其中 2 個尚未實作」
+- **測試**：`subagents.test.ts` 新增「尚未實作的標示與 Agent 程式一致」——`agents/agents`、`agents/tools` 沒有引用的 Subagent 才能標 planned，有引用的不能標；實作後忘了拿掉標示會失敗（已用拿掉標示的反向案例確認會失敗）
+- **驗證**：`npm test`（83 項）、`tsc --noEmit`、`next build` 通過；本機以 Chrome 無頭模式截圖確認 1400px 與 520px 寬度的版面
+
 ## 0.12.3 — 2026-11-13（架構圖與簡報對齊：每日情資、④ 來源）
 
 - **背景**：比對運作原理頁架構圖與面試簡報（PDF 第 2～3 頁）後，以 v0.13.0 規格（`specs/orchestrator/`）為準，簡報的畫法正確，網站有兩處要對齊
