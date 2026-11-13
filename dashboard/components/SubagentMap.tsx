@@ -32,7 +32,7 @@ function Card({ a }: { a: AgentInfo }) {
   );
 }
 
-const ORCHESTRATOR: AgentInfo = { id: "派工", title: "Orchestrator", subs: [], note: "純程式決定要跑哪些 Job，不派 Subagent" };
+const ORCHESTRATOR: AgentInfo = { id: "路由", title: "開工路由", subs: [], note: "純程式依觸發來源決定流程，不派 Subagent" };
 
 export default function SubagentMap() {
   const s = AGENT_SUBAGENTS;
