@@ -57,16 +57,43 @@
       "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
       "suggestions": [
         {
-          "id": "vendor-data-leak",
-          "source": "rule",
+          "id": "ai-1",
+          "source": "ai",
           "inferred": true,
-          "target": "vendor",
-          "hypothesis": "委外服務商自己的系統被入侵，我們交給它的客戶資料一起外流",
-          "why": "委外商遭入侵、多家客戶一起受波及，是這類事件常見的影響方式",
-          "check": "盤點我們交給委外商的資料欄位與筆數，確認對方是否已通知、資料是否已最小化",
-          "how": "查合約的事件通報時限、傳給委外商的 API 欄位，以及對方的資料保存期限",
-          "plain": "委外廠商被入侵，連帶外流我們交給它的資料",
-          "basis": "事件標題提到「供應商」",
+          "target": null,
+          "hypothesis": "供應商端的帳號憑證遭盜用，我們放在委外服務的客戶資料可能被讀走",
+          "why": null,
+          "check": "盤點持有我們客戶資料的委外服務與其帳號，確認有無長期未換的共用帳號或金鑰、是否啟用多因素驗證，並查近期登入紀錄",
+          "how": null,
+          "plain": "供應商端的帳號憑證遭盜用，我們放在委外服務的客戶資料可能被讀走",
+          "basis": "AI 依事件推測：來源指出 Amadeus 註銷遭存取的帳號憑證並重設密碼，入侵與帳號憑證有關",
+          "systems": [
+            {
+              "asset_id": "mail-service",
+              "label": "寄信服務"
+            },
+            {
+              "asset_id": "mail-api-key",
+              "label": "寄信服務金鑰"
+            },
+            {
+              "asset_id": "saas-quicksite-builder",
+              "label": "未登記的架站服務"
+            }
+          ],
+          "controls": []
+        },
+        {
+          "id": "ai-2",
+          "source": "ai",
+          "inferred": true,
+          "target": null,
+          "hypothesis": "委外服務保存多年的客戶資料一次外流，資料保存期限可能過長",
+          "why": null,
+          "check": "確認寄信服務與未登記的架站服務保存了哪些會員與訂單資料、保存多久，過期資料是否已刪除",
+          "how": null,
+          "plain": "委外服務保存多年的客戶資料一次外流，資料保存期限可能過長",
+          "basis": "AI 依事件推測：攻擊過程第 1 步指出外流資料涵蓋 2023 年 8 月至 2026 年 9 月的訂票紀錄",
           "systems": [
             {
               "asset_id": "mail-service",
@@ -78,66 +105,6 @@
             }
           ],
           "controls": []
-        },
-        {
-          "id": "vendor-key-abuse",
-          "source": "rule",
-          "inferred": true,
-          "target": "vendor",
-          "hypothesis": "我們給委外商的 API 金鑰在對方外洩，被拿來冒用呼叫服務",
-          "why": "委外商被入侵時，存放在對方的整合金鑰常一起外流",
-          "check": "確認給委外商的金鑰權限範圍與最近輪替時間，檢查近期呼叫紀錄有無異常",
-          "how": "查金鑰清冊的輪替日期與權限範圍，以及委外服務後台與我們 API 閘道的呼叫紀錄",
-          "plain": "我們交給廠商的連線金鑰可能被冒用",
-          "basis": "事件標題提到「供應商」",
-          "systems": [
-            {
-              "asset_id": "mail-api-key",
-              "label": "寄信服務金鑰"
-            }
-          ],
-          "controls": [
-            {
-              "control_id": "C-THIRD-PARTY-KEY-ROTATION",
-              "title": "第三方服務金鑰 90 天內輪替且有 IP 白名單",
-              "status": "fail",
-              "status_label": "不符合"
-            }
-          ]
-        },
-        {
-          "id": "vendor-account",
-          "source": "rule",
-          "inferred": true,
-          "target": "vendor",
-          "hypothesis": "委外人員的帳號可以登入我們的後台或內部工具，被盜用後直接進入",
-          "why": "委外人員帳號常有權限過大、結案後沒有停用的情況",
-          "check": "列出委外人員可登入的後台與內部工具帳號，確認是否最小權限、啟用雙因素驗證、停用不需要的帳號",
-          "how": "查內部工具與管理介面的帳號清單、最後登入時間與登入來源",
-          "plain": "委外人員的登入帳號可能被盜用",
-          "basis": "事件標題提到「供應商」",
-          "systems": [
-            {
-              "asset_id": "internal-tool",
-              "label": "內部營運工具"
-            },
-            {
-              "asset_id": "nas-office-01",
-              "label": "辦公室 NAS"
-            },
-            {
-              "asset_id": "phpmyadmin",
-              "label": "資料庫網頁管理工具"
-            }
-          ],
-          "controls": [
-            {
-              "control_id": "C-INTERNAL-TOOL-EXPOSED",
-              "title": "內部工具不得對外開放",
-              "status": "fail",
-              "status_label": "不符合"
-            }
-          ]
         }
       ]
     }
@@ -212,16 +179,43 @@
           "observed_at": "2026-11-13T03:51:03Z",
           "suggestions": [
             {
-              "id": "vendor-data-leak",
-              "source": "rule",
+              "id": "ai-1",
+              "source": "ai",
               "inferred": true,
-              "target": "vendor",
-              "hypothesis": "委外服務商自己的系統被入侵，我們交給它的客戶資料一起外流",
-              "why": "委外商遭入侵、多家客戶一起受波及，是這類事件常見的影響方式",
-              "check": "盤點我們交給委外商的資料欄位與筆數，確認對方是否已通知、資料是否已最小化",
-              "how": "查合約的事件通報時限、傳給委外商的 API 欄位，以及對方的資料保存期限",
-              "plain": "委外廠商被入侵，連帶外流我們交給它的資料",
-              "basis": "事件標題提到「供應商」",
+              "target": null,
+              "hypothesis": "供應商端的帳號憑證遭盜用，我們放在委外服務的客戶資料可能被讀走",
+              "why": null,
+              "check": "盤點持有我們客戶資料的委外服務與其帳號，確認有無長期未換的共用帳號或金鑰、是否啟用多因素驗證，並查近期登入紀錄",
+              "how": null,
+              "plain": "供應商端的帳號憑證遭盜用，我們放在委外服務的客戶資料可能被讀走",
+              "basis": "AI 依事件推測：來源指出 Amadeus 註銷遭存取的帳號憑證並重設密碼，入侵與帳號憑證有關",
+              "systems": [
+                {
+                  "asset_id": "mail-service",
+                  "label": "寄信服務"
+                },
+                {
+                  "asset_id": "mail-api-key",
+                  "label": "寄信服務金鑰"
+                },
+                {
+                  "asset_id": "saas-quicksite-builder",
+                  "label": "未登記的架站服務"
+                }
+              ],
+              "controls": []
+            },
+            {
+              "id": "ai-2",
+              "source": "ai",
+              "inferred": true,
+              "target": null,
+              "hypothesis": "委外服務保存多年的客戶資料一次外流，資料保存期限可能過長",
+              "why": null,
+              "check": "確認寄信服務與未登記的架站服務保存了哪些會員與訂單資料、保存多久，過期資料是否已刪除",
+              "how": null,
+              "plain": "委外服務保存多年的客戶資料一次外流，資料保存期限可能過長",
+              "basis": "AI 依事件推測：攻擊過程第 1 步指出外流資料涵蓋 2023 年 8 月至 2026 年 9 月的訂票紀錄",
               "systems": [
                 {
                   "asset_id": "mail-service",
@@ -233,66 +227,6 @@
                 }
               ],
               "controls": []
-            },
-            {
-              "id": "vendor-key-abuse",
-              "source": "rule",
-              "inferred": true,
-              "target": "vendor",
-              "hypothesis": "我們給委外商的 API 金鑰在對方外洩，被拿來冒用呼叫服務",
-              "why": "委外商被入侵時，存放在對方的整合金鑰常一起外流",
-              "check": "確認給委外商的金鑰權限範圍與最近輪替時間，檢查近期呼叫紀錄有無異常",
-              "how": "查金鑰清冊的輪替日期與權限範圍，以及委外服務後台與我們 API 閘道的呼叫紀錄",
-              "plain": "我們交給廠商的連線金鑰可能被冒用",
-              "basis": "事件標題提到「供應商」",
-              "systems": [
-                {
-                  "asset_id": "mail-api-key",
-                  "label": "寄信服務金鑰"
-                }
-              ],
-              "controls": [
-                {
-                  "control_id": "C-THIRD-PARTY-KEY-ROTATION",
-                  "title": "第三方服務金鑰 90 天內輪替且有 IP 白名單",
-                  "status": "fail",
-                  "status_label": "不符合"
-                }
-              ]
-            },
-            {
-              "id": "vendor-account",
-              "source": "rule",
-              "inferred": true,
-              "target": "vendor",
-              "hypothesis": "委外人員的帳號可以登入我們的後台或內部工具，被盜用後直接進入",
-              "why": "委外人員帳號常有權限過大、結案後沒有停用的情況",
-              "check": "列出委外人員可登入的後台與內部工具帳號，確認是否最小權限、啟用雙因素驗證、停用不需要的帳號",
-              "how": "查內部工具與管理介面的帳號清單、最後登入時間與登入來源",
-              "plain": "委外人員的登入帳號可能被盜用",
-              "basis": "事件標題提到「供應商」",
-              "systems": [
-                {
-                  "asset_id": "internal-tool",
-                  "label": "內部營運工具"
-                },
-                {
-                  "asset_id": "nas-office-01",
-                  "label": "辦公室 NAS"
-                },
-                {
-                  "asset_id": "phpmyadmin",
-                  "label": "資料庫網頁管理工具"
-                }
-              ],
-              "controls": [
-                {
-                  "control_id": "C-INTERNAL-TOOL-EXPOSED",
-                  "title": "內部工具不得對外開放",
-                  "status": "fail",
-                  "status_label": "不符合"
-                }
-              ]
             }
           ]
         }

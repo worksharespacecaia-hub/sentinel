@@ -69,16 +69,16 @@
       "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
       "suggestions": [
         {
-          "id": "vendor-data-leak",
-          "source": "rule",
+          "id": "ai-1",
+          "source": "ai",
           "inferred": true,
-          "target": "vendor",
-          "hypothesis": "委外服務商自己的系統被入侵，我們交給它的客戶資料一起外流",
-          "why": "委外商遭入侵、多家客戶一起受波及，是這類事件常見的影響方式",
-          "check": "盤點我們交給委外商的資料欄位與筆數，確認對方是否已通知、資料是否已最小化",
-          "how": "查合約的事件通報時限、傳給委外商的 API 欄位，以及對方的資料保存期限",
-          "plain": "委外廠商被入侵，連帶外流我們交給它的資料",
-          "basis": "事件標題提到「委外」",
+          "target": null,
+          "hypothesis": "委外電商平台的資料庫遭存取，交給委外商的訂單與會員資料可能一起外流",
+          "why": null,
+          "check": "盤點交給寄信服務與未登記的架站服務的訂單、會員欄位，確認對方有無事件通報義務與資料存取紀錄",
+          "how": null,
+          "plain": "委外電商平台的資料庫遭存取，交給委外商的訂單與會員資料可能一起外流",
+          "basis": "AI 依事件推測：攻擊過程第 1 步指出委外服務商順立智慧的資料庫部分內容遭未經授權存取，波及多家客戶",
           "systems": [
             {
               "asset_id": "mail-service",
@@ -92,120 +92,27 @@
           "controls": []
         },
         {
-          "id": "db-exposed",
-          "source": "rule",
+          "id": "ai-2",
+          "source": "ai",
           "inferred": true,
-          "target": "database",
-          "hypothesis": "資料庫或資料庫管理工具可以從外部或其他環境直接連線",
-          "why": "資料庫遭大量讀取的事件，常見原因是資料庫或管理工具允許的連線範圍過寬",
-          "check": "確認存放個資與訂單的資料庫及資料庫管理工具，只允許必要的來源連線",
-          "how": "查防火牆與安全群組規則、資料庫的允許來源設定，以及資料庫管理工具是否對外",
-          "plain": "資料庫或管理工具可能可以被直接連上",
-          "basis": "攻擊過程第 1 步提到「資料庫」",
-          "systems": [
-            {
-              "asset_id": "firebase-brand-app-storage",
-              "label": "App 雲端檔案儲存區"
-            },
-            {
-              "asset_id": "member-db-prod",
-              "label": "正式會員資料庫"
-            },
-            {
-              "asset_id": "order-db-prod",
-              "label": "正式訂單資料庫"
-            },
-            {
-              "asset_id": "order-exports-bucket",
-              "label": "訂單匯出檔案儲存區"
-            },
-            {
-              "asset_id": "phpmyadmin",
-              "label": "資料庫網頁管理工具"
-            }
-          ],
-          "controls": [
-            {
-              "control_id": "C-INTERNAL-TOOL-EXPOSED",
-              "title": "內部工具不得對外開放",
-              "status": "fail",
-              "status_label": "不符合"
-            },
-            {
-              "control_id": "C-NET-SEGMENT",
-              "title": "非正式環境不得連線正式資料庫",
-              "status": "fail",
-              "status_label": "不符合"
-            },
-            {
-              "control_id": "C-CLOUD-STORAGE-PUBLIC",
-              "title": "雲端儲存空間不得公開讀取",
-              "status": "fail",
-              "status_label": "不符合"
-            }
-          ]
-        },
-        {
-          "id": "vendor-key-abuse",
-          "source": "rule",
-          "inferred": true,
-          "target": "vendor",
-          "hypothesis": "我們給委外商的 API 金鑰在對方外洩，被拿來冒用呼叫服務",
-          "why": "委外商被入侵時，存放在對方的整合金鑰常一起外流",
-          "check": "確認給委外商的金鑰權限範圍與最近輪替時間，檢查近期呼叫紀錄有無異常",
-          "how": "查金鑰清冊的輪替日期與權限範圍，以及委外服務後台與我們 API 閘道的呼叫紀錄",
-          "plain": "我們交給廠商的連線金鑰可能被冒用",
-          "basis": "事件標題提到「委外」",
+          "target": null,
+          "hypothesis": "外流的訂單與聯絡資料可能被拿來寄詐騙訊息給我們的顧客",
+          "why": null,
+          "check": "確認寄信服務金鑰是否輪替並限制來源，檢查近期寄送量與退信異常，並準備提醒顧客防詐的公告",
+          "how": null,
+          "plain": "外流的訂單與聯絡資料可能被拿來寄詐騙訊息給我們的顧客",
+          "basis": "AI 依事件推測：攻擊過程第 2、4 步指出外流欄位含電子郵件與手機號碼，客戶已提醒消費者詐騙風險",
           "systems": [
             {
               "asset_id": "mail-api-key",
               "label": "寄信服務金鑰"
-            }
-          ],
-          "controls": [
-            {
-              "control_id": "C-THIRD-PARTY-KEY-ROTATION",
-              "title": "第三方服務金鑰 90 天內輪替且有 IP 白名單",
-              "status": "fail",
-              "status_label": "不符合"
-            }
-          ]
-        },
-        {
-          "id": "db-cred-leak",
-          "source": "rule",
-          "inferred": true,
-          "target": "database",
-          "hypothesis": "資料庫帳密或連線字串外洩（放在程式碼、設定檔或員工電腦上）",
-          "why": "拿到資料庫帳密就能不靠漏洞直接讀取資料",
-          "check": "確認資料庫帳密沒有放在程式碼或設定檔中，疑似外洩時立即輪替",
-          "how": "查程式碼倉庫的金鑰掃描結果、設定檔，以及部署用的機密管理設定",
-          "plain": "資料庫的帳號密碼可能外流被拿來登入",
-          "basis": "攻擊過程第 1 步提到「資料庫」",
-          "systems": [
-            {
-              "asset_id": "order-db-prod-cred",
-              "label": "正式訂單資料庫帳密"
             },
             {
-              "asset_id": "order-db-test-cred",
-              "label": "測試訂單資料庫帳密"
+              "asset_id": "mail-service",
+              "label": "寄信服務"
             }
           ],
-          "controls": [
-            {
-              "control_id": "C-SECRET-IN-GIT",
-              "title": "Git 中不得有正式環境金鑰",
-              "status": "fail",
-              "status_label": "不符合"
-            },
-            {
-              "control_id": "C-DEV-DEVICE-TOKEN",
-              "title": "員工電腦不得持有正式部署權杖",
-              "status": "fail",
-              "status_label": "不符合"
-            }
-          ]
+          "controls": []
         }
       ]
     }
@@ -289,16 +196,16 @@
           "observed_at": "2026-11-13T03:51:03Z",
           "suggestions": [
             {
-              "id": "vendor-data-leak",
-              "source": "rule",
+              "id": "ai-1",
+              "source": "ai",
               "inferred": true,
-              "target": "vendor",
-              "hypothesis": "委外服務商自己的系統被入侵，我們交給它的客戶資料一起外流",
-              "why": "委外商遭入侵、多家客戶一起受波及，是這類事件常見的影響方式",
-              "check": "盤點我們交給委外商的資料欄位與筆數，確認對方是否已通知、資料是否已最小化",
-              "how": "查合約的事件通報時限、傳給委外商的 API 欄位，以及對方的資料保存期限",
-              "plain": "委外廠商被入侵，連帶外流我們交給它的資料",
-              "basis": "事件標題提到「委外」",
+              "target": null,
+              "hypothesis": "委外電商平台的資料庫遭存取，交給委外商的訂單與會員資料可能一起外流",
+              "why": null,
+              "check": "盤點交給寄信服務與未登記的架站服務的訂單、會員欄位，確認對方有無事件通報義務與資料存取紀錄",
+              "how": null,
+              "plain": "委外電商平台的資料庫遭存取，交給委外商的訂單與會員資料可能一起外流",
+              "basis": "AI 依事件推測：攻擊過程第 1 步指出委外服務商順立智慧的資料庫部分內容遭未經授權存取，波及多家客戶",
               "systems": [
                 {
                   "asset_id": "mail-service",
@@ -312,120 +219,27 @@
               "controls": []
             },
             {
-              "id": "db-exposed",
-              "source": "rule",
+              "id": "ai-2",
+              "source": "ai",
               "inferred": true,
-              "target": "database",
-              "hypothesis": "資料庫或資料庫管理工具可以從外部或其他環境直接連線",
-              "why": "資料庫遭大量讀取的事件，常見原因是資料庫或管理工具允許的連線範圍過寬",
-              "check": "確認存放個資與訂單的資料庫及資料庫管理工具，只允許必要的來源連線",
-              "how": "查防火牆與安全群組規則、資料庫的允許來源設定，以及資料庫管理工具是否對外",
-              "plain": "資料庫或管理工具可能可以被直接連上",
-              "basis": "攻擊過程第 1 步提到「資料庫」",
-              "systems": [
-                {
-                  "asset_id": "firebase-brand-app-storage",
-                  "label": "App 雲端檔案儲存區"
-                },
-                {
-                  "asset_id": "member-db-prod",
-                  "label": "正式會員資料庫"
-                },
-                {
-                  "asset_id": "order-db-prod",
-                  "label": "正式訂單資料庫"
-                },
-                {
-                  "asset_id": "order-exports-bucket",
-                  "label": "訂單匯出檔案儲存區"
-                },
-                {
-                  "asset_id": "phpmyadmin",
-                  "label": "資料庫網頁管理工具"
-                }
-              ],
-              "controls": [
-                {
-                  "control_id": "C-INTERNAL-TOOL-EXPOSED",
-                  "title": "內部工具不得對外開放",
-                  "status": "fail",
-                  "status_label": "不符合"
-                },
-                {
-                  "control_id": "C-NET-SEGMENT",
-                  "title": "非正式環境不得連線正式資料庫",
-                  "status": "fail",
-                  "status_label": "不符合"
-                },
-                {
-                  "control_id": "C-CLOUD-STORAGE-PUBLIC",
-                  "title": "雲端儲存空間不得公開讀取",
-                  "status": "fail",
-                  "status_label": "不符合"
-                }
-              ]
-            },
-            {
-              "id": "vendor-key-abuse",
-              "source": "rule",
-              "inferred": true,
-              "target": "vendor",
-              "hypothesis": "我們給委外商的 API 金鑰在對方外洩，被拿來冒用呼叫服務",
-              "why": "委外商被入侵時，存放在對方的整合金鑰常一起外流",
-              "check": "確認給委外商的金鑰權限範圍與最近輪替時間，檢查近期呼叫紀錄有無異常",
-              "how": "查金鑰清冊的輪替日期與權限範圍，以及委外服務後台與我們 API 閘道的呼叫紀錄",
-              "plain": "我們交給廠商的連線金鑰可能被冒用",
-              "basis": "事件標題提到「委外」",
+              "target": null,
+              "hypothesis": "外流的訂單與聯絡資料可能被拿來寄詐騙訊息給我們的顧客",
+              "why": null,
+              "check": "確認寄信服務金鑰是否輪替並限制來源，檢查近期寄送量與退信異常，並準備提醒顧客防詐的公告",
+              "how": null,
+              "plain": "外流的訂單與聯絡資料可能被拿來寄詐騙訊息給我們的顧客",
+              "basis": "AI 依事件推測：攻擊過程第 2、4 步指出外流欄位含電子郵件與手機號碼，客戶已提醒消費者詐騙風險",
               "systems": [
                 {
                   "asset_id": "mail-api-key",
                   "label": "寄信服務金鑰"
-                }
-              ],
-              "controls": [
-                {
-                  "control_id": "C-THIRD-PARTY-KEY-ROTATION",
-                  "title": "第三方服務金鑰 90 天內輪替且有 IP 白名單",
-                  "status": "fail",
-                  "status_label": "不符合"
-                }
-              ]
-            },
-            {
-              "id": "db-cred-leak",
-              "source": "rule",
-              "inferred": true,
-              "target": "database",
-              "hypothesis": "資料庫帳密或連線字串外洩（放在程式碼、設定檔或員工電腦上）",
-              "why": "拿到資料庫帳密就能不靠漏洞直接讀取資料",
-              "check": "確認資料庫帳密沒有放在程式碼或設定檔中，疑似外洩時立即輪替",
-              "how": "查程式碼倉庫的金鑰掃描結果、設定檔，以及部署用的機密管理設定",
-              "plain": "資料庫的帳號密碼可能外流被拿來登入",
-              "basis": "攻擊過程第 1 步提到「資料庫」",
-              "systems": [
-                {
-                  "asset_id": "order-db-prod-cred",
-                  "label": "正式訂單資料庫帳密"
                 },
                 {
-                  "asset_id": "order-db-test-cred",
-                  "label": "測試訂單資料庫帳密"
+                  "asset_id": "mail-service",
+                  "label": "寄信服務"
                 }
               ],
-              "controls": [
-                {
-                  "control_id": "C-SECRET-IN-GIT",
-                  "title": "Git 中不得有正式環境金鑰",
-                  "status": "fail",
-                  "status_label": "不符合"
-                },
-                {
-                  "control_id": "C-DEV-DEVICE-TOKEN",
-                  "title": "員工電腦不得持有正式部署權杖",
-                  "status": "fail",
-                  "status_label": "不符合"
-                }
-              ]
+              "controls": []
             }
           ]
         }

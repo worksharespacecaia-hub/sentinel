@@ -108,16 +108,34 @@
     "demo": false
   },
   {
-    "id": "live-evt-cyberbiz-2026-11",
+    "id": "live-apache-mod-http2-cve-2026-119618",
     "kind": "live",
-    "title": "順立智慧（Cyberbiz）委外電商平台資安事件，大金空調零件商城、威力德生醫線上商店資料遭未授權存取",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "need_check",
+    "title": "Apache HTTP Server mod_http2 重大 RCE 漏洞 CVE-2026-119618",
+    "affected_count": 1,
+    "max_level": "high",
+    "status": "open",
     "demo": false
   },
   {
-    "id": "live-evt-mercuries-2026-11",
+    "id": "live-synology-dsm-sa-26-19-2026-11",
+    "kind": "live",
+    "title": "Synology DSM 登入驗證介面 SQL 注入漏洞（SA-26:19，CVSS 9.8）",
+    "affected_count": 1,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "live-nodejs-http2-https-flaws-2026-11",
+    "kind": "live",
+    "title": "Node.js 修補 16 個漏洞，含 HTTP/2 與 HTTPS 記憶體洩漏問題",
+    "affected_count": 3,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "live-mier-ecommerce-abnormal-access-2026-11",
     "kind": "live",
     "title": "美而快電商系統遭異常存取，部分請求涉及會員訂單 API",
     "affected_count": 0,
@@ -126,75 +144,30 @@
     "demo": false
   },
   {
-    "id": "live-evt-zhengnengliang-2026-11",
+    "id": "live-cyberbiz-vendor-breach-2026-11",
+    "kind": "live",
+    "title": "電商平台委外廠商順立智慧（Cyberbiz）資安事件，多家線上商店訂單資料遭存取",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
+    "demo": false
+  },
+  {
+    "id": "live-zhengnengliang-woocommerce-2026-11",
     "kind": "live",
     "title": "正能量智能子公司 WooCommerce 電商資料庫遭未授權存取",
     "affected_count": 0,
     "max_level": null,
-    "status": "not_affected",
+    "status": "need_check",
     "demo": false
   },
   {
-    "id": "live-evt-nitori-2026-11",
+    "id": "live-nitori-member-data-2026-11",
     "kind": "live",
     "title": "日本宜得利伺服器遭非法存取，最多 3762 萬筆會員個資恐外洩",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
-    "demo": false
-  },
-  {
-    "id": "live-evt-sharefull-2026-11",
-    "kind": "live",
-    "title": "日本打工媒合平台 Sharefull 管理系統遭非法存取，最多約 750 萬名使用者資料恐外洩",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "need_check",
-    "demo": false
-  },
-  {
-    "id": "live-evt-amadeus-2026-11",
-    "kind": "live",
-    "title": "訂票系統供應商 Amadeus 遭非法存取，泰航、芬蘭航空旅客記錄恐外流",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "need_check",
-    "demo": false
-  },
-  {
-    "id": "live-evt-apache-http2-2026-11",
-    "kind": "live",
-    "title": "Apache HTTP Server mod_http2 重大 RCE 漏洞 CVE-2026-119618",
-    "affected_count": 1,
-    "max_level": "medium",
-    "status": "open",
-    "demo": false
-  },
-  {
-    "id": "live-evt-synology-dsm-sa-26-19",
-    "kind": "live",
-    "title": "Synology DSM 登入介面 SQL 注入漏洞 CVE-2026-76954（CVSS 9.8）",
-    "affected_count": 1,
-    "max_level": "high",
-    "status": "open",
-    "demo": false
-  },
-  {
-    "id": "live-evt-nodejs-2026-11-fixes",
-    "kind": "live",
-    "title": "Node.js 修補 HTTP/2 與 HTTPS 記憶體洩漏及當機漏洞",
-    "affected_count": 3,
-    "max_level": "high",
-    "status": "open",
-    "demo": false
-  },
-  {
-    "id": "live-evt-binance-fbi-seizure-2026-11",
-    "kind": "live",
-    "title": "FBI：美國查扣遭竊自 Binance 的 12 億美元加密貨幣",
-    "affected_count": 2,
-    "max_level": "high",
-    "status": "open",
     "demo": false
   }
 ]
