@@ -12,7 +12,7 @@ type Rect = { x: number; y: number; w: number; h: number };
 type Variant = "w" | "n";
 type Layout = { W: number; H: number; boxes: Record<AgentKey, Rect> };
 
-// 流程：開工路由（程式）→ A0 → A1 → Orchestrator 派工（AI）→ A2、A3 → A4 → Orchestrator 驗收（AI）→ A5
+// 流程：開工路由（程式）→ A0 →（只在 ③：每日情資）→ A1 → Orchestrator 派工（AI）→ A2、A3 → A4 → Orchestrator 驗收（AI）→ A5
 const WIDE: Layout = {
   W: 1120, H: 560, boxes: {
     a0: { x: 290, y: 196, w: 96, h: 64 },
@@ -21,21 +21,21 @@ const WIDE: Layout = {
     a3: { x: 520, y: 244, w: 84, h: 40 },
     a4: { x: 628, y: 196, w: 92, h: 88 },
     a5: { x: 736, y: 196, w: 84, h: 88 },
-    daily: { x: 404, y: 310, w: 416, h: 56 },
+    daily: { x: 350, y: 292, w: 150, h: 56 },
     incident: { x: 504, y: 460, w: 312, h: 56 },
   },
 };
 
 const NARROW: Layout = {
-  W: 320, H: 768, boxes: {
+  W: 320, H: 828, boxes: {
     a0: { x: 20, y: 176, w: 280, h: 44 },
-    a1: { x: 20, y: 236, w: 128, h: 44 },
-    a2: { x: 20, y: 296, w: 134, h: 44 },
-    a3: { x: 166, y: 296, w: 134, h: 44 },
-    a4: { x: 20, y: 356, w: 128, h: 44 },
-    a5: { x: 20, y: 416, w: 156, h: 56 },
-    daily: { x: 192, y: 416, w: 108, h: 56 },
-    incident: { x: 20, y: 488, w: 128, h: 44 },
+    daily: { x: 156, y: 236, w: 144, h: 44 },
+    a1: { x: 20, y: 296, w: 128, h: 44 },
+    a2: { x: 20, y: 356, w: 134, h: 44 },
+    a3: { x: 166, y: 356, w: 134, h: 44 },
+    a4: { x: 20, y: 416, w: 128, h: 44 },
+    a5: { x: 20, y: 476, w: 156, h: 56 },
+    incident: { x: 20, y: 548, w: 128, h: 44 },
   },
 };
 
@@ -103,10 +103,11 @@ function Markers({ id }: { id: string }) {
 }
 
 const CLAIM =
-  "外部情資每小時比對、每天 08:00 全面評估：開工路由依觸發來源決定流程，盤點系統、驗證情資後，" +
+  "外部情資每小時比對、每天 08:00 全面評估：開工路由依觸發來源決定流程，盤點系統後，" +
+  "每天 08:00 另由每日情資判讀當天新聞交給外部情資；驗證情資後，" +
   "由 Orchestrator（AI）依當天情資派工，接著找弱點、查早期訊號、推演入侵路徑並評分，" +
   "Orchestrator 再看結果驗收、追加後續，最後把燈號與建議發布到網站；分析流程只讀取電商平台、不修改。" +
-  "部署通知等即時事件由網站規則直接判斷並告警，再觸發告警調查。有 Subagent 的方塊可以點開查看。";
+  "部署、資料庫稽核、客訴等即時事件由網站規則直接判斷並告警，再觸發告警調查。有 Subagent 的方塊可以點開查看。";
 
 /** 點開後的小卡：上半部的方塊往下開、下半部的往上開；桌機依方塊位置靠左或靠右，手機佔滿寬度 */
 function Popover({ layout, variant, open, close }: { layout: Layout; variant: Variant; open: AgentKey | null; close: () => void }) {
@@ -169,6 +170,11 @@ function Wide({ pick }: { pick: Pick }) {
       <path className="edge" d="M386 228H404" markerEnd={A} />
       <AgentBox k="a1" layout={L} variant="w" pick={pick} lines={["外部情資", "A1 驗證比對"]} />
 
+      {/* 每日情資：只在 ③ 每日例行執行，A0 之後、結果交給 A1 */}
+      <path className="edge" d="M368 260V292" markerEnd={A} />
+      <path className="edge" d="M452 292V260" markerEnd={A} />
+      <AgentBox k="daily" layout={L} variant="w" pick={pick} lines={["每日情資・只在 ③", "判讀新聞，交給 A1"]} />
+
       {/* Orchestrator（AI 規劃＋程式政策）：派工與驗收，只能追加、排優先 */}
       <Box x={404} y={110} w={200} h={64} cls="orch" lines={["Orchestrator 派工（AI）", "依情資追加任務、排優先"]} />
       <path className="edge" d="M452 196V174" markerEnd={A} />
@@ -186,15 +192,13 @@ function Wide({ pick }: { pick: Pick }) {
       <path className="edge" d="M778 174V196" markerEnd={A} />
       <AgentBox k="a5" layout={L} variant="w" pick={pick} lines={["報告與建議", "A5"]} />
 
-      <path className="edge ai-link" d="M452 260V310M674 284V310M778 284V310" />
-      <AgentBox k="daily" layout={L} variant="w" pick={pick} cls="ai"
-        lines={["Claude AI：判讀新聞、撰寫白話說明", "分數與燈號一律由程式計算"]} />
+      <text className="lbl" x={820} y={314} textAnchor="end">說明文字由 Claude 撰寫；分數與燈號一律由程式計算</text>
 
-      <path className="edge ro" d="M216 330H338V260" markerEnd={R} />
-      <text className="lbl ro" x={226} y={322}>唯讀讀取（不修改）</text>
+      <path className="edge ro" d="M216 330H306V260" markerEnd={R} />
+      <text className="lbl ro" x={222} y={348}>唯讀讀取（不修改）</text>
 
       <path className="edge" d="M216 430H912" markerEnd={A} />
-      <text className="lbl" x={290} y={420}>④ 部署通知（即時）</text>
+      <text className="lbl" x={290} y={420}>④ 部署、資料庫稽核、客訴（即時）</text>
 
       <AgentBox k="incident" layout={L} variant="w" pick={pick} lines={["告警調查", "推演入侵路徑 → 圍堵建議（留言到 Issue）"]} />
 
@@ -218,14 +222,14 @@ function Narrow({ pick }: { pick: Pick }) {
   const R = "url(#arch-n-r)";
   const L = NARROW;
   return (
-    <svg className="arch-svg" viewBox="0 0 320 768" role="group" aria-label={CLAIM}>
+    <svg className="arch-svg" viewBox="0 0 320 828" role="group" aria-label={CLAIM}>
       <Markers id="arch-n" />
 
       <Box x={6} y={6} w={308} h={52} lines={["外部資安情資", "資安新聞、公告、CISA KEV、NVD"]} />
       <path className="edge" d="M84 58V116" markerEnd={A} />
       <text className="lbl" x={92} y={73}>② 每小時比對公告</text>
 
-      <rect className="zone" x={6} y={80} width={308} height={480} rx={12} />
+      <rect className="zone" x={6} y={80} width={308} height={540} rx={12} />
       <text className="zone-title" x={302} y={100} textAnchor="end">分析流程（GitHub Actions）</text>
 
       <Box x={20} y={116} w={128} h={44} lines={["開工路由", "程式"]} />
@@ -235,44 +239,49 @@ function Narrow({ pick }: { pick: Pick }) {
       <path className="edge" d="M84 160V176" markerEnd={A} />
       <AgentBox k="a0" layout={L} variant="n" pick={pick} lines={["盤點系統", "A0 對帳"]} />
 
-      <path className="edge" d="M84 220V236" markerEnd={A} />
-      <AgentBox k="a1" layout={L} variant="n" pick={pick} lines={["外部情資", "A1"]} />
-      <path className="edge" d="M148 258H156" markerEnd={A} />
-      <Box x={156} y={236} w={144} h={44} cls="orch" lines={["Orchestrator", "派工（AI）"]} />
+      {/* 每日情資：只在 ③ 每日例行執行，結果交給 A1 */}
+      <path className="edge" d="M228 220V236" markerEnd={A} />
+      <AgentBox k="daily" layout={L} variant="n" pick={pick} lines={["每日情資", "只在 ③ 每天執行"]} />
+      <path className="edge" d="M84 220V296" markerEnd={A} />
+      <path className="edge" d="M228 280V288H120V296" markerEnd={A} />
 
-      <path className="edge" d="M180 280V288H87V296" markerEnd={A} />
-      <path className="edge" d="M233 280V296" markerEnd={A} />
+      <AgentBox k="a1" layout={L} variant="n" pick={pick} lines={["外部情資", "A1"]} />
+      <path className="edge" d="M148 318H156" markerEnd={A} />
+      <Box x={156} y={296} w={144} h={44} cls="orch" lines={["Orchestrator", "派工（AI）"]} />
+
+      <path className="edge" d="M180 340V348H87V356" markerEnd={A} />
+      <path className="edge" d="M233 340V356" markerEnd={A} />
       <AgentBox k="a2" layout={L} variant="n" pick={pick} lines={["弱點掃描", "A2"]} />
       <AgentBox k="a3" layout={L} variant="n" pick={pick} lines={["早期訊號", "A3"]} />
 
-      <path className="edge" d="M87 340V356" markerEnd={A} />
-      <path className="edge" d="M233 340V348H120V356" markerEnd={A} />
+      <path className="edge" d="M87 400V416" markerEnd={A} />
+      <path className="edge" d="M233 400V408H120V416" markerEnd={A} />
       <AgentBox k="a4" layout={L} variant="n" pick={pick} lines={["入侵路徑與評分", "A4"]} />
-      <path className="edge" d="M148 378H156" markerEnd={A} />
-      <Box x={156} y={356} w={144} h={44} cls="orch" lines={["Orchestrator", "驗收（AI）"]} />
+      <path className="edge" d="M148 438H156" markerEnd={A} />
+      <Box x={156} y={416} w={144} h={44} cls="orch" lines={["Orchestrator", "驗收（AI）"]} />
 
-      <path className="edge" d="M228 400V408H98V416" markerEnd={A} />
+      <path className="edge" d="M228 460V468H98V476" markerEnd={A} />
       <AgentBox k="a5" layout={L} variant="n" pick={pick} lines={["報告與建議", "A5"]} />
-      <path className="edge ai-link" d="M176 444H192" />
-      <AgentBox k="daily" layout={L} variant="n" pick={pick} cls="ai" lines={["Claude AI", "只寫說明"]} />
+      <text className="lbl" x={190} y={498}>說明由 Claude 撰寫</text>
+      <text className="lbl" x={190} y={516}>分數、燈號由程式算</text>
 
       <AgentBox k="incident" layout={L} variant="n" pick={pick} lines={["告警調查", "→ 圍堵建議"]} />
 
-      <path className="edge" d="M164 472V604" markerEnd={A} />
-      <text className="lbl" x={172} y={520}>每天發布</text>
+      <path className="edge" d="M164 532V664" markerEnd={A} />
+      <text className="lbl" x={172} y={580}>每天發布</text>
 
-      <rect className="zone" x={6} y={572} width={308} height={100} rx={12} />
-      <text className="zone-title" x={302} y={592} textAnchor="end">網站（Vercel）</text>
-      <Box x={20} y={604} w={128} h={52} lines={["即時告警", "④ 規則判斷"]} />
-      <Box x={156} y={604} w={144} h={52} lines={["今日重點、行動報告", "每天更新"]} />
-      <path className="edge" d="M84 604V532" markerEnd={A} />
-      <text className="lbl" x={92} y={568}>觸發調查</text>
+      <rect className="zone" x={6} y={632} width={308} height={100} rx={12} />
+      <text className="zone-title" x={302} y={652} textAnchor="end">網站（Vercel）</text>
+      <Box x={20} y={664} w={128} h={52} lines={["即時告警", "④ 規則判斷"]} />
+      <Box x={156} y={664} w={144} h={52} lines={["今日重點、行動報告", "每天更新"]} />
+      <path className="edge" d="M84 664V592" markerEnd={A} />
+      <text className="lbl" x={92} y={628}>觸發調查</text>
 
-      <Box x={6} y={700} w={308} h={60} lines={["電商平台（被評估的系統）", "① PR 把關 · 程式碼與部署紀錄"]} />
-      <path className="edge" d="M84 700V656" markerEnd={A} />
-      <text className="lbl" x={92} y={690}>④ 部署通知</text>
-      <path className="edge ro" d="M308 700V198H300" markerEnd={R} />
-      <text className="lbl ro" x={300} y={690} textAnchor="end">唯讀讀取（不修改）</text>
+      <Box x={6} y={760} w={308} h={60} lines={["電商平台（被評估的系統）", "① PR 把關 · 程式碼與部署紀錄"]} />
+      <path className="edge" d="M84 760V716" markerEnd={A} />
+      <text className="lbl" x={92} y={736}>④ 部署、資料庫稽核、客訴</text>
+      <path className="edge ro" d="M308 760V198H300" markerEnd={R} />
+      <text className="lbl ro" x={300} y={754} textAnchor="end">唯讀讀取（不修改）</text>
     </svg>
   );
 }
@@ -316,7 +325,8 @@ export default function ArchitectureDiagram() {
       <figcaption className="muted">
         {"①～④ 是四種觸發時機。藍色箭頭代表系統只「讀取」電商平台，不持有能修改它的權限。" +
           "橘框是 Orchestrator：由 AI 依當天情資派工、看結果驗收，只能追加任務與排優先，每一項都經程式核准；" +
-          "開工路由是純程式，只依觸發來源決定流程。Claude AI 只負責判讀新聞與撰寫白話說明，分數、燈號與結論一律由程式計算。" +
+          "開工路由是純程式，只依觸發來源決定流程。每日情資只在 ③ 每天 08:00 執行，由 Claude 判讀當天新聞後交給 A1；" +
+          "Claude 只負責判讀新聞與撰寫白話說明，分數、燈號與結論一律由程式計算。" +
           "方塊右上角的藍色數字是它派發的 Subagent 數量，點一下就能查看。"}
       </figcaption>
     </figure>
