@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-13T08:00:00Z",
+  "checked_at": "2026-11-13T16:27:36Z",
   "advisories_checked": 6,
   "hits": [],
   "dispatched": false,
@@ -502,7 +502,7 @@
       "revision": null
     },
     "CVE-2026-102764": {
-      "checked_at": "2026-11-12T01:32:58Z",
+      "checked_at": "2026-11-13T16:27:36Z",
       "mapped": false,
       "revision": null
     },
@@ -552,7 +552,7 @@
       "revision": null
     },
     "CVE-2026-111357": {
-      "checked_at": "2026-11-11T18:42:51Z",
+      "checked_at": "2026-11-13T16:27:36Z",
       "mapped": false,
       "revision": null
     },
@@ -567,7 +567,7 @@
       "revision": null
     },
     "CVE-2026-111793": {
-      "checked_at": "2026-11-12T01:32:58Z",
+      "checked_at": "2026-11-13T16:27:36Z",
       "mapped": false,
       "revision": null
     },
@@ -622,7 +622,7 @@
       "revision": null
     },
     "CVE-2026-20320": {
-      "checked_at": "2026-11-12T01:32:58Z",
+      "checked_at": "2026-11-13T16:27:36Z",
       "mapped": false,
       "revision": null
     },
@@ -662,12 +662,12 @@
       "revision": null
     },
     "CVE-2026-96654": {
-      "checked_at": "2026-11-12T01:32:58Z",
+      "checked_at": "2026-11-13T16:27:36Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-96655": {
-      "checked_at": "2026-11-12T01:32:58Z",
+      "checked_at": "2026-11-13T16:27:36Z",
       "mapped": false,
       "revision": null
     },
@@ -698,13 +698,7 @@
     "updated": [],
     "remaining": 0,
     "errors": [
-      "CVE-2026-111560：ReadTimeout",
-      "CVE-2026-111793：ReadTimeout",
-      "CVE-2026-20320：ReadTimeout",
-      "CVE-2026-111357：ReadTimeout",
-      "CVE-2026-96654：ReadTimeout",
-      "CVE-2026-96655：ReadTimeout",
-      "CVE-2026-102764：ReadTimeout"
+      "CVE-2026-111560：ReadTimeout"
     ]
   }
 }
