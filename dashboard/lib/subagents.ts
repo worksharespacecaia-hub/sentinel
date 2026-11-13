@@ -1,7 +1,8 @@
 // 運作原理頁用：每個 Agent（GitHub Actions Job）底下派發的 Subagent。
 // 名稱對應 agents/registry.py 的 AGENTS 與 .claude/agents/（每日情資）；subagents.test.ts 會比對兩邊是否一致。
+// planned：已在 registry 登錄、規格有定義，但還沒有 Agent 派發（尚未實作）；測試會確認標示與程式一致。
 
-export type Sub = { label: string; name: string };
+export type Sub = { label: string; name: string; planned?: boolean };
 export type AgentKey = "a0" | "a1" | "a2" | "a3" | "a4" | "a5" | "incident" | "daily";
 export type AgentInfo = { id: string; title: string; subs: Sub[]; note?: string; side?: boolean };
 
@@ -10,8 +11,8 @@ export const AGENT_SUBAGENTS: Record<AgentKey, AgentInfo> = {
   a1: {
     id: "A1", title: "外部情資", subs: [
       { label: "抽取公告重點", name: "advisory-extractor" },
-      { label: "SDK 公告關聯", name: "sdk-advisory" },
-      { label: "冒用 App 偵測", name: "app-store-monitor" },
+      { label: "SDK 公告關聯", name: "sdk-advisory", planned: true },
+      { label: "冒用 App 偵測", name: "app-store-monitor", planned: true },
       { label: "建議加查（程式核准）", name: "planner" },
     ],
   },
@@ -59,3 +60,7 @@ export const AGENT_SUBAGENTS: Record<AgentKey, AgentInfo> = {
 export const SDK_SUBAGENT_COUNT = (Object.keys(AGENT_SUBAGENTS) as AgentKey[])
   .filter((k) => k !== "daily")
   .reduce((n, k) => n + AGENT_SUBAGENTS[k].subs.length, 0);
+
+/** 其中尚未實作（planned）的數量 */
+export const PLANNED_SUBAGENT_COUNT = Object.values(AGENT_SUBAGENTS)
+  .reduce((n, a) => n + a.subs.filter((s) => s.planned).length, 0);

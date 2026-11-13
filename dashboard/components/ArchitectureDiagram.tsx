@@ -6,7 +6,7 @@
 
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import SubagentMap, { SubagentList } from "@/components/SubagentMap";
-import { AGENT_SUBAGENTS, SDK_SUBAGENT_COUNT, type AgentKey } from "@/lib/subagents";
+import { AGENT_SUBAGENTS, PLANNED_SUBAGENT_COUNT, SDK_SUBAGENT_COUNT, type AgentKey } from "@/lib/subagents";
 
 type Rect = { x: number; y: number; w: number; h: number };
 type Variant = "w" | "n";
@@ -331,7 +331,9 @@ export default function ArchitectureDiagram() {
       </figcaption>
     </figure>
       <details className="sa-all">
-        <summary>列出全部 Subagent（A0～A5 與告警調查共 {SDK_SUBAGENT_COUNT} 個，每日情資 {AGENT_SUBAGENTS.daily.subs.length} 個）</summary>
+        <summary>
+          列出全部 Subagent（A0～A5 與告警調查共 {SDK_SUBAGENT_COUNT} 個，其中 {PLANNED_SUBAGENT_COUNT} 個尚未實作；每日情資 {AGENT_SUBAGENTS.daily.subs.length} 個）
+        </summary>
         <p className="muted">
           {"每個 Agent 是一個 GitHub Actions Job，Job 內再派發 Subagent 分工（A0～A5 與告警調查由 Agent SDK 派發，每日情資由 Claude Code 派發）。" +
             "Subagent 只負責判讀與撰寫說明，不計分、不定燈號。"}
