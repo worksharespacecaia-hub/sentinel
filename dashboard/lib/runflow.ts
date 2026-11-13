@@ -12,7 +12,7 @@ export interface FlowNode { key: string; label: string; status: NodeStatus; note
 export interface FlowStage { title: string; nodes: FlowNode[] }
 
 const STAGES: { title: string; nodes: { key: string; label: string; skippedNote?: string; failureNote?: string }[] }[] = [
-  { title: "規劃", nodes: [{ key: "orchestrator", label: "Orchestrator 規劃派工" }] },
+  { title: "規劃", nodes: [{ key: "orchestrator", label: "開工路由（程式）" }] },
   { title: "資產", nodes: [{ key: "a0-assets", label: "A0 資產探索與對帳" }] },
   { title: "掃描與蒐集", nodes: [
     { key: "scanners (trivy)", label: "掃描：Trivy" },
