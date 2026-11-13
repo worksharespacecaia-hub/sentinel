@@ -29,6 +29,14 @@ export default async function Runs({ searchParams }: { searchParams: Promise<Rec
       <h2>執行紀錄</h2>
       <SourceSwitcher current={source.key} sources={sources} path="/runs" />
       <SimNotice source={source} />
+      {/* v0.13.0 上線前的過渡說明：網站架構圖已是新架構，執行紀錄仍是前一版流程；上線後移除 */}
+      <div className="panel">
+        <strong>Orchestrator（AI 派工與驗收）上線中</strong>
+        <p className="muted" style={{ marginBottom: 0 }}>
+          新架構見 <a href={PAGES.architecture.href}>{PAGES.architecture.label}</a>：由 AI 依當天情資派工、看結果驗收，只能追加任務與排優先，每一項都經程式核准。
+          上線前，下方紀錄仍是前一版做法：「開工路由」是純程式步驟，不屬於 Orchestrator；「動態派工」由每日情資提出追加建議、A1 以程式逐項核准。
+        </p>
+      </div>
       <p className="muted">執行 {report?.run_id}（{fmtTime(report?.generated_at)}，模式 {report?.execution_mode}）
         {runUrl && <> ｜ <a href={runUrl} target="_blank" rel="noreferrer">GitHub Actions 執行頁</a></>}</p>
       {replayed && <div className="panel sim">
