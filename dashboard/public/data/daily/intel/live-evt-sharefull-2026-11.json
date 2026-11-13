@@ -1,0 +1,345 @@
+{
+  "event": {
+    "id": "live-evt-sharefull-2026-11",
+    "kind": "live",
+    "title": "日本打工媒合平台 Sharefull 管理系統遭非法存取，最多約 750 萬名使用者資料恐外洩",
+    "date": "2026-11-11",
+    "industry": "SaaS",
+    "attack_chain": [
+      "Sharefull 於 11 月 4 日深夜發現管理系統遭非法存取",
+      "公司採取緊急措施封鎖入侵途徑",
+      "最多約 750 萬名使用者的帳號與敏感資訊可能外洩"
+    ],
+    "attck": [],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.cna.com.tw/news/ait/202611110191.aspx",
+        "title": "日本宜得利3762萬筆個資恐外洩 代理式AI助長網路攻擊",
+        "quote": "另外，短期打工媒合平台Sharefull也傳出約750萬名使用者的個資可能外洩，甚至涉及銀行帳戶資料。",
+        "published": "2026-11-11",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-13T03:51:03Z",
+        "content_hash": "sha256:ce7138f34844839cacaea7fa31200f997b76742ad28c36ab3c23b5e91cf9402e",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "管理後台需限制來源並有登入與操作紀錄監控",
+        "reason": "來源指出管理系統遭非法存取導致大量使用者資料可能外洩，現有控制項沒有涵蓋管理後台的存取限制與監控。"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-evt-sharefull-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：管理後台需限制來源並有登入與操作紀錄監控"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "admin-exposed",
+          "source": "rule",
+          "inferred": true,
+          "target": "admin",
+          "hypothesis": "管理後台可以從外部連線，而且只靠帳號密碼保護",
+          "why": "管理系統遭非法存取的事件，常見原因是後台對外開放",
+          "check": "確認後台與管理介面只允許公司網路或 VPN 連線，並啟用雙因素驗證",
+          "how": "查後台的對外設定、反向代理與防火牆規則，以及登入方式",
+          "plain": "管理後台可能從外部就連得到",
+          "basis": "事件標題提到「管理系統」",
+          "systems": [
+            {
+              "asset_id": "internal-tool",
+              "label": "內部營運工具"
+            },
+            {
+              "asset_id": "nas-office-01",
+              "label": "辦公室 NAS"
+            },
+            {
+              "asset_id": "phpmyadmin",
+              "label": "資料庫網頁管理工具"
+            }
+          ],
+          "controls": [
+            {
+              "control_id": "C-INTERNAL-TOOL-EXPOSED",
+              "title": "內部工具不得對外開放",
+              "status": "fail",
+              "status_label": "不符合"
+            }
+          ]
+        },
+        {
+          "id": "admin-unpatched",
+          "source": "rule",
+          "inferred": true,
+          "target": "admin",
+          "hypothesis": "後台或管理工具使用的軟體有未修補的漏洞",
+          "why": "後台軟體常較少更新，已知漏洞容易被利用",
+          "check": "確認後台與管理工具的軟體版本，對照原廠的修補公告",
+          "how": "查後台軟體的版本資訊、更新紀錄與原廠安全公告",
+          "plain": "管理後台的軟體可能沒有更新到最新",
+          "basis": "事件標題提到「管理系統」",
+          "systems": [
+            {
+              "asset_id": "internal-tool",
+              "label": "內部營運工具"
+            },
+            {
+              "asset_id": "nas-office-01",
+              "label": "辦公室 NAS"
+            },
+            {
+              "asset_id": "phpmyadmin",
+              "label": "資料庫網頁管理工具"
+            }
+          ],
+          "controls": [
+            {
+              "control_id": "C-INTERNAL-TOOL-EXPOSED",
+              "title": "內部工具不得對外開放",
+              "status": "fail",
+              "status_label": "不符合"
+            }
+          ]
+        },
+        {
+          "id": "admin-account",
+          "source": "rule",
+          "inferred": true,
+          "target": "admin",
+          "hypothesis": "員工或委外人員的後台帳號被盜用",
+          "why": "用合法帳號登入後台，比找漏洞容易，也比較不容易被發現",
+          "check": "檢查後台帳號清單、權限與最近登入紀錄，停用不需要的帳號",
+          "how": "查後台的帳號與權限清單，以及登入紀錄的來源與時間",
+          "plain": "員工或廠商的後台帳號可能被盜用",
+          "basis": "事件標題提到「管理系統」",
+          "systems": [
+            {
+              "asset_id": "internal-tool",
+              "label": "內部營運工具"
+            },
+            {
+              "asset_id": "nas-office-01",
+              "label": "辦公室 NAS"
+            },
+            {
+              "asset_id": "phpmyadmin",
+              "label": "資料庫網頁管理工具"
+            }
+          ],
+          "controls": [
+            {
+              "control_id": "C-INTERNAL-TOOL-EXPOSED",
+              "title": "內部工具不得對外開放",
+              "status": "fail",
+              "status_label": "不符合"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "短期打工媒合平台 Sharefull 於 4 日深夜發現管理系統遭非法存取，已採取緊急措施封鎖入侵途徑。最多約 750 萬名使用者的帳號資訊可能外洩，包括姓名、電話、電子郵件，以及臉部照片、銀行帳戶、緊急聯絡人及在留資格。",
+  "blocks": {
+    "1_summary": {
+      "title": "日本打工媒合平台 Sharefull 管理系統遭非法存取，最多約 750 萬名使用者資料恐外洩",
+      "date": "2026-11-11",
+      "industry": "SaaS",
+      "attack_chain": [
+        "Sharefull 於 11 月 4 日深夜發現管理系統遭非法存取",
+        "公司採取緊急措施封鎖入侵途徑",
+        "最多約 750 萬名使用者的帳號與敏感資訊可能外洩"
+      ],
+      "attck": [],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.cna.com.tw/news/ait/202611110191.aspx",
+          "title": "日本宜得利3762萬筆個資恐外洩 代理式AI助長網路攻擊",
+          "quote": "另外，短期打工媒合平台Sharefull也傳出約750萬名使用者的個資可能外洩，甚至涉及銀行帳戶資料。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-13T03:51:03Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "短期打工媒合平台 Sharefull 於 4 日深夜發現管理系統遭非法存取，已採取緊急措施封鎖入侵途徑。最多約 750 萬名使用者的帳號資訊可能外洩，包括姓名、電話、電子郵件，以及臉部照片、銀行帳戶、緊急聯絡人及在留資格。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：管理後台需限制來源並有登入與操作紀錄監控"
+          ],
+          "observed_at": "2026-11-13T03:51:03Z",
+          "suggestions": [
+            {
+              "id": "admin-exposed",
+              "source": "rule",
+              "inferred": true,
+              "target": "admin",
+              "hypothesis": "管理後台可以從外部連線，而且只靠帳號密碼保護",
+              "why": "管理系統遭非法存取的事件，常見原因是後台對外開放",
+              "check": "確認後台與管理介面只允許公司網路或 VPN 連線，並啟用雙因素驗證",
+              "how": "查後台的對外設定、反向代理與防火牆規則，以及登入方式",
+              "plain": "管理後台可能從外部就連得到",
+              "basis": "事件標題提到「管理系統」",
+              "systems": [
+                {
+                  "asset_id": "internal-tool",
+                  "label": "內部營運工具"
+                },
+                {
+                  "asset_id": "nas-office-01",
+                  "label": "辦公室 NAS"
+                },
+                {
+                  "asset_id": "phpmyadmin",
+                  "label": "資料庫網頁管理工具"
+                }
+              ],
+              "controls": [
+                {
+                  "control_id": "C-INTERNAL-TOOL-EXPOSED",
+                  "title": "內部工具不得對外開放",
+                  "status": "fail",
+                  "status_label": "不符合"
+                }
+              ]
+            },
+            {
+              "id": "admin-unpatched",
+              "source": "rule",
+              "inferred": true,
+              "target": "admin",
+              "hypothesis": "後台或管理工具使用的軟體有未修補的漏洞",
+              "why": "後台軟體常較少更新，已知漏洞容易被利用",
+              "check": "確認後台與管理工具的軟體版本，對照原廠的修補公告",
+              "how": "查後台軟體的版本資訊、更新紀錄與原廠安全公告",
+              "plain": "管理後台的軟體可能沒有更新到最新",
+              "basis": "事件標題提到「管理系統」",
+              "systems": [
+                {
+                  "asset_id": "internal-tool",
+                  "label": "內部營運工具"
+                },
+                {
+                  "asset_id": "nas-office-01",
+                  "label": "辦公室 NAS"
+                },
+                {
+                  "asset_id": "phpmyadmin",
+                  "label": "資料庫網頁管理工具"
+                }
+              ],
+              "controls": [
+                {
+                  "control_id": "C-INTERNAL-TOOL-EXPOSED",
+                  "title": "內部工具不得對外開放",
+                  "status": "fail",
+                  "status_label": "不符合"
+                }
+              ]
+            },
+            {
+              "id": "admin-account",
+              "source": "rule",
+              "inferred": true,
+              "target": "admin",
+              "hypothesis": "員工或委外人員的後台帳號被盜用",
+              "why": "用合法帳號登入後台，比找漏洞容易，也比較不容易被發現",
+              "check": "檢查後台帳號清單、權限與最近登入紀錄，停用不需要的帳號",
+              "how": "查後台的帳號與權限清單，以及登入紀錄的來源與時間",
+              "plain": "員工或廠商的後台帳號可能被盜用",
+              "basis": "事件標題提到「管理系統」",
+              "systems": [
+                {
+                  "asset_id": "internal-tool",
+                  "label": "內部營運工具"
+                },
+                {
+                  "asset_id": "nas-office-01",
+                  "label": "辦公室 NAS"
+                },
+                {
+                  "asset_id": "phpmyadmin",
+                  "label": "資料庫網頁管理工具"
+                }
+              ],
+              "controls": [
+                {
+                  "control_id": "C-INTERNAL-TOOL-EXPOSED",
+                  "title": "內部工具不得對外開放",
+                  "status": "fail",
+                  "status_label": "不符合"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  }
+}

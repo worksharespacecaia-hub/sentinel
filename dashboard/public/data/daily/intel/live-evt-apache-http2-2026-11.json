@@ -1,0 +1,235 @@
+{
+  "event": {
+    "id": "live-evt-apache-http2-2026-11",
+    "kind": "live",
+    "title": "Apache HTTP Server mod_http2 重大 RCE 漏洞 CVE-2026-119618",
+    "date": "2026-11-12",
+    "industry": "通用",
+    "attack_chain": [
+      "未經認證的攻擊者以 HTTP/2 連上啟用 mod_http2 的伺服器",
+      "assign_headers() 的競態條件導致堆積記憶體毀損",
+      "進而遠端執行程式碼"
+    ],
+    "attck": [
+      "T1190"
+    ],
+    "cves": [
+      "CVE-2026-119618"
+    ],
+    "products": [
+      {
+        "name": "apache-httpd",
+        "ecosystem": "generic",
+        "affected": [
+          {
+            "introduced": "2.4.55",
+            "fixed": "2.4.71"
+          }
+        ],
+        "cvss": 9.8,
+        "impact": "remote_code_execution"
+      }
+    ],
+    "revision": "1",
+    "controls": [],
+    "confidence": "confirmed",
+    "sources": [
+      {
+        "url": "https://thehackernews.com/2026/11/critical-apache-http2-flaw-could-let.html",
+        "title": "Critical Apache HTTP/2 Flaw Could Let Unauthenticated Attackers Execute Code Remotely",
+        "quote": "Tracked as CVE-2026-119618 , it affects versions 2.4.55 through 2.4.70 and is fixed in version 2.4.71, released yesterday.",
+        "published": "2026-11-12",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-13T03:51:03Z",
+        "content_hash": "sha256:05ccfd30e20623d6a593a0c06eba921019412631d80bbe65b1ada19b810d5c19",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://cyberq.tw/2026/11/12/apache-mod-http2-cve-2026-119618-hands-on/",
+        "title": "Apache mod_http2 爆重大 RCE 漏洞：CVSS 9.8，實測修補與緩解效果",
+        "quote": "受影響範圍是 2.4.55 到 2.4.70，從 GitHub 取得的獨立版模組 mod_h2，2.0.8 到 2.0.42 同樣受影響。",
+        "published": "2026-11-12",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-13T03:51:03Z",
+        "content_hash": "sha256:853b8123daed0901b48644dd93a0f75f9694e60ef884dcaa83535f60367353ff",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "1 項受影響，最高風險為中。marketing-site：apache-httpd 2.4.57，對外。",
+  "affected_count": 1,
+  "max_level": "medium",
+  "impacts": [
+    {
+      "event_id": "live-evt-apache-http2-2026-11",
+      "asset_id": "marketing-site",
+      "basis": "version",
+      "our_state": "apache-httpd 2.4.57，對外",
+      "verdict": "affected",
+      "risk_id": "marketing-site:apache-httpd:vuln",
+      "to_verify": [],
+      "reason": "版本落在受影響範圍"
+    }
+  ],
+  "solutions": [
+    {
+      "risk_id": "marketing-site:apache-httpd:vuln",
+      "temporary": "確認 marketing-site 的暴露範圍，先以 WAF 或存取限制降低風險",
+      "permanent": "將 marketing-site 的受影響元件升級到修補版本",
+      "options": [
+        {
+          "name": "修補",
+          "action": "升級到修補版本",
+          "cost": "需回歸測試",
+          "timing": "168 小時內"
+        },
+        {
+          "name": "緩解",
+          "action": "限制來源、關閉受影響功能",
+          "cost": "部分功能受限",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "security-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template"
+    }
+  ],
+  "notice": {
+    "needed": false,
+    "draft": null
+  },
+  "status": "open",
+  "evaluated_asset_ids": [
+    "marketing-site"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "marketing-site 的 apache-httpd 2.4.57 落在受影響範圍且對外，程式評為中風險（6 分）。建議升級至官方修補版本。",
+  "blocks": {
+    "1_summary": {
+      "title": "Apache HTTP Server mod_http2 重大 RCE 漏洞 CVE-2026-119618",
+      "date": "2026-11-12",
+      "industry": "通用",
+      "attack_chain": [
+        "未經認證的攻擊者以 HTTP/2 連上啟用 mod_http2 的伺服器",
+        "assign_headers() 的競態條件導致堆積記憶體毀損",
+        "進而遠端執行程式碼"
+      ],
+      "attck": [
+        "T1190"
+      ],
+      "cves": [
+        "CVE-2026-119618"
+      ],
+      "confidence": "已確認",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://thehackernews.com/2026/11/critical-apache-http2-flaw-could-let.html",
+          "title": "Critical Apache HTTP/2 Flaw Could Let Unauthenticated Attackers Execute Code Remotely",
+          "quote": "Tracked as CVE-2026-119618 , it affects versions 2.4.55 through 2.4.70 and is fixed in version 2.4.71, released yesterday.",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-13T03:51:03Z"
+        },
+        {
+          "url": "https://cyberq.tw/2026/11/12/apache-mod-http2-cve-2026-119618-hands-on/",
+          "title": "Apache mod_http2 爆重大 RCE 漏洞：CVSS 9.8，實測修補與緩解效果",
+          "quote": "受影響範圍是 2.4.55 到 2.4.70，從 GitHub 取得的獨立版模組 mod_h2，2.0.8 到 2.0.42 同樣受影響。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-13T03:51:03Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "marketing-site 的 apache-httpd 2.4.57 落在受影響範圍且對外，程式評為中風險（6 分）。建議升級至官方修補版本。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "1 項受影響，最高風險為中。marketing-site：apache-httpd 2.4.57，對外。",
+      "affected_count": 1,
+      "max_level": "medium"
+    },
+    "3_affected": [
+      {
+        "asset_id": "marketing-site",
+        "our_state": "apache-httpd 2.4.57，對外",
+        "basis": "version",
+        "verdict": "affected",
+        "reason": "版本落在受影響範圍",
+        "risk_id": "marketing-site:apache-httpd:vuln",
+        "level": "medium",
+        "score": 6,
+        "breakdown": [
+          {
+            "factor": "基礎分：漏洞",
+            "points": 3,
+            "reason": "CVSS 9.8"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "可從 internet 連到"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "live-evt-apache-http2-2026-11"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-13T03:51:03Z"
+      }
+    ],
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": []
+    },
+    "5_solutions": [
+      {
+        "risk_id": "marketing-site:apache-httpd:vuln",
+        "temporary": "確認 marketing-site 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "permanent": "將 marketing-site 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "168 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "security-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      }
+    ],
+    "6_notice": {
+      "needed": false,
+      "draft": null
+    },
+    "7_status": {
+      "status": "open",
+      "label": "待處理"
+    }
+  }
+}

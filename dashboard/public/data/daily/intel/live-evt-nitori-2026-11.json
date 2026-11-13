@@ -1,0 +1,443 @@
+{
+  "event": {
+    "id": "live-evt-nitori-2026-11",
+    "kind": "live",
+    "title": "日本宜得利伺服器遭非法存取，最多 3762 萬筆會員個資恐外洩",
+    "date": "2026-11-11",
+    "industry": "零售",
+    "attack_chain": [
+      "宜得利控股於 11 月 6 日確認伺服器遭非法存取",
+      "最多約 3762 萬筆會員及網購使用者個資可能外洩（姓名、住址、電子郵件）",
+      "系統未保存信用卡資訊，不在外洩範圍內"
+    ],
+    "attck": [],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.cna.com.tw/news/ait/202611110191.aspx",
+        "title": "日本宜得利3762萬筆個資恐外洩 代理式AI助長網路攻擊",
+        "quote": "日本家具連鎖企業宜得利11日表示，伺服器遭到非法存取，最多可能有3762萬筆會員個資外洩。",
+        "published": "2026-11-11",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-13T03:51:03Z",
+        "content_hash": "sha256:ce7138f34844839cacaea7fa31200f997b76742ad28c36ab3c23b5e91cf9402e",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "會員與網購個資伺服器需有存取控制與異常存取監控",
+        "reason": "來源指出伺服器遭非法存取導致大量會員個資可能外洩，現有控制項沒有涵蓋會員資料伺服器的存取監控。"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-evt-nitori-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：會員與網購個資伺服器需有存取控制與異常存取監控"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "db-exposed",
+          "source": "rule",
+          "inferred": true,
+          "target": "database",
+          "hypothesis": "資料庫或資料庫管理工具可以從外部或其他環境直接連線",
+          "why": "資料庫遭大量讀取的事件，常見原因是資料庫或管理工具允許的連線範圍過寬",
+          "check": "確認存放個資與訂單的資料庫及資料庫管理工具，只允許必要的來源連線",
+          "how": "查防火牆與安全群組規則、資料庫的允許來源設定，以及資料庫管理工具是否對外",
+          "plain": "資料庫或管理工具可能可以被直接連上",
+          "basis": "事件標題提到「個資」",
+          "systems": [
+            {
+              "asset_id": "firebase-brand-app-storage",
+              "label": "App 雲端檔案儲存區"
+            },
+            {
+              "asset_id": "member-db-prod",
+              "label": "正式會員資料庫"
+            },
+            {
+              "asset_id": "order-db-prod",
+              "label": "正式訂單資料庫"
+            },
+            {
+              "asset_id": "order-exports-bucket",
+              "label": "訂單匯出檔案儲存區"
+            },
+            {
+              "asset_id": "phpmyadmin",
+              "label": "資料庫網頁管理工具"
+            }
+          ],
+          "controls": [
+            {
+              "control_id": "C-INTERNAL-TOOL-EXPOSED",
+              "title": "內部工具不得對外開放",
+              "status": "fail",
+              "status_label": "不符合"
+            },
+            {
+              "control_id": "C-NET-SEGMENT",
+              "title": "非正式環境不得連線正式資料庫",
+              "status": "fail",
+              "status_label": "不符合"
+            },
+            {
+              "control_id": "C-CLOUD-STORAGE-PUBLIC",
+              "title": "雲端儲存空間不得公開讀取",
+              "status": "fail",
+              "status_label": "不符合"
+            }
+          ]
+        },
+        {
+          "id": "server-unpatched",
+          "source": "rule",
+          "inferred": true,
+          "target": "server",
+          "hypothesis": "對外系統有未修補的漏洞被利用",
+          "why": "對外系統的已知漏洞是常見的入侵入口",
+          "check": "列出對外系統與元件版本，對照近期安全公告並排定修補",
+          "how": "查弱點掃描報告、元件版本清單與修補紀錄",
+          "plain": "對外系統可能有沒修補的漏洞",
+          "basis": "事件標題提到「伺服器」",
+          "systems": [
+            {
+              "asset_id": "api-gateway",
+              "label": "API 閘道"
+            },
+            {
+              "asset_id": "internal-tool",
+              "label": "內部營運工具"
+            },
+            {
+              "asset_id": "marketing-site",
+              "label": "行銷官網"
+            },
+            {
+              "asset_id": "nas-office-01",
+              "label": "辦公室 NAS"
+            },
+            {
+              "asset_id": "storefront",
+              "label": "商店網站"
+            }
+          ],
+          "controls": []
+        },
+        {
+          "id": "db-cred-leak",
+          "source": "rule",
+          "inferred": true,
+          "target": "database",
+          "hypothesis": "資料庫帳密或連線字串外洩（放在程式碼、設定檔或員工電腦上）",
+          "why": "拿到資料庫帳密就能不靠漏洞直接讀取資料",
+          "check": "確認資料庫帳密沒有放在程式碼或設定檔中，疑似外洩時立即輪替",
+          "how": "查程式碼倉庫的金鑰掃描結果、設定檔，以及部署用的機密管理設定",
+          "plain": "資料庫的帳號密碼可能外流被拿來登入",
+          "basis": "事件標題提到「個資」",
+          "systems": [
+            {
+              "asset_id": "order-db-prod-cred",
+              "label": "正式訂單資料庫帳密"
+            },
+            {
+              "asset_id": "order-db-test-cred",
+              "label": "測試訂單資料庫帳密"
+            }
+          ],
+          "controls": [
+            {
+              "control_id": "C-SECRET-IN-GIT",
+              "title": "Git 中不得有正式環境金鑰",
+              "status": "fail",
+              "status_label": "不符合"
+            },
+            {
+              "control_id": "C-DEV-DEVICE-TOKEN",
+              "title": "員工電腦不得持有正式部署權杖",
+              "status": "fail",
+              "status_label": "不符合"
+            }
+          ]
+        },
+        {
+          "id": "server-remote-admin",
+          "source": "rule",
+          "inferred": true,
+          "target": "server",
+          "hypothesis": "伺服器的遠端管理帳密被猜中或外洩",
+          "why": "遠端管理服務對外時，弱密碼與外洩帳密常被利用",
+          "check": "確認遠端管理只允許公司網路或 VPN 連線，並停用純密碼登入或啟用雙因素驗證",
+          "how": "查防火牆規則、遠端管理服務設定與登入紀錄",
+          "plain": "伺服器的遠端管理帳號可能被猜中",
+          "basis": "事件標題提到「伺服器」",
+          "systems": [
+            {
+              "asset_id": "nas-office-01",
+              "label": "辦公室 NAS"
+            }
+          ],
+          "controls": [
+            {
+              "control_id": "C-INTERNAL-TOOL-EXPOSED",
+              "title": "內部工具不得對外開放",
+              "status": "fail",
+              "status_label": "不符合"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "日本家具連鎖企業宜得利表示，6 日確認伺服器遭非法存取，最多可能有約 3762 萬筆會員及網路購物使用者個資外洩，包括姓名、住址及電子郵件。系統未保存信用卡資訊，因此不在可能外洩範圍內。",
+  "blocks": {
+    "1_summary": {
+      "title": "日本宜得利伺服器遭非法存取，最多 3762 萬筆會員個資恐外洩",
+      "date": "2026-11-11",
+      "industry": "零售",
+      "attack_chain": [
+        "宜得利控股於 11 月 6 日確認伺服器遭非法存取",
+        "最多約 3762 萬筆會員及網購使用者個資可能外洩（姓名、住址、電子郵件）",
+        "系統未保存信用卡資訊，不在外洩範圍內"
+      ],
+      "attck": [],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.cna.com.tw/news/ait/202611110191.aspx",
+          "title": "日本宜得利3762萬筆個資恐外洩 代理式AI助長網路攻擊",
+          "quote": "日本家具連鎖企業宜得利11日表示，伺服器遭到非法存取，最多可能有3762萬筆會員個資外洩。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-13T03:51:03Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "日本家具連鎖企業宜得利表示，6 日確認伺服器遭非法存取，最多可能有約 3762 萬筆會員及網路購物使用者個資外洩，包括姓名、住址及電子郵件。系統未保存信用卡資訊，因此不在可能外洩範圍內。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：會員與網購個資伺服器需有存取控制與異常存取監控"
+          ],
+          "observed_at": "2026-11-13T03:51:03Z",
+          "suggestions": [
+            {
+              "id": "db-exposed",
+              "source": "rule",
+              "inferred": true,
+              "target": "database",
+              "hypothesis": "資料庫或資料庫管理工具可以從外部或其他環境直接連線",
+              "why": "資料庫遭大量讀取的事件，常見原因是資料庫或管理工具允許的連線範圍過寬",
+              "check": "確認存放個資與訂單的資料庫及資料庫管理工具，只允許必要的來源連線",
+              "how": "查防火牆與安全群組規則、資料庫的允許來源設定，以及資料庫管理工具是否對外",
+              "plain": "資料庫或管理工具可能可以被直接連上",
+              "basis": "事件標題提到「個資」",
+              "systems": [
+                {
+                  "asset_id": "firebase-brand-app-storage",
+                  "label": "App 雲端檔案儲存區"
+                },
+                {
+                  "asset_id": "member-db-prod",
+                  "label": "正式會員資料庫"
+                },
+                {
+                  "asset_id": "order-db-prod",
+                  "label": "正式訂單資料庫"
+                },
+                {
+                  "asset_id": "order-exports-bucket",
+                  "label": "訂單匯出檔案儲存區"
+                },
+                {
+                  "asset_id": "phpmyadmin",
+                  "label": "資料庫網頁管理工具"
+                }
+              ],
+              "controls": [
+                {
+                  "control_id": "C-INTERNAL-TOOL-EXPOSED",
+                  "title": "內部工具不得對外開放",
+                  "status": "fail",
+                  "status_label": "不符合"
+                },
+                {
+                  "control_id": "C-NET-SEGMENT",
+                  "title": "非正式環境不得連線正式資料庫",
+                  "status": "fail",
+                  "status_label": "不符合"
+                },
+                {
+                  "control_id": "C-CLOUD-STORAGE-PUBLIC",
+                  "title": "雲端儲存空間不得公開讀取",
+                  "status": "fail",
+                  "status_label": "不符合"
+                }
+              ]
+            },
+            {
+              "id": "server-unpatched",
+              "source": "rule",
+              "inferred": true,
+              "target": "server",
+              "hypothesis": "對外系統有未修補的漏洞被利用",
+              "why": "對外系統的已知漏洞是常見的入侵入口",
+              "check": "列出對外系統與元件版本，對照近期安全公告並排定修補",
+              "how": "查弱點掃描報告、元件版本清單與修補紀錄",
+              "plain": "對外系統可能有沒修補的漏洞",
+              "basis": "事件標題提到「伺服器」",
+              "systems": [
+                {
+                  "asset_id": "api-gateway",
+                  "label": "API 閘道"
+                },
+                {
+                  "asset_id": "internal-tool",
+                  "label": "內部營運工具"
+                },
+                {
+                  "asset_id": "marketing-site",
+                  "label": "行銷官網"
+                },
+                {
+                  "asset_id": "nas-office-01",
+                  "label": "辦公室 NAS"
+                },
+                {
+                  "asset_id": "storefront",
+                  "label": "商店網站"
+                }
+              ],
+              "controls": []
+            },
+            {
+              "id": "db-cred-leak",
+              "source": "rule",
+              "inferred": true,
+              "target": "database",
+              "hypothesis": "資料庫帳密或連線字串外洩（放在程式碼、設定檔或員工電腦上）",
+              "why": "拿到資料庫帳密就能不靠漏洞直接讀取資料",
+              "check": "確認資料庫帳密沒有放在程式碼或設定檔中，疑似外洩時立即輪替",
+              "how": "查程式碼倉庫的金鑰掃描結果、設定檔，以及部署用的機密管理設定",
+              "plain": "資料庫的帳號密碼可能外流被拿來登入",
+              "basis": "事件標題提到「個資」",
+              "systems": [
+                {
+                  "asset_id": "order-db-prod-cred",
+                  "label": "正式訂單資料庫帳密"
+                },
+                {
+                  "asset_id": "order-db-test-cred",
+                  "label": "測試訂單資料庫帳密"
+                }
+              ],
+              "controls": [
+                {
+                  "control_id": "C-SECRET-IN-GIT",
+                  "title": "Git 中不得有正式環境金鑰",
+                  "status": "fail",
+                  "status_label": "不符合"
+                },
+                {
+                  "control_id": "C-DEV-DEVICE-TOKEN",
+                  "title": "員工電腦不得持有正式部署權杖",
+                  "status": "fail",
+                  "status_label": "不符合"
+                }
+              ]
+            },
+            {
+              "id": "server-remote-admin",
+              "source": "rule",
+              "inferred": true,
+              "target": "server",
+              "hypothesis": "伺服器的遠端管理帳密被猜中或外洩",
+              "why": "遠端管理服務對外時，弱密碼與外洩帳密常被利用",
+              "check": "確認遠端管理只允許公司網路或 VPN 連線，並停用純密碼登入或啟用雙因素驗證",
+              "how": "查防火牆規則、遠端管理服務設定與登入紀錄",
+              "plain": "伺服器的遠端管理帳號可能被猜中",
+              "basis": "事件標題提到「伺服器」",
+              "systems": [
+                {
+                  "asset_id": "nas-office-01",
+                  "label": "辦公室 NAS"
+                }
+              ],
+              "controls": [
+                {
+                  "control_id": "C-INTERNAL-TOOL-EXPOSED",
+                  "title": "內部工具不得對外開放",
+                  "status": "fail",
+                  "status_label": "不符合"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  }
+}

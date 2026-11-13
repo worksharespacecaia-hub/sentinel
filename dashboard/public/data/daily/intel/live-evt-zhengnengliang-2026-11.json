@@ -1,0 +1,110 @@
+{
+  "event": {
+    "id": "live-evt-zhengnengliang-2026-11",
+    "kind": "live",
+    "title": "正能量智能子公司 WooCommerce 電商資料庫遭未授權存取",
+    "date": "2026-11-11",
+    "industry": "電商",
+    "attack_chain": [
+      "WooCommerce 電商系統資料庫遭未經授權存取及資料擷取",
+      "公司啟動資安應變，對相關系統採取隔離、防堵及安全漏洞修補措施",
+      "依法令通報主管機關，並通知受影響消費者"
+    ],
+    "attck": [],
+    "cves": [],
+    "products": [
+      {
+        "name": "woocommerce",
+        "ecosystem": "generic",
+        "affected": [],
+        "impact": "data_exposure"
+      }
+    ],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180478",
+        "title": "正能量智能子公司電商資料庫遭未授權存取，已通知受影響消費者並啟動資安應變",
+        "quote": "正能量智能子公司電商資料庫遭未授權存取，已通知受影響消費者並啟動資安應變",
+        "published": "2026-11-13",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-13T03:51:03Z",
+        "content_hash": "sha256:92bec3d0c9f62531075c3a248b2bbf54f84d62fff49c2a5e7d4848a6691a829d",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "電商網站與外掛需定期修補並限制資料庫存取",
+        "reason": "來源指出 WooCommerce 電商資料庫遭未授權存取並擷取資料，公司事後採取漏洞修補，現有控制項沒有涵蓋電商系統的修補與資料庫存取。"
+      }
+    ]
+  },
+  "conclusion": "不受影響：技術棧中沒有 woocommerce（資產清單完整且新鮮）。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [],
+  "solutions": [],
+  "notice": null,
+  "status": "not_affected",
+  "evaluated_asset_ids": [],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "正能量智能子公司正能量運動的 WooCommerce 電商系統資料庫遭到未經授權存取及資料擷取。公司已對相關系統採取隔離、防堵及安全漏洞修補措施，向主管機關通報，並以電子郵件通知受影響消費者。",
+  "blocks": {
+    "1_summary": {
+      "title": "正能量智能子公司 WooCommerce 電商資料庫遭未授權存取",
+      "date": "2026-11-11",
+      "industry": "電商",
+      "attack_chain": [
+        "WooCommerce 電商系統資料庫遭未經授權存取及資料擷取",
+        "公司啟動資安應變，對相關系統採取隔離、防堵及安全漏洞修補措施",
+        "依法令通報主管機關，並通知受影響消費者"
+      ],
+      "attck": [],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180478",
+          "title": "正能量智能子公司電商資料庫遭未授權存取，已通知受影響消費者並啟動資安應變",
+          "quote": "正能量智能子公司電商資料庫遭未授權存取，已通知受影響消費者並啟動資安應變",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-13T03:51:03Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "正能量智能子公司正能量運動的 WooCommerce 電商系統資料庫遭到未經授權存取及資料擷取。公司已對相關系統採取隔離、防堵及安全漏洞修補措施，向主管機關通報，並以電子郵件通知受影響消費者。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "不受影響：技術棧中沒有 woocommerce（資產清單完整且新鮮）。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": [
+        "技術棧中沒有 woocommerce（資產清單完整且新鮮）"
+      ]
+    },
+    "7_status": {
+      "status": "not_affected",
+      "label": "不受影響"
+    }
+  }
+}

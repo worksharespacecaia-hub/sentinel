@@ -108,28 +108,91 @@
     "demo": false
   },
   {
-    "id": "live-cyberbiz-vendor-breach-2026-11",
+    "id": "live-evt-cyberbiz-2026-11",
     "kind": "live",
-    "title": "順立智慧（Cyberbiz）委外商城資料庫遭異常存取，漢來美食、黑松訂單資料受影響",
+    "title": "順立智慧（Cyberbiz）委外電商平台資安事件，大金空調零件商城、威力德生醫線上商店資料遭未授權存取",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
     "demo": false
   },
   {
-    "id": "live-nitori-breach-2026-11",
+    "id": "live-evt-mercuries-2026-11",
     "kind": "live",
-    "title": "日本宜得利（Nitori）系統遭非法存取，最多 3,762 萬筆會員與網購個資恐外洩",
+    "title": "美而快電商系統遭異常存取，部分請求涉及會員訂單 API",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
     "demo": false
   },
   {
-    "id": "live-91app-impact-update-2026-11",
+    "id": "live-evt-zhengnengliang-2026-11",
     "kind": "live",
-    "title": "91APP 公布調查結果：最大影響範圍 1,329 個品牌、約 480 萬名消費者",
-    "affected_count": 5,
+    "title": "正能量智能子公司 WooCommerce 電商資料庫遭未授權存取",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "not_affected",
+    "demo": false
+  },
+  {
+    "id": "live-evt-nitori-2026-11",
+    "kind": "live",
+    "title": "日本宜得利伺服器遭非法存取，最多 3762 萬筆會員個資恐外洩",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
+    "demo": false
+  },
+  {
+    "id": "live-evt-sharefull-2026-11",
+    "kind": "live",
+    "title": "日本打工媒合平台 Sharefull 管理系統遭非法存取，最多約 750 萬名使用者資料恐外洩",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
+    "demo": false
+  },
+  {
+    "id": "live-evt-amadeus-2026-11",
+    "kind": "live",
+    "title": "訂票系統供應商 Amadeus 遭非法存取，泰航、芬蘭航空旅客記錄恐外流",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
+    "demo": false
+  },
+  {
+    "id": "live-evt-apache-http2-2026-11",
+    "kind": "live",
+    "title": "Apache HTTP Server mod_http2 重大 RCE 漏洞 CVE-2026-119618",
+    "affected_count": 1,
+    "max_level": "medium",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "live-evt-synology-dsm-sa-26-19",
+    "kind": "live",
+    "title": "Synology DSM 登入介面 SQL 注入漏洞 CVE-2026-76954（CVSS 9.8）",
+    "affected_count": 1,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "live-evt-nodejs-2026-11-fixes",
+    "kind": "live",
+    "title": "Node.js 修補 HTTP/2 與 HTTPS 記憶體洩漏及當機漏洞",
+    "affected_count": 3,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "live-evt-binance-fbi-seizure-2026-11",
+    "kind": "live",
+    "title": "FBI：美國查扣遭竊自 Binance 的 12 億美元加密貨幣",
+    "affected_count": 2,
     "max_level": "high",
     "status": "open",
     "demo": false
