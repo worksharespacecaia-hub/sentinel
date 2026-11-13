@@ -1,5 +1,48 @@
 # Changelog
 
+## 0.13.0 — 2026-11-13（AI Orchestrator：派工與驗收）
+
+- **背景**：原本的 `orchestrator` Job 是純程式，只決定要不要重新掃描、跑每日情資；依情資調整工作的是每日情資寫的派工建議，由 A1 核准，而且只能請 A4 多寫說明。本版改為真正的 Orchestrator：由 AI 在兩個時間點判斷，程式政策逐項核准（規格：專案資料夾的 `specs/orchestrator/`，Codex 審查四輪通過）
+- **流程**：開工路由（router，純程式）→ A0 → 掃描／每日情資 → A1 → **Orchestrator 派工** → A2、A3 → A4 → **Orchestrator 驗收** → claude-analysis → A5
+  - 原 `orchestrator` Job 與 `agents/agents/orchestrator.py` 改名為 `router`，不屬於 Orchestrator
+  - 新增 `orchestrator-dispatch`、`orchestrator-review` 兩個 Job；任何一份失敗只停用那一份，必要任務照跑，報告一定產生
+- **派工**（A1 之後）：讀當天情資與掃描結果，可以提出
+  - 加查控制項（每件事件 3 個、總共 8 個）
+  - 追加任務（最多 5 個）：A2 依事件解讀相同產品的弱點、A3 依事件回溯登入與資料庫紀錄（事件日期前 7 天到現在，IP 換成代號）、A4 追加相關風險的說明
+  - A4 說明的先後順序（最多 5 項）
+- **驗收**（A4 之後）：看 A1～A4 的結果與派工執行情形，可以提出
+  - A5 追加任務（最多 3 個）：需確認事件的摘要、與本次事件相關的金鑰輪替建議、程式沒要求的通知草稿
+  - A5 解法與 CEO 摘要的先後順序（最多 5 項）
+  - 執行摘要（300 字內）
+- **核准**：只能追加與排優先；要求跳過任務、刪減說明或改分數一律拒絕，每個拒絕附白話原因。計畫檔綁定本次執行與 A1 驗證結果的雜湊，A2～A5 載入時用同一套政策重新核准，不符就只停用那一份
+- **提案來源**：每日排程與手動 daily 用訂閱方案（claude-code-action 執行 `/orchestrator dispatch|review`）；其他觸發用 registry 的 `planner`、`reviewer`（Haiku，各 Job 上限 $0.05）；replay 沒有錄製時是空提案。A1 改回 $0.05，不再核准派工
+- **訂閱步驟的限制**：
+  - 只拿得到白名單投影的輸入，不含金鑰、路徑、IP、證據與原始全文
+  - hook 新增 `--read` 白名單，只能讀本模式的輸入與 orchestrator Skill，只能寫提案檔
+  - `scripts/orchestrator-guard.py` 在步驟前後比對 `out/` 快照，只有提案檔變動、git 追蹤檔沒變、提案是 JSON 物件時才寫入採用標記
+- **每日情資**不再寫派工建議（移除 `agent_plan`、`load_daily_plan`、`references/agent-plan.md`）；選單與上限改由 `.claude/skills/orchestrator/references/policy.md` 提供
+- **報告**：
+  - 新增 `orchestrator_results`：報告頂層放全部，情資報告只放該事件的
+  - 需確認事件可由驗收追加的 AI 摘要取代範本，`summary_source` 照實標示
+  - 程式沒要求的通知草稿另放 `notice.draft_extra`，`needed` 不變
+  - `agent_plan` 改為 `{dispatch, review}`，相容舊的單一計畫
+  - Markdown 情資報告同步新增兩段
+- **網站**：
+  - 「AI 分析過程」頁：
+    - Orchestrator 派工、驗收兩個面板，含核准與拒絕明細與執行摘要，另列追加結果
+    - 舊報告的計畫標「動態派工（舊版）」，舊 trace 標「開工路由（舊版）」
+    - 移除 0.12.5 的「上線中」說明
+  - 情資明細頁：新增「Orchestrator 追加結果」與「AI 建議的通知草稿（程式未要求）」
+  - 運作原理頁：
+    - 架構圖的兩個 Orchestrator 框加上 Subagent 徽章
+    - planner 移到派工，新增驗收的 reviewer
+    - Subagent 清單依新 DAG 排列
+    - 每日情資小卡改為「判讀當天新聞、推測破口」
+  - 執行進度依新 DAG 分成 10 個階段
+- **不影響判定**：分數、等級、燈號、結論與完整性一律由程式計算。測試涵蓋 6 個情境，每個情境 5 種計畫狀況（沒有計畫、只有派工單、只有驗收單、兩份都有、派工單中途失效），判定逐欄相同
+- **驗證**：pytest 998 項、`npm test` 99 項、`tsc --noEmit`、`next build`、actionlint 通過；本機以 replay 跑完整流程，空提案時正確降級為必要任務；本機以 Chrome 無頭模式截圖確認新舊兩種資料格式的畫面
+- **待確認**：訂閱方案實際寫出的派工與驗收，要等下一次每日排程。在那之前，網站上已發布的資料仍是舊格式
+
 ## 0.12.5 — 2026-11-13（AI 分析過程頁標示 Orchestrator 上線狀態）
 
 - **背景**：面試簡報與「運作原理」架構圖已改為新架構，Orchestrator 指 AI 的派工與驗收。但「AI 分析過程」頁仍把純程式的開工步驟標成「Orchestrator」，審查者點 Demo 連結時會看到矛盾

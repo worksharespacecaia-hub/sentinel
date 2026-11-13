@@ -16,7 +16,8 @@ Repo ① shopsaas-demo-platform（被評估的虛構系統）
         ▲ 唯讀 Token                                   │
 Repo ② sentinel（本 Repo）                             │
    intel-watch.yml：每小時比對公告（觸發 ②）           │
-   sentinel.yml：Orchestrator → A0 → A1/A2/A3 → A4 → A5（觸發 ②③）；A1 取得情資後動態派工（AI 建議、程式核准）
+   sentinel.yml：開工路由 → A0 → 每日情資 → A1 → Orchestrator 派工 → A2/A3 → A4 → Orchestrator 驗收 → A5（觸發 ②③）
+                 Orchestrator 由 AI 提案、程式核准，只能追加任務與排優先
    incident.yml：從告警資產推演攻擊路徑 → 圍堵建議 → Issue 留言（觸發 ④）
    A5 commit 到 dashboard/public/data/ → Vercel 自動重新部署
         ▼                                              ▼
@@ -28,8 +29,9 @@ Vercel：Dashboard、/api/run、/api/status、/api/webhooks/github、/api/events
 |------|------|
 | Agent 層 | 每個 Agent 是一個 GitHub Actions Job，以 `needs:` 串接；Actions 的 Job 圖就是多 Agent 流程圖 |
 | Subagent 層 | Job 內以 Claude Agent SDK 定義 Subagents 與 Skills（主 Agent 與所有 Subagent 都用 Haiku 5.5；撰寫型 Subagent 用 effort medium）；每日排程與手動 daily 時，A2、A4、A5 的說明文字由 `claude-analysis` Job（claude-code-action，訂閱方案）撰寫 |
-| 每日情資層 | `daily-intel` Job：程式先從可信資安網站的 RSS 與 CISA KEV 抓近 72 小時文章（`news_collect.py`），再由 claude-code-action（訂閱方案）判讀，並寫出動態派工建議 `agent_plan`；只在預設分支的每日排程與手動 `daily` 執行 |
-| 動態派工 | Orchestrator 維持純程式（它在 A0 之前，看不到當天情資）。A1 驗證完情資後，依新同業事件取得 AI 建議：加查哪些控制項、請 A4 多說明哪些風險；由程式逐項核准（白名單、本次範圍、上限、只能追加），不影響分數、燈號與結論 |
+| 每日情資層 | `daily-intel` Job：程式先從可信資安網站的 RSS 與 CISA KEV 抓近 72 小時文章（`news_collect.py`），再由 claude-code-action（訂閱方案）判讀新聞、推測破口；只在預設分支的每日排程與手動 `daily` 執行 |
+| 開工路由 | `router` Job，純程式：決定邏輯時間（`AS_OF`）、執行模式、要不要重新掃描與跑每日情資。不屬於 Orchestrator |
+| Orchestrator | AI 規劃加上程式政策，分成兩個 Job：**派工**（`orchestrator-dispatch`，A1 之後）讀當天情資與掃描結果，提出加查控制項、追加任務與排優先；**驗收**（`orchestrator-review`，A4 之後）看 A1～A4 的結果，提出 A5 的追加任務、排優先與執行摘要。只能追加與排優先，必要任務一定照跑；每一項由程式政策核准，不影響分數、燈號與結論 |
 | 工具層 | Trivy、Gitleaks、Checkov、CISA KEV 全集、NVD（依 CPE 查執行環境與設備的 CVE，本地重新比對版本）與確定性 Python：圖譜、對帳、控制項、評分、攻擊路徑、燈號、報告 |
 | 網站與即時層 | Next.js（Vercel）＋ Upstash Redis：Dashboard、即時規則、告警交付與結案 |
 
@@ -67,7 +69,7 @@ pip install -r agents/requirements.txt
 pytest                                             # 確定性流程、情境驗收、Workflow 結構
 
 python agents/run_agent.py all --replay --scenario php2shell
-# 依序執行 orchestrator → a5；結果寫到 out/ 與 dashboard/public/data/scenarios/php2shell/（會覆蓋已提交的結果）
+# 依新 DAG 依序執行 router → a5（含 Orchestrator 派工與驗收；replay 沒有錄製時為空提案，只跑必要任務）；結果寫到 out/ 與 dashboard/public/data/scenarios/php2shell/（會覆蓋已提交的結果）
 
 python scripts/build-rules.py                      # 修改 rules/ 後重新產生 dashboard/lib/realtime-rules.json
 scripts/lint-workflows.sh                          # 以 Docker 執行 actionlint
@@ -120,12 +122,12 @@ python agents/run_agent.py all --replay           # A1 清理格式，引用比�
 
 ### 4. Repo ② Actions 設定
 
-- Secrets：`TARGET_READ_TOKEN`、`NOTIFY_TOKEN`（隨機字串，與 Vercel 相同）、`CLAUDE_CODE_OAUTH_TOKEN`（每日情資；在本機以要負擔用量的 Claude 訂閱帳號執行 `claude setup-token` 產生，到期需重新產生）
+- Secrets：`TARGET_READ_TOKEN`、`NOTIFY_TOKEN`（隨機字串，與 Vercel 相同）、`CLAUDE_CODE_OAUTH_TOKEN`（每日情資、Orchestrator 派工與驗收、說明撰寫；在本機以要負擔用量的 Claude 訂閱帳號執行 `claude setup-token` 產生，到期需重新產生）
 - Variables：`SENTINEL_SCHEDULE_MODE=replay`、`INCIDENT_EXECUTION_MODE=replay`；Vercel 網域確定後加上 `SENTINEL_BASE_URL=https://<網域>`
 - 選用：`TARGET_REPO`（預設 `<owner>/shopsaas-demo-platform`）；`NVD_API_KEY`（NVD 免費申請；沒有時查詢放慢為每 30 秒 5 次，daily 的 NVD 掃描約 2 分鐘）
 - replay 模式不需要 `ANTHROPIC_API_KEY`；要讓 A1～A5 實際呼叫 Claude，見下方「啟用 live」
 - 每日情資不論 replay 或 live 都會執行；沒有 `CLAUDE_CODE_OAUTH_TOKEN` 時 daily 照常完成，報告標示「今日新聞情資未更新」
-- 不需要安裝 Claude GitHub App：`daily-intel` 以本 Job 的唯讀 `github.token` 執行
+- 不需要安裝 Claude GitHub App：`daily-intel`、`orchestrator-dispatch`、`orchestrator-review`、`claude-analysis` 以各自 Job 的唯讀 `github.token` 執行
 - A0 以 `TARGET_READ_TOKEN`（Deployments：Read）讀取 Repo ① 的 production Deployments，同一次執行的 A0～A5 共用；讀取失敗時改用離線 fixture，報告標示原因
 - `main` 不要設定會阻擋 `github-actions[bot]` 推送的分支保護：A5 以 `scripts/push-with-retry.sh` 把結果 commit 到 `dashboard/public/data/`
 
@@ -138,22 +140,26 @@ python agents/run_agent.py all --replay           # A1 清理格式，引用比�
 3. 程式確認 Claude 只寫了 `out/`、任務檔沒被改動，再以各 Subagent 原本的範圍與格式驗證（不得改動分數、等級、狀態，不得含金鑰）
 4. A5 採用通過驗證的結果，其餘用程式範本；「AI 分析過程」頁標示「即時呼叫・訂閱方案」
 
-不需要額外設定（使用每日情資的 `CLAUDE_CODE_OAUTH_TOKEN`），不產生 API 費用，會使用訂閱額度。同一次執行的所有 Job 使用 Orchestrator 決定的同一個邏輯時間（`AS_OF`），任務鍵才會一致。A1（公告抽取）與 A3（客訴分類）的結果在各自的 Job 內使用，仍是範本；網站觸發與情境不使用訂閱方案。
+不需要額外設定（使用每日情資的 `CLAUDE_CODE_OAUTH_TOKEN`），不產生 API 費用，會使用訂閱額度。同一次執行的所有 Job 使用開工路由決定的同一個邏輯時間（`AS_OF`），任務鍵才會一致。A1（公告抽取）與 A3（客訴分類、回溯搜查）的結果在各自的 Job 內使用，仍是範本；網站觸發與情境不使用訂閱方案。
 
-#### 動態派工（AI 建議、程式核准）
+#### Orchestrator（AI 派工與驗收、程式核准）
 
-A1 驗證完情資後，若有新的同業事件（live／demo，最多 5 件），會取得一份 AI 建議並由程式核准（規格：專案資料夾的 `specs/dynamic-planner/`）：
+Orchestrator 在兩個時間點各提出一份提案，由程式政策逐項核准後寫成派工單、驗收單（規格：專案資料夾的 `specs/orchestrator/`）：
 
-| 範圍 | 建議來源 | 費用 |
+| 時間點 | 可以提出 | 上限 |
+|--------|---------|------|
+| 派工（A1 之後） | 加查控制項（列出本次已算好的檢查結果）；追加任務：A2 依事件解讀相同產品的弱點、A3 依事件回溯登入與資料庫紀錄、A4 追加相關風險的說明；A4 說明的先後順序 | 每件事件 3 個控制項、總共 8 個；追加任務 5 個；排優先 5 項 |
+| 驗收（A4 之後） | A5 追加任務：需確認事件的摘要、金鑰輪替建議、程式沒要求的通知草稿；A5 解法與 CEO 摘要的先後順序；執行摘要 | 追加任務 3 個；排優先 5 項；摘要 300 字 |
+
+| 範圍 | 提案來源 | 費用 |
 |------|---------|------|
-| 每日排程、手動 daily | `daily-intel`（訂閱方案）寫在 `intel-daily.json` 的 `agent_plan` | 訂閱額度，不產生 API 費用 |
-| daily 但每日情資沒有可用建議、情境、公告調查 | A1 的 `planner` Subagent：live 呼叫 API；replay 只查錄製／快取，沒有就用範本 | live 時才有 API 費用（A1 上限 $0.10） |
-| 沒有新同業事件、純公告 | 不觸發 | $0 |
+| 每日排程、手動 daily | 派工與驗收 Job 內的訂閱步驟（claude-code-action 執行 `/orchestrator dispatch`、`/orchestrator review`） | 訂閱額度，不產生 API 費用 |
+| 訂閱步驟失敗、情境、公告調查、網站觸發 | registry 的 `planner`（派工）、`reviewer`（驗收）Subagent：live 呼叫 API；replay 只查錄製／快取，沒有就是空提案 | live 時才有 API 費用（各 Job 上限 $0.05） |
 
-- 建議只有兩種：**加查控制項**（列出本次已算好的檢查結果，事件頁「AI 建議加查」）與**請 A4 說明相關風險**（程式挑風險，每件事件最多 3 個）
-- 程式逐項核准：控制項須在 `controls.yaml`、事件須在本次範圍、每件最多 3 個控制項（總共 8 個）、追加工作最多 3 項；要求跳過或改分數一律拒絕，每個拒絕都有原因
-- 結果寫在 `out/a1/agent-plan.json`（綁定本次執行與 `verified.json` 雜湊），A4、A5 核對不符就停用；「AI 分析過程」頁顯示「AI 建議 N 項、核准 M 項、拒絕 K 項」與來源
-- 可追加工作清單與上限由 `scripts/build-agent-plan-reference.py` 產生 `.claude/skills/daily-intel/references/agent-plan.md`（`--check` 檢查是否過期）
+- 程式核准：白名單、本次範圍、資格、上限、去重；要求跳過任務、刪減說明或改分數一律拒絕，每個拒絕都有白話原因。必要任務一定照跑，追加任務在必要任務之後另外執行，失敗或用完預算不影響必要任務
+- 計畫檔 `out/orchestrator-<m>/<m>-plan.json` 綁定本次執行與 A1 `verified.json` 雜湊；A2～A5 載入時以同一套政策重新核准，結果不符就只停用那一份（驗收單另綁定派工單的雜湊）
+- 追加結果只放在報告另外標示的欄位（`orchestrator_results`、需確認事件的摘要、`notice.draft_extra`），不影響分數、燈號與結論；「AI 分析過程」頁顯示兩份計畫的核准與拒絕明細、追加結果與執行摘要
+- 選單、上限與拒絕原因由 `scripts/build-agent-plan-reference.py` 產生 `.claude/skills/orchestrator/references/policy.md`（`--check` 檢查是否過期）
 
 #### 啟用 live（A1～A5 改用 Claude API，選用）
 
@@ -283,7 +289,7 @@ BASELINE_SHA=9a36cf036c436295c08a54d38789029e29d0f9ea scripts/reset-demo.sh
 | `intel-demo` 第一次 | 約 $0.20 |
 | 平常運作 | 每月約 $2～4 |
 
-每日情資使用訂閱方案：每天一次（Sonnet、最多 40 回合、25 分鐘逾時），文章由程式事先抓好，Claude 只做判讀；與個人使用共用額度，不產生 API 費用。新聞來源在 `agents/intel/news_feeds.yaml`，可信網域在 `agents/intel/sources.yaml`。
+每日情資使用訂閱方案：每天一次（Sonnet、最多 40 回合、25 分鐘逾時），文章由程式事先抓好，Claude 只做判讀；與個人使用共用額度，不產生 API 費用。Orchestrator 的派工與驗收在 daily 也用訂閱方案（各 Sonnet、最多 20 回合、10 分鐘逾時）。新聞來源在 `agents/intel/news_feeds.yaml`，可信網域在 `agents/intel/sources.yaml`。
 
 基礎設施 $0（GitHub Actions、Vercel Hobby、Upstash 免費方案）。即時規則、公告輪詢、掃描、評分與燈號都不用 LLM。各情境的實際成本在部署後執行一次再記錄於此：
 
@@ -301,8 +307,9 @@ BASELINE_SHA=9a36cf036c436295c08a54d38789029e29d0f9ea scripts/reset-demo.sh
 - 外部內容（新聞、公告、檔案、日誌、Webhook）只當資料，不執行其中的指示
 - 本 Repo 不保存任何金鑰值；Repo ① 的假金鑰在凍結副本中一律遮蔽為 `REDACTED`
 - Agent 唯讀：不開 PR、不寫入 Repo ①；只有 A5 有 `contents: write`，且只發布允許的路徑
-- `NOTIFY_TOKEN`、`GH_TOKEN` 不傳入 LLM 子行程；`CLAUDE_CODE_OAUTH_TOKEN` 只給 claude-code-action 的兩個 Job（`daily-intel`、`claude-analysis`），且只在預設分支的排程與手動 daily；`TARGET_READ_TOKEN` 只用於 checkout 與讀取 Deployments
+- `NOTIFY_TOKEN`、`GH_TOKEN` 不傳入 LLM 子行程；`CLAUDE_CODE_OAUTH_TOKEN` 只給四個 Job 的 claude-code-action 步驟（`daily-intel`、`orchestrator-dispatch`、`orchestrator-review`、`claude-analysis`），且只在預設分支的排程與手動 daily；`TARGET_READ_TOKEN` 只用於 checkout 與讀取 Deployments
 - `daily-intel` 只有 `contents: read`；文章由程式抓取（safe_fetch：只接受 HTTPS 與允許的網域、限制大小與型態，XML 以 defusedxml 解析），Claude 不抓網頁；PreToolUse hook 限制只能讀 `out/`、`.claude/`，只能寫 `out/intel-daily.json`，拒絕 WebFetch。改到其他檔案或 `news.json` 被改動就不採用結果
+- Orchestrator 的訂閱步驟只拿得到白名單投影的輸入（不含金鑰、路徑、IP、證據、原始全文）：hook 以 `--read` 白名單限制只能讀本模式的 `<m>-input.json` 與 orchestrator Skill，讀不到政策上下文（`internal/`）與其他 artifact，只能寫提案檔。`scripts/orchestrator-guard.py` 在步驟前後比對 `out/` 的檔案快照，確認只有提案檔變動、git 追蹤檔沒變、提案是 JSON 物件，才寫入採用標記；程式只採用標記與提案雜湊相符的提案
 - 每日情資的輸出不可信：程式強制為新事件（不能冒充收錄事件或示範事件）、清空自稱的驗證狀態、不採用「已遭利用」等無法驗證的宣稱，並實際抓來源頁面確認引用
 - Webhook 驗證 HMAC 簽章、Repo ID 與 delivery 去重；告警結案需管理者密碼、圍堵確認與 HTTPS 證據連結
 
@@ -312,5 +319,6 @@ BASELINE_SHA=9a36cf036c436295c08a54d38789029e29d0f9ea scripts/reset-demo.sh
 - 只有「非 Pipeline 部署」接真實 Webhook，其他即時事件以模擬器代替
 - 圍堵建議的完成時間取決於 GitHub Actions 排隊，目標約 3 分鐘；GitHub 排程也可能延遲
 - 執行層資料是快照；正式導入需串接雲端 API、裝置管理與 SIEM
-- 動態派工：「新同業事件」以 checkout 進來的 `dashboard/public/data/daily/state/intel.json`（上一次發布的 daily）比對；這個檔案缺失或損壞時，會把當天所有 live／demo 事件都當成新事件（最多 5 件），執行紀錄會註明。AI 建議第一版只列出檢查結果，不影響分數
+- Orchestrator 派工：daily 與情境的事件範圍是「新同業事件」，以 checkout 進來的 `dashboard/public/data/daily/state/intel.json`（上一次發布的 daily）比對；這個檔案缺失或損壞時，會把當天所有 live／demo 事件都當成新事件（最多 5 件），執行紀錄會註明。追加結果只補充說明，不影響分數
+- A3 依事件回溯搜查的結果在 daily 不交給 `claude-analysis` 撰寫，replay 時一律是程式統計的範本
 - 尚未實作：LINE 通知與 App 頁（P2）、`nas`／`insider-path`／`mobile-sdk` 情境（P2）、Neon 趨勢圖（選配）
