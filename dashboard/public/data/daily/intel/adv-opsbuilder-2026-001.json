@@ -106,8 +106,8 @@
     "internal-tool"
   ],
   "complete": true,
-  "summary_source": "template",
-  "summary": "未登入者可重設管理者密碼；以管理者身分使用工具內設定的整合與資料來源",
+  "summary_source": "live",
+  "summary": "internal-tool 使用 opsbuilder 1.88 且對外，登入頁可連到，程式判定為高風險（11 分，位於完整攻擊鏈）。此公告為示範用的虛構產品；建議先收回對外連線再升級。",
   "blocks": {
     "1_summary": {
       "title": "示範公告：OpsBuilder 1.90 以前版本的帳號接管漏洞（虛構產品）",
@@ -141,8 +141,8 @@
         "issues": [],
         "max_level": null
       },
-      "summary": "未登入者可重設管理者密碼；以管理者身分使用工具內設定的整合與資料來源",
-      "summary_note": "自動摘要未產生",
+      "summary": "internal-tool 使用 opsbuilder 1.88 且對外，登入頁可連到，程式判定為高風險（11 分，位於完整攻擊鏈）。此公告為示範用的虛構產品；建議先收回對外連線再升級。",
+      "summary_note": null,
       "fixture_note": "虛構產品 OpsBuilder 的示範公告；CVSS 與已利用旗標為明確標示的模擬 fixture 值（規格第 7.4 節）"
     },
     "2_conclusion": {
@@ -189,7 +189,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T09:42:59Z"
+        "observed_at": "2026-11-13T09:55:53Z"
       }
     ],
     "4_unaffected_and_check": {

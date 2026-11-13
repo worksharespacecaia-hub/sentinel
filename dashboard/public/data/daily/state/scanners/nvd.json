@@ -1,7 +1,7 @@
 {
   "tool": "nvd",
   "tool_version": "NVD CVE API 2.0",
-  "database_revision": "2026-11-13T09:43:51Z",
+  "database_revision": "2026-11-13T09:56:31Z",
   "api_key": false,
   "results": [
     {
@@ -10129,12 +10129,13 @@
       "asset_ids": [
         "payment-service"
       ],
-      "status": "failed",
+      "status": "ok",
       "queries": [
         {
           "cpe": "cpe:2.3:a:oracle:openjdk:21.0.4:*:*:*:*:*:*:*",
-          "status": "failed",
-          "reason": "RuntimeError: NVD HTTP 503"
+          "status": "ok",
+          "truncated": false,
+          "candidates": 0
         }
       ],
       "cves": []
@@ -13013,15 +13014,44 @@
       "asset_ids": [
         "report-svc"
       ],
-      "status": "failed",
+      "status": "ok",
       "queries": [
         {
           "cpe": "cpe:2.3:a:php:php:8.4.27:*:*:*:*:*:*:*",
-          "status": "failed",
-          "reason": "ReadTimeout: The read operation timed out"
+          "status": "ok",
+          "truncated": false,
+          "candidates": 1
         }
       ],
-      "cves": []
+      "cves": [
+        {
+          "id": "CVE-2007-3205",
+          "published": "2007-06-13T10:30:00.000",
+          "last_modified": "2026-06-16T22:41:16.190",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 5.0,
+          "summary": "The parse_str function in (1) PHP, (2) Hardened-PHP, and (3) Suhosin, when called without a second parameter, might allow remote attackers to overwrite arbitrary variables by specifying variable names",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "name": "phpmyadmin",

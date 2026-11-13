@@ -1,0 +1,430 @@
+{
+  "event": {
+    "id": "live-nodejs-http2-flaws-2026-11",
+    "kind": "live",
+    "title": "Node.js 修補 16 個漏洞，含 HTTP/2 當機與跨連線記憶體洩漏",
+    "date": "2026-11-12",
+    "industry": "SaaS",
+    "attack_chain": [
+      "未驗證用戶端連上使用內建 HTTP/2 或 HTTPS 的 Node.js 伺服器",
+      "觸發記憶體洩漏，讀到其他連線的資料",
+      "或使伺服器當機"
+    ],
+    "attck": [
+      "T1190"
+    ],
+    "cves": [
+      "CVE-2026-123863",
+      "CVE-2026-123866",
+      "CVE-2026-123864"
+    ],
+    "products": [
+      {
+        "name": "node",
+        "ecosystem": "generic",
+        "affected": [
+          {
+            "introduced": "22.0.0",
+            "fixed": "22.23.5"
+          }
+        ],
+        "impact": "data_exposure"
+      }
+    ],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://thehackernews.com/2026/11/nodejs-fixes-16-flaws-including-http2.html",
+        "title": "Node.js Fixes 16 Flaws, Including HTTP/2 Bugs That Crash Servers and Leak Other Connections' Data",
+        "quote": "Fixed versions were released for all three supported lines: 22.23.5, 24.22.3, and 26.13.1.",
+        "published": "2026-11-12",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-13T09:55:53Z",
+        "content_hash": "sha256:1054a209f7821d4d46bc7bcf40f0d51a612b4add44b037f640c8bb54a4aaeb56",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "3 項受影響，最高風險為高。storefront：node 22.11.0，對外。",
+  "affected_count": 3,
+  "max_level": "high",
+  "impacts": [
+    {
+      "event_id": "live-nodejs-http2-flaws-2026-11",
+      "asset_id": "storefront",
+      "basis": "version",
+      "our_state": "node 22.11.0，對外",
+      "verdict": "affected",
+      "risk_id": "storefront:node:vuln",
+      "to_verify": [],
+      "reason": "版本落在受影響範圍"
+    },
+    {
+      "event_id": "live-nodejs-http2-flaws-2026-11",
+      "asset_id": "member-api",
+      "basis": "version",
+      "our_state": "node 22.11.0",
+      "verdict": "affected",
+      "risk_id": "member-api:node:vuln",
+      "to_verify": [],
+      "reason": "版本落在受影響範圍"
+    },
+    {
+      "event_id": "live-nodejs-http2-flaws-2026-11",
+      "asset_id": "internal-tool",
+      "basis": "version",
+      "our_state": "node 22.11.0，對外",
+      "verdict": "affected",
+      "risk_id": "internal-tool:node:vuln",
+      "to_verify": [],
+      "reason": "版本落在受影響範圍"
+    }
+  ],
+  "solutions": [
+    {
+      "risk_id": "storefront:node:vuln",
+      "temporary": "確認 storefront 的暴露範圍，先以 WAF 或存取限制降低風險",
+      "permanent": "將 storefront 的受影響元件升級到修補版本",
+      "options": [
+        {
+          "name": "修補",
+          "action": "升級到修補版本",
+          "cost": "需回歸測試",
+          "timing": "24 小時內"
+        },
+        {
+          "name": "緩解",
+          "action": "限制來源、關閉受影響功能",
+          "cost": "部分功能受限",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "web-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template"
+    },
+    {
+      "risk_id": "member-api:node:vuln",
+      "temporary": "確認 member-api 的暴露範圍，先以 WAF 或存取限制降低風險",
+      "permanent": "將 member-api 的受影響元件升級到修補版本",
+      "options": [
+        {
+          "name": "修補",
+          "action": "升級到修補版本",
+          "cost": "需回歸測試",
+          "timing": "24 小時內"
+        },
+        {
+          "name": "緩解",
+          "action": "限制來源、關閉受影響功能",
+          "cost": "部分功能受限",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "member-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template"
+    },
+    {
+      "risk_id": "internal-tool:node:vuln",
+      "temporary": "確認 internal-tool 的暴露範圍，先以 WAF 或存取限制降低風險",
+      "permanent": "將 internal-tool 的受影響元件升級到修補版本",
+      "options": [
+        {
+          "name": "修補",
+          "action": "升級到修補版本",
+          "cost": "需回歸測試",
+          "timing": "24 小時內"
+        },
+        {
+          "name": "緩解",
+          "action": "限制來源、關閉受影響功能",
+          "cost": "部分功能受限",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "devops-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template"
+    }
+  ],
+  "notice": {
+    "needed": true,
+    "draft": "致各品牌商：我們發現與「Node.js 修補 16 個漏洞，含 HTTP/2 當機與跨連線記憶體洩漏」相關的風險，正在處理中。請提醒會員：官方不會以電話或簡訊要求轉帳或提供驗證碼，也請只從官方商店下載品牌 App。有疑問請聯繫平台客服。（自動範本，發送前請人工確認）"
+  },
+  "status": "open",
+  "evaluated_asset_ids": [
+    "internal-tool",
+    "member-api",
+    "storefront"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "storefront（10 分）、member-api（8 分）與 internal-tool（8 分）都使用 node 22.11.0，皆為高風險。建議升級到已修補版本。",
+  "blocks": {
+    "1_summary": {
+      "title": "Node.js 修補 16 個漏洞，含 HTTP/2 當機與跨連線記憶體洩漏",
+      "date": "2026-11-12",
+      "industry": "SaaS",
+      "attack_chain": [
+        "未驗證用戶端連上使用內建 HTTP/2 或 HTTPS 的 Node.js 伺服器",
+        "觸發記憶體洩漏，讀到其他連線的資料",
+        "或使伺服器當機"
+      ],
+      "attck": [
+        "T1190"
+      ],
+      "cves": [
+        "CVE-2026-123863",
+        "CVE-2026-123866",
+        "CVE-2026-123864"
+      ],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://thehackernews.com/2026/11/nodejs-fixes-16-flaws-including-http2.html",
+          "title": "Node.js Fixes 16 Flaws, Including HTTP/2 Bugs That Crash Servers and Leak Other Connections' Data",
+          "quote": "Fixed versions were released for all three supported lines: 22.23.5, 24.22.3, and 26.13.1.",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-13T09:55:53Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "storefront（10 分）、member-api（8 分）與 internal-tool（8 分）都使用 node 22.11.0，皆為高風險。建議升級到已修補版本。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "3 項受影響，最高風險為高。storefront：node 22.11.0，對外。",
+      "affected_count": 3,
+      "max_level": "high"
+    },
+    "3_affected": [
+      {
+        "asset_id": "storefront",
+        "our_state": "node 22.11.0，對外",
+        "basis": "version",
+        "verdict": "affected",
+        "reason": "版本落在受影響範圍",
+        "risk_id": "storefront:node:vuln",
+        "level": "high",
+        "score": 10,
+        "breakdown": [
+          {
+            "factor": "基礎分：漏洞",
+            "points": 3,
+            "reason": "CVSS 9.8"
+          },
+          {
+            "factor": "已遭實際利用",
+            "points": 2,
+            "reason": "KEV 或官方確認"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "可從 internet 連到"
+          },
+          {
+            "factor": "資料敏感",
+            "points": 1,
+            "reason": "order、pii"
+          },
+          {
+            "factor": "影響範圍",
+            "points": 1,
+            "reason": "平台層，影響所有品牌"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "live-nodejs-http2-flaws-2026-11"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-13T09:55:53Z"
+      },
+      {
+        "asset_id": "member-api",
+        "our_state": "node 22.11.0",
+        "basis": "version",
+        "verdict": "affected",
+        "reason": "版本落在受影響範圍",
+        "risk_id": "member-api:node:vuln",
+        "level": "high",
+        "score": 8,
+        "breakdown": [
+          {
+            "factor": "基礎分：漏洞",
+            "points": 3,
+            "reason": "CVSS 9.8"
+          },
+          {
+            "factor": "已遭實際利用",
+            "points": 2,
+            "reason": "KEV 或官方確認"
+          },
+          {
+            "factor": "資料敏感",
+            "points": 1,
+            "reason": "pii"
+          },
+          {
+            "factor": "影響範圍",
+            "points": 1,
+            "reason": "平台層，影響所有品牌"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "live-nodejs-http2-flaws-2026-11"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-13T09:55:53Z"
+      },
+      {
+        "asset_id": "internal-tool",
+        "our_state": "node 22.11.0，對外",
+        "basis": "version",
+        "verdict": "affected",
+        "reason": "版本落在受影響範圍",
+        "risk_id": "internal-tool:node:vuln",
+        "level": "high",
+        "score": 8,
+        "breakdown": [
+          {
+            "factor": "基礎分：漏洞",
+            "points": 3,
+            "reason": "CVSS 9.8"
+          },
+          {
+            "factor": "已遭實際利用",
+            "points": 2,
+            "reason": "KEV 或官方確認"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "可從 internet 連到"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-91app-2026-10、live-nodejs-http2-flaws-2026-11"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-13T09:55:53Z"
+      }
+    ],
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": []
+    },
+    "5_solutions": [
+      {
+        "risk_id": "storefront:node:vuln",
+        "temporary": "確認 storefront 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "permanent": "將 storefront 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "24 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "web-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      {
+        "risk_id": "member-api:node:vuln",
+        "temporary": "確認 member-api 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "permanent": "將 member-api 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "24 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "member-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      {
+        "risk_id": "internal-tool:node:vuln",
+        "temporary": "確認 internal-tool 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "permanent": "將 internal-tool 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "24 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "devops-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      }
+    ],
+    "6_notice": {
+      "needed": true,
+      "draft": "致各品牌商：我們發現與「Node.js 修補 16 個漏洞，含 HTTP/2 當機與跨連線記憶體洩漏」相關的風險，正在處理中。請提醒會員：官方不會以電話或簡訊要求轉帳或提供驗證碼，也請只從官方商店下載品牌 App。有疑問請聯繫平台客服。（自動範本，發送前請人工確認）"
+    },
+    "7_status": {
+      "status": "open",
+      "label": "待處理"
+    }
+  },
+  "orchestrator_results": [
+    {
+      "stage": "dispatch",
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "target_type": "event",
+      "target_id": "live-nodejs-http2-flaws-2026-11",
+      "text": "node 22.11.0：node@22.11.0 經本地比對有 17 個確定漏洞，最高 CVSS 9.8 的 CVE-2026-111497 已列入 CISA KEV。與攻擊鏈相關的 HTTP/2 與 HTTPS 漏洞可能造成未驗證遠端當機或跨連線記憶體洩漏，但資料未逐一對應 CVE。修補版本無法確定，請依 Node.js 官方安全公告確認，並優先升級，同時釐清 1 個需確認項目。；node 22.11.0：node@22.11.0 經本地比對有 17 個確定漏洞，最高 CVSS 9.8 的 CVE-2026-111497 已列入 CISA KEV。若此服務對外提供內建 HTTP/2 或 HTTPS，未驗證用戶端即可能觸發當機或跨連線資料外洩，會員資料風險較高。修補版本無法確定，請依官方公告確認後優先升級，並釐清 1 個需確認項目。；node 22.11.0：node@22.11.0 經本地比對有 17 個確定漏洞，最高 CVSS 9.8 的 CVE-2026-111497 已列入 CISA KEV，面向公眾的前台風險最直接。攻擊者可能利用未驗證的 HTTP/2 或 HTTPS 連線造成當機或跨連線記憶體洩漏。修補版本無法確定，請依官方公告確認後優先升級，並釐清 1 個需確認項目。",
+      "source": "live"
+    }
+  ]
+}

@@ -1530,18 +1530,234 @@
       "generated_at": "2026-11-10T17:04:44Z"
     },
     {
+      "id": "live-cyberbiz-vendor-breach-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "電商平台委外廠商順立智慧（Cyberbiz）資安事件，波及大金零件商城與威力德生醫線上商店",
+      "date": "2026-11-12",
+      "industry": "電商",
+      "attack_chain": [
+        "委外電商平台廠商順立智慧的資料庫部分內容遭未經授權存取",
+        "使用該平台的線上商店訂單相關資料受到波及",
+        "各商家通知消費者留意詐騙風險"
+      ],
+      "attck": [],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180482",
+          "title": "大金空調零件線上商城委外廠商發生資安事件，141筆訂單資料受波及、132筆個資遭未經授權存取",
+          "quote": "大金空調零件線上商城委外廠商發生資安事件，141筆訂單資料受波及、132筆個資遭未經授權存取",
+          "published": "2026-11-13",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-13T09:55:53Z",
+          "content_hash": "sha256:8bae0271f7f2c6fda1f56b71c7d80636405975c305c92fd1804fbb8aca789fc9",
+          "verification_basis": "live"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/180476",
+          "title": "威力德生醫線上商店委外廠商發生資安事件，部分消費者訂單資料遭異常存取",
+          "quote": "威力德生醫線上商店委外廠商發生資安事件，部分消費者訂單資料遭異常存取",
+          "published": "2026-11-13",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-13T09:55:53Z",
+          "content_hash": "sha256:45c6c0d87d451fcd90cd2eb55f435e92f42f325445a2b36db1bd573a6bbc1553",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [
+        {
+          "title": "委外電商平台廠商須有資料存取監督與資安事件通報機制",
+          "reason": "來源指出事件發生在委外平台廠商的資料庫，使用該平台的多家商店訂單資料同時受波及，現有控制項沒有涵蓋委外平台廠商的管理。"
+        }
+      ],
+      "demo": false,
+      "facts": [],
+      "summary": "電商平台委外廠商順立智慧發生資安事件，資料庫部分內容遭未經授權存取。和泰服務行銷的大金空調零件商城確認 141 筆訂單資料受波及、其中 132 筆涉及個資；威力德生醫線上商店部分消費者訂單資料也遭異常存取。",
+      "fixture_note": null,
+      "possible_entry_points": [
+        {
+          "text": "若我們也使用第三方電商或寄信平台，廠商端資料庫可能成為破口",
+          "check": "盤點使用的第三方電商、寄信等委外服務，確認是否使用同一廠商，並要求廠商說明是否受影響、查其存取紀錄與金鑰輪替狀況",
+          "systems": [
+            "mail-service",
+            "storefront",
+            "order-exports-bucket"
+          ],
+          "basis": "兩則報導都指出資料外洩發生在委外廠商資料庫，而非商家自家系統"
+        }
+      ]
+    },
+    {
+      "id": "live-mierkuai-order-api-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "美而快電商系統遭異常存取，部分請求涉及會員訂單 API",
+      "date": "2026-11-10",
+      "industry": "電商",
+      "attack_chain": [
+        "消費者收到疑似詐騙電子郵件並向公司反映",
+        "公司回溯存取紀錄，發現外部特定 IP 對電商系統異常存取",
+        "部分請求涉及會員訂單相關 API"
+      ],
+      "attck": [],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180488",
+          "title": "美而快電商系統遭異常存取，部分請求涉及會員訂單API",
+          "quote": "美而快電商系統遭異常存取，部分請求涉及會員訂單API",
+          "published": "2026-11-13",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-13T09:55:53Z",
+          "content_hash": "sha256:bfe4a17378058f1a2699cc00d10f9cf60a521f0559566c473987ed9ac4f9dc43",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [
+        {
+          "title": "會員訂單 API 需有資料擁有者驗證與流量限制",
+          "reason": "來源指出外部 IP 對會員訂單相關 API 異常存取，現有控制項沒有涵蓋 API 層的存取控制與限流。"
+        }
+      ],
+      "demo": false,
+      "facts": [],
+      "summary": "美而快於 11 月 10 日接獲客戶反映收到疑似詐騙電子郵件，回溯存取紀錄發現外部特定 IP 曾對電商系統異常存取，部分請求涉及會員訂單相關 API。公司仍在釐清影響範圍，並引入第三方資安服務進行鑑識。",
+      "fixture_note": null,
+      "possible_entry_points": [
+        {
+          "text": "會員訂單 API 可能缺少存取控制或限流",
+          "check": "檢查訂單 API 是否驗證資料擁有者、有無頻率限制，並查存取紀錄中的異常 IP 與大量請求",
+          "systems": [
+            "api-gateway",
+            "member-api",
+            "storefront"
+          ],
+          "basis": "來源提到外部特定 IP 的異常請求涉及會員訂單相關 API"
+        }
+      ]
+    },
+    {
+      "id": "live-zhengnengliang-woocommerce-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "正能量智能子公司 WooCommerce 電商資料庫遭未經授權存取",
+      "date": "2026-11-11",
+      "industry": "電商",
+      "attack_chain": [
+        "WooCommerce 電商系統資料庫遭未經授權存取及資料擷取",
+        "公司對相關系統採取隔離、防堵及安全漏洞修補措施"
+      ],
+      "attck": [],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180478",
+          "title": "正能量智能子公司電商資料庫遭未經授權存取，已通知受影響消費者並啟動資安應變",
+          "quote": "正能量智能子公司電商資料庫遭未經授權存取，已通知受影響消費者並啟動資安應變",
+          "published": "2026-11-13",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-13T09:55:53Z",
+          "content_hash": "sha256:4c144aae9c711943c0883496b419750a7bda1c5bd60142371f377771451fbd01",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [],
+      "summary": "正能量智能子公司正能量運動的 WooCommerce 電商系統資料庫遭未經授權存取及資料擷取。公司已隔離、防堵並修補漏洞，通報主管機關並通知受影響消費者。",
+      "fixture_note": null,
+      "possible_entry_points": [
+        {
+          "text": "WordPress 類電商外掛或後台可能是破口",
+          "check": "檢查行銷官網 WordPress 與外掛是否為最新版，查後台登入與資料庫匯出紀錄是否有異常",
+          "systems": [
+            "marketing-site",
+            "storefront"
+          ],
+          "basis": "事件為 WooCommerce（WordPress 外掛）資料庫被存取，來源未交代手法，只提到事後修補安全漏洞"
+        }
+      ]
+    },
+    {
+      "id": "live-nitori-member-data-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "日本宜得利伺服器遭非法存取，最多 3762 萬筆會員個資恐外洩",
+      "date": "2026-11-11",
+      "industry": "零售",
+      "attack_chain": [
+        "宜得利伺服器遭非法存取",
+        "最多約 3762 萬筆會員及網路購物使用者個資可能外洩"
+      ],
+      "attck": [],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.cna.com.tw/news/ait/202611110191.aspx",
+          "title": "日本宜得利3762萬筆個資恐外洩 代理式AI助長網路攻擊",
+          "quote": "日本家具連鎖企業宜得利11日表示，伺服器遭到非法存取，最多可能有3762萬筆會員個資外洩。",
+          "published": "2026-11-11",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-13T09:55:53Z",
+          "content_hash": "sha256:76d3d654ee8a284d5ec120e7e7dad9119f4055ccdece13b853e0e9a8a360b542",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [],
+      "summary": "日本家具連鎖企業宜得利表示 6 日確認伺服器遭非法存取，最多約 3762 萬筆會員及網購使用者個資可能外洩，包括姓名、住址及電子郵件；系統未保存信用卡資訊。",
+      "fixture_note": null,
+      "possible_entry_points": [
+        {
+          "text": "會員資料所在的伺服器可能被直接存取",
+          "check": "檢查會員 API 與會員資料庫的存取來源、大量查詢或匯出紀錄，並確認資料庫不對外開放",
+          "systems": [
+            "member-api",
+            "member-db-prod",
+            "api-gateway"
+          ],
+          "basis": "來源只說伺服器遭非法存取、會員個資外洩，未交代手法"
+        }
+      ]
+    },
+    {
       "id": "live-apache-mod-http2-cve-2026-119618",
       "kind": "live",
       "is_update_of": null,
-      "title": "Apache HTTP Server mod_http2 重大漏洞 CVE-2026-119618，未驗證者可遠端執行程式碼",
+      "title": "Apache HTTP Server mod_http2 重大 RCE 漏洞 CVE-2026-119618",
       "date": "2026-11-12",
-      "industry": "通用（網頁伺服器）",
+      "industry": "SaaS",
       "attack_chain": [
-        "攻擊者以 HTTP/2 連上啟用 mod_http2 的伺服器，不需認證",
-        "assign_headers() 多執行緒競爭條件造成堆積記憶體毀損",
-        "遠端執行程式碼，取得網頁伺服器程序控制權"
+        "攻擊者以 HTTP/2 連上啟用 mod_http2 的伺服器",
+        "觸發 assign_headers() 的競爭條件造成堆積記憶體毀損",
+        "進而遠端執行程式碼並取得網頁伺服器程序控制權"
       ],
-      "attck": [],
+      "attck": [
+        "T1190"
+      ],
       "cves": [
         "CVE-2026-119618"
       ],
@@ -1570,57 +1786,59 @@
           "published": "2026-11-12",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-13T09:42:59Z",
+          "verified_at": "2026-11-13T09:55:53Z",
           "content_hash": "sha256:05ccfd30e20623d6a593a0c06eba921019412631d80bbe65b1ada19b810d5c19",
-          "verification_basis": "live"
-        },
-        {
-          "url": "https://www.ithome.com.tw/news/180490",
-          "title": "Apache修補網頁伺服器HTTP/2模組的重大漏洞，64%雲端環境恐曝險",
-          "quote": "Apache修補網頁伺服器HTTP/2模組的重大漏洞，64%雲端環境恐曝險",
-          "published": "2026-11-13",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-13T09:42:59Z",
-          "content_hash": "sha256:53cebb214f7069a4d5be98fe4352c1d7477ef20729b7d57f3c437dcb7809da2d",
           "verification_basis": "live"
         },
         {
           "url": "https://cyberq.tw/2026/11/12/apache-mod-http2-cve-2026-119618-hands-on/",
           "title": "Apache mod_http2 爆重大 RCE 漏洞：CVSS 9.8，實測修補與緩解效果",
-          "quote": "攻擊者不需要認證，只要能以 HTTP/2 連上伺服器即可嘗試觸發。",
+          "quote": "Apache HTTP Server 專案於 11 月 11 日發布 2.4.71，修補 mod_http2 模組中編號 CVE-2026-119618 的重大漏洞。",
           "published": "2026-11-12",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-13T09:42:59Z",
+          "verified_at": "2026-11-13T09:55:53Z",
           "content_hash": "sha256:853b8123daed0901b48644dd93a0f75f9694e60ef884dcaa83535f60367353ff",
+          "verification_basis": "live"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/180490",
+          "title": "Apache修補網頁伺服器HTTP/2模組的重大漏洞，64%雲端環境恐曝險",
+          "quote": "不過，Red Hat提及 利用漏洞存在必要條件 ，那就是Apache HTTP Server必須啟用HTTP/2，只有使用HTTP/1.1的網頁伺服器不受影響。",
+          "published": "2026-11-13",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-13T09:55:53Z",
+          "content_hash": "sha256:53cebb214f7069a4d5be98fe4352c1d7477ef20729b7d57f3c437dcb7809da2d",
           "verification_basis": "live"
         }
       ],
       "proposed_controls": [],
       "demo": false,
       "facts": [],
-      "summary": "Apache 於 11 月 11 日發布 2.4.71，修補 mod_http2 競爭條件造成的堆積記憶體毀損與遠端程式碼執行，影響 2.4.55 至 2.4.70。需啟用 HTTP/2 才會受影響，Wiz 稱目前沒有可用的 exploit，也沒有在野利用的報告。",
+      "summary": "Apache 於 11 月 11 日發布 2.4.71，修補 mod_http2 的競爭條件漏洞，未經驗證的遠端攻擊者可能執行任意程式碼。影響 2.4.55 至 2.4.70，且只有啟用 HTTP/2 的伺服器受影響；Wiz 表示尚無已知的實際攻擊。",
       "fixture_note": null,
       "possible_entry_points": []
     },
     {
-      "id": "live-nodejs-http2-cve-2026-123863",
+      "id": "live-nodejs-http2-flaws-2026-11",
       "kind": "live",
       "is_update_of": null,
-      "title": "Node.js 修補 16 個漏洞，含 HTTP/2 當機與跨連線記憶體外洩（CVE-2026-123863／123864／123866）",
+      "title": "Node.js 修補 16 個漏洞，含 HTTP/2 當機與跨連線記憶體洩漏",
       "date": "2026-11-12",
-      "industry": "通用（執行環境）",
+      "industry": "SaaS",
       "attack_chain": [
-        "未驗證客戶端對使用內建 HTTP/2 或 HTTPS 的伺服器送出請求",
-        "在請求本文完全到達前觸發回應等特定條件",
-        "造成伺服器當機，或讀到其他連線的記憶體內容"
+        "未驗證用戶端連上使用內建 HTTP/2 或 HTTPS 的 Node.js 伺服器",
+        "觸發記憶體洩漏，讀到其他連線的資料",
+        "或使伺服器當機"
       ],
-      "attck": [],
+      "attck": [
+        "T1190"
+      ],
       "cves": [
         "CVE-2026-123863",
-        "CVE-2026-123864",
-        "CVE-2026-123866"
+        "CVE-2026-123866",
+        "CVE-2026-123864"
       ],
       "products": [
         {
@@ -1630,14 +1848,6 @@
             {
               "introduced": "22.0.0",
               "fixed": "22.23.5"
-            },
-            {
-              "introduced": "24.0.0",
-              "fixed": "24.22.3"
-            },
-            {
-              "introduced": "26.0.0",
-              "fixed": "26.13.1"
             }
           ],
           "impact": "data_exposure"
@@ -1654,7 +1864,7 @@
           "published": "2026-11-12",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-13T09:42:59Z",
+          "verified_at": "2026-11-13T09:55:53Z",
           "content_hash": "sha256:1054a209f7821d4d46bc7bcf40f0d51a612b4add44b037f640c8bb54a4aaeb56",
           "verification_basis": "live"
         }
@@ -1662,7 +1872,7 @@
       "proposed_controls": [],
       "demo": false,
       "facts": [],
-      "summary": "Node.js 發布 22.23.5、24.22.3、26.13.1。CVE-2026-123863 讓未驗證客戶端使 24.x 與 26.x 的 HTTP/2 伺服器當機；CVE-2026-123866 與 CVE-2026-123864 影響三條支援線，可能洩漏其他連線的記憶體內容。",
+      "summary": "Node.js 本週為 22.x、24.x、26.x 三條支援線發布修補版本 22.23.5、24.22.3、26.13.1。CVE-2026-123866 與 CVE-2026-123864 可能洩漏其他連線的記憶體（含 TLS 私鑰），CVE-2026-123863 可讓未驗證用戶端使 24.x 與 26.x 的 HTTP/2 伺服器當機。",
       "fixture_note": null,
       "possible_entry_points": []
     },
@@ -1670,15 +1880,16 @@
       "id": "live-synology-dsm-sa-26-19",
       "kind": "live",
       "is_update_of": null,
-      "title": "Synology DSM 登入驗證 API SQL 注入 CVE-2026-76954（CVSS 9.8），無緩解措施",
+      "title": "Synology DSM 登入驗證介面 SQL 注入漏洞（CVSS 9.8），無暫時緩解措施",
       "date": "2026-11-12",
-      "industry": "通用（NAS）",
+      "industry": "SaaS",
       "attack_chain": [
-        "遠端攻擊者連到 DSM 的登入驗證 Auth API",
-        "利用 SQL 注入漏洞，不需登入",
-        "讀寫任意檔案或使系統癱瘓"
+        "遠端攻擊者連上 DSM 登入驗證介面（Auth API）",
+        "利用 SQL 注入不經登入讀寫 NAS 上的任意檔案"
       ],
-      "attck": [],
+      "attck": [
+        "T1190"
+      ],
       "cves": [
         "CVE-2026-76954",
         "CVE-2026-85101"
@@ -1691,22 +1902,10 @@
             {
               "introduced": "7.2.1",
               "fixed": null
-            },
-            {
-              "introduced": "7.2.2",
-              "fixed": null
-            },
-            {
-              "introduced": "7.3",
-              "fixed": null
-            },
-            {
-              "introduced": "7.4",
-              "fixed": null
             }
           ],
           "cvss": 9.8,
-          "impact": "other"
+          "impact": "remote_code_execution"
         }
       ],
       "revision": "1",
@@ -1720,7 +1919,7 @@
           "published": "2026-11-12",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-13T09:42:59Z",
+          "verified_at": "2026-11-13T09:55:53Z",
           "content_hash": "sha256:06b72d66fbc2d390aae5fb1e0720245aac8beb049c1efabb96c15ef916eb91bb",
           "verification_basis": "live"
         }
@@ -1728,34 +1927,31 @@
       "proposed_controls": [],
       "demo": false,
       "facts": [],
-      "summary": "Synology-SA-26:19 列為重大，DSM 7.4、7.3、7.2.2、7.2.1 全部受影響，遠端攻擊者不必登入即可讀寫任意檔案。官方沒有緩解措施，只能更新；目前沒有確認的實際攻擊。",
+      "summary": "Synology 於 11 月 10 日發布 SA-26:19，DSM 驗證 API 的 SQL 注入漏洞（CVE-2026-76954）讓遠端攻擊者不必登入即可讀寫任意檔案；rsync 驗證繞過（CVE-2026-85101）評分 8.6。DSM 7.2.1 須升至 7.2.1-69057 Update 13，目前沒有確認的實際攻擊。",
       "fixture_note": null,
       "possible_entry_points": []
     },
     {
-      "id": "live-php2shell-checkpoint-tsga-2026-11",
+      "id": "live-php2shell-checkpoint-exploit-2026-11",
       "kind": "live",
       "is_update_of": "evt-php2shell-2026-10",
-      "title": "PHP2Shell 漏洞被用於攻擊 Check Point 閘道，部署 TSGA 後門並清除 ESXi 檔案",
+      "title": "PHP2Shell 漏洞遭用於攻擊 Check Point 閘道，植入 TSGA 後門並清除 ESXi 檔案",
       "date": "2026-11-13",
-      "industry": "通用（網路設備）",
+      "industry": "SaaS",
       "attack_chain": [
-        "利用 PHP2Shell（CVE-2026-109618、CVE-2026-109619）攻擊 Mobile Access 入口取得初始存取",
-        "經 DynamicCLI 介面的 CVE-2026-123039 從服務帳號提權到 root",
-        "部署 PHP web shell 與 TSGA 後門及 TSProxy 元件",
-        "經 SSH 轉入 VMware ESXi 主機，部署 destroy_v6 wiper"
+        "利用 PHP2Shell 漏洞取得閘道初始存取",
+        "經 DynamicCLI 介面（CVE-2026-123039）提權至 root",
+        "部署 PHP web shell 與 TSGA 後門",
+        "經 SSH 轉入 VMware ESXi 主機並部署清除程式"
       ],
       "attck": [
         "T1190",
-        "T1068",
         "T1505.003",
-        "T1021.004",
-        "T1485"
+        "T1068"
       ],
       "cves": [
         "CVE-2026-109618",
-        "CVE-2026-109619",
-        "CVE-2026-123039"
+        "CVE-2026-109619"
       ],
       "products": [
         {
@@ -1825,11 +2021,11 @@
         {
           "url": "https://thehackernews.com/2026/11/hackers-exploit-php2shell-flaws-in.html",
           "title": "Hackers Exploit PHP2Shell Flaws in Check Point Gateways to Deploy TSGA Backdoor and Wipe ESXi Files",
-          "quote": "Hackers Exploit PHP2Shell Flaws in Check Point Gateways to Deploy TSGA Backdoor and Wipe ESXi Files",
+          "quote": "The activity, detailed by Check Point, began on October 30, 2026, and targeted Israeli organizations, with a broader follow-up wave on November 2, 2026, that targeted organizations across multiple countries and sectors.",
           "published": "2026-11-13",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-13T09:42:59Z",
+          "verified_at": "2026-11-13T09:55:53Z",
           "content_hash": "sha256:a780adffaafe84d3d649f8ce3d6ba21b22bda81d40471f0725bdc7f506911d7c",
           "verification_basis": "live"
         }
@@ -1837,347 +2033,10 @@
       "proposed_controls": [],
       "demo": false,
       "facts": [],
-      "summary": "Check Point 指出，未知攻擊者自 10 月 30 日起，利用 PHP2Shell 取得 Check Point 閘道初始存取，再以 CVE-2026-123039 提權到 root，部署 PHP web shell 與 TSGA 後門，並經 SSH 轉入 VMware ESXi 部署 wiper。",
+      "summary": "Check Point 揭露自 10 月 30 日起，未知攻擊者利用 PHP2Shell（CVE-2026-109618、CVE-2026-109619）攻擊未修補的 Check Point 閘道取得初始存取，再以 CVE-2026-123039 提權並部署 TSGA 後門。11 月 2 日出現波及多國的第二波攻擊。",
       "fixture_note": null,
       "possible_entry_points": [],
       "inherited_from": "evt-php2shell-2026-10"
-    },
-    {
-      "id": "live-cyberbiz-supplier-breach-2026-11",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "順立智慧（Cyberbiz）電商平台資安事件，波及大金空調零件商城與威力德生醫線上商店",
-      "date": "2026-11-12",
-      "industry": "電商",
-      "attack_chain": [
-        "電商平台委外廠商順立智慧的資料庫部分內容遭未經授權存取",
-        "使用該平台的業者訂單資料受波及，業者接獲通知後通知消費者留意詐騙"
-      ],
-      "attck": [],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://www.ithome.com.tw/news/180482",
-          "title": "大金空調零件線上商城委外廠商發生資安事件，141筆訂單資料受波及、132筆個資遭未經授權存取",
-          "quote": "大金空調零件線上商城委外廠商發生資安事件，141筆訂單資料受波及、132筆個資遭未經授權存取",
-          "published": "2026-11-13",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-13T09:42:59Z",
-          "content_hash": "sha256:8bae0271f7f2c6fda1f56b71c7d80636405975c305c92fd1804fbb8aca789fc9",
-          "verification_basis": "live"
-        },
-        {
-          "url": "https://www.ithome.com.tw/news/180476",
-          "title": "威力德生醫線上商店委外廠商發生資安事件，部分消費者訂單資料遭異常存取",
-          "quote": "威力德生醫線上商店委外廠商發生資安事件，部分消費者訂單資料遭異常存取",
-          "published": "2026-11-13",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-13T09:42:59Z",
-          "content_hash": "sha256:45c6c0d87d451fcd90cd2eb55f435e92f42f325445a2b36db1bd573a6bbc1553",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [
-        {
-          "title": "委外電商平台廠商須有資安要求、資料存取監控與事件通報機制",
-          "reason": "來源指出事件發生在委外平台廠商資料庫，波及多家使用同一平台的業者；現有控制項沒有涵蓋供應商端的資料保護與通報。"
-        }
-      ],
-      "demo": false,
-      "facts": [],
-      "summary": "委外廠商順立智慧發生資安事件，資料庫部分內容遭未經授權存取。大金空調零件商城 141 筆訂單資料受波及，其中 132 筆涉及個資；威力德生醫線上商店部分訂單資料也受波及。來源未說明入侵手法。",
-      "fixture_note": null,
-      "possible_entry_points": [
-        {
-          "text": "委外電商或架站平台的資料庫被入侵，連帶波及我們的訂單資料",
-          "check": "盤點是否使用 Cyberbiz 或同類委外電商、架站平台（含未登記的 SaaS），確認其保存哪些訂單與個資，並向廠商詢問是否受影響。",
-          "systems": [
-            "saas-quicksite-builder",
-            "storefront"
-          ],
-          "basis": "來源指出資料外洩發生在委外廠商資料庫，而非業者自身系統。"
-        }
-      ]
-    },
-    {
-      "id": "live-mercuryfast-order-api-2026-11",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "美而快電商系統遭異常存取，部分請求涉及會員訂單 API",
-      "date": "2026-11-12",
-      "industry": "電商",
-      "attack_chain": [
-        "客戶收到疑似詐騙電子郵件並反映",
-        "回溯紀錄發現外部特定 IP 對電商系統異常存取",
-        "部分請求涉及會員訂單相關 API"
-      ],
-      "attck": [],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://www.ithome.com.tw/news/180488",
-          "title": "美而快電商系統遭異常存取，部分請求涉及會員訂單API",
-          "quote": "美而快電商系統遭異常存取，部分請求涉及會員訂單API",
-          "published": "2026-11-13",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-13T09:42:59Z",
-          "content_hash": "sha256:bfe4a17378058f1a2699cc00d10f9cf60a521f0559566c473987ed9ac4f9dc43",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [
-        {
-          "title": "會員與訂單 API 須驗證資料擁有者並設有流量限制與異常告警",
-          "reason": "來源指出外部 IP 對會員訂單 API 發出異常請求，且客戶已收到詐騙信；現有控制項沒有涵蓋 API 存取控制與限流。"
-        }
-      ],
-      "demo": false,
-      "facts": [],
-      "summary": "美而快 11 月 10 日接獲客戶反映收到疑似詐騙電子郵件，回溯存取紀錄發現外部特定 IP 曾對電商系統異常存取，部分請求涉及會員訂單相關 API。影響範圍仍在釐清。",
-      "fixture_note": null,
-      "possible_entry_points": [
-        {
-          "text": "會員訂單 API 可能缺少存取控制或限流",
-          "check": "檢查訂單相關 API 是否驗證資料擁有者、有無頻率限制，並查存取紀錄中的異常 IP 與大量請求。",
-          "systems": [
-            "api-gateway",
-            "member-api",
-            "storefront"
-          ],
-          "basis": "來源指出異常請求來自外部特定 IP，且部分涉及會員訂單相關 API。"
-        }
-      ]
-    },
-    {
-      "id": "live-zhengnengliang-woocommerce-2026-11",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "正能量運動 WooCommerce 電商資料庫遭未經授權存取及資料擷取",
-      "date": "2026-11-11",
-      "industry": "電商",
-      "attack_chain": [
-        "WooCommerce 電商系統資料庫遭未經授權存取",
-        "資料遭擷取，公司隔離系統並修補安全漏洞"
-      ],
-      "attck": [],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://www.ithome.com.tw/news/180478",
-          "title": "正能量智能子公司電商資料庫遭未經授權存取，已通知受影響消費者並啟動資安應變",
-          "quote": "正能量智能子公司電商資料庫遭未經授權存取，已通知受影響消費者並啟動資安應變",
-          "published": "2026-11-13",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-13T09:42:59Z",
-          "content_hash": "sha256:4c144aae9c711943c0883496b419750a7bda1c5bd60142371f377771451fbd01",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [
-        {
-          "title": "電商資料庫須限制存取來源並對大量資料讀取設告警",
-          "reason": "來源指出電商資料庫遭未授權存取並擷取資料；現有控制項沒有涵蓋電商資料庫的存取限制與外傳偵測。"
-        }
-      ],
-      "demo": false,
-      "facts": [],
-      "summary": "正能量智能子公司正能量運動的 WooCommerce 電商系統資料庫遭未經授權存取及資料擷取。公司已隔離系統、進行漏洞修補並通報主管機關，也通知受影響消費者。來源未說明入侵途徑。",
-      "fixture_note": null,
-      "possible_entry_points": [
-        {
-          "text": "電商外掛或網站程式的漏洞，或資料庫帳密外洩",
-          "check": "確認行銷官網（WordPress）是否安裝 WooCommerce 或其他電商外掛、版本是否最新，並查資料庫的異常連線與大量讀取紀錄。",
-          "systems": [
-            "marketing-site"
-          ],
-          "basis": "來源提到 WooCommerce 資料庫遭存取，且公司事後採取安全漏洞修補措施。"
-        }
-      ]
-    },
-    {
-      "id": "live-nitori-member-data-2026-11",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "日本宜得利伺服器遭非法存取，最多 3762 萬筆會員個資恐外洩",
-      "date": "2026-11-11",
-      "industry": "零售",
-      "attack_chain": [
-        "宜得利伺服器遭非法存取",
-        "會員及網購使用者個資恐外洩"
-      ],
-      "attck": [],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://www.cna.com.tw/news/ait/202611110191.aspx",
-          "title": "日本宜得利3762萬筆個資恐外洩 代理式AI助長網路攻擊",
-          "quote": "日本家具連鎖企業宜得利11日表示，伺服器遭到非法存取，最多可能有3762萬筆會員個資外洩。",
-          "published": "2026-11-11",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-13T09:42:59Z",
-          "content_hash": "sha256:cdbc0fdfd1cb7b8dcceae076c291da6518a68922edbcf07c884491e3c7d79e3e",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [
-        {
-          "title": "會員與網購個資伺服器須有最小權限、存取監控與外傳告警",
-          "reason": "來源指出會員資料伺服器遭非法存取，外洩規模達數千萬筆；現有控制項沒有涵蓋個資伺服器的存取監控。"
-        }
-      ],
-      "demo": false,
-      "facts": [],
-      "summary": "宜得利控股 11 月 6 日確認伺服器遭非法存取，最多約 3762 萬筆會員及網購使用者個資可能外洩，包括姓名、住址、電子郵件。系統未保存信用卡資訊。",
-      "fixture_note": null,
-      "possible_entry_points": [
-        {
-          "text": "會員個資伺服器的存取權限過寬或缺少異常監控",
-          "check": "檢查會員資料庫與 API 的存取帳號、來源 IP 限制，並查大量匯出或異常查詢紀錄。",
-          "systems": [
-            "member-api",
-            "member-db-prod"
-          ],
-          "basis": "來源只說伺服器遭非法存取、外洩會員資料，未交代手法。"
-        }
-      ]
-    },
-    {
-      "id": "live-sharefull-admin-breach-2026-11",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "日本打工媒合平台 Sharefull 管理系統遭非法存取，約 750 萬名使用者個資恐外洩",
-      "date": "2026-11-11",
-      "industry": "SaaS",
-      "attack_chain": [
-        "管理系統遭非法存取",
-        "公司封鎖入侵途徑",
-        "使用者帳號資訊恐外洩"
-      ],
-      "attck": [],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://www.cna.com.tw/news/ait/202611110191.aspx",
-          "title": "日本宜得利3762萬筆個資恐外洩 代理式AI助長網路攻擊",
-          "quote": "另外，短期打工媒合平台Sharefull也傳出約750萬名使用者的個資可能外洩，甚至涉及銀行帳戶資料。",
-          "published": "2026-11-11",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-13T09:42:59Z",
-          "content_hash": "sha256:cdbc0fdfd1cb7b8dcceae076c291da6518a68922edbcf07c884491e3c7d79e3e",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [
-        {
-          "title": "後台管理系統須限制來源、啟用多因素驗證並保留存取紀錄",
-          "reason": "來源指出事件起於管理系統遭非法存取；現有控制項僅涵蓋內部工具不得對外開放，沒有涵蓋後台的驗證與紀錄。"
-        }
-      ],
-      "demo": false,
-      "facts": [],
-      "summary": "Sharefull 於 11 月 4 日深夜發現管理系統遭非法存取，已封鎖入侵途徑。最多約 750 萬名使用者帳號資訊可能外洩，含姓名、電話、電子郵件、臉部照片、銀行帳戶與在留資格等。",
-      "fixture_note": null,
-      "possible_entry_points": [
-        {
-          "text": "對外可連的後台管理介面缺少強驗證或來源限制",
-          "check": "盤點對外的內部營運工具與後台，確認是否有多因素驗證、IP 限制，並查異常登入紀錄。",
-          "systems": [
-            "internal-tool",
-            "phpmyadmin"
-          ],
-          "basis": "來源指出入侵起點是管理系統。"
-        }
-      ]
-    },
-    {
-      "id": "live-tsmc-cloud-vendor-leak-2026-11",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "台積電員工資料出現在外部網站，與某雲端服務供應商系統資料相符",
-      "date": "2026-11-12",
-      "industry": "雲端供應鏈",
-      "attack_chain": [
-        "員工資料被放上外部網站",
-        "經比對與某雲端服務供應商系統內資料相符",
-        "公司通知受影響人員並與供應商、調查機關合作"
-      ],
-      "attck": [],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "confirmed",
-      "sources": [
-        {
-          "url": "https://www.inside.com.tw/article/42901-tsmc-employee-information-posted-external-website-no-evidence-system-breached",
-          "title": "台積電證實部分員工資訊遭放上外部網站，稱無證據顯示系統遭入侵",
-          "quote": "台積電證實部分員工資訊遭放上外部網站，稱無證據顯示系統遭入侵",
-          "published": "2026-11-13",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-13T09:42:59Z",
-          "content_hash": "sha256:14ada108b7533f60eb053f4d0d5ad7b80ea8e5a67aaab064f8270be74c41e452",
-          "verification_basis": "live"
-        },
-        {
-          "url": "https://cyberq.tw/2026/11/13/tsmc-confirms-employee-data-leak/",
-          "title": "台積電證實員工個資外流：官方只確認部分資料，4.6 萬筆仍是賣家說法",
-          "quote": "相關資料經核對後，與某家雲端服務供應商系統服務中的資料相符。",
-          "published": "2026-11-13",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-13T09:42:59Z",
-          "content_hash": "sha256:d85965f7aa1a0106928d99f91fbad2b9f2f371ed0bb6a8c7fd86e7c575ed891e",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [
-        {
-          "title": "交給雲端或 SaaS 供應商保管的個資須定期稽核並有外洩通報條款",
-          "reason": "來源指出外洩環節在委外雲端供應商而非公司自身系統；現有控制項沒有涵蓋供應商保管資料的稽核。"
-        }
-      ],
-      "demo": false,
-      "facts": [],
-      "summary": "台積電證實部分現任與離職員工資料未經授權被放上外部網站，稱沒有證據顯示自身系統遭入侵，資料與某雲端服務供應商系統內的資料相符。供應商名稱與受影響人數未公布；4.6 萬筆為賣家單方說法。",
-      "fixture_note": null,
-      "possible_entry_points": [
-        {
-          "text": "交由第三方雲端服務保管的資料，因供應商被入侵而外洩",
-          "check": "盤點存放訂單與個資的第三方服務（寄信、App 雲端儲存），確認供應商的資安通報與存取紀錄。",
-          "systems": [
-            "mail-service",
-            "firebase-brand-app-storage"
-          ],
-          "basis": "來源指出資料與雲端服務供應商系統內資料相符，台積電自身系統無入侵證據。"
-        }
-      ]
     }
   ],
   "verification": {
@@ -2252,37 +2111,13 @@
       "max_level": null,
       "note": "程式取自 CISA KEV 與 NVD API"
     },
-    "live-apache-mod-http2-cve-2026-119618": {
+    "live-cyberbiz-vendor-breach-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-nodejs-http2-cve-2026-123863": {
-      "status": "ok",
-      "issues": [],
-      "max_level": null,
-      "note": null
-    },
-    "live-synology-dsm-sa-26-19": {
-      "status": "ok",
-      "issues": [],
-      "max_level": null,
-      "note": null
-    },
-    "live-php2shell-checkpoint-tsga-2026-11": {
-      "status": "ok",
-      "issues": [],
-      "max_level": null,
-      "note": null
-    },
-    "live-cyberbiz-supplier-breach-2026-11": {
-      "status": "ok",
-      "issues": [],
-      "max_level": null,
-      "note": null
-    },
-    "live-mercuryfast-order-api-2026-11": {
+    "live-mierkuai-order-api-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
@@ -2300,13 +2135,25 @@
       "max_level": null,
       "note": null
     },
-    "live-sharefull-admin-breach-2026-11": {
+    "live-apache-mod-http2-cve-2026-119618": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-tsmc-cloud-vendor-leak-2026-11": {
+    "live-nodejs-http2-flaws-2026-11": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "live-synology-dsm-sa-26-19": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "live-php2shell-checkpoint-exploit-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,

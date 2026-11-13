@@ -217,8 +217,8 @@
     "report-svc"
   ],
   "complete": true,
-  "summary_source": "template",
-  "summary": "攻擊者向 PHP 網站伺服器送出特製請求（例如 multipart 請求）；觸發記憶體耗盡（OOM）處理時的記憶體損壞，或跨請求的釋放後使用；在應用程式驗證邏輯執行前，以 web worker 權限遠端執行任意程式碼",
+  "summary_source": "live",
+  "summary": "marketing-site（php 8.1.27）對外、已停止支援且無修補，為高風險（9 分）；phpmyadmin 雖在受影響範圍，但僅允許 corp-vpn 連入，扣除補償措施後為中風險（4 分）。",
   "blocks": {
     "1_summary": {
       "title": "PHP2Shell：PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619）",
@@ -270,8 +270,8 @@
         "max_level": null,
         "note": null
       },
-      "summary": "攻擊者向 PHP 網站伺服器送出特製請求（例如 multipart 請求）；觸發記憶體耗盡（OOM）處理時的記憶體損壞，或跨請求的釋放後使用；在應用程式驗證邏輯執行前，以 web worker 權限遠端執行任意程式碼",
-      "summary_note": "自動摘要未產生",
+      "summary": "marketing-site（php 8.1.27）對外、已停止支援且無修補，為高風險（9 分）；phpmyadmin 雖在受影響範圍，但僅允許 corp-vpn 連入，扣除補償措施後為中風險（4 分）。",
+      "summary_note": null,
       "fixture_note": null
     },
     "2_conclusion": {
@@ -308,7 +308,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-php2shell-2026-10、live-php2shell-checkpoint-tsga-2026-11"
+            "reason": "evt-php2shell-2026-10、live-php2shell-checkpoint-exploit-2026-11"
           },
           {
             "factor": "已停止支援",
@@ -318,7 +318,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T09:42:59Z"
+        "observed_at": "2026-11-13T09:55:53Z"
       },
       {
         "asset_id": "phpmyadmin",
@@ -348,7 +348,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-php2shell-2026-10、live-php2shell-checkpoint-tsga-2026-11"
+            "reason": "evt-php2shell-2026-10、live-php2shell-checkpoint-exploit-2026-11"
           },
           {
             "factor": "補償措施",
@@ -358,7 +358,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T09:42:59Z"
+        "observed_at": "2026-11-13T09:55:53Z"
       }
     ],
     "4_unaffected_and_check": {
@@ -436,8 +436,8 @@
   "orchestrator_results": [],
   "updates": [
     {
-      "id": "live-php2shell-checkpoint-tsga-2026-11",
-      "title": "PHP2Shell 漏洞被用於攻擊 Check Point 閘道，部署 TSGA 後門並清除 ESXi 檔案",
+      "id": "live-php2shell-checkpoint-exploit-2026-11",
+      "title": "PHP2Shell 漏洞遭用於攻擊 Check Point 閘道，植入 TSGA 後門並清除 ESXi 檔案",
       "date": "2026-11-13",
       "status": "open",
       "conclusion": "2 項受影響，最高風險為高。marketing-site：php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On。",

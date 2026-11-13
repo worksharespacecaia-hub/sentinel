@@ -125,8 +125,8 @@
     "laptop-eng-07"
   ],
   "complete": true,
-  "summary_source": "template",
-  "summary": "6 月工程師 A 經搜尋引擎下載遭竄改的 Homebrew 安裝檔，團隊角色曝光；9 月以假求職面試要求工程師 B 在工作電腦下載並安裝含惡意程式的「作業」；惡意程式替換開發工具元件（pyenv）並連線外部伺服器，端點防護未偵測；10 月 20 日經 B 的電腦利用內部 AI 工具取得工程師 A、C 電腦的控制權；在 A 的電腦上發現具容器部署權限的存取憑證（token）；從 C 的電腦以 A 的憑證部署容器並觸發惡意腳本；存取內部錢包簽章服務，在正常提款流程外發起交易並濫用 EIP-7702 委託授權",
+  "summary_source": "live",
+  "summary": "laptop-eng-07 持有可連到 deploy-pipeline 的部署權杖（高，7 分，位於完整攻擊鏈），ai-code-assistant 的權杖可繞過 Pipeline 審核直接部署（中，4 分）。建議撤銷這些權杖並限制只能由 Pipeline 部署。",
   "blocks": {
     "1_summary": {
       "title": "幣安 63.4 億美元駭案：假面試惡意程式入侵開發者電腦，取得容器部署憑證後攻陷錢包簽章服務",
@@ -176,8 +176,8 @@
         "max_level": null,
         "note": null
       },
-      "summary": "6 月工程師 A 經搜尋引擎下載遭竄改的 Homebrew 安裝檔，團隊角色曝光；9 月以假求職面試要求工程師 B 在工作電腦下載並安裝含惡意程式的「作業」；惡意程式替換開發工具元件（pyenv）並連線外部伺服器，端點防護未偵測；10 月 20 日經 B 的電腦利用內部 AI 工具取得工程師 A、C 電腦的控制權；在 A 的電腦上發現具容器部署權限的存取憑證（token）；從 C 的電腦以 A 的憑證部署容器並觸發惡意腳本；存取內部錢包簽章服務，在正常提款流程外發起交易並濫用 EIP-7702 委託授權",
-      "summary_note": "自動摘要未產生",
+      "summary": "laptop-eng-07 持有可連到 deploy-pipeline 的部署權杖（高，7 分，位於完整攻擊鏈），ai-code-assistant 的權杖可繞過 Pipeline 審核直接部署（中，4 分）。建議撤銷這些權杖並限制只能由 Pipeline 部署。",
+      "summary_note": null,
       "fixture_note": null
     },
     "2_conclusion": {
@@ -219,7 +219,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T09:42:59Z"
+        "observed_at": "2026-11-13T09:55:53Z"
       },
       {
         "asset_id": "ai-code-assistant",
@@ -249,7 +249,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T09:42:59Z"
+        "observed_at": "2026-11-13T09:55:53Z"
       }
     ],
     "4_unaffected_and_check": {

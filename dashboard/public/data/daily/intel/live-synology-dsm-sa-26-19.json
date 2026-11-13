@@ -2,15 +2,16 @@
   "event": {
     "id": "live-synology-dsm-sa-26-19",
     "kind": "live",
-    "title": "Synology DSM 登入驗證 API SQL 注入 CVE-2026-76954（CVSS 9.8），無緩解措施",
+    "title": "Synology DSM 登入驗證介面 SQL 注入漏洞（CVSS 9.8），無暫時緩解措施",
     "date": "2026-11-12",
-    "industry": "通用（NAS）",
+    "industry": "SaaS",
     "attack_chain": [
-      "遠端攻擊者連到 DSM 的登入驗證 Auth API",
-      "利用 SQL 注入漏洞，不需登入",
-      "讀寫任意檔案或使系統癱瘓"
+      "遠端攻擊者連上 DSM 登入驗證介面（Auth API）",
+      "利用 SQL 注入不經登入讀寫 NAS 上的任意檔案"
     ],
-    "attck": [],
+    "attck": [
+      "T1190"
+    ],
     "cves": [
       "CVE-2026-76954",
       "CVE-2026-85101"
@@ -23,22 +24,10 @@
           {
             "introduced": "7.2.1",
             "fixed": null
-          },
-          {
-            "introduced": "7.2.2",
-            "fixed": null
-          },
-          {
-            "introduced": "7.3",
-            "fixed": null
-          },
-          {
-            "introduced": "7.4",
-            "fixed": null
           }
         ],
         "cvss": 9.8,
-        "impact": "other"
+        "impact": "remote_code_execution"
       }
     ],
     "revision": "1",
@@ -52,7 +41,7 @@
         "published": "2026-11-12",
         "fetch_status": "ok",
         "verified": true,
-        "verified_at": "2026-11-13T09:42:59Z",
+        "verified_at": "2026-11-13T09:55:53Z",
         "content_hash": "sha256:06b72d66fbc2d390aae5fb1e0720245aac8beb049c1efabb96c15ef916eb91bb",
         "verification_basis": "live"
       }
@@ -109,19 +98,20 @@
     "nas-office-01"
   ],
   "complete": true,
-  "summary_source": "template",
-  "summary": "Synology-SA-26:19 列為重大，DSM 7.4、7.3、7.2.2、7.2.1 全部受影響，遠端攻擊者不必登入即可讀寫任意檔案。官方沒有緩解措施，只能更新；目前沒有確認的實際攻擊。",
+  "summary_source": "live",
+  "summary": "nas-office-01 的 DSM 7.2.1-69057 Update 5 對外，版本在受影響範圍，為高風險（8 分）。來源指出無暫時緩解措施，建議立即收回對外連線並等待／套用修補。",
   "blocks": {
     "1_summary": {
-      "title": "Synology DSM 登入驗證 API SQL 注入 CVE-2026-76954（CVSS 9.8），無緩解措施",
+      "title": "Synology DSM 登入驗證介面 SQL 注入漏洞（CVSS 9.8），無暫時緩解措施",
       "date": "2026-11-12",
-      "industry": "通用（NAS）",
+      "industry": "SaaS",
       "attack_chain": [
-        "遠端攻擊者連到 DSM 的登入驗證 Auth API",
-        "利用 SQL 注入漏洞，不需登入",
-        "讀寫任意檔案或使系統癱瘓"
+        "遠端攻擊者連上 DSM 登入驗證介面（Auth API）",
+        "利用 SQL 注入不經登入讀寫 NAS 上的任意檔案"
       ],
-      "attck": [],
+      "attck": [
+        "T1190"
+      ],
       "cves": [
         "CVE-2026-76954",
         "CVE-2026-85101"
@@ -135,7 +125,7 @@
           "quote": "DSM 7.4、7.3、7.2.2、7.2.1 全部受影響，官方在緩解措施一欄寫的是無，也就是沒有暫時的應對方法，只能更新。",
           "fetch_status": "ok",
           "verification_basis": "live",
-          "verified_at": "2026-11-13T09:42:59Z"
+          "verified_at": "2026-11-13T09:55:53Z"
         }
       ],
       "verification": {
@@ -144,8 +134,8 @@
         "max_level": null,
         "note": null
       },
-      "summary": "Synology-SA-26:19 列為重大，DSM 7.4、7.3、7.2.2、7.2.1 全部受影響，遠端攻擊者不必登入即可讀寫任意檔案。官方沒有緩解措施，只能更新；目前沒有確認的實際攻擊。",
-      "summary_note": "自動摘要未產生",
+      "summary": "nas-office-01 的 DSM 7.2.1-69057 Update 5 對外，版本在受影響範圍，為高風險（8 分）。來源指出無暫時緩解措施，建議立即收回對外連線並等待／套用修補。",
+      "summary_note": null,
       "fixture_note": null
     },
     "2_conclusion": {
@@ -187,7 +177,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T09:42:59Z"
+        "observed_at": "2026-11-13T09:55:53Z"
       }
     ],
     "4_unaffected_and_check": {

@@ -1,4 +1,4 @@
-# 工程師報告（daily，2026-11-13T09:42:59Z）
+# 工程師報告（daily，2026-11-13T09:55:53Z）
 
 燈號：red；20 個未處理的高風險
 
@@ -53,6 +53,7 @@
 | low | 2 | cookie 0.5.0 有 1 個已知漏洞（最高 CVSS 3.7，CVE-2024-47764） | member-api | 720h | trivy: services/member-api cookie@0.5.0；修補版本：0.7.0 |
 | low | 2 | postgresql 15.6 有 44 個已知漏洞（NVD，最高 CVSS 8.8，CVE-2024-10979） | order-db-test | 720h | nvd: postgresql@15.6 依 CPE 取得候選後，本地重新比對版本（44 確定、0 需確認）；修補版本：15.19 |
 | low | 2 | push-key-fcm-apns 存放在共用磁碟，所有辦公室人員可取用 | push-key-fcm-apns | 720h | mobile-keys.json: push-key-fcm-apns stored_in share:fileserver-01/mobile/push-keys；accessible_by all-office-staff |
+| low | 2 | php 8.4.27 有 1 個漏洞需確認執行環境或版本（NVD） | report-svc | 720h | nvd: php@8.4.27 依 CPE 取得候選後，本地重新比對版本（0 確定、1 需確認）；修補版本：無法確定（部分漏洞沒有修補版本或範圍不明） |
 | low | 1 | Git 中有測試環境金鑰（config/db.yml:7） | gitlab | 720h | config/db.yml:7 |
 | low | 0 | phpmyadmin 5.2.1 有 7 個已知漏洞（NVD，最高 CVSS 8.8，CVE-2026-119426） | phpmyadmin | 720h | nvd: phpmyadmin@5.2.1 依 CPE 取得候選後，本地重新比對版本（7 確定、0 需確認）；修補版本：無法確定（部分漏洞沒有修補版本或範圍不明） |
 
