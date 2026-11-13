@@ -25,6 +25,8 @@ if TYPE_CHECKING:  # pragma: no cover
     from context import RunCtx
 
 __all__ = [
+    "CATEGORY_ZH", "OUTCOME_AGENTS", "OUTCOME_FILE", "OUTCOME_READ_REASONS", "OUTCOME_REASONS", "OUTCOME_STATUSES",
+    "OUTCOME_UNKNOWN", "outcome_key", "outcome_row", "read_outcomes", "safe_id", "write_outcomes",
     "A2_EVENT_CATEGORY", "BaseInputs", "CONTROL_KEYS", "DISPATCH_KEYS", "DISPATCH_TASKS", "LEVEL_RANK", "MAX_A2_FINDINGS",
     "MAX_A3_SYSTEMS", "MAX_A4_BASELINE", "MAX_A5_CEO", "MAX_A5_REMEDIATION", "MAX_CHAIN", "MAX_CTRL_PER_EVENT", "MAX_CTRL_TOTAL",
     "MAX_DISPATCH_TASKS", "MAX_EVENTS", "MAX_PRIORITIES", "MAX_REASON", "MAX_REVIEW_TASKS", "MAX_RISKS_PER_TASK", "MAX_SUMMARY",
@@ -83,6 +85,11 @@ MENUS = {"dispatch": DISPATCH_TASKS, "review": REVIEW_TASKS}
 TASK_LIMITS = {"dispatch": MAX_DISPATCH_TASKS, "review": MAX_REVIEW_TASKS}
 PRIORITY_AGENT = {"dispatch": "a4", "review": "a5"}
 A2_EVENT_CATEGORY = {"dependency-analyst": "vuln", "runtime-analyst": "eol"}   # 與 agents.common.CATEGORY_SUBAGENT 一致（測試核對）
+
+# 風險類別的白話（給 AI 的風險標籤「類別：系統名稱」，design §4；風險標題含存放位置，不交給 AI）
+CATEGORY_ZH = {"vuln": "套件漏洞", "secret": "金鑰外洩", "config": "設定缺失", "eol": "停止支援", "identity": "身分與權杖",
+               "backup": "備份韌性", "shadow_it": "未登記的系統", "signal": "早期訊號", "mobile": "App 設定",
+               "clone_app": "山寨 App", "shadow_api": "影子 API"}
 
 PEER_KINDS = ("live", "demo")
 SOURCES = ("subscription", "live", "replay", "template", "skipped")
@@ -157,6 +164,27 @@ def public_safe(value, limit: int = MAX_TEXT) -> str | None:
     """safe_text 之後，若仍命中 blocked_text 就整段丟掉（不嘗試修補）。"""
     text = safe_text(value, limit)
     return None if text is None or blocked_text(text) else text
+
+
+# 給 AI 的 ID（事件、風險）：只能是程式產生的識別字串。ID 以「:」分段，每段是一般代號或 npm scoped 套件名稱；
+# 含空白、檔案副檔名、連接埠、IP、反斜線、# 或機敏內容的 ID 整筆不交給 AI（不嘗試修補）
+_ID_SEG_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*")
+_ID_SCOPED_RE = re.compile(r"@[a-z0-9][a-z0-9._-]*/[a-z0-9][a-z0-9._-]*")
+_ID_FILE_RE = re.compile(r"\.(?:json|jsonl|ya?ml|tsx?|jsx?|py|csv|php|conf|env|tf|xml|gradle|ini|toml|sh|pem|key|p12|jks|crt)"
+                         r"(?![A-Za-z0-9])", re.I)
+MAX_ID = 160
+
+
+def safe_id(value) -> bool:
+    """事件 ID、風險 ID 能不能原樣交給 AI（design §4 的投影；R2.3 不得含路徑、IP、連接埠、金鑰與個資）。"""
+    if not isinstance(value, str) or not 0 < len(value) <= MAX_ID:
+        return False
+    from tools.digest import has_sensitive
+    from tools.stack import _has_ip
+    if SECRET_RE.search(value) or has_sensitive(value) or _has_ip(value) or _ID_FILE_RE.search(value):
+        return False
+    parts = value.split(":")
+    return all((_ID_SEG_RE.fullmatch(p) and not re.fullmatch(r"\d{2,5}", p)) or _ID_SCOPED_RE.fullmatch(p) for p in parts)
 
 
 def clean_summary(value) -> tuple[str | None, str | None]:
@@ -1001,6 +1029,80 @@ def resolve_plans(ctx_run: "RunCtx", *, verified: list[dict] | None, want: tuple
                         review, policies["review"] = plan, policy
         reasons["review"] = why
     return Resolved(res=res, dispatch=dispatch, review=review, reasons=reasons, policies=policies)
+
+
+# ---------------------------------------------------------------- 派工結果（R4.2、R5.5）
+# A2、A3、A4 各寫 out/<agent>/dispatch-outcomes.json（T3），驗收輸入讀它（orchestrator_agent.build_input）。
+# 格式：{"schema_version": 1, "agent": "a2", "dispatch_plan_sha256": <派工單的 sha256_json>, "items": [outcome_row(...)]}
+OUTCOME_FILE = "dispatch-outcomes.json"
+OUTCOME_AGENTS = ("a2", "a3", "a4")
+OUTCOME_STATUSES = ("completed", "template", "skipped")
+# A2～A4 可寫的原因代碼（固定代碼，驗收輸入只轉交代碼）
+OUTCOME_REASONS = {
+    "done": "已完成",
+    "llm_template": "AI 沒有產出可用結果，改用程式範本",
+    "no_target": "挑不到對象",
+    "no_records": "回溯期間沒有符合特徵的紀錄",
+    "reordered": "已調整說明順序",
+    "error": "執行失敗",
+}
+# 驗收輸入自己標記的代碼：讀不到結果、結果不屬於這份派工單、加查控制項的檢查結果
+OUTCOME_UNKNOWN = "unknown"
+OUTCOME_READ_REASONS = {
+    "outcome_missing": "讀不到執行結果",
+    "outcome_invalid": "執行結果格式不符",
+    "outcome_mismatch": "執行結果不是這份派工單的",
+    "check_pass": "加查結果：符合",
+    "check_fail": "加查結果：不符合",
+    "check_unknown": "加查結果：資料不足",
+}
+_OUTCOME_TARGETS = ("event_id", "control_id", "risk_id")
+
+
+def outcome_key(item: dict) -> tuple:
+    """派工單核准項目與執行結果的對應鍵：(type, agent, subagent, event_id, control_id, risk_id)。"""
+    return (item.get("type"), item.get("agent"), item.get("subagent"), *(item.get(k) for k in _OUTCOME_TARGETS))
+
+
+def outcome_row(item: dict, status: str, reason: str) -> dict:
+    """A2～A4 寫結果的一列：核准項目的識別欄位（不含理由）＋狀態＋原因代碼。"""
+    if status not in OUTCOME_STATUSES or reason not in OUTCOME_REASONS:
+        raise ValueError(f"未知的派工結果：{status}／{reason}")
+    row = {k: item[k] for k in ("type", "agent", "subagent", *_OUTCOME_TARGETS) if k in item}
+    row.update(status=status, reason=reason)
+    return row
+
+
+def write_outcomes(out: Path, agent: str, dispatch_plan: dict | None, rows: list[dict]) -> None:
+    """原子寫入 out/<agent>/dispatch-outcomes.json；綁定派工單的 sha256_json（派工單停用時為 null、items 應為空）。"""
+    write_plan(Path(out) / agent / OUTCOME_FILE, {"schema_version": 1, "agent": agent,
+                                                  "dispatch_plan_sha256": sha256_json(dispatch_plan) if dispatch_plan else None,
+                                                  "items": list(rows)})
+
+
+def read_outcomes(out: Path, agent: str, dispatch_plan: dict) -> tuple[dict[tuple, tuple[str, str]] | None, str | None]:
+    """讀取某個 Agent 的派工結果：回傳 ({outcome_key: (status, reason)}, None) 或 (None, 原因代碼)。
+
+    缺檔 → outcome_missing；不是合法 JSON 或結構不符 → outcome_invalid；綁定的不是這份派工單 → outcome_mismatch。
+    單列格式不符（狀態或原因不在固定代碼）的直接略過，對應的項目視為讀不到結果。
+    """
+    path = Path(out) / agent / OUTCOME_FILE
+    if not path.is_file():
+        return None, "outcome_missing"
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError, UnicodeDecodeError):
+        return None, "outcome_invalid"
+    if not isinstance(data, dict) or data.get("agent") != agent or not isinstance(data.get("items"), list):
+        return None, "outcome_invalid"
+    if data.get("dispatch_plan_sha256") != sha256_json(dispatch_plan):
+        return None, "outcome_mismatch"
+    found: dict[tuple, tuple[str, str]] = {}
+    for row in data["items"]:
+        if (isinstance(row, dict) and row.get("status") in OUTCOME_STATUSES and row.get("reason") in OUTCOME_REASONS
+                and row.get("agent") == agent):
+            found.setdefault(outcome_key(row), (row["status"], row["reason"]))
+    return found, None
 
 
 # ---------------------------------------------------------------- 報告出口（v0.11.0 的單一計畫格式；T3 改為 {dispatch, review}）

@@ -1,8 +1,10 @@
 """入口：python agents/run_agent.py <agent-name> [--replay | --record | --live] [--scenario NAME] [--mode dispatch|review]
 
-agent-name：router、a0、a1、a2、a3、a4、a5、incident，或 all（本機依序執行 router → a5）。
+agent-name：router、a0、a1、a2、a3、a4、a5、incident，或 all（本機依新 DAG 依序執行，見 ALL_STEPS）。
 orchestrator-input／orchestrator：Orchestrator 的派工（--mode dispatch）與驗收（--mode review）；
   orchestrator-input 寫出給 AI 的輸入，orchestrator 採用提案、由程式核准後寫出計畫檔（specs/orchestrator）。
+  all 不跑 daily-intel、claude-analysis（只在 workflow 的訂閱步驟執行），也沒有訂閱方案的提案：派工與驗收走 Agent SDK
+  （replay 查錄製，查不到就是空提案）。
 llm-plan／llm-validate：claude-analysis Job（訂閱方案）撰寫前整理任務、撰寫後驗證結果（純程式）。
 模式優先順序：CLI 指定 > 環境變數 EXECUTION_MODE > replay。replay 不呼叫任何 LLM 網路服務。
 """
@@ -22,6 +24,15 @@ from context import OUT_DIR, ScenarioDisabled, build_ctx  # noqa: E402
 ORDER = ["router", "a0", "a1", "a2", "a3", "a4", "a5"]
 ORCHESTRATOR_COMMANDS = ("orchestrator-input", "orchestrator")
 ORCHESTRATOR_MODES = ("dispatch", "review")
+# 本機 all 的順序（specs/orchestrator R1.1 的 DAG 去掉 workflow 才有的 scanners、daily-intel、claude-analysis）：
+# router → a0 → a1 → 派工（輸入、核准）→ a2 → a3 → a4 → 驗收（輸入、核准）→ a5
+ALL_STEPS: list[tuple[str, str | None]] = [
+    ("router", None), ("a0", None), ("a1", None),
+    ("orchestrator-input", "dispatch"), ("orchestrator", "dispatch"),
+    ("a2", None), ("a3", None), ("a4", None),
+    ("orchestrator-input", "review"), ("orchestrator", "review"),
+    ("a5", None),
+]
 
 
 def _module(name: str):
@@ -43,11 +54,7 @@ def _module(name: str):
 def _orchestrator(name: str, ctx, mode: str) -> int:
     from agents import orchestrator_agent
     fn = orchestrator_agent.build_input if name == "orchestrator-input" else orchestrator_agent.run
-    try:
-        result = fn(ctx, mode)
-    except NotImplementedError as exc:
-        print(f"[{name}] {exc}", file=sys.stderr)
-        return 1
+    result = fn(ctx, mode)
     print(f"[{name} {mode}] {result}")
     return 0
 
@@ -75,8 +82,11 @@ def main(argv: list[str] | None = None) -> int:
         shutil.rmtree(OUT_DIR)
     if a.agent in ORCHESTRATOR_COMMANDS:
         return _orchestrator(a.agent, ctx, a.orchestrator_mode)
-    names = ORDER if a.agent == "all" else [a.agent]
-    for name in names:
+    steps = ALL_STEPS if a.agent == "all" else [(a.agent, None)]
+    for name, mode in steps:
+        if name in ORCHESTRATOR_COMMANDS:
+            _orchestrator(name, ctx, mode)
+            continue
         try:
             result = _module(name).run(ctx)
         except RuntimeError as exc:   # incident 的上下文驗證、留言或回報失敗：明確結束，不印出敏感內容

@@ -195,15 +195,36 @@ def test_run_agent_cli_router_and_orchestrator_mode(ctx, monkeypatch, capsys):
         with pytest.raises(SystemExit) as exc:
             run_agent.main(argv)
         assert exc.value.code == 2, argv
-    # T2 實作前：明確的「尚未實作」錯誤（T2 接上 orchestrator_agent 後改寫這兩行）
-    assert run_agent.main(["orchestrator", "--mode", "dispatch"]) == 1
-    assert "尚未實作" in capsys.readouterr().err
     calls = []
-    monkeypatch.setattr(orchestrator_agent, "build_input", lambda c, mode: calls.append(("input", mode)) or {"ok": True})
-    monkeypatch.setattr(orchestrator_agent, "run", lambda c, mode: calls.append(("run", mode)) or {"ok": True})
+    monkeypatch.setattr(orchestrator_agent, "build_input", lambda c, mode: calls.append(("orchestrator-input", mode)) or {"ok": True})
+    monkeypatch.setattr(orchestrator_agent, "run", lambda c, mode: calls.append(("orchestrator", mode)) or {"ok": True})
     assert run_agent.main(["orchestrator-input", "--mode", "dispatch"]) == 0
     assert run_agent.main(["orchestrator", "--mode", "review"]) == 0
-    assert calls == [("input", "dispatch"), ("run", "review")]
+    assert calls == [("orchestrator-input", "dispatch"), ("orchestrator", "review")]
+    assert "[orchestrator review] {'ok': True}" in capsys.readouterr().out
+
+
+def test_run_agent_all_follows_the_new_dag(ctx, monkeypatch):
+    """本機 all：router → a0 → a1 → 派工（輸入、核准）→ a2 → a3 → a4 → 驗收（輸入、核准）→ a5（specs/orchestrator R1.1；
+    scanners、daily-intel、claude-analysis 只在 workflow 執行）。"""
+    import run_agent
+    from agents import orchestrator_agent
+    calls = []
+
+    class Fake:
+        def __init__(self, name):
+            self.name = name
+
+        def run(self, c):
+            calls.append((self.name, None))
+            return {}
+    monkeypatch.setattr(run_agent, "_module", lambda name: Fake(name))
+    monkeypatch.setattr(orchestrator_agent, "build_input", lambda c, mode: calls.append(("orchestrator-input", mode)) or {})
+    monkeypatch.setattr(orchestrator_agent, "run", lambda c, mode: calls.append(("orchestrator", mode)) or {})
+    assert run_agent.main(["all"]) == 0
+    assert calls == run_agent.ALL_STEPS == [
+        ("router", None), ("a0", None), ("a1", None), ("orchestrator-input", "dispatch"), ("orchestrator", "dispatch"),
+        ("a2", None), ("a3", None), ("a4", None), ("orchestrator-input", "review"), ("orchestrator", "review"), ("a5", None)]
 
 
 # ── 資安事件整理（specs/security-digest T4）：A5 在報告寫出前準備與提交 digest ─────────────
