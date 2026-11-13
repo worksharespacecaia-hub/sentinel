@@ -6,6 +6,10 @@
 - 計畫檔（schema_version 2）綁定本次執行識別與 A1 verified 雜湊。建立（派工、驗收 Job）與載入核對（A2～A5、llm-plan）
   共用 approve_core（R5.1）；載入時必須完全重現檔案中的 approved，否則只停用那一份（R5.1a）
 
+下游（T3）共用的規則也在這裡：追加任務的 task_id 前綴（event:／retro:／dispatch:／intel-extra:／notice-extra:／key-rotation:extra）、
+priorities 的重排、A4 追加風險的挑選（a4_dispatch_targets）、最終有效派工單允許的追加任務（dispatch_scope；A2～A4 依此建立任務，
+A5 與 llm-plan 依此過濾結果）、orchestrator_results 的項目（result_entry），以及報告出口 public_plan（{dispatch, review}）。
+
 模組載入時只匯入 tools.common；pipeline、registry、digest、stack 等在函式內延遲匯入（pipeline 也會匯入本模組，避免循環匯入）。
 """
 from __future__ import annotations
@@ -42,6 +46,11 @@ __all__ = [
     "pending_plan", "pick_extra_risks", "plan_items", "plan_path", "planner_checks", "prev_daily_ids", "public_plan",
     "public_safe", "read_plan", "resolve_plans", "review_context", "run_ident", "safe_text", "scope_events",
     "validate_plan_shape", "validate_review_shape", "write_plan",
+    # 下游（T3）
+    "DispatchScope", "EXTRA_TASK_PREFIXES", "MAX_RESULT_TEXT", "RESULT_FIELDS", "RESULT_SOURCES", "RESULT_STAGES",
+    "TASK_DISPATCH", "TASK_EVENT", "TASK_INTEL_EXTRA", "TASK_KEYROT_EXTRA", "TASK_NOTICE_EXTRA", "TASK_RETRO",
+    "a2_task_id", "a4_dispatch_targets", "a4_task_id", "approved_tasks", "dispatch_scope", "is_extra_task", "prioritize",
+    "priority_ids", "result_entry", "retro_task_id",
 ]
 
 # ---------------------------------------------------------------- 上限與選單
@@ -1105,21 +1114,161 @@ def read_outcomes(out: Path, agent: str, dispatch_plan: dict) -> tuple[dict[tupl
     return found, None
 
 
-# ---------------------------------------------------------------- 報告出口（v0.11.0 的單一計畫格式；T3 改為 {dispatch, review}）
+# ---------------------------------------------------------------- 下游執行（T3：A2～A5、llm-plan 共用；R5.2～R5.7）
+# 追加任務的 task_id：與必要任務分開，A5 依前綴分流（R5.2a）。分數、等級、狀態與結論不受追加任務影響（R8）
+TASK_EVENT, TASK_RETRO, TASK_DISPATCH = "event:", "retro:", "dispatch:"
+TASK_INTEL_EXTRA, TASK_NOTICE_EXTRA, TASK_KEYROT_EXTRA = "intel-extra:", "notice-extra:", "key-rotation:extra"
+EXTRA_TASK_PREFIXES = (TASK_EVENT, TASK_RETRO, TASK_DISPATCH, TASK_INTEL_EXTRA, TASK_NOTICE_EXTRA)
+MAX_RESULT_TEXT = 600                       # orchestrator_results 每項文字上限（R5.7）
+RESULT_STAGES = ("dispatch", "review")
+RESULT_FIELDS = ("stage", "agent", "subagent", "target_type", "target_id", "text", "source")
+RESULT_SOURCES = ("live", "replay", "template")
+
+
+def a2_task_id(event_id: str, subagent: str) -> str:
+    return f"{TASK_EVENT}{event_id}:{subagent}"
+
+
+def retro_task_id(event_id: str) -> str:
+    return f"{TASK_RETRO}{event_id}"
+
+
+def a4_task_id(event_id: str, risk_id: str) -> str:
+    return f"{TASK_DISPATCH}{event_id}:{risk_id}"
+
+
+def is_extra_task(task_id) -> bool:
+    """追加任務（派工或驗收核准的）；其餘為必要任務。llm-plan 截斷時先保留必要任務（R7.2）。"""
+    return isinstance(task_id, str) and (task_id.startswith(EXTRA_TASK_PREFIXES) or task_id == TASK_KEYROT_EXTRA)
+
+
+def approved_tasks(plan: dict | None, agent: str) -> list[dict]:
+    """計畫中某個 Agent 的核准任務（依核准順序）。"""
+    return [a for a in (plan or {}).get("approved") or [] if isinstance(a, dict) and a.get("type") == "task"
+            and a.get("agent") == agent]
+
+
+def priority_ids(plan: dict | None, agent: str) -> list[str]:
+    """計畫中某個 Agent 的排優先風險 ID（依核准順序）。"""
+    return [a["risk_id"] for a in (plan or {}).get("approved") or [] if isinstance(a, dict) and a.get("type") == "priority"
+            and a.get("agent") == agent and isinstance(a.get("risk_id"), str)]
+
+
+def prioritize(items: list[dict], ids: list[str]) -> list[dict]:
+    """把 ids 指定的項目依序移到最前面，其他維持原順序；只重排，不新增或移除（R3.6、R4.3）。"""
+    by_id = {r["id"]: r for r in items}
+    first = [by_id[i] for i in dict.fromkeys(ids) if i in by_id]
+    moved = {r["id"] for r in first}
+    return [*first, *(r for r in items if r["id"] not in moved)]
+
+
+def a4_dispatch_targets(plan: dict | None, res: dict) -> list[tuple[dict, list[dict]]]:
+    """派工單核准的 A4 追加說明（R3.4、R5.4）：依核准順序逐件 pick_extra_risks，排除必要任務與前面事件已挑過的風險。
+
+    A4 執行與 A5 核對（重算允許的 dispatch: 任務集合）共用這個函式，兩邊結果一致。回傳 [(核准項目, 挑出的風險)]。
+    """
+    if not plan:
+        return []
+    matches = {m["event"]["id"]: m for m in res.get("matches") or []}
+    already = set(a4_baseline(res["risks"]))
+    out = []
+    for item in approved_tasks(plan, "a4"):
+        if item.get("subagent") != "impact-analyst":
+            continue
+        m = matches.get(item.get("event_id")) or {}
+        picked = pick_extra_risks(item["event_id"], res["risks"], m.get("planner_checks") or [], already)
+        already.update(r["id"] for r in picked)
+        out.append((item, picked))
+    return out
+
+
+@dataclass
+class DispatchScope:
+    """最終有效派工單允許的追加任務（task_id → 對象）。A2～A4 依此建立任務；A5、llm-plan 依此過濾結果（R5.7）。"""
+    sha: str                                                       # 派工單的 sha256_json
+    a2: dict[str, dict] = field(default_factory=dict)              # event:<eid>:<sub> → {event_id, subagent, finding_ids}
+    a3: dict[str, dict] = field(default_factory=dict)              # retro:<eid> → {event_id, systems}
+    a4: dict[str, dict] = field(default_factory=dict)              # dispatch:<eid>:<rid> → {event_id, risk_id}
+
+    def allows(self, agent: str, task: dict) -> bool:
+        """llm-tasks.json 的任務描述是否屬於這份派工單（必要任務一律允許）。"""
+        tid = task.get("task_id")
+        if not is_extra_task(tid):
+            return True
+        if agent == "a2" and tid in self.a2:
+            return set(task.get("ids") or []) <= {tid, *self.a2[tid]["finding_ids"]}
+        if agent == "a4" and tid in self.a4:
+            return (task.get("payload") or {}).get("dispatch_plan_sha256") == self.sha and \
+                set(task.get("ids") or []) <= {tid, self.a4[tid]["risk_id"]}
+        return False
+
+
+def dispatch_scope(plan: dict | None, policy: PolicyContext | None, res: dict) -> DispatchScope | None:
+    """依最終有效的派工單與其政策上下文重算允許的追加任務。派工單停用時回傳 None（全部追加結果都不採用）。"""
+    if plan is None or policy is None:
+        return None
+    scope = DispatchScope(sha=sha256_json(plan))
+    for item in approved_tasks(plan, "a2"):
+        eid, sub = item.get("event_id"), item.get("subagent")
+        fids = list((policy.a2.get(eid) or {}).get(sub) or [])
+        if fids:
+            scope.a2[a2_task_id(eid, sub)] = {"event_id": eid, "subagent": sub, "finding_ids": fids}
+    for item in approved_tasks(plan, "a3"):
+        eid = item.get("event_id")
+        if item.get("subagent") == "retro-hunter" and policy.a3.get(eid):
+            scope.a3[retro_task_id(eid)] = {"event_id": eid, "systems": list(policy.a3[eid])}
+    for item, picked in a4_dispatch_targets(plan, res):
+        for r in picked:
+            scope.a4[a4_task_id(item["event_id"], r["id"])] = {"event_id": item["event_id"], "risk_id": r["id"]}
+    return scope
+
+
+def result_entry(stage: str, agent: str, subagent: str, target_type: str, target_id: str, text, source: str) -> dict | None:
+    """orchestrator_results 的一項（R5.7）：文字去敏後截到 600 字；去敏後仍不安全或空白時回傳 None（整項不放）。"""
+    if stage not in RESULT_STAGES or target_type not in ("event", "risk") or source not in RESULT_SOURCES:
+        raise ValueError(f"未知的追加結果：{stage}／{target_type}／{source}")
+    clean = safe_text(text, MAX_RESULT_TEXT)
+    if not clean:
+        return None
+    return {"stage": stage, "agent": agent, "subagent": subagent, "target_type": target_type, "target_id": target_id,
+            "text": clean, "source": source}
+
+
+# ---------------------------------------------------------------- 報告出口（Report.agent_plan：{dispatch, review}，R9.2）
 def counts(plan: dict | None) -> tuple[int, int, int]:
     if not plan:
         return 0, 0, 0
     return plan.get("suggested", 0), len(plan.get("approved") or []), len(plan.get("rejected") or [])
 
 
-def public_plan(plan: dict | None) -> dict | None:
-    """Report.agent_plan：經核對的計畫（不含執行識別與雜湊）＋計數。"""
+def _public_one(plan: dict | None, mode: str) -> dict | None:
+    """一份經核對的計畫（不含執行識別與雜湊）＋計數。驗收單另有執行摘要。"""
     if not plan:
         return None
     n, m, k = counts(plan)
     from tools.controls import load_controls
     used = {r.get("control_id") for r in [*(plan.get("approved") or []), *(plan.get("rejected") or [])]}
     titles = {c["id"]: c["title"] for c in load_controls() if c["id"] in used}   # 網站顯示控制項名稱，不顯示內部 ID
-    return {"source": plan["source"], "note": plan.get("note"), "events": list(plan.get("events") or []),
-            "suggested": n, "approved_count": m, "rejected_count": k, "control_titles": titles,
-            "approved": copy.deepcopy(plan.get("approved") or []), "rejected": copy.deepcopy(plan.get("rejected") or [])}
+    out = {"mode": mode, "source": plan["source"], "note": plan.get("note"), "events": list(plan.get("events") or []),
+           "suggested": n, "approved_count": m, "rejected_count": k, "control_titles": titles,
+           "approved": copy.deepcopy(plan.get("approved") or []), "rejected": copy.deepcopy(plan.get("rejected") or [])}
+    if mode == "review":
+        out["summary"] = plan.get("summary")
+    return out
+
+
+def public_plan(plans: dict | None) -> dict | None:
+    """Report.agent_plan：{"dispatch": 派工單, "review": 驗收單}（最終有效的計畫；停用的那份為 null）。
+
+    - 兩份都停用（或沒有）時回傳 None
+    - 相容 v0.11.0 的單一計畫格式（頂層有 approved）：視為派工單
+    """
+    if not plans:
+        return None
+    if "dispatch" not in plans and "review" not in plans:
+        # v0.11.0 的單一計畫（有 source）；評估內部的 {"approved": [...]}（沒有 source）不是公開的計畫
+        plans = {"dispatch": plans if "source" in plans else None, "review": None}
+    dispatch, review = plans.get("dispatch"), plans.get("review")
+    if not dispatch and not review:
+        return None
+    return {"dispatch": _public_one(dispatch, "dispatch"), "review": _public_one(review, "review")}

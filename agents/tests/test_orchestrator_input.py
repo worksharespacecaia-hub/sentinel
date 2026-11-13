@@ -285,7 +285,7 @@ def test_review_input_dispatch_outcomes(ctx):
     assert got == [("control", None, "completed", "check_fail"),                         # 加查結果由評估快照得知
                    ("task", "a4", "unknown", "outcome_mismatch"),
                    ("task", "a2", "completed", "done"),
-                   ("task", "a3", "unknown", "outcome_missing"),                          # T3 之前讀不到：unknown，不失敗
+                   ("task", "a3", "unknown", "outcome_missing"),                          # 讀不到 A3 的結果：unknown，不失敗
                    ("priority", "a4", "unknown", "outcome_mismatch")]
     assert all("reason" not in r["item"] for r in data["dispatch_outcomes"])            # 不轉交 AI 寫的理由
     assert data["dispatch_outcomes"][0]["item"] == {"type": "control", "event_id": "demo-erp-rce", "control_id": "C-NET-SEGMENT"}

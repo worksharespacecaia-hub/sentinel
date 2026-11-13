@@ -15,7 +15,7 @@
 - 只輸出有特徵的紀錄（依時間排序，最多 20 筆）；欄位只有 id、time、system、account、action 或 table、flags、ip_label
 - IP 一律換成穩定代號（「外部 IP #1」「內部 IP #2」），不輸出原始 IP
 
-A3（T3）的用法：對核准的 (a3, retro-hunter, event_id)，用 resolve_plans 的評估結果 res["data"].signals、
+A3 的用法（agents/a3_signals.run_retro_tasks）：對核准的 (a3, retro-hunter, event_id)，用 resolve_plans 的評估結果 res["data"].signals、
 政策上下文的 a3[event_id] 與事件日期呼叫 hunt()；result.empty 時不建立任務並記錄 result.note。
 """
 from __future__ import annotations
@@ -230,6 +230,6 @@ def _sensitive(text: str) -> bool:
 
 
 def task_payload(event_id: str, result: RetroResult) -> dict:
-    """retro-hunter 任務的 payload 建議格式（T3 的 retro:<event_id> 任務使用）：只放系統、計數與白名單紀錄，不放期間與 AS_OF。"""
+    """retro-hunter 任務的 payload 建議格式（A3 的 retro:<event_id> 任務使用）：只放系統、計數與白名單紀錄，不放期間與 AS_OF。"""
     return {"ids": [f"retro:{event_id}"], "event_id": event_id, "systems": list(result.systems),
             "flagged_total": result.flagged_total, "flags": dict(FLAGS), "records": [dict(r) for r in result.records]}

@@ -45,21 +45,36 @@ def load(ctx: RunCtx, agent: str, name: str, default=None):
     return read_json(ctx.out / agent / name, default)
 
 
-def load_a1(ctx: RunCtx, tr) -> tuple[list[dict] | None, dict | None]:
-    """安全讀取 A1 的 verified.json（A4、A5／llm-plan 共用）。
+PLAN_ZH = {"dispatch": "派工單", "review": "驗收單"}
+PLAN_OFF = {"dispatch": "只跑必要任務，不採用派工的追加任務與排優先", "review": "不做驗收的追加任務與排優先"}
 
-    verified 缺失或損壞時回傳 None：確定性評估改由本 Job 離線重建。
-    回傳的 verified 是獨立拷貝（evaluate 會套用新進度繼承，不能改到用來核對雜湊的原始資料）。
-    第二個回傳值是派工計畫：v0.13.0 起 A1 不再寫計畫，改由 Orchestrator 的派工單與驗收單（tools/orchestration.resolve_plans）
-    取代，下游接上之前一律為 None（不採用任何計畫，只跑必要任務）。
+
+def resolve(ctx: RunCtx, tr, *, want: tuple[str, ...] = ("dispatch",)):
+    """讀 A1 verified 並載入核對 Orchestrator 的計畫（A2～A5、llm-plan 共用；specs/orchestrator R5.1、R5.1a）。
+
+    回傳 tools.orchestration.Resolved：res 是評估快照（派工單有效時含其加查控制項），dispatch／review 是最終有效的計畫
+    （停用為 None）。停用原因寫入 trace。verified 缺失或損壞時評估由本 Job 離線重建，兩份計畫都停用；
+    核對本身出錯時也只停用計畫（必要任務的評估照常），不讓 Job 失敗。
     """
-    import copy
-
-    from tools.orchestration import load_verified
-    verified, _ = load_verified(ctx)
+    from tools import orchestration as o
+    verified, _ = o.load_verified(ctx)
     if verified is None:
         tr.emit("error", "A1 結果缺失或無法讀取：改由本 Job 重新驗證情資（離線）")
-    return (copy.deepcopy(verified) if verified is not None else None), None
+    base = o.base_inputs(ctx)
+    try:
+        r = o.resolve_plans(ctx, verified=verified, want=want, base=base)
+    except Exception as exc:                         # noqa: BLE001 - 計畫核對失敗只停用計畫
+        tr.emit("error", f"計畫核對失敗（{type(exc).__name__}）：{PLAN_ZH['dispatch']}與{PLAN_ZH['review']}停用，只跑必要任務")
+        r = o.Resolved(res=o.evaluate_snapshot(base, verified, None), dispatch=None, review=None,
+                       reasons={m: "resolve_error" for m in want})
+    for mode in want:
+        plan, why = getattr(r, mode), r.reasons.get(mode)
+        if plan is None:
+            tr.emit("skip", f"{PLAN_ZH[mode]}停用（{why or 'plan_missing'}）：{PLAN_OFF[mode]}")
+        else:
+            n, m, k = o.counts(plan)
+            tr.emit("tool", f"{PLAN_ZH[mode]}有效：AI 建議 {n} 項、程式核准 {m} 項、拒絕 {k} 項（{o.SOURCE_TEXT.get(plan['source'])}）")
+    return r
 
 
 def finish(ctx: RunCtx, agent: str) -> None:

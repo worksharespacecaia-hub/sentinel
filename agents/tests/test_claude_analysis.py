@@ -195,3 +195,133 @@ def test_analysis_trace_summarizes_counts_only():
     assert evs[-1]["detail"].startswith("通過驗證 2／3 個任務")
     assert "撰寫內容不該出現" not in json.dumps(evs, ensure_ascii=False)
     assert all(e["agent"] == "claude-analysis" for e in evs)
+
+
+# ── v0.13.0 Orchestrator（specs/orchestrator R7）：llm-plan 讀派工單與驗收單，任務鍵與 A5 一致 ─────────────
+from tools import orchestration as o  # noqa: E402
+
+DISPATCH = {
+    "extra_controls": [{"event_id": "demo-erp-rce", "control_id": "C-NET-SEGMENT", "reason": "確認資料庫網段隔離"}],
+    "extra_tasks": [{"agent": "a4", "subagent": "impact-analyst", "event_id": "demo-erp-rce", "reason": "補充相關風險"},
+                    {"agent": "a2", "subagent": "dependency-analyst", "event_id": "demo-push-sdk-rce", "reason": "依事件解讀"},
+                    {"agent": "a2", "subagent": "secret-analyst", "event_id": "demo-push-sdk-rce", "reason": "x"}],   # 拒絕
+    "priorities": [{"agent": "a4", "risk_id": "storefront:next:vuln", "reason": "先說明對外系統"}],
+}
+REVIEW = {"extra_tasks": [{"agent": "a5", "subagent": "intel-report-writer", "event_id": "demo-cache-plaintext", "reason": "補寫摘要"},
+                          {"agent": "a5", "subagent": "brand-notice-writer", "event_id": "demo-push-sdk-rce", "reason": "x"}],  # 拒絕
+          "priorities": [{"agent": "a5", "risk_id": "brand-app:android-debuggable", "reason": "先寫 App 設定"}],
+          "summary": "需確認事件補寫摘要。"}
+
+
+@pytest.fixture()
+def demo(ctx, tmp_path):
+    """intel-demo：router → a1 → 派工單 → a2～a4 → 驗收單（部分核准、部分拒絕），replay 範本。"""
+    c = replace(ctx, scenario="intel-demo", scope="scenario", output_dir="scenarios/intel-demo",
+                cache=LLMCache(tmp_path / "cache.json"), replay=ReplayStore(tmp_path / "replay"))
+    for m in (router, a0_assets, a1_intel):
+        m.run(c)
+    verified, _ = o.load_verified(c)
+    dplan = o.build_plan("dispatch", DISPATCH, ctx=c, verified=verified, source="replay")
+    assert dplan["approved"] and dplan["rejected"]
+    o.write_plan(o.plan_path(c.out, "dispatch"), dplan)
+    for m in (a2_scan, a3_signals, a4_risk):
+        m.run(c)
+    r = o.resolve_plans(c, verified=verified, want=("dispatch",))
+    rplan = o.build_plan("review", REVIEW, ctx=c, verified=verified, source="replay", dispatch_res=r.res, dispatch_plan=r.dispatch)
+    assert rplan["approved"] and rplan["rejected"]
+    o.write_plan(o.plan_path(c.out, "review"), rplan)
+    return c
+
+
+def _tasks(c):
+    return json.loads((c.out / "llm" / "tasks.json").read_text(encoding="utf-8"))["tasks"]
+
+
+SUBPROC = """
+import sys
+from dataclasses import replace
+from pathlib import Path
+sys.path.insert(0, sys.argv[1])
+from context import build_ctx
+from tools.cache import LLMCache, ReplayStore
+out, data, tmp, action = Path(sys.argv[2]), Path(sys.argv[3]), Path(sys.argv[4]), sys.argv[5]
+ctx = replace(build_ctx(scenario="intel-demo"), out=out, data_dir=data, reports_dir=tmp / "reports",
+              cache=LLMCache(tmp / "cache.json"), replay=ReplayStore(tmp / "replay"))
+if action == "plan":
+    from agents import llm_plan
+    llm_plan.plan(ctx)
+else:
+    from agents import a5_report
+    a5_report.run(ctx)
+"""
+
+
+def _subprocess(tmp_path, c, action, seed):
+    import os
+    script = tmp_path / "llm_subproc.py"
+    script.write_text(SUBPROC, encoding="utf-8")
+    env = {**os.environ, "PYTHONHASHSEED": seed, "PYTHONIOENCODING": "utf-8", "EXECUTION_MODE": "replay"}
+    proc = subprocess.run([sys.executable, str(script), str(SENTINEL_ROOT / "agents"), str(c.out), str(c.data_dir), str(tmp_path), action],
+                          capture_output=True, text=True, encoding="utf-8", env=env, timeout=300)
+    assert proc.returncode == 0, proc.stderr[-2000:]
+
+
+def test_llm_plan_reads_both_plans_and_matches_a5_keys_across_hash_seeds(demo, tmp_path):
+    """llm-plan 與 A5 用同一條 resolve 路徑與同一個 llm_texts：含派工與驗收的追加任務時任務鍵一致，不受 PYTHONHASHSEED 影響。"""
+    _subprocess(tmp_path, demo, "plan", "0")
+    first = _tasks(demo)
+    _subprocess(tmp_path, demo, "plan", "4242")
+    assert [t["key"] for t in _tasks(demo)] == [t["key"] for t in first]
+    ids = [t["task_id"] for t in first]
+    assert "event:demo-push-sdk-rce:dependency-analyst" in ids                                  # A2 事件導向任務（R7.1）
+    assert "dispatch:demo-erp-rce:order-db-prod:C-NET-SEGMENT" in ids
+    assert "intel-extra:demo-cache-plaintext" in ids and not any(i.startswith("notice-extra:") for i in ids)
+    rem = next(t for t in first if t["task_id"] == "remediation")
+    assert rem["payload"]["ids"][0] == "brand-app:android-debuggable"                           # 驗收單的排優先
+    _subprocess(tmp_path, demo, "a5", "999")
+    a5_keys = [t["key"] for t in json.loads((demo.out / "a5" / "llm-tasks.json").read_text(encoding="utf-8"))]
+    assert [t["key"] for t in first if t["agent"] == "a5"] == a5_keys and len(a5_keys) > 5
+    required = [t for t in first if not o.is_extra_task(t["task_id"])]
+    assert first[:len(required)] == required                                                   # 必要任務在前
+
+
+def test_llm_plan_drops_extra_tasks_of_disabled_plans(demo):
+    llm_plan.plan(demo)
+    assert any(o.is_extra_task(t["task_id"]) for t in _tasks(demo))
+    path = o.plan_path(demo.out, "dispatch")
+    o.write_plan(path, {**json.loads(path.read_text(encoding="utf-8")), "run_id": "other"})   # 派工單失效 → 驗收單也連帶停用
+    llm_plan.plan(replace(demo, llm_plan=[]))
+    tasks = _tasks(demo)
+    assert tasks and not any(o.is_extra_task(t["task_id"]) for t in tasks)
+    rem = next(t for t in tasks if t["task_id"] == "remediation")
+    assert rem["payload"]["ids"][0] != "brand-app:android-debuggable"
+
+
+def test_llm_plan_truncation_keeps_required_tasks_first(demo):
+    llm_plan.plan(demo)
+    full = _tasks(demo)
+    required = [t for t in full if not o.is_extra_task(t["task_id"])]
+    extra = [t for t in full if o.is_extra_task(t["task_id"])]
+    assert len(extra) == 3 and len(full) < llm_plan.MAX_TASKS
+    path = demo.out / "a2" / "llm-tasks.json"
+    a2 = json.loads(path.read_text(encoding="utf-8"))
+    pad = [{**a2[0], "task_id": f"pad#{i}", "key": f"pad-{i}"} for i in range(llm_plan.MAX_TASKS - 1 - len(required))]
+    path.write_text(json.dumps(pad + a2, ensure_ascii=False), encoding="utf-8")               # 追加任務排在 a2 的最後
+    got = llm_plan.plan(replace(demo, llm_plan=[]))
+    tasks = _tasks(demo)
+    assert got == {"tasks": llm_plan.MAX_TASKS, "dropped": 2} and len(tasks) == llm_plan.MAX_TASKS
+    assert [t["task_id"] for t in tasks if o.is_extra_task(t["task_id"])] == [extra[0]["task_id"]]
+    assert len([t for t in tasks if not o.is_extra_task(t["task_id"])]) == llm_plan.MAX_TASKS - 1   # 必要任務全部保留
+
+
+def test_invalid_replay_does_not_mask_valid_cache_for_extra_task(demo):
+    """R7.3：無效的錄製不得遮蔽同鍵的有效快取（A5 的驗收追加任務也一樣）。"""
+    llm_plan.plan(demo)
+    t = next(x for x in _tasks(demo) if x["task_id"] == "intel-extra:demo-cache-plaintext")
+    demo.replay.put("a5", "intel-report-writer", t["key"], "not a list", {})
+    demo.cache.data[t["key"]] = {"output": [{"id": t["task_id"], "explanation": "快取的需確認事件摘要"}], "meta": {}}
+    a5_report.run(replace(demo, llm_plan=[]))
+    rep = json.loads((demo.data_dir / demo.output_dir / "intel" / "demo-cache-plaintext.json").read_text(encoding="utf-8"))
+    assert (rep["summary"], rep["summary_source"]) == ("快取的需確認事件摘要", "replay")
+    llm_plan.plan(replace(demo, llm_plan=[]))
+    assert "intel-extra:demo-cache-plaintext" not in [x["task_id"] for x in _tasks(demo)]       # 已有可用結果：不再請 Claude 撰寫
