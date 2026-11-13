@@ -1,4 +1,5 @@
-"""動態派工（specs/dynamic-planner）：不影響判定（R5）、快取與預算（R10）、Skill 與 reference 一致（R11.5）。"""
+"""派工規則：不影響判定（dynamic-planner R5）、快取與預算（R10；v0.13.0 起 planner 在 orchestrator-dispatch）、
+reference 與程式一致（orchestrator design §3.6 的 policy.md）。T3 以 test_orchestrator_rules.py 取代並擴充 R8 的完整比對。"""
 import json
 import subprocess
 import sys
@@ -7,8 +8,9 @@ import pytest
 
 from llm import LLMRunner, Task
 from tests.conftest import AS_OF
-from tools.agent_plan import MAX_CTRL_PER_EVENT, MAX_CTRL_TOTAL, MAX_TASKS
 from tools.cache import LLMCache, ReplayStore
+from tools.orchestration import (MAX_CTRL_PER_EVENT, MAX_CTRL_TOTAL, MAX_DISPATCH_TASKS, MAX_PRIORITIES, MAX_REVIEW_TASKS,
+                                 MAX_SUMMARY, REASON_HELP)
 from tools.common import SENTINEL_ROOT
 from tools.pipeline import evaluate
 from tools.report_builder import assemble
@@ -55,7 +57,10 @@ def test_approved_extra_checks_do_not_change_any_judgement(monkeypatch):
 
 
 # ---------------------------------------------------------------- R10 快取與預算
-def _runner(tmp_path, mode="replay", agent="a1", budget=None):
+AGENT = "orchestrator-dispatch"
+
+
+def _runner(tmp_path, mode="replay", agent=AGENT, budget=None):
     return LLMRunner(agent=agent, mode=mode, scope="scenario", target_sha="a" * 40, advisory_revision=None,
                      tracer=Tracer(tmp_path / "trace.jsonl", agent), cache=LLMCache(tmp_path / "llm.json"),
                      replay=ReplayStore(tmp_path / "replay"), budget=budget)
@@ -73,7 +78,7 @@ def no_sdk(monkeypatch):
 def test_invalid_recording_does_not_mask_valid_cache(tmp_path, no_sdk):
     r = _runner(tmp_path)
     k = r.key(PLAN_TASK)
-    r.replay.put("a1", "planner", k, "not an object", {})
+    r.replay.put(AGENT, "planner", k, "not an object", {})
     assert r.run([PLAN_TASK])["plan"]["source"] == "template"                    # 兩者都無效 → 範本
     r.cache.data[k] = {"output": {"extra_controls": []}, "meta": {}}
     res = r.run([PLAN_TASK])["plan"]
@@ -93,49 +98,36 @@ def test_calls_and_retries_only_use_remaining_budget(tmp_path, monkeypatch):
 
     async def fake_query(self, pending, graph_query):
         seen.append(self._call_budget)
-        return {"plan": "bad"}, 0.04                                              # 格式無效 → 重試一次
+        return {"plan": "bad"}, 0.02                                              # 格式無效 → 重試一次
     monkeypatch.setattr(LLMRunner, "_query", fake_query)
     assert r.run([PLAN_TASK])["plan"]["source"] == "template"
-    assert seen == [0.10, 0.06] and r.cost["per_agent"]["a1"] == 0.08
+    assert seen == [0.05, 0.03] and r.cost["per_agent"][AGENT] == 0.04
     seen.clear()
-    r.cost["per_agent"]["a1"] = 0.10
+    r.cost["per_agent"][AGENT] = 0.05
     assert r.run([PLAN_TASK])["plan"]["source"] == "template" and seen == []      # 用完就不再呼叫
 
 
 def test_options_receive_remaining_budget():
     from registry import options_for
-    assert options_for("a1").max_budget_usd == 0.10
-    assert options_for("a1", budget=0.03).max_budget_usd == 0.03
-    assert options_for("a1", budget=5).max_budget_usd == 0.10                    # 不會超過上限
+    for name in ("a1", "orchestrator-dispatch", "orchestrator-review"):           # R6.3：各 $0.05
+        assert options_for(name).max_budget_usd == 0.05
+        assert options_for(name, budget=0.03).max_budget_usd == 0.03
+        assert options_for(name, budget=5).max_budget_usd == 0.05                # 不會超過上限
 
 
-def test_a1_sets_planner_timeout(monkeypatch, tmp_path):
-    from agents import a1_intel
-    seen = []
-    real_run = LLMRunner.run
-
-    def spy(self, tasks, **kw):
-        if any(t.subagent == "planner" for t in tasks):
-            seen.append(self.timeout_s)
-        return real_run(self, tasks, **kw)
-    monkeypatch.setattr(LLMRunner, "run", spy)
-    from dataclasses import replace
-    ctx = replace(_peer(monkeypatch), out=tmp_path / "out", data_dir=tmp_path / "data", cache=LLMCache(tmp_path / "c.json"),
-                  replay=ReplayStore(tmp_path / "r"))
-    import claude_agent_sdk
-    monkeypatch.setattr(claude_agent_sdk, "query", lambda *a, **k: (_ for _ in ()).throw(AssertionError("no LLM")))
-    a1_intel.run(ctx)
-    assert seen == [a1_intel.PLANNER_TIMEOUT_S] == [60]
-
-
-# ---------------------------------------------------------------- R11.5 Skill 與 reference
+# ---------------------------------------------------------------- policy.md 與程式一致（design §3.6）
 def test_reference_matches_code():
     res = subprocess.run([sys.executable, str(SENTINEL_ROOT / "scripts" / "build-agent-plan-reference.py"), "--check"],
                          capture_output=True, text=True, encoding="utf-8")
     assert res.returncode == 0, res.stderr
-    ref = (SENTINEL_ROOT / ".claude" / "skills" / "daily-intel" / "references" / "agent-plan.md").read_text(encoding="utf-8")
-    assert f"最多 {MAX_CTRL_PER_EVENT} 個" in ref and f"總共最多 {MAX_CTRL_TOTAL} 個" in ref and f"總共最多 {MAX_TASKS} 項" in ref
-    assert "| a4 | impact-analyst |" in ref
+    ref = (SENTINEL_ROOT / ".claude" / "skills" / "orchestrator" / "references" / "policy.md").read_text(encoding="utf-8")
+    assert f"每件事件最多 {MAX_CTRL_PER_EVENT} 個加查控制項，總共最多 {MAX_CTRL_TOTAL} 個" in ref
+    assert f"追加任務總共最多 {MAX_DISPATCH_TASKS} 項" in ref and f"追加任務總共最多 {MAX_REVIEW_TASKS} 項" in ref
+    assert f"排優先最多 {MAX_PRIORITIES} 項" in ref and f"最多 {MAX_SUMMARY} 字" in ref
+    for row in ("| a2 | dependency-analyst |", "| a2 | runtime-analyst |", "| a3 | retro-hunter |", "| a4 | impact-analyst |",
+                "| a5 | intel-report-writer |", "| a5 | key-rotation-advisor |", "| a5 | brand-notice-writer |"):
+        assert row in ref, row
+    assert all(f"| {reason} |" in ref for reason in REASON_HELP)
 
 
 def test_reference_check_detects_stale_file(tmp_path, monkeypatch):
@@ -143,11 +135,14 @@ def test_reference_check_detects_stale_file(tmp_path, monkeypatch):
     spec = importlib.util.spec_from_file_location("build_ref", SENTINEL_ROOT / "scripts" / "build-agent-plan-reference.py")
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
-    stale = tmp_path / "agent-plan.md"
+    stale = tmp_path / "policy.md"
     stale.write_text("old", encoding="utf-8")
     monkeypatch.setattr(mod, "OUT_PATH", stale)
     monkeypatch.setattr(mod, "ROOT", tmp_path)
     assert mod.main(["--check"]) == 1 and stale.read_text(encoding="utf-8") == "old"   # --check 不改檔
+    missing = tmp_path / "nope" / "policy.md"
+    monkeypatch.setattr(mod, "OUT_PATH", missing)
+    assert mod.main(["--check"]) == 1 and not missing.exists()
 
 
 def test_daily_intel_skill_documents_agent_plan():

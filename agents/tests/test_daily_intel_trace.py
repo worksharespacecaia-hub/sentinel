@@ -84,7 +84,7 @@ def test_workflow_uploads_trace_and_a5_downloads_it():
 
 
 def test_a5_merges_daily_intel_trace(monkeypatch, tmp_path):
-    from agents import a0_assets, a1_intel, a2_scan, a3_signals, a4_risk, a5_report, orchestrator
+    from agents import a0_assets, a1_intel, a2_scan, a3_signals, a4_risk, a5_report, router
     from context import build_ctx
     env = {"SCENARIO": "daily", "TRIGGER_SOURCE": "manual", "EVENT_NAME": "local", "AS_OF": "2026-11-09T01:00:00Z", "RUN_ID": "t-run"}
     for k, v in env.items():
@@ -96,7 +96,7 @@ def test_a5_merges_daily_intel_trace(monkeypatch, tmp_path):
     (ctx.out / "daily-intel" / "trace.jsonl").write_text(json.dumps(
         {"ts": "2026-11-09T01:00:30+00:00", "agent": "daily-intel", "subagent": "news-scout", "kind": "subagent",
          "detail": "news-scout 完成（Read×1）", "source": "live", "cost_usd": None}, ensure_ascii=False) + "\n", encoding="utf-8")
-    for m in (orchestrator, a0_assets, a1_intel, a2_scan, a3_signals, a4_risk, a5_report):
+    for m in (router, a0_assets, a1_intel, a2_scan, a3_signals, a4_risk, a5_report):
         m.run(ctx)
     trace = read_trace(ctx.data_dir / "daily" / "trace.jsonl")
     assert any(e["agent"] == "daily-intel" and e["source"] == "live" for e in trace)

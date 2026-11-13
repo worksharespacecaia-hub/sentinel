@@ -1,11 +1,11 @@
-"""orchestrator → a5 在 replay 模式下的完整流程（輸出寫到暫存目錄，不動正式資料）。"""
+"""router → a5 在 replay 模式下的完整流程（輸出寫到暫存目錄，不動正式資料）。"""
 import json
 import re
 from dataclasses import replace
 
 import pytest
 
-from agents import a0_assets, a1_intel, a2_scan, a3_signals, a4_risk, a5_report, orchestrator
+from agents import a0_assets, a1_intel, a2_scan, a3_signals, a4_risk, a5_report, router
 from context import build_ctx
 from tools.common import AGENTS_DIR
 from tools.trace import read_trace
@@ -27,7 +27,7 @@ def ctx(monkeypatch, tmp_path):
 
 
 def run_all(ctx, skip=()):
-    for m in (orchestrator, a0_assets, a1_intel, a2_scan, a3_signals, a4_risk, a5_report):
+    for m in (router, a0_assets, a1_intel, a2_scan, a3_signals, a4_risk, a5_report):
         if m.__name__.split(".")[-1] not in skip:
             m.run(ctx)
 
@@ -40,7 +40,7 @@ def test_full_replay_flow(ctx, monkeypatch):
     assert len(list((out / "intel").glob("evt-*.json"))) == 6
     trace = read_trace(out / "trace.jsonl")
     agents = {e["agent"] for e in trace}
-    assert {"orchestrator", "a0", "a1", "a2", "a3", "a4", "a5"} <= agents
+    assert {"router", "a0", "a1", "a2", "a3", "a4", "a5"} <= agents and "orchestrator" not in agents
     assert any(e["kind"] == "subagent" and e["source"] == "template" for e in trace)
     for p in out.rglob("*"):
         if p.is_file():
@@ -59,7 +59,7 @@ def test_scenario_output_isolated(ctx):
 
 
 def test_a5_runs_when_upstream_missing(ctx):
-    a5_report.run(ctx)                     # 沒有 orchestrator 計畫 → failures/<run_id>，不覆蓋 daily
+    a5_report.run(ctx)                     # 沒有 router 計畫 → failures/<run_id>，不覆蓋 daily
     assert (ctx.data_dir / "failures" / ctx.run_id / "report.json").is_file()
     assert not (ctx.data_dir / "daily").exists()
     rep = json.loads((ctx.data_dir / "failures" / ctx.run_id / "report.json").read_text(encoding="utf-8"))
@@ -80,17 +80,23 @@ def test_a5_runs_when_upstream_missing(ctx):
 ])
 def test_daily_intel_trigger_matrix(ctx, mode, event, scenario, trigger, ref, expected):
     c = replace(ctx, mode=mode, scenario=scenario, trigger_source=trigger)
-    d = orchestrator.decide(c, event_name=event, ref_name=ref, default_branch="main")
+    d = router.decide(c, event_name=event, ref_name=ref, default_branch="main")
     assert d["daily_intel"] is expected
 
 
-def test_orchestrator_writes_github_output(ctx, tmp_path, monkeypatch):
+def test_router_writes_github_output(ctx, tmp_path, monkeypatch):
     gh = tmp_path / "gh_output"
     monkeypatch.setenv("GITHUB_OUTPUT", str(gh))
-    orchestrator.run(ctx)
+    router.run(ctx)
     text = gh.read_text(encoding="utf-8")
     assert re.search(r"^plan=\{.*\"a5\":true.*\}$", text, flags=re.M)
     assert "daily_intel=true" in text and "output_dir=daily" in text     # 手動 daily 會排每日情資
+    for key in ("execution_mode", "target_sha", "run_id", "scope", "as_of"):   # GITHUB_OUTPUT 的鍵不變（R1.2）
+        assert re.search(rf"^{key}=", text, flags=re.M), key
+    # 改名（R1.2）：trace 名稱 router、plan 存到 out/router/plan.json；不再寫 out/orchestrator/
+    assert json.loads((ctx.out / "router" / "plan.json").read_text(encoding="utf-8"))["plan"]["a5"] is True
+    assert {e["agent"] for e in read_trace(ctx.out / "router" / "trace.jsonl")} == {"router"}
+    assert not (ctx.out / "orchestrator").exists()
 
 
 def _report(ctx):
@@ -155,6 +161,49 @@ def test_no_pr_or_push_to_target_in_code():
     code = "\n".join(p.read_text(encoding="utf-8") for p in AGENTS_DIR.rglob("*.py") if "tests" not in p.parts)
     for pattern in ("pulls.create", "create_pull", "gh pr create", "git push", "createPullRequest"):
         assert pattern not in code, pattern
+
+
+# ── v0.13.0 AI Orchestrator（specs/orchestrator T1）：A1 不再派工、上游清單改名 ─────────────
+
+def test_a1_no_longer_dispatches(ctx):
+    """派工改由 orchestrator-dispatch 負責：A1 不呼叫 planner、不寫 out/a1/agent-plan.json；下游只跑必要任務。"""
+    sc = replace(ctx, scenario="peer-incident", scope="scenario", output_dir="scenarios/peer-incident")
+    run_all(sc)
+    assert not (sc.out / "a1" / "agent-plan.json").exists()
+    assert not [t for t in sc.llm_plan if t["subagent"] == "planner"]
+    for agent in ("a1", "a4", "a5"):
+        assert not [e for e in read_trace(sc.out / agent / "trace.jsonl") if e["subagent"] == "planner"], agent
+    rep = json.loads((sc.data_dir / "scenarios" / "peer-incident" / "report.json").read_text(encoding="utf-8"))
+    assert rep["agent_plan"] is None
+
+
+def test_missing_orchestrator_jobs_do_not_make_report_incomplete(ctx):
+    """orchestrator-dispatch／review 的產物缺失：沿用「上游缺失記為 data_issues」（required=False），完整性不受影響。"""
+    run_all(ctx)
+    rep = _report(ctx)
+    missing = {i["source"] for i in rep["data_issues"] if i["source"].startswith("job/")}
+    assert missing == {"job/orchestrator-dispatch", "job/orchestrator-review"}
+    assert all(i["required"] is False for i in rep["data_issues"] if i["source"] in missing)
+    assert rep["completeness"] == "complete"
+
+
+def test_run_agent_cli_router_and_orchestrator_mode(ctx, monkeypatch, capsys):
+    import run_agent
+    from agents import orchestrator_agent
+    assert run_agent.ORDER[0] == "router" and "orchestrator" not in run_agent.ORDER
+    for argv in (["orchestrator"], ["orchestrator-input"], ["router", "--mode", "dispatch"], ["orchestrator", "--mode", "x"]):
+        with pytest.raises(SystemExit) as exc:
+            run_agent.main(argv)
+        assert exc.value.code == 2, argv
+    # T2 實作前：明確的「尚未實作」錯誤（T2 接上 orchestrator_agent 後改寫這兩行）
+    assert run_agent.main(["orchestrator", "--mode", "dispatch"]) == 1
+    assert "尚未實作" in capsys.readouterr().err
+    calls = []
+    monkeypatch.setattr(orchestrator_agent, "build_input", lambda c, mode: calls.append(("input", mode)) or {"ok": True})
+    monkeypatch.setattr(orchestrator_agent, "run", lambda c, mode: calls.append(("run", mode)) or {"ok": True})
+    assert run_agent.main(["orchestrator-input", "--mode", "dispatch"]) == 0
+    assert run_agent.main(["orchestrator", "--mode", "review"]) == 0
+    assert calls == [("input", "dispatch"), ("run", "review")]
 
 
 # ── 資安事件整理（specs/security-digest T4）：A5 在報告寫出前準備與提交 digest ─────────────

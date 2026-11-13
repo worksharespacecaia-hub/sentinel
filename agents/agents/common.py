@@ -46,21 +46,20 @@ def load(ctx: RunCtx, agent: str, name: str, default=None):
 
 
 def load_a1(ctx: RunCtx, tr) -> tuple[list[dict] | None, dict | None]:
-    """安全讀取 A1 的 verified.json 與動態派工計畫（A4、A5／llm-plan 共用）。
+    """安全讀取 A1 的 verified.json（A4、A5／llm-plan 共用）。
 
-    verified 缺失或損壞時回傳 None：確定性評估改由本 Job 離線重建，且不採用無法核對的計畫。
+    verified 缺失或損壞時回傳 None：確定性評估改由本 Job 離線重建。
     回傳的 verified 是獨立拷貝（evaluate 會套用新進度繼承，不能改到用來核對雜湊的原始資料）。
+    第二個回傳值是派工計畫：v0.13.0 起 A1 不再寫計畫，改由 Orchestrator 的派工單與驗收單（tools/orchestration.resolve_plans）
+    取代，下游接上之前一律為 None（不採用任何計畫，只跑必要任務）。
     """
     import copy
 
-    from tools.agent_plan import load_agent_plan, load_verified
-    verified, why = load_verified(ctx)
+    from tools.orchestration import load_verified
+    verified, _ = load_verified(ctx)
     if verified is None:
         tr.emit("error", "A1 結果缺失或無法讀取：改由本 Job 重新驗證情資（離線）")
-    plan, reason = load_agent_plan(ctx, verified)
-    if plan is None and verified is not None:
-        tr.emit("skip", f"不採用動態派工計畫（{reason}）", subagent="planner")
-    return (copy.deepcopy(verified) if verified is not None else None), plan
+    return (copy.deepcopy(verified) if verified is not None else None), None
 
 
 def finish(ctx: RunCtx, agent: str) -> None:

@@ -10,6 +10,24 @@ STATUS_ZH = {"open": "待處理", "fixed": "已修復", "not_affected": "不受�
 CHECK_ZH = {"pass": "符合", "fail": "不符合", "unknown": "資料不足"}
 
 
+def event_status(match: dict, risks_by_id: dict[str, dict]) -> tuple[str, bool]:
+    """情資報告的處理狀態與「程式是否要求通知」（build_report 與 Orchestrator 驗收的候選共用，見 tools/orchestration.py）。"""
+    ev = match["event"]
+    affected = [i for i in match["impacts"] if i["verdict"] == "affected"]
+    need = [i for i in match["impacts"] if i["verdict"] == "need_check"]
+    if affected:
+        status = "open"
+        if all((risks_by_id.get(i.get("risk_id") or "") or {}).get("status") == "fixed" for i in affected):
+            status = "fixed"
+    elif need:
+        status = "need_check"
+    else:
+        status = match["status"] if match["status"] in ("not_affected", "need_check") else "not_affected"
+    breakdowns = [(risks_by_id.get(i.get("risk_id") or "") or {}).get("breakdown") or [] for i in affected]
+    pii_platform = any("資料敏感" in [b["factor"] for b in bd] and "影響範圍" in [b["factor"] for b in bd] for bd in breakdowns)
+    return status, bool(affected) and (bool(ev.get("notice_required")) or pii_platform)
+
+
 def build_report(match: dict, risks_by_id: dict[str, dict], graph_nodes: dict, *, verification: dict | None = None,
                  observed_at: str | None = None, llm_text: dict | None = None) -> dict:
     ev = match["event"]
@@ -31,14 +49,7 @@ def build_report(match: dict, risks_by_id: dict[str, dict], graph_nodes: dict, *
             row["suggestions"] = i.get("suggestions") or []
         rows.append(row)
 
-    if affected:
-        status = "open"
-        if all((risks_by_id.get(i.get("risk_id") or "") or {}).get("status") == "fixed" for i in affected):
-            status = "fixed"
-    elif need:
-        status = "need_check"
-    else:
-        status = match["status"] if match["status"] in ("not_affected", "need_check") else "not_affected"
+    status, notice_needed = event_status(match, risks_by_id)
 
     if affected:
         top = rows[0]
@@ -53,9 +64,6 @@ def build_report(match: dict, risks_by_id: dict[str, dict], graph_nodes: dict, *
 
     solutions = [] if not affected else [solution_for(risks_by_id[i["risk_id"]], graph_nodes)
                                          for i in affected if i.get("risk_id") in risks_by_id]
-    pii_platform = any("資料敏感" in [b["factor"] for b in row["breakdown"]] and "影響範圍" in [b["factor"] for b in row["breakdown"]]
-                       for row in rows if row["verdict"] == "affected")
-    notice_needed = bool(affected) and (bool(ev.get("notice_required")) or pii_platform)
     text = llm_text or {}
     summary = text.get("summary") or ev.get("summary") or "；".join(ev.get("attack_chain", [])) or ev["title"]
     summary_source = text.get("source", "template")

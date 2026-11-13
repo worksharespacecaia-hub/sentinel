@@ -9,7 +9,7 @@ from dataclasses import replace
 import pytest
 import yaml
 
-from agents import a0_assets, a1_intel, a2_scan, a3_signals, a4_risk, a5_report, llm_plan, orchestrator
+from agents import a0_assets, a1_intel, a2_scan, a3_signals, a4_risk, a5_report, llm_plan, router
 from context import build_ctx
 from llm import LLMRunner, Task
 from tools.cache import LLMCache, ReplayStore
@@ -31,7 +31,7 @@ def ctx(monkeypatch, tmp_path):
 
 
 def _upstream(ctx):
-    for m in (orchestrator, a0_assets, a1_intel, a2_scan, a3_signals, a4_risk):
+    for m in (router, a0_assets, a1_intel, a2_scan, a3_signals, a4_risk):
         m.run(ctx)
 
 

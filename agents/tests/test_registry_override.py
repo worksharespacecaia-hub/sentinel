@@ -9,7 +9,8 @@ from tools.cache import LLMCache, ReplayStore
 from tools.trace import Tracer
 
 
-WRITERS = {"planner", "remediation-advisor", "brand-notice-writer", "ceo-briefer", "intel-report-writer", "containment-advisor"}
+WRITERS = {"planner", "reviewer", "remediation-advisor", "brand-notice-writer", "ceo-briefer", "intel-report-writer",
+           "containment-advisor"}
 
 
 def test_all_subagents_default_to_haiku(monkeypatch):
@@ -17,15 +18,20 @@ def test_all_subagents_default_to_haiku(monkeypatch):
     assert model_id("haiku") == MODELS["haiku"]
     assert model_id("sonnet") == MODELS["sonnet"]
     for spec in AGENTS.values():
-        if spec.subagents:                     # Orchestrator 是純程式，沒有 Subagent
-            assert {d.model for d in agent_definitions(spec).values()} == {MODELS["haiku"]}
+        assert spec.subagents                  # 開工路由（router）是純程式，不在 registry；每個 AgentSpec 都有 Subagent
+        assert {d.model for d in agent_definitions(spec).values()} == {MODELS["haiku"]}
 
 
-def test_planner_moved_to_a1_with_shared_budget():
-    """動態派工：planner 在 A1 取得情資後執行（Orchestrator 看不到當天情資）；A1 上限 $0.10。"""
-    assert "planner" in AGENTS["a1"].subagents and AGENTS["a1"].subagents["planner"].output == "plan"
-    assert AGENTS["orchestrator"].subagents == {}
-    assert AGENTS["a1"].budget == 0.10
+def test_orchestrator_agent_specs():
+    """specs/orchestrator R6.3、design §3.5：派工與驗收是兩個 AgentSpec，各 $0.05；A1 改回 $0.05、移除 planner。"""
+    assert "orchestrator" not in AGENTS
+    d, r = AGENTS["orchestrator-dispatch"], AGENTS["orchestrator-review"]
+    assert d.budget == r.budget == 0.05 and AGENTS["a1"].budget == 0.05
+    assert set(d.subagents) == {"planner"} and d.subagents["planner"].output == "plan"
+    assert set(r.subagents) == {"reviewer"} and r.subagents["reviewer"].output == "review"
+    assert "planner" not in AGENTS["a1"].subagents and not any("planner" in s.subagents for k, s in AGENTS.items() if k != d.name)
+    for s in (d.subagents["planner"], r.subagents["reviewer"]):
+        assert s.model == "haiku" and not s.graph and not s.read_references
 
 
 def test_writer_subagents_keep_measured_settings():

@@ -21,7 +21,7 @@ from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-AGENT_ORDER = ["orchestrator", "a0", "a1", "a2", "a3", "a4", "a5"]
+AGENT_ORDER = ["router", "a0", "a1", "orchestrator-dispatch", "a2", "a3", "a4", "orchestrator-review", "a5"]
 # record 會寫入的路徑（相對 ROOT）
 TOUCHED = ["agents/cache", "agents/fixtures/replay", "out", "dashboard/public/data", "reports"]
 # Claude Haiku 5.5 單價（US$／百萬 token，prompt ≤100K）；快取倍率為假設值，只作對照，以 CLI 回報的 costUSD 為準

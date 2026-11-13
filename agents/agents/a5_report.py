@@ -18,7 +18,9 @@ from tools.report_builder import assemble, write_outputs
 from tools.templates import summary_facts, unsourced_numbers
 from tools.trace import merge_traces
 
-UPSTREAM = ["orchestrator", "a0", "a1", "a2", "a3", "a4"]
+# 上游 Job 的 out/<名稱>/（trace、成本、快取 delta）。router 是原 orchestrator（開工路由）；orchestrator-dispatch／review 是
+# Orchestrator 的派工與驗收（specs/orchestrator）。缺少的上游記為 data_issues（required=False，不影響完整性與燈號）
+UPSTREAM = ["router", "a0", "a1", "orchestrator-dispatch", "a2", "a3", "a4", "orchestrator-review"]
 
 
 def _llm_texts(ctx: RunCtx, res: dict, built_template: dict) -> dict:
@@ -104,7 +106,7 @@ def _collected_explanations(ctx: RunCtx, tr) -> dict:
 def prepare(ctx: RunCtx) -> dict:
     """確定性評估與範本報告（A5 與 claude-analysis Job 的任務規劃共用，不寫任何輸出）。"""
     tr = ctx.tracer("a5")
-    plan = load(ctx, "orchestrator", "plan.json")
+    plan = load(ctx, "router", "plan.json")
     issues = []
     for up in UPSTREAM:
         if not (ctx.out / up / "trace.jsonl").is_file():
