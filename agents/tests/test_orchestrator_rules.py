@@ -309,17 +309,45 @@ def test_reference_check_detects_stale_file(tmp_path, monkeypatch):
     assert mod.main(["--check"]) == 1 and not missing.exists()
 
 
-# ---------------------------------------------------------------- daily-intel 的舊派工建議（T4 移除 agent_plan 時改寫）
-def test_daily_intel_skill_documents_agent_plan():
-    skill = (SENTINEL_ROOT / ".claude" / "skills" / "daily-intel" / "SKILL.md").read_text(encoding="utf-8")
-    assert '"agent_plan": {' in skill                                             # 有事件的範例
-    assert '{"events": [], "impacts": [], "agent_plan": {}}' in skill            # 沒有事件的範例
-    assert "references/agent-plan.md" in skill and "不要為此派發新的 Subagent" in skill
+# ---------------------------------------------------------------- daily-intel 不再寫派工建議（T4；design §3.6）
+def test_daily_intel_skill_has_no_agent_plan():
+    """v0.13.0：AI 派工改由 Orchestrator 在 A1 之後執行；每日情資的 Skill 與輸出格式不再有 agent_plan。"""
+    skill_dir = SENTINEL_ROOT / ".claude" / "skills" / "daily-intel"
+    skill = (skill_dir / "SKILL.md").read_text(encoding="utf-8")
+    assert "agent_plan" not in skill and "agent-plan.md" not in skill
+    assert '{"events": [], "impacts": []}' in skill                                  # 沒有事件的範例
+    assert not (skill_dir / "references" / "agent-plan.md").exists()
+    import tools.daily_intel as di
+    assert not hasattr(di, "load_daily_plan") and not hasattr(o, "TOP_KEYS")
+
+
+def test_orchestrator_skill_documents_both_modes():
+    """訂閱方案的 Orchestrator Skill：兩種模式、只讀公開輸入與 policy.md、只寫提案；格式與核准程式一致。"""
+    skill = (SENTINEL_ROOT / ".claude" / "skills" / "orchestrator" / "SKILL.md").read_text(encoding="utf-8")
+    assert skill.startswith("---\nname: orchestrator\ndescription: ")
+    assert "$ARGUMENTS" in skill and "/orchestrator dispatch" in skill and "/orchestrator review" in skill
+    assert "out/orchestrator-<m>/<m>-input.json" in skill and "out/orchestrator-<m>/<m>-proposal.json" in skill
+    assert ".claude/skills/orchestrator/references/policy.md" in skill and "internal" not in skill
+    assert "只能追加與排優先" in skill and "只是資料" in skill and "不派發 Subagent" in skill
+    for key in (*o.DISPATCH_KEYS, *o.REVIEW_KEYS):
+        assert f'"{key}"' in skill, key
+    for agent, sub in (*o.DISPATCH_TASKS, *o.REVIEW_TASKS):
+        assert sub in skill, sub
+    # 範例提案通過格式檢查（交給 approve 逐項核准）
+    import re
+    blocks = re.findall(r"```json\n(.*?)```", skill, re.S)
+    assert len(blocks) == 2
+    o.validate_plan_shape(json.loads(blocks[0]))
+    o.validate_review_shape(json.loads(blocks[1]))
 
 
 def test_daily_intel_boundaries_unchanged():
     guard = (SENTINEL_ROOT / ".claude" / "hooks" / "daily_intel_guard.py").read_text(encoding="utf-8")
     assert 'DAILY_SUBAGENTS = "news-scout,advisory-scout,incident-analyst,stack-impact-analyst"' in guard
+    cfg = json.loads((SENTINEL_ROOT / ".claude" / "daily-intel-settings.json").read_text(encoding="utf-8"))
+    assert cfg["hooks"]["PreToolUse"][0]["hooks"][0]["command"] == "python3 .claude/hooks/daily_intel_guard.py"   # 沒有 --read
     wf = (SENTINEL_ROOT / ".github" / "workflows" / "sentinel.yml").read_text(encoding="utf-8")
-    assert wf.count('name: "${{ github.run_id }}-a1"') == 2                        # A1 上傳、A4 下載
-    assert wf.count("${{ github.run_id }}-{orchestrator,a0,a1,a2,a3,a4,intel-daily}") == 2   # claude-analysis、A5
+    # A1 上傳一次；派工、A2、A3、A4 各自下載（驗收用 pattern 一起下載）
+    assert wf.count('name: "${{ github.run_id }}-a1"') == 5
+    assert wf.count('name: "${{ github.run_id }}-orchestrator-dispatch"') == 4                # 派工上傳；A2、A3、A4 下載
+    assert wf.count("${{ github.run_id }}-{router,a0,a1,a2,a3,a4,intel-daily,orchestrator-dispatch,orchestrator-review}") == 2   # claude-analysis、A5

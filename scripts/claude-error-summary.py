@@ -6,10 +6,14 @@
 不印對話內容、工具輸入內容或網頁內容。
 --with-result：另外印出 Claude 最後的說明（截斷、遮蔽疑似金鑰），用來判斷它為什麼停下來、為什麼沒列入事件。
 --activity：逐筆列出工具呼叫（工具、查詢字詞或網站主機、結果類型：成功／HTTP 403／轉址／被擋），不含網頁內容。
-用法：python3 scripts/claude-error-summary.py [--with-result] [--activity] <execution_file>
+--trace <輸出檔> [--job <Job>]：寫出給「Agent 執行」頁的執行紀錄（只含工具名稱、次數與數量）。Job 為 daily-intel（預設）、
+  claude-analysis，或 Orchestrator 的 orchestrator-dispatch／orchestrator-review（訂閱步驟；接在程式步驟的 trace 後面，
+  不讀提案內容，只看提案檔與採用標記是否存在、雜湊是否相符）。
+用法：python3 scripts/claude-error-summary.py [--with-result] [--activity] [--trace <輸出檔> [--job <Job>]] <execution_file>
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from collections import Counter
@@ -280,6 +284,62 @@ def analysis_trace_events(messages: list[dict], tasks_doc: dict | None, validate
     return out
 
 
+ORCHESTRATOR_JOBS = {"orchestrator-dispatch": "dispatch", "orchestrator-review": "review"}
+JOBS = ("daily-intel", "claude-analysis", *ORCHESTRATOR_JOBS)
+MODE_ZH = {"dispatch": "派工", "review": "驗收"}
+
+
+def proposal_state(out: Path, mode: str) -> str:
+    """訂閱步驟的提案狀態：accepted（有採用標記且雜湊相符）、rejected（有提案但沒有通過檢查）、missing（沒有提案）。
+
+    只計算提案檔位元組的 sha256，不解析、不輸出提案內容。
+    """
+    d = out / f"orchestrator-{mode}"
+    proposal, accepted = d / f"{mode}-proposal.json", d / f"{mode}-proposal.accepted"
+    if not proposal.is_file():
+        return "missing"
+    try:
+        digest = hashlib.sha256(proposal.read_bytes()).hexdigest()
+        mark = accepted.read_text(encoding="utf-8").strip().lower() if accepted.is_file() else ""
+    except (OSError, UnicodeDecodeError):
+        return "rejected"
+    return "accepted" if mark == digest else "rejected"
+
+
+def orchestrator_trace_events(messages: list[dict], mode: str, state: str, now: str) -> list[dict]:
+    """Orchestrator 派工／驗收 Job 的訂閱步驟紀錄：工具次數、被拒絕的工具與提案是否通過檢查；不含提案或對話內容。
+
+    提案是否採用、核准幾項，由程式步驟（run_agent.py orchestrator）寫在同一份 trace。
+    """
+    agent, zh = f"orchestrator-{mode}", MODE_ZH[mode]
+
+    def ev(kind, detail):
+        return {"ts": now, "agent": agent, "subagent": None, "kind": kind, "detail": clean(detail)[:500], "source": None,
+                "cost_usd": None}
+    out = [ev("start", f"Claude（訂閱方案）執行 orchestrator Skill（{zh}）：只讀公開輸入與核准政策，寫出提案交給程式核准")]
+    if not messages:
+        out.append(ev("error", f"Claude 沒有執行（Token 檢查失敗或設定錯誤），{zh}改用 Agent SDK 或空提案"))
+        return out
+    out.append(ev("skill", f"載入 orchestrator Skill（{zh}）"))
+    tools = Counter(str(c.get("name", "?")) for m in messages if m.get("type") == "assistant" and not m.get("parent_tool_use_id")
+                    for c in _blocks(m) if c.get("type") == "tool_use")
+    if tools:
+        out.append(ev("tool", "工具：" + "、".join(f"{k}×{v}" for k, v in sorted(tools.items()))))
+    result = next((m for m in reversed(messages) if m.get("type") == "result"), None) or {}
+    denials = Counter(str(d.get("tool_name", "?")) for d in result.get("permission_denials") or [] if isinstance(d, dict))
+    if denials:
+        out.append(ev("skip", "被拒絕的工具呼叫（hook 或權限設定）：" + "、".join(f"{k}×{v}" for k, v in sorted(denials.items()))))
+    secs = round((result.get("duration_ms") or 0) / 1000)
+    took = f"{result.get('num_turns', '?')} 回合、{secs} 秒"
+    if state == "accepted":
+        out.append(ev("result", f"寫出提案並通過程式檢查（{took}）；由程式政策逐項核准"))
+    elif state == "rejected":
+        out.append(ev("error", f"寫出提案但沒有通過程式檢查，不採用（{took}）；{zh}改用 Agent SDK 或空提案"))
+    else:
+        out.append(ev("error", f"沒有寫出提案（{took}）；{zh}改用 Agent SDK 或空提案"))
+    return out
+
+
 def main(argv: list[str]) -> int:
     args = argv[1:]
     with_result, activity = "--with-result" in args, "--activity" in args
@@ -288,13 +348,13 @@ def main(argv: list[str]) -> int:
         i = args.index("--trace")
         trace_out = Path(args[i + 1]) if i + 1 < len(args) else None
         args = args[:i] + args[i + 2:]
-    if "--job" in args:                         # --job daily-intel｜claude-analysis
+    if "--job" in args:                         # --job daily-intel｜claude-analysis｜orchestrator-dispatch｜orchestrator-review
         i = args.index("--job")
         job = args[i + 1] if i + 1 < len(args) else ""
         args = args[:i] + args[i + 2:]
     args = [a for a in args if a not in ("--with-result", "--activity")]
-    if len(args) != 1 or ("--trace" in argv and trace_out is None) or job not in ("daily-intel", "claude-analysis"):
-        print("用法：claude-error-summary.py [--with-result] [--activity] [--trace <輸出檔> [--job daily-intel|claude-analysis]] "
+    if len(args) != 1 or ("--trace" in argv and trace_out is None) or job not in JOBS:
+        print("用法：claude-error-summary.py [--with-result] [--activity] [--trace <輸出檔> [--job " + "|".join(JOBS) + "]] "
               "<execution_file>", file=sys.stderr)
         return 2
     path = Path(args[0])
@@ -307,12 +367,17 @@ def main(argv: list[str]) -> int:
                 return None
         from datetime import datetime, timezone
         now = datetime.now(timezone.utc).isoformat(timespec="seconds")
+        append = job in ORCHESTRATOR_JOBS                 # 派工／驗收 Job：程式步驟已寫入同一份 trace，接在後面
         if job == "claude-analysis":
             evs = analysis_trace_events(messages, read(Path("out/llm/tasks.json")), read(Path("out/llm/validated.json")), now)
+        elif append:
+            mode = ORCHESTRATOR_JOBS[job]
+            evs = orchestrator_trace_events(messages, mode, proposal_state(Path("out"), mode), now)
         else:
             evs = trace_events(messages, read(Path("out/news.json")), read(Path("out/intel-daily.json")), now)
         trace_out.parent.mkdir(parents=True, exist_ok=True)
-        trace_out.write_text("".join(json.dumps(e, ensure_ascii=False) + "\n" for e in evs), encoding="utf-8", newline="\n")
+        with trace_out.open("a" if append else "w", encoding="utf-8", newline="\n") as f:
+            f.write("".join(json.dumps(e, ensure_ascii=False) + "\n" for e in evs))
         print(f"寫出 {len(evs)} 筆執行紀錄：{trace_out}")
         return 0
     if not path.is_file():

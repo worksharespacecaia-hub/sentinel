@@ -38,7 +38,7 @@ __all__ = [
     "PRIORITY_KEYS", "PolicyContext", "REASONS", "REASON_HELP", "REVIEW_KEYS", "REVIEW_TASKS", "RISK_TASK_KEYS", "Resolved",
     "R_BASELINE", "R_CONTROL", "R_DUP", "R_EVENT", "R_FIELDS", "R_LIMIT", "R_MAPPED", "R_NOTICE_NEEDED", "R_NOT_KEYROT",
     "R_NOT_NEED_CHECK", "R_NO_TARGET", "R_ONLY_ADD", "R_PRIORITY", "R_REASON", "R_SUMMARY", "R_TASK", "SCHEMA_VERSION", "SHA_RE",
-    "SOURCES", "SOURCE_TEXT", "STATUS_TEXT", "TASK_KEYS", "TASK_LIMITS", "TOP_KEYS",
+    "SOURCES", "SOURCE_TEXT", "STATUS_TEXT", "TASK_KEYS", "TASK_LIMITS",
     "a2_candidates", "a3_systems", "a4_baseline", "a4_extra_candidates", "a5_lists", "ai_asset_ids", "approve", "approve_core",
     "base_inputs", "blocked_text", "build_plan", "clean_summary", "control_titles", "counts", "dispatch_context",
     "evaluate_snapshot",
@@ -69,7 +69,6 @@ SCHEMA_VERSION = 2
 MODES = ("dispatch", "review")
 DISPATCH_KEYS = ("extra_controls", "extra_tasks", "priorities")
 REVIEW_KEYS = ("extra_tasks", "priorities", "summary")
-TOP_KEYS = DISPATCH_KEYS            # 舊名：daily_intel.load_daily_plan 仍在用（T4 移除）
 CONTROL_KEYS = frozenset({"event_id", "control_id", "reason"})
 TASK_KEYS = frozenset({"agent", "subagent", "event_id", "reason"})
 RISK_TASK_KEYS = frozenset({"agent", "subagent", "risk_id", "reason"})

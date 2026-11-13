@@ -171,13 +171,17 @@ def test_analysis_job_structure():
     assert len(dl) == 1 and dl[0]["with"]["path"] == "out/llm/"
 
 
-def test_all_agent_jobs_share_orchestrator_as_of():
+def test_all_agent_jobs_share_router_as_of():
+    """同一次執行的所有程式步驟（含 Orchestrator 派工與驗收）使用開工路由算出的同一個 AS_OF，任務鍵才會一致。"""
     wf = yaml.safe_load((SENTINEL_ROOT / ".github" / "workflows" / "sentinel.yml").read_text(encoding="utf-8"))
-    assert wf["jobs"]["orchestrator"]["outputs"]["as_of"] == "${{ steps.plan.outputs.as_of }}"
+    assert wf["jobs"]["router"]["outputs"]["as_of"] == "${{ steps.plan.outputs.as_of }}"
+    seen = set()
     for name, job in wf["jobs"].items():
         for s in job.get("steps", []):
-            if "run_agent.py" in str(s.get("run", "")) and name != "orchestrator":
-                assert s["env"]["AS_OF"] == "${{ needs.orchestrator.outputs.as_of }}", name
+            if "run_agent.py" in str(s.get("run", "")) and name != "router":
+                assert s["env"]["AS_OF"] == "${{ needs.router.outputs.as_of }}", name
+                seen.add(name)
+    assert {"orchestrator-dispatch", "orchestrator-review", "claude-analysis", "a5-report"} <= seen
 
 
 def test_analysis_trace_summarizes_counts_only():
