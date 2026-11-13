@@ -1,0 +1,205 @@
+{
+  "event": {
+    "id": "live-cyberbiz-supplier-breach-2026-11",
+    "kind": "live",
+    "title": "順立智慧（Cyberbiz）電商平台資安事件，波及大金空調零件商城與威力德生醫線上商店",
+    "date": "2026-11-12",
+    "industry": "電商",
+    "attack_chain": [
+      "電商平台委外廠商順立智慧的資料庫部分內容遭未經授權存取",
+      "使用該平台的業者訂單資料受波及，業者接獲通知後通知消費者留意詐騙"
+    ],
+    "attck": [],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180482",
+        "title": "大金空調零件線上商城委外廠商發生資安事件，141筆訂單資料受波及、132筆個資遭未經授權存取",
+        "quote": "大金空調零件線上商城委外廠商發生資安事件，141筆訂單資料受波及、132筆個資遭未經授權存取",
+        "published": "2026-11-13",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-13T09:42:59Z",
+        "content_hash": "sha256:8bae0271f7f2c6fda1f56b71c7d80636405975c305c92fd1804fbb8aca789fc9",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://www.ithome.com.tw/news/180476",
+        "title": "威力德生醫線上商店委外廠商發生資安事件，部分消費者訂單資料遭異常存取",
+        "quote": "威力德生醫線上商店委外廠商發生資安事件，部分消費者訂單資料遭異常存取",
+        "published": "2026-11-13",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-13T09:42:59Z",
+        "content_hash": "sha256:45c6c0d87d451fcd90cd2eb55f435e92f42f325445a2b36db1bd573a6bbc1553",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "委外電商平台廠商須有資安要求、資料存取監控與事件通報機制",
+        "reason": "來源指出事件發生在委外平台廠商資料庫，波及多家使用同一平台的業者；現有控制項沒有涵蓋供應商端的資料保護與通報。"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-cyberbiz-supplier-breach-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：委外電商平台廠商須有資安要求、資料存取監控與事件通報機制"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "ai-1",
+          "source": "ai",
+          "inferred": true,
+          "target": null,
+          "hypothesis": "委外電商或架站平台的資料庫被入侵，連帶波及我們的訂單資料",
+          "why": null,
+          "check": "盤點是否使用 Cyberbiz 或同類委外電商、架站平台（含未登記的 SaaS），確認其保存哪些訂單與個資，並向廠商詢問是否受影響。",
+          "how": null,
+          "plain": "委外電商或架站平台的資料庫被入侵，連帶波及我們的訂單資料",
+          "basis": "AI 依事件推測：來源指出資料外洩發生在委外廠商資料庫，而非業者自身系統。",
+          "systems": [
+            {
+              "asset_id": "saas-quicksite-builder",
+              "label": "未登記的架站服務"
+            },
+            {
+              "asset_id": "storefront",
+              "label": "商店網站"
+            }
+          ],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "委外廠商順立智慧發生資安事件，資料庫部分內容遭未經授權存取。大金空調零件商城 141 筆訂單資料受波及，其中 132 筆涉及個資；威力德生醫線上商店部分訂單資料也受波及。來源未說明入侵手法。",
+  "blocks": {
+    "1_summary": {
+      "title": "順立智慧（Cyberbiz）電商平台資安事件，波及大金空調零件商城與威力德生醫線上商店",
+      "date": "2026-11-12",
+      "industry": "電商",
+      "attack_chain": [
+        "電商平台委外廠商順立智慧的資料庫部分內容遭未經授權存取",
+        "使用該平台的業者訂單資料受波及，業者接獲通知後通知消費者留意詐騙"
+      ],
+      "attck": [],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180482",
+          "title": "大金空調零件線上商城委外廠商發生資安事件，141筆訂單資料受波及、132筆個資遭未經授權存取",
+          "quote": "大金空調零件線上商城委外廠商發生資安事件，141筆訂單資料受波及、132筆個資遭未經授權存取",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-13T09:42:59Z"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/180476",
+          "title": "威力德生醫線上商店委外廠商發生資安事件，部分消費者訂單資料遭異常存取",
+          "quote": "威力德生醫線上商店委外廠商發生資安事件，部分消費者訂單資料遭異常存取",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-13T09:42:59Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "委外廠商順立智慧發生資安事件，資料庫部分內容遭未經授權存取。大金空調零件商城 141 筆訂單資料受波及，其中 132 筆涉及個資；威力德生醫線上商店部分訂單資料也受波及。來源未說明入侵手法。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：委外電商平台廠商須有資安要求、資料存取監控與事件通報機制"
+          ],
+          "observed_at": "2026-11-13T09:42:59Z",
+          "suggestions": [
+            {
+              "id": "ai-1",
+              "source": "ai",
+              "inferred": true,
+              "target": null,
+              "hypothesis": "委外電商或架站平台的資料庫被入侵，連帶波及我們的訂單資料",
+              "why": null,
+              "check": "盤點是否使用 Cyberbiz 或同類委外電商、架站平台（含未登記的 SaaS），確認其保存哪些訂單與個資，並向廠商詢問是否受影響。",
+              "how": null,
+              "plain": "委外電商或架站平台的資料庫被入侵，連帶波及我們的訂單資料",
+              "basis": "AI 依事件推測：來源指出資料外洩發生在委外廠商資料庫，而非業者自身系統。",
+              "systems": [
+                {
+                  "asset_id": "saas-quicksite-builder",
+                  "label": "未登記的架站服務"
+                },
+                {
+                  "asset_id": "storefront",
+                  "label": "商店網站"
+                }
+              ],
+              "controls": []
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  },
+  "orchestrator_results": []
+}

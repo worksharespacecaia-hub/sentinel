@@ -1,0 +1,207 @@
+{
+  "event": {
+    "id": "live-tsmc-cloud-vendor-leak-2026-11",
+    "kind": "live",
+    "title": "台積電員工資料出現在外部網站，與某雲端服務供應商系統資料相符",
+    "date": "2026-11-12",
+    "industry": "雲端供應鏈",
+    "attack_chain": [
+      "員工資料被放上外部網站",
+      "經比對與某雲端服務供應商系統內資料相符",
+      "公司通知受影響人員並與供應商、調查機關合作"
+    ],
+    "attck": [],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "confirmed",
+    "sources": [
+      {
+        "url": "https://www.inside.com.tw/article/42901-tsmc-employee-information-posted-external-website-no-evidence-system-breached",
+        "title": "台積電證實部分員工資訊遭放上外部網站，稱無證據顯示系統遭入侵",
+        "quote": "台積電證實部分員工資訊遭放上外部網站，稱無證據顯示系統遭入侵",
+        "published": "2026-11-13",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-13T09:42:59Z",
+        "content_hash": "sha256:14ada108b7533f60eb053f4d0d5ad7b80ea8e5a67aaab064f8270be74c41e452",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://cyberq.tw/2026/11/13/tsmc-confirms-employee-data-leak/",
+        "title": "台積電證實員工個資外流：官方只確認部分資料，4.6 萬筆仍是賣家說法",
+        "quote": "相關資料經核對後，與某家雲端服務供應商系統服務中的資料相符。",
+        "published": "2026-11-13",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-13T09:42:59Z",
+        "content_hash": "sha256:d85965f7aa1a0106928d99f91fbad2b9f2f371ed0bb6a8c7fd86e7c575ed891e",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "交給雲端或 SaaS 供應商保管的個資須定期稽核並有外洩通報條款",
+        "reason": "來源指出外洩環節在委外雲端供應商而非公司自身系統；現有控制項沒有涵蓋供應商保管資料的稽核。"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-tsmc-cloud-vendor-leak-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：交給雲端或 SaaS 供應商保管的個資須定期稽核並有外洩通報條款"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "ai-1",
+          "source": "ai",
+          "inferred": true,
+          "target": null,
+          "hypothesis": "交由第三方雲端服務保管的資料，因供應商被入侵而外洩",
+          "why": null,
+          "check": "盤點存放訂單與個資的第三方服務（寄信、App 雲端儲存），確認供應商的資安通報與存取紀錄。",
+          "how": null,
+          "plain": "交由第三方雲端服務保管的資料，因供應商被入侵而外洩",
+          "basis": "AI 依事件推測：來源指出資料與雲端服務供應商系統內資料相符，台積電自身系統無入侵證據。",
+          "systems": [
+            {
+              "asset_id": "mail-service",
+              "label": "寄信服務"
+            },
+            {
+              "asset_id": "firebase-brand-app-storage",
+              "label": "App 雲端檔案儲存區"
+            }
+          ],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "台積電證實部分現任與離職員工資料未經授權被放上外部網站，稱沒有證據顯示自身系統遭入侵，資料與某雲端服務供應商系統內的資料相符。供應商名稱與受影響人數未公布；4.6 萬筆為賣家單方說法。",
+  "blocks": {
+    "1_summary": {
+      "title": "台積電員工資料出現在外部網站，與某雲端服務供應商系統資料相符",
+      "date": "2026-11-12",
+      "industry": "雲端供應鏈",
+      "attack_chain": [
+        "員工資料被放上外部網站",
+        "經比對與某雲端服務供應商系統內資料相符",
+        "公司通知受影響人員並與供應商、調查機關合作"
+      ],
+      "attck": [],
+      "cves": [],
+      "confidence": "已確認",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.inside.com.tw/article/42901-tsmc-employee-information-posted-external-website-no-evidence-system-breached",
+          "title": "台積電證實部分員工資訊遭放上外部網站，稱無證據顯示系統遭入侵",
+          "quote": "台積電證實部分員工資訊遭放上外部網站，稱無證據顯示系統遭入侵",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-13T09:42:59Z"
+        },
+        {
+          "url": "https://cyberq.tw/2026/11/13/tsmc-confirms-employee-data-leak/",
+          "title": "台積電證實員工個資外流：官方只確認部分資料，4.6 萬筆仍是賣家說法",
+          "quote": "相關資料經核對後，與某家雲端服務供應商系統服務中的資料相符。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-13T09:42:59Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "台積電證實部分現任與離職員工資料未經授權被放上外部網站，稱沒有證據顯示自身系統遭入侵，資料與某雲端服務供應商系統內的資料相符。供應商名稱與受影響人數未公布；4.6 萬筆為賣家單方說法。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：交給雲端或 SaaS 供應商保管的個資須定期稽核並有外洩通報條款"
+          ],
+          "observed_at": "2026-11-13T09:42:59Z",
+          "suggestions": [
+            {
+              "id": "ai-1",
+              "source": "ai",
+              "inferred": true,
+              "target": null,
+              "hypothesis": "交由第三方雲端服務保管的資料，因供應商被入侵而外洩",
+              "why": null,
+              "check": "盤點存放訂單與個資的第三方服務（寄信、App 雲端儲存），確認供應商的資安通報與存取紀錄。",
+              "how": null,
+              "plain": "交由第三方雲端服務保管的資料，因供應商被入侵而外洩",
+              "basis": "AI 依事件推測：來源指出資料與雲端服務供應商系統內資料相符，台積電自身系統無入侵證據。",
+              "systems": [
+                {
+                  "asset_id": "mail-service",
+                  "label": "寄信服務"
+                },
+                {
+                  "asset_id": "firebase-brand-app-storage",
+                  "label": "App 雲端檔案儲存區"
+                }
+              ],
+              "controls": []
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  },
+  "orchestrator_results": []
+}

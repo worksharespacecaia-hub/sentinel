@@ -198,8 +198,8 @@
     "order-db-prod"
   ],
   "complete": true,
-  "summary_source": "live",
-  "summary": "91APP 事件的手法（對外的內部工具、GitLab 中的資料庫金鑰）與我們有 5 項吻合：internal-tool（高，8）、gitlab（高，8）、brand-app（高，10）、nas-office-01（中，5）、order-db-prod（中，5）；建議優先關閉內部工具對外開放並更換金鑰。",
+  "summary_source": "template",
+  "summary": "利用未及時修補的內部效率工具 Appsmith 漏洞進入內部網路；自內部 GitLab 取得訂單資料庫金鑰；以金鑰入侵 Commerce Cloud 訂單資料庫並讀走訂單資料；消費者收到冒用訂單資料的詐騙訊息",
   "blocks": {
     "1_summary": {
       "title": "91APP 訂單資料庫遭入侵：未更新的內部工具 Appsmith 成破口，自內部 GitLab 取得資料庫金鑰",
@@ -243,8 +243,8 @@
         "max_level": null,
         "note": null
       },
-      "summary": "91APP 事件的手法（對外的內部工具、GitLab 中的資料庫金鑰）與我們有 5 項吻合：internal-tool（高，8）、gitlab（高，8）、brand-app（高，10）、nas-office-01（中，5）、order-db-prod（中，5）；建議優先關閉內部工具對外開放並更換金鑰。",
-      "summary_note": null,
+      "summary": "利用未及時修補的內部效率工具 Appsmith 漏洞進入內部網路；自內部 GitLab 取得訂單資料庫金鑰；以金鑰入侵 Commerce Cloud 訂單資料庫並讀走訂單資料；消費者收到冒用訂單資料的詐騙訊息",
+      "summary_note": "自動摘要未產生",
       "fixture_note": null
     },
     "2_conclusion": {
@@ -286,7 +286,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T05:06:21Z"
+        "observed_at": "2026-11-13T09:42:59Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -316,7 +316,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T05:06:21Z"
+        "observed_at": "2026-11-13T09:42:59Z"
       },
       {
         "asset_id": "gitlab",
@@ -356,7 +356,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T05:06:21Z"
+        "observed_at": "2026-11-13T09:42:59Z"
       },
       {
         "asset_id": "brand-app",
@@ -401,7 +401,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T05:06:21Z"
+        "observed_at": "2026-11-13T09:42:59Z"
       },
       {
         "asset_id": "order-db-prod",
@@ -436,7 +436,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T05:06:21Z"
+        "observed_at": "2026-11-13T09:42:59Z"
       }
     ],
     "4_unaffected_and_check": {
@@ -534,5 +534,6 @@
       "status": "open",
       "label": "待處理"
     }
-  }
+  },
+  "orchestrator_results": []
 }

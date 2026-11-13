@@ -1,0 +1,196 @@
+{
+  "event": {
+    "id": "live-mercuryfast-order-api-2026-11",
+    "kind": "live",
+    "title": "美而快電商系統遭異常存取，部分請求涉及會員訂單 API",
+    "date": "2026-11-12",
+    "industry": "電商",
+    "attack_chain": [
+      "客戶收到疑似詐騙電子郵件並反映",
+      "回溯紀錄發現外部特定 IP 對電商系統異常存取",
+      "部分請求涉及會員訂單相關 API"
+    ],
+    "attck": [],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180488",
+        "title": "美而快電商系統遭異常存取，部分請求涉及會員訂單API",
+        "quote": "美而快電商系統遭異常存取，部分請求涉及會員訂單API",
+        "published": "2026-11-13",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-13T09:42:59Z",
+        "content_hash": "sha256:bfe4a17378058f1a2699cc00d10f9cf60a521f0559566c473987ed9ac4f9dc43",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "會員與訂單 API 須驗證資料擁有者並設有流量限制與異常告警",
+        "reason": "來源指出外部 IP 對會員訂單 API 發出異常請求，且客戶已收到詐騙信；現有控制項沒有涵蓋 API 存取控制與限流。"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-mercuryfast-order-api-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：會員與訂單 API 須驗證資料擁有者並設有流量限制與異常告警"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "ai-1",
+          "source": "ai",
+          "inferred": true,
+          "target": null,
+          "hypothesis": "會員訂單 API 可能缺少存取控制或限流",
+          "why": null,
+          "check": "檢查訂單相關 API 是否驗證資料擁有者、有無頻率限制，並查存取紀錄中的異常 IP 與大量請求。",
+          "how": null,
+          "plain": "會員訂單 API 可能缺少存取控制或限流",
+          "basis": "AI 依事件推測：來源指出異常請求來自外部特定 IP，且部分涉及會員訂單相關 API。",
+          "systems": [
+            {
+              "asset_id": "api-gateway",
+              "label": "API 閘道"
+            },
+            {
+              "asset_id": "member-api",
+              "label": "會員服務 API"
+            },
+            {
+              "asset_id": "storefront",
+              "label": "商店網站"
+            }
+          ],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "美而快 11 月 10 日接獲客戶反映收到疑似詐騙電子郵件，回溯存取紀錄發現外部特定 IP 曾對電商系統異常存取，部分請求涉及會員訂單相關 API。影響範圍仍在釐清。",
+  "blocks": {
+    "1_summary": {
+      "title": "美而快電商系統遭異常存取，部分請求涉及會員訂單 API",
+      "date": "2026-11-12",
+      "industry": "電商",
+      "attack_chain": [
+        "客戶收到疑似詐騙電子郵件並反映",
+        "回溯紀錄發現外部特定 IP 對電商系統異常存取",
+        "部分請求涉及會員訂單相關 API"
+      ],
+      "attck": [],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180488",
+          "title": "美而快電商系統遭異常存取，部分請求涉及會員訂單API",
+          "quote": "美而快電商系統遭異常存取，部分請求涉及會員訂單API",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-13T09:42:59Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "美而快 11 月 10 日接獲客戶反映收到疑似詐騙電子郵件，回溯存取紀錄發現外部特定 IP 曾對電商系統異常存取，部分請求涉及會員訂單相關 API。影響範圍仍在釐清。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：會員與訂單 API 須驗證資料擁有者並設有流量限制與異常告警"
+          ],
+          "observed_at": "2026-11-13T09:42:59Z",
+          "suggestions": [
+            {
+              "id": "ai-1",
+              "source": "ai",
+              "inferred": true,
+              "target": null,
+              "hypothesis": "會員訂單 API 可能缺少存取控制或限流",
+              "why": null,
+              "check": "檢查訂單相關 API 是否驗證資料擁有者、有無頻率限制，並查存取紀錄中的異常 IP 與大量請求。",
+              "how": null,
+              "plain": "會員訂單 API 可能缺少存取控制或限流",
+              "basis": "AI 依事件推測：來源指出異常請求來自外部特定 IP，且部分涉及會員訂單相關 API。",
+              "systems": [
+                {
+                  "asset_id": "api-gateway",
+                  "label": "API 閘道"
+                },
+                {
+                  "asset_id": "member-api",
+                  "label": "會員服務 API"
+                },
+                {
+                  "asset_id": "storefront",
+                  "label": "商店網站"
+                }
+              ],
+              "controls": []
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  },
+  "orchestrator_results": []
+}

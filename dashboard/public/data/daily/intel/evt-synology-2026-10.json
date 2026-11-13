@@ -181,8 +181,8 @@
     "nas-office-01"
   ],
   "complete": true,
-  "summary_source": "live",
-  "summary": "nas-office-01 受影響共 3 項：DSM 版本對外且條件成立（高，8）、備份與來源未隔離且從未做過還原測試（中，5）、管理介面對外開放（中，5）；建議先關閉對外、升級並隔離備份。",
+  "summary_source": "template",
+  "summary": "DSM 登入頁經 UPnP、連接埠轉發、QuickConnect 或反向代理暴露於網際網路；疑利用 DSM 舊漏洞（360 歸因 CVE-2026-13639、CVE-2026-13684，9/18 已修補）免帳密遠端讀寫任意檔案；刪除快照；加密檔案（副檔名 .L0CK3D），常駐連接的 Hyper Backup USB 硬碟／備份碟一併被加密；每個資料夾留下 read-me3.txt 勒索信，要求透過 Tor 網站購買解密器",
   "blocks": {
     "1_summary": {
       "title": "Synology NAS 遭 C3RB3R 勒索軟體加密：DSM 登入頁對外暴露，常駐連接的備份碟一併被加密",
@@ -223,8 +223,8 @@
         "max_level": null,
         "note": null
       },
-      "summary": "nas-office-01 受影響共 3 項：DSM 版本對外且條件成立（高，8）、備份與來源未隔離且從未做過還原測試（中，5）、管理介面對外開放（中，5）；建議先關閉對外、升級並隔離備份。",
-      "summary_note": null,
+      "summary": "DSM 登入頁經 UPnP、連接埠轉發、QuickConnect 或反向代理暴露於網際網路；疑利用 DSM 舊漏洞（360 歸因 CVE-2026-13639、CVE-2026-13684，9/18 已修補）免帳密遠端讀寫任意檔案；刪除快照；加密檔案（副檔名 .L0CK3D），常駐連接的 Hyper Backup USB 硬碟／備份碟一併被加密；每個資料夾留下 read-me3.txt 勒索信，要求透過 Tor 網站購買解密器",
+      "summary_note": "自動摘要未產生",
       "fixture_note": null
     },
     "2_conclusion": {
@@ -261,12 +261,12 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、evt-synology-2026-10、live-synology-dsm-sa-26-19-2026-11"
+            "reason": "evt-91app-2026-10、evt-synology-2026-10、live-synology-dsm-sa-26-19"
           }
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T05:06:21Z"
+        "observed_at": "2026-11-13T09:42:59Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -296,7 +296,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T05:06:21Z"
+        "observed_at": "2026-11-13T09:42:59Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -326,7 +326,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T05:06:21Z"
+        "observed_at": "2026-11-13T09:42:59Z"
       }
     ],
     "4_unaffected_and_check": {
@@ -398,5 +398,6 @@
       "status": "open",
       "label": "待處理"
     }
-  }
+  },
+  "orchestrator_results": []
 }

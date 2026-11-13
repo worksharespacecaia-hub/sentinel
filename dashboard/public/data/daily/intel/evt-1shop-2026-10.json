@@ -88,8 +88,8 @@
     "mail-api-key"
   ],
   "complete": true,
-  "summary_source": "live",
-  "summary": "此事件為 1shop 疑似 Mailgun API 金鑰遭取得；比對後 mail-api-key 受影響（460 天未輪替、無 IP 白名單，中風險，分數 6），建議更換金鑰並加上來源限制。",
+  "summary_source": "template",
+  "summary": "疑似取得 1shop 寄送訂單通知信所用的 Mailgun API 金鑰（業者懷疑，尚待存取紀錄釐清）；讀取「訂單成立通知信」內容；冒用真實訂單資訊寄送「定期購／分 12 期扣款」詐騙信；誘導消費者加入假冒的 LINE 客服或點擊連結",
   "blocks": {
     "1_summary": {
       "title": "1shop 一頁購物疑 Mailgun API 金鑰遭取得，詐騙信內容吻合真實訂單",
@@ -129,8 +129,8 @@
         "max_level": null,
         "note": null
       },
-      "summary": "此事件為 1shop 疑似 Mailgun API 金鑰遭取得；比對後 mail-api-key 受影響（460 天未輪替、無 IP 白名單，中風險，分數 6），建議更換金鑰並加上來源限制。",
-      "summary_note": null,
+      "summary": "疑似取得 1shop 寄送訂單通知信所用的 Mailgun API 金鑰（業者懷疑，尚待存取紀錄釐清）；讀取「訂單成立通知信」內容；冒用真實訂單資訊寄送「定期購／分 12 期扣款」詐騙信；誘導消費者加入假冒的 LINE 客服或點擊連結",
+      "summary_note": "自動摘要未產生",
       "fixture_note": null
     },
     "2_conclusion": {
@@ -172,7 +172,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T05:06:21Z"
+        "observed_at": "2026-11-13T09:42:59Z"
       }
     ],
     "4_unaffected_and_check": {
@@ -206,5 +206,6 @@
       "status": "open",
       "label": "待處理"
     }
-  }
+  },
+  "orchestrator_results": []
 }

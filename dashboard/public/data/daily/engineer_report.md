@@ -1,4 +1,4 @@
-# 工程師報告（daily，2026-11-13T05:06:21Z）
+# 工程師報告（daily，2026-11-13T09:42:59Z）
 
 燈號：red；20 個未處理的高風險
 
@@ -15,7 +15,7 @@
 | high | 8 | node 22.11.0 有 17 個已知漏洞（NVD，最高 CVSS 9.8，CVE-2026-111497） | member-api | 24h | nvd: node@22.11.0 依 CPE 取得候選後，本地重新比對版本（17 確定、1 需確認）；修補版本：無法確定（部分漏洞沒有修補版本或範圍不明） |
 | high | 8 | synology-dsm 7.2.1-69057 Update 5 有 5 個已知漏洞（NVD，最高 CVSS 9.8，CVE-2024-10441） | nas-office-01 | 24h | nvd: synology-dsm@7.2.1-69057 Update 5 依 CPE 取得候選後，本地重新比對版本（5 確定、0 需確認）；修補版本：7.2.1-69057-7 |
 | high | 8 | next 14.1.0 有 36 個已知漏洞（最高 CVSS 9.1，CVE-2025-29927） | storefront | 24h | trivy: services/storefront next@14.1.0；修補版本：13.5.9, 14.2.25, 15.2.3, 12.3.5 |
-| high | 7 | nginx 1.27.2 有 16 個已知漏洞（NVD，最高 CVSS 9.2，CVE-2026-42055） | api-gateway | 24h | nvd: nginx@1.27.2 依 CPE 取得候選後，本地重新比對版本（16 確定、0 需確認）；修補版本：無法確定（部分漏洞沒有修補版本或範圍不明） |
+| high | 7 | nginx 1.27.2 有 17 個已知漏洞（NVD，最高 CVSS 9.2，CVE-2026-42055） | api-gateway | 24h | nvd: nginx@1.27.2 依 CPE 取得候選後，本地重新比對版本（17 確定、0 需確認）；修補版本：無法確定（部分漏洞沒有修補版本或範圍不明） |
 | high | 7 | 雲端儲存空間不得公開讀取：firebase-brand-app-storage | firebase-brand-app-storage | 24h | firebase-config.json: /user-uploads/{allPaths=**} read if true；external-scan.json: storage.shopsaas-demo.example 可匿名列出內容 |
 | high | 7 | 員工電腦不得持有正式部署權杖：laptop-eng-07 | laptop-eng-07 | 24h | mdm.json: laptop-eng-07 有 ~/.config/pipeline/token；secrets.json: deploy-token-eng07 → deploy-pipeline |
 | high | 7 | 雲端儲存空間不得公開讀取：order-exports-bucket | order-exports-bucket | 24h | external-scan.json: shopsaas-demo-order-exports.s3.example 可匿名列出內容；infra/terraform/main.tf: aws_s3_bucket_acl acl = "public-read" |
@@ -27,7 +27,7 @@
 | medium | 6 | 影子 API：GET /internal/v1/members/export（7 天 95 次） | api-gateway | 168h | api-inventory.json: Gateway 實際流量中有，但未列在 OpenAPI 規格 |
 | medium | 6 | 正式版 App 開啟 debuggable | brand-app | 168h | AndroidManifest.xml: android:debuggable="true" |
 | medium | 6 | 第三方服務金鑰 90 天內輪替且有 IP 白名單：mail-api-key | mail-api-key | 168h | secrets.json: mail-api-key：460 天未輪替、無 IP 白名單 |
-| medium | 6 | wordpress 6.4.3：CISA KEV | marketing-site | 168h | kev-cve-2026-119977：[{'start_including': '4.7', 'end_excluding': '4.7.39'}, {'start_including': '4.8', 'end_excluding': '4.8.34'}, {'start_including': '4.9', 'end_excluding': '4.9.35'}, {'start_including': '5.0', 'end_excluding': '5.0.31'}, {'start_including': '5.1', 'end_excluding': '5.1.28'}, {'start_including': '5.2', 'end_excluding': '5.2.30'}, {'start_including': '5.3', 'end_excluding': '5.3.27'}, {'start_including': '5.4', 'end_excluding': '5.4.25'}, {'start_including': '5.5', 'end_excluding': '5.5.24'}, {'start_including': '5.6', 'end_excluding': '5.6.23'}, {'start_including': '5.7', 'end_excluding': '5.7.21'}, {'start_including': '5.8', 'end_excluding': '5.8.19'}, {'start_including': '5.9', 'end_excluding': '5.9.20'}, {'start_including': '6.0', 'end_excluding': '6.0.18'}, {'start_including': '6.1', 'end_excluding': '6.1.16'}, {'start_including': '6.2', 'end_excluding': '6.2.15'}, {'start_including': '6.3', 'end_excluding': '6.3.14'}, {'start_including': '6.4', 'end_excluding': '6.4.14'}, {'start_including': '6.5', 'end_excluding': '6.5.14'}, {'start_including': '6.6', 'end_excluding': '6.6.11'}, {'start_including': '6.7', 'end_excluding': '6.7.11'}, {'start_including': '6.8', 'end_excluding': '6.8.12'}, {'start_including': '6.9', 'end_excluding': '6.9.11'}, {'start_including': '7.0', 'end_excluding': '7.0.8'}, {'start_including': '7.1', 'end_excluding': '7.1.4'}]；我們的狀況：wordpress 6.4.3，對外 |
+| medium | 6 | wordpress 6.4.3 有 3 個已知漏洞（NVD，最高 CVSS 8.1，CVE-2026-119977） | marketing-site | 168h | nvd: wordpress@6.4.3 依 CPE 取得候選後，本地重新比對版本（3 確定、1 需確認）；修補版本：無法確定（部分漏洞沒有修補版本或範圍不明） |
 | medium | 5 | App 允許明文傳輸 | brand-app | 168h | AndroidManifest.xml: android:usesCleartextTraffic="true" |
 | medium | 5 | 對外開放且無權限保護的元件 | brand-app | 168h | AndroidManifest.xml: activity .DeepLinkOrderActivity、receiver .PushCommandReceiver |
 | medium | 5 | targetSdkVersion 31 低於商店要求 | brand-app | 168h | build.gradle: targetSdkVersion 31（政策 2025-08-31 起最低 35） |
@@ -53,7 +53,6 @@
 | low | 2 | cookie 0.5.0 有 1 個已知漏洞（最高 CVSS 3.7，CVE-2024-47764） | member-api | 720h | trivy: services/member-api cookie@0.5.0；修補版本：0.7.0 |
 | low | 2 | postgresql 15.6 有 44 個已知漏洞（NVD，最高 CVSS 8.8，CVE-2024-10979） | order-db-test | 720h | nvd: postgresql@15.6 依 CPE 取得候選後，本地重新比對版本（44 確定、0 需確認）；修補版本：15.19 |
 | low | 2 | push-key-fcm-apns 存放在共用磁碟，所有辦公室人員可取用 | push-key-fcm-apns | 720h | mobile-keys.json: push-key-fcm-apns stored_in share:fileserver-01/mobile/push-keys；accessible_by all-office-staff |
-| low | 2 | php 8.4.27 有 1 個漏洞需確認執行環境或版本（NVD） | report-svc | 720h | nvd: php@8.4.27 依 CPE 取得候選後，本地重新比對版本（0 確定、1 需確認）；修補版本：無法確定（部分漏洞沒有修補版本或範圍不明） |
 | low | 1 | Git 中有測試環境金鑰（config/db.yml:7） | gitlab | 720h | config/db.yml:7 |
 | low | 0 | phpmyadmin 5.2.1 有 7 個已知漏洞（NVD，最高 CVSS 8.8，CVE-2026-119426） | phpmyadmin | 720h | nvd: phpmyadmin@5.2.1 依 CPE 取得候選後，本地重新比對版本（7 確定、0 需確認）；修補版本：無法確定（部分漏洞沒有修補版本或範圍不明） |
 
