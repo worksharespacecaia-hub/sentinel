@@ -126,7 +126,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "此事件與我們有關：laptop-eng-07 持有正式部署權杖（高風險 7 分，位於完整攻擊鏈），ai-code-assistant 可繞過 Pipeline 審核直接部署（中風險 4 分）。建議撤銷該權杖並讓正式部署只經由 Pipeline。",
+  "summary": "幣安事件的手法為取得開發者電腦上的部署憑證；我們有 2 項吻合：laptop-eng-07 持有正式部署權杖（高，7），ai-code-assistant 可繞過 Pipeline 部署（中，4）；建議撤銷該權杖並限制部署只能來自 Pipeline。",
   "blocks": {
     "1_summary": {
       "title": "幣安 63.4 億美元駭案：假面試惡意程式入侵開發者電腦，取得容器部署憑證後攻陷錢包簽章服務",
@@ -176,7 +176,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "此事件與我們有關：laptop-eng-07 持有正式部署權杖（高風險 7 分，位於完整攻擊鏈），ai-code-assistant 可繞過 Pipeline 審核直接部署（中風險 4 分）。建議撤銷該權杖並讓正式部署只經由 Pipeline。",
+      "summary": "幣安事件的手法為取得開發者電腦上的部署憑證；我們有 2 項吻合：laptop-eng-07 持有正式部署權杖（高，7），ai-code-assistant 可繞過 Pipeline 部署（中，4）；建議撤銷該權杖並限制部署只能來自 Pipeline。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -209,7 +209,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-binance-2026-10、live-evt-binance-fbi-seizure-2026-11"
+            "reason": "evt-binance-2026-10"
           },
           {
             "factor": "位於完整攻擊鏈",
@@ -219,7 +219,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T03:51:03Z"
+        "observed_at": "2026-11-13T05:06:21Z"
       },
       {
         "asset_id": "ai-code-assistant",
@@ -244,12 +244,12 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-binance-2026-10、live-evt-binance-fbi-seizure-2026-11"
+            "reason": "evt-binance-2026-10"
           }
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T03:51:03Z"
+        "observed_at": "2026-11-13T05:06:21Z"
       }
     ],
     "4_unaffected_and_check": {
@@ -299,15 +299,5 @@
       "status": "open",
       "label": "待處理"
     }
-  },
-  "updates": [
-    {
-      "id": "live-evt-binance-fbi-seizure-2026-11",
-      "title": "FBI：美國查扣遭竊自 Binance 的 12 億美元加密貨幣",
-      "date": "2026-11-13",
-      "status": "open",
-      "conclusion": "2 項受影響，最高風險為高。laptop-eng-07：mdm.json: laptop-eng-07 有 ~/.config/pipeline/token；secrets.json: deploy-token-eng07 → deploy-pipeline。",
-      "confidence": "provisional"
-    }
-  ]
+  }
 }

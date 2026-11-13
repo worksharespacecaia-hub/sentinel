@@ -1,0 +1,172 @@
+{
+  "event": {
+    "id": "live-zhengnengliang-woocommerce-2026-11",
+    "kind": "live",
+    "title": "正能量智能子公司 WooCommerce 電商資料庫遭未授權存取",
+    "date": "2026-11-11",
+    "industry": "電商",
+    "attack_chain": [
+      "WooCommerce 電商系統資料庫遭未經授權存取",
+      "資料遭擷取",
+      "公司隔離、防堵並修補安全漏洞"
+    ],
+    "attck": [],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180478",
+        "title": "正能量智能子公司電商資料庫遭未授權存取，已通知受影響消費者並啟動資安應變",
+        "quote": "正能量智能子公司電商資料庫遭未授權存取，已通知受影響消費者並啟動資安應變",
+        "published": "2026-11-13",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-13T05:06:21Z",
+        "content_hash": "sha256:92bec3d0c9f62531075c3a248b2bbf54f84d62fff49c2a5e7d4848a6691a829d",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-zhengnengliang-woocommerce-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "ai-1",
+          "source": "ai",
+          "inferred": true,
+          "target": null,
+          "hypothesis": "對外的 WordPress 站台或外掛可能有漏洞或弱密碼",
+          "why": null,
+          "check": "檢查行銷官網 WordPress 與外掛是否為最新版、有無不明管理員帳號，並查資料庫是否有異常匯出與外部連線",
+          "how": null,
+          "plain": "對外的 WordPress 站台或外掛可能有漏洞或弱密碼",
+          "basis": "AI 依事件推測：來源指出電商資料庫遭未授權存取，且公司事後採取安全漏洞修補措施",
+          "systems": [
+            {
+              "asset_id": "marketing-site",
+              "label": "行銷官網"
+            }
+          ],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "正能量運動的 WooCommerce 電商系統資料庫遭未經授權存取及資料擷取。公司已隔離系統、修補漏洞、通報主管機關並通知受影響消費者。",
+  "blocks": {
+    "1_summary": {
+      "title": "正能量智能子公司 WooCommerce 電商資料庫遭未授權存取",
+      "date": "2026-11-11",
+      "industry": "電商",
+      "attack_chain": [
+        "WooCommerce 電商系統資料庫遭未經授權存取",
+        "資料遭擷取",
+        "公司隔離、防堵並修補安全漏洞"
+      ],
+      "attck": [],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180478",
+          "title": "正能量智能子公司電商資料庫遭未授權存取，已通知受影響消費者並啟動資安應變",
+          "quote": "正能量智能子公司電商資料庫遭未授權存取，已通知受影響消費者並啟動資安應變",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-13T05:06:21Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "正能量運動的 WooCommerce 電商系統資料庫遭未經授權存取及資料擷取。公司已隔離系統、修補漏洞、通報主管機關並通知受影響消費者。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增"
+          ],
+          "observed_at": "2026-11-13T05:06:21Z",
+          "suggestions": [
+            {
+              "id": "ai-1",
+              "source": "ai",
+              "inferred": true,
+              "target": null,
+              "hypothesis": "對外的 WordPress 站台或外掛可能有漏洞或弱密碼",
+              "why": null,
+              "check": "檢查行銷官網 WordPress 與外掛是否為最新版、有無不明管理員帳號，並查資料庫是否有異常匯出與外部連線",
+              "how": null,
+              "plain": "對外的 WordPress 站台或外掛可能有漏洞或弱密碼",
+              "basis": "AI 依事件推測：來源指出電商資料庫遭未授權存取，且公司事後採取安全漏洞修補措施",
+              "systems": [
+                {
+                  "asset_id": "marketing-site",
+                  "label": "行銷官網"
+                }
+              ],
+              "controls": []
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  }
+}

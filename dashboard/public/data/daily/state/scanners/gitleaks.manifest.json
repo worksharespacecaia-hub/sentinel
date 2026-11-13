@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "run_id": "43361632961",
+  "run_id": "43369758939",
   "job": "scanners-gitleaks",
   "scope": "scanner",
   "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
-  "observed_at": "2026-11-13T03:51:55Z",
-  "valid_until": "2026-11-14T03:51:55Z",
+  "observed_at": "2026-11-13T05:07:05Z",
+  "valid_until": "2026-11-14T05:07:05Z",
   "tool_version": {
     "gitleaks": null
   },
