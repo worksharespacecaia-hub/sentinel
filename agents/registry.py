@@ -156,7 +156,8 @@ AGENTS: dict[str, AgentSpec] = {
     "a3": AgentSpec("a3", "你是 A3 早期訊號 Agent。依任務派發 Subagents，等回報後彙整。", [G, "complaint-classify"], 0.05, {
         "complaint-classifier": _s("complaint-classifier", "判斷客訴是否為疑似外洩詐騙", "任務內容附上去敏後的客訴摘要。" + OUT_EXPLAIN,
                                    skills=["complaint-classify"]),
-        "retro-hunter": _s("retro-hunter", "公告情境下說明公告前 7 天日誌中符合特徵的請求", "任務內容附上程式篩出的可疑請求。" + OUT_EXPLAIN),
+        "retro-hunter": _s("retro-hunter", "說明回溯期間日誌中符合特徵的紀錄（公告調查：公告前 7 天，必要任務；每日與情境："
+                                           "派工單追加時，事件日期前 7 天到現在）", "任務內容附上程式篩出的可疑請求。" + OUT_EXPLAIN),
     }),
     "a4": AgentSpec("a4", "你是 A4 攻擊鏈與風險 Agent。請 impact-analyst 說明高風險的影響，等回報後彙整。", [G, "risk-explain"], 0.10, {
         "impact-analyst": _s("impact-analyst", "依分數拆解說明影響品牌數、安裝數、資料欄位與業務影響（不得自行計分）",

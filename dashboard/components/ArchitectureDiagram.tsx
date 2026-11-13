@@ -1,7 +1,7 @@
 "use client";
 
 // 運作原理頁的整體架構圖：桌機橫向、手機直式，內容相同。
-// 有 Subagent 的方塊右上角顯示數量，點一下（或 Enter／空白鍵）在方塊旁顯示 Subagent 清單。
+// 有 Subagent 的方塊（含兩個 Orchestrator 框）右上角顯示數量，點一下（或 Enter／空白鍵）在方塊旁顯示 Subagent 清單。
 // 顏色全走 globals.css 的 .arch-svg 類別（跟著淺色／深色主題）。
 
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
@@ -15,6 +15,8 @@ type Layout = { W: number; H: number; boxes: Record<AgentKey, Rect> };
 // 流程：開工路由（程式）→ A0 →（只在 ③：每日情資）→ A1 → Orchestrator 派工（AI）→ A2、A3 → A4 → Orchestrator 驗收（AI）→ A5
 const WIDE: Layout = {
   W: 1120, H: 560, boxes: {
+    dispatch: { x: 404, y: 110, w: 200, h: 64 },
+    review: { x: 620, y: 110, w: 200, h: 64 },
     a0: { x: 290, y: 196, w: 96, h: 64 },
     a1: { x: 404, y: 196, w: 96, h: 64 },
     a2: { x: 520, y: 196, w: 84, h: 40 },
@@ -31,9 +33,11 @@ const NARROW: Layout = {
     a0: { x: 20, y: 176, w: 280, h: 44 },
     daily: { x: 156, y: 236, w: 144, h: 44 },
     a1: { x: 20, y: 296, w: 128, h: 44 },
+    dispatch: { x: 156, y: 296, w: 144, h: 44 },
     a2: { x: 20, y: 356, w: 134, h: 44 },
     a3: { x: 166, y: 356, w: 134, h: 44 },
     a4: { x: 20, y: 416, w: 128, h: 44 },
+    review: { x: 156, y: 416, w: 144, h: 44 },
     a5: { x: 20, y: 476, w: 156, h: 56 },
     incident: { x: 20, y: 548, w: 128, h: 44 },
   },
@@ -176,7 +180,7 @@ function Wide({ pick }: { pick: Pick }) {
       <AgentBox k="daily" layout={L} variant="w" pick={pick} lines={["每日情資・只在 ③", "判讀新聞，交給 A1"]} />
 
       {/* Orchestrator（AI 規劃＋程式政策）：派工與驗收，只能追加、排優先 */}
-      <Box x={404} y={110} w={200} h={64} cls="orch" lines={["Orchestrator 派工（AI）", "依情資追加任務、排優先"]} />
+      <AgentBox k="dispatch" layout={L} variant="w" pick={pick} cls="orch" lines={["Orchestrator 派工（AI）", "依情資追加任務、排優先"]} />
       <path className="edge" d="M452 196V174" markerEnd={A} />
       <path className="edge" d="M562 174V196" markerEnd={A} />
       <path className="edge" d="M512 174V264H520" markerEnd={A} />
@@ -187,7 +191,7 @@ function Wide({ pick }: { pick: Pick }) {
       <path className="edge" d="M616 240H628" markerEnd={A} />
 
       <AgentBox k="a4" layout={L} variant="w" pick={pick} lines={["入侵路徑", "評分 · A4"]} />
-      <Box x={620} y={110} w={200} h={64} cls="orch" lines={["Orchestrator 驗收（AI）", "看結果追加後續、寫摘要"]} />
+      <AgentBox k="review" layout={L} variant="w" pick={pick} cls="orch" lines={["Orchestrator 驗收（AI）", "看結果追加後續、寫摘要"]} />
       <path className="edge" d="M704 196V174" markerEnd={A} />
       <path className="edge" d="M778 174V196" markerEnd={A} />
       <AgentBox k="a5" layout={L} variant="w" pick={pick} lines={["報告與建議", "A5"]} />
@@ -247,7 +251,7 @@ function Narrow({ pick }: { pick: Pick }) {
 
       <AgentBox k="a1" layout={L} variant="n" pick={pick} lines={["外部情資", "A1"]} />
       <path className="edge" d="M148 318H156" markerEnd={A} />
-      <Box x={156} y={296} w={144} h={44} cls="orch" lines={["Orchestrator", "派工（AI）"]} />
+      <AgentBox k="dispatch" layout={L} variant="n" pick={pick} cls="orch" lines={["Orchestrator", "派工（AI）"]} />
 
       <path className="edge" d="M180 340V348H87V356" markerEnd={A} />
       <path className="edge" d="M233 340V356" markerEnd={A} />
@@ -258,7 +262,7 @@ function Narrow({ pick }: { pick: Pick }) {
       <path className="edge" d="M233 400V408H120V416" markerEnd={A} />
       <AgentBox k="a4" layout={L} variant="n" pick={pick} lines={["入侵路徑與評分", "A4"]} />
       <path className="edge" d="M148 438H156" markerEnd={A} />
-      <Box x={156} y={416} w={144} h={44} cls="orch" lines={["Orchestrator", "驗收（AI）"]} />
+      <AgentBox k="review" layout={L} variant="n" pick={pick} cls="orch" lines={["Orchestrator", "驗收（AI）"]} />
 
       <path className="edge" d="M228 460V468H98V476" markerEnd={A} />
       <AgentBox k="a5" layout={L} variant="n" pick={pick} lines={["報告與建議", "A5"]} />
@@ -332,11 +336,12 @@ export default function ArchitectureDiagram() {
     </figure>
       <details className="sa-all">
         <summary>
-          列出全部 Subagent（A0～A5 與告警調查共 {SDK_SUBAGENT_COUNT} 個，其中 {PLANNED_SUBAGENT_COUNT} 個尚未實作；每日情資 {AGENT_SUBAGENTS.daily.subs.length} 個）
+          列出全部 Subagent（Orchestrator、A0～A5 與告警調查共 {SDK_SUBAGENT_COUNT} 個，其中 {PLANNED_SUBAGENT_COUNT} 個尚未實作；每日情資 {AGENT_SUBAGENTS.daily.subs.length} 個）
         </summary>
         <p className="muted">
-          {"每個 Agent 是一個 GitHub Actions Job，Job 內再派發 Subagent 分工（A0～A5 與告警調查由 Agent SDK 派發，每日情資由 Claude Code 派發）。" +
-            "Subagent 只負責判讀與撰寫說明，不計分、不定燈號。"}
+          {"每個 Agent 是一個 GitHub Actions Job，Job 內再派發 Subagent 分工（Orchestrator、A0～A5 與告警調查由 Agent SDK 派發，每日情資由 Claude Code 派發；" +
+            "每日例行的 Orchestrator 派工與驗收改由 Claude Code（訂閱方案）直接提案）。" +
+            "Subagent 只負責判讀、提案與撰寫說明，不計分、不定燈號；Orchestrator 的提案都經程式核准。"}
         </p>
         <SubagentMap />
       </details>

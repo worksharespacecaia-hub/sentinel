@@ -5,13 +5,14 @@ import { AGENT_SUBAGENTS, SDK_SUBAGENT_COUNT, type AgentKey } from "./subagents.
 
 const ROOT = new URL("../../", import.meta.url);
 
-// registry.py 的 AGENTS：每個 Agent 區塊以 `"<key>": AgentSpec(` 開頭，Subagent 以 `_s("<name>"` 定義
+// registry.py 的 AGENTS：每個 Agent 區塊以 `"<key>": AgentSpec(` 開頭，Subagent 以 `_s("<name>"` 定義。
+// key 可含連字號（orchestrator-dispatch、orchestrator-review），否則兩個 Orchestrator Agent 會被略過、沒有比對
 function registrySubagents(): Map<string, string[]> {
   const src = readFileSync(new URL("agents/registry.py", ROOT), "utf8");
   const out = new Map<string, string[]>();
   let current = "";
   for (const line of src.split("\n")) {
-    const agent = line.match(/^\s*"([a-z0-9]+)": AgentSpec\(/);
+    const agent = line.match(/^\s*"([a-z0-9-]+)": AgentSpec\(/);
     if (agent) { current = agent[1]; out.set(current, []); }
     const sub = line.match(/_s\("([a-z-]+)"/);
     if (sub && current) out.get(current)!.push(sub[1]);
@@ -19,16 +20,21 @@ function registrySubagents(): Map<string, string[]> {
   return out;
 }
 
-const PAGE_KEY: Record<string, AgentKey> = { a0: "a0", a1: "a1", a2: "a2", a3: "a3", a4: "a4", a5: "a5", incident: "incident" };
+const PAGE_KEY: Record<string, AgentKey> = {
+  "orchestrator-dispatch": "dispatch", "orchestrator-review": "review",
+  a0: "a0", a1: "a1", a2: "a2", a3: "a3", a4: "a4", a5: "a5", incident: "incident",
+};
 
 test("運作原理頁的 Subagent 清單與 agents/registry.py 一致", () => {
   const reg = registrySubagents();
-  assert.deepEqual(reg.get("orchestrator"), [], "Orchestrator 不派 Subagent");
+  // 開工路由（router，原 orchestrator）是純程式，不在 registry；Orchestrator 是派工與驗收兩個 Agent
+  assert.ok(!reg.has("orchestrator") && !reg.has("router"), "開工路由是純程式，不應出現在 registry");
+  assert.deepEqual(reg.get("orchestrator-dispatch"), ["planner"]);
+  assert.deepEqual(reg.get("orchestrator-review"), ["reviewer"]);
   for (const [agent, key] of Object.entries(PAGE_KEY)) {
     assert.deepEqual(AGENT_SUBAGENTS[key].subs.map((s) => s.name).sort(), [...(reg.get(agent) ?? [])].sort(), agent);
   }
-  const regAgents = [...reg.keys()].filter((k) => k !== "orchestrator").sort();
-  assert.deepEqual(regAgents, Object.keys(PAGE_KEY).sort(), "registry.py 有新的 Agent，運作原理頁也要加上");
+  assert.deepEqual([...reg.keys()].sort(), Object.keys(PAGE_KEY).sort(), "registry.py 有新的 Agent，運作原理頁也要加上");
   assert.equal(SDK_SUBAGENT_COUNT, [...reg.values()].reduce((n, s) => n + s.length, 0));
 });
 

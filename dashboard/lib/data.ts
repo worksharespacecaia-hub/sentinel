@@ -1,6 +1,6 @@
 // 伺服器端讀取 A5 發布的 public/data（唯讀）。來源只接受 index.json 中存在的 daily 或情境，不接受任意路徑。
 import { promises as fs } from "node:fs";
-import type { AgentPlan } from "./agentplan";
+import type { OrchestratorResult, RawAgentPlan } from "./agentplan";
 import path from "node:path";
 import { buildDigestView, flattenLatest, isDigestLatest, type DailyInfo, type DigestLatest, type DigestView } from "./digest.ts";
 
@@ -41,7 +41,11 @@ export interface Report {
                level_floor: string | null; reason: string; owner: string | null; observed_sources: string[] }[];
   app_impact: Record<string, unknown>; execution_mode: string; open_alerts: unknown[];
   scoring?: ScoringInfo;
-  agent_plan?: AgentPlan | null;        // 動態派工（AI 建議、程式核准）；舊報告沒有這個欄位
+  // Orchestrator 的派工單與驗收單（AI 提案、程式核准）：v0.13 起為 {dispatch, review}；v0.11～v0.12 為單一計畫（視為派工）；
+  // 更舊的報告沒有這個欄位。頁面一律經 lib/agentplan.ts 的 normalizePlans 讀取
+  agent_plan?: RawAgentPlan;
+  /** Orchestrator 追加結果（v0.13 起）：派工（A2、A3）與驗收（A5）追加任務的文字；舊報告沒有這個欄位 */
+  orchestrator_results?: OrchestratorResult[];
 }
 export interface IndexEntry { run_id: string; generated_at: string; target_sha: string; completeness: string; path: string; light: Light; execution_mode: string }
 export interface DataIndex {
