@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import {
   NEWS_FAILED_TEXT, NEWS_UNKNOWN_TEXT, buildDigestView, detailLink, filterDigest, groupEvents, isDigestLatest, isStale,
-  mergeImpacts, newsNotice, parseSuggestions, pruneForView, relationLabel, safeHref, windowBounds,
+  hintsSourceOf, mergeImpacts, newsNotice, parseSuggestions, pruneForView, relationLabel, safeHref, windowBounds,
   type Card, type DailyInfo, type DigestAssessment, type DigestEvent, type DigestLatest,
 } from "./digest.ts";
 import { fmtDateHeading, fmtTime, taipeiDate } from "./labels.ts";
@@ -313,9 +313,9 @@ test("parseSuggestions：缺欄位、null、字串、錯誤項目都視為空陣
     { text: "系統不是陣列", systems: "寄信服務" },
     { text: "只留字串系統", systems: ["寄信服務", 1, null, { label: "x" }, "商店網站"] },
   ]), [
-    { text: "沒有系統欄位", systems: [] },
-    { text: "系統不是陣列", systems: [] },
-    { text: "只留字串系統", systems: ["寄信服務", "商店網站"] },
+    { text: "沒有系統欄位", systems: [], source: "rule" },
+    { text: "系統不是陣列", systems: [], source: "rule" },
+    { text: "只留字串系統", systems: ["寄信服務", "商店網站"], source: "rule" },
   ]);
   const many = parseSuggestions([
     { text: "長".repeat(400), systems: Array.from({ length: 8 }, (_, i) => `系統${i}`) },
@@ -338,8 +338,9 @@ test("卡片：父事件與新進度都帶出查核建議；沒有建議的舊�
   const view = buildDigestView(latestOf([parent, child, old]), NOW, DAILY, new Set());
   const groups = view.days[0].groups;
   const g = groups.find((x) => x.head.id === "evt-p")!;
-  assert.deepEqual(g.head.suggestions, s1);
-  assert.deepEqual(g.updates.map((u) => [u.id, u.suggestions]), [["evt-c", s2]]);
+  // 0.12.0 的資料沒有 source：視為規則推測（specs/check-hints-ai R5.3）
+  assert.deepEqual(g.head.suggestions, s1.map((s) => ({ ...s, source: "rule" })));
+  assert.deepEqual(g.updates.map((u) => [u.id, u.suggestions]), [["evt-c", s2.map((s) => ({ ...s, source: "rule" }))]]);
   assert.deepEqual(groups.find((x) => x.head.id === "evt-old")!.head.suggestions, []);
 });
 
@@ -350,6 +351,51 @@ test("suggestions 格式錯誤不讓整份整理無效：isDigestLatest 仍通�
     assert.equal(isDigestLatest(latest), true, JSON.stringify(bad));
     const g = buildDigestView(latest, NOW, DAILY, new Set()).days[0].groups[0];
     assert.deepEqual(g.head.suggestions, []);
-    assert.deepEqual(g.updates[0].suggestions, [{ text: "保留這條", systems: [] }]);
+    assert.deepEqual(g.updates[0].suggestions, [{ text: "保留這條", systems: [], source: "rule" }]);
   }
+});
+
+// ── 推測來源（specs/check-hints-ai R5.1、R5.3） ─────────────────────────
+
+test("parseSuggestions 的 source：只接受 ai／rule，缺值、null、大小寫不同或其他值都當成 rule", () => {
+  const got = parseSuggestions([
+    { text: "AI 寫的", source: "ai" }, { text: "規則寫的", source: "rule" }, { text: "沒有來源" },
+  ]);
+  assert.deepEqual(got.map((s) => s.source), ["ai", "rule", "rule"]);
+  for (const bad of [null, "", "AI", "Ai", " ai", "program", "generic", 1, true, { v: "ai" }, ["ai"]]) {
+    assert.equal(parseSuggestions([{ text: "x", source: bad }])[0].source, "rule", JSON.stringify(bad));
+  }
+  // source 不合法不影響其他欄位，也不會讓該項被略過
+  assert.deepEqual(parseSuggestions([{ text: "保留", systems: ["寄信服務"], source: 7 }]), [{ text: "保留", systems: ["寄信服務"], source: "rule" }]);
+});
+
+test("hintsSourceOf：全 ai 為 ai、全 rule 為 rule、混用為 mixed", () => {
+  const s = (source: "ai" | "rule") => ({ text: "x", systems: [], source });
+  assert.equal(hintsSourceOf([s("ai")]), "ai");
+  assert.equal(hintsSourceOf([s("ai"), s("ai"), s("ai")]), "ai");
+  assert.equal(hintsSourceOf([s("rule"), s("rule")]), "rule");
+  assert.equal(hintsSourceOf([s("ai"), s("rule")]), "mixed");
+  assert.equal(hintsSourceOf([s("rule"), s("rule"), s("ai")]), "mixed");
+});
+
+test("卡片 hintsSource：父事件與新進度各自依自己的建議計算；舊資料沒有 source 時為 rule", () => {
+  const parent = ev("evt-p", {}, { relation: "need_check", suggestions: [
+    { text: "會員訂單 API 可能缺少存取控制或限流", systems: ["API 閘道"], source: "ai" },
+    { text: "第二條 AI 推測", systems: [], source: "ai" }] });
+  const child = ev("evt-c", { is_update_of: "evt-p" }, { relation: "need_check", suggestions: [
+    { text: "委外廠商被入侵", systems: ["寄信服務"], source: "rule" }] });
+  const mixedChild = ev("evt-m", { is_update_of: "evt-p", first_seen: "2026-11-11", event_date: "2026-11-11" }, { relation: "need_check", suggestions: [
+    { text: "AI 這條", systems: [], source: "ai" }, { text: "規則這條", systems: [], source: "rule" }] });
+  const old = ev("evt-old", {}, { relation: "need_check", suggestions: [{ text: "舊資料的推測", systems: [] }] });
+  const none = ev("evt-none", {}, { relation: "need_check" });
+  const view = buildDigestView(latestOf([parent, child, mixedChild, old, none]), NOW, DAILY, new Set());
+  const groups = view.days[0].groups;
+  const g = groups.find((x) => x.head.id === "evt-p")!;
+  assert.equal(g.head.hintsSource, "ai");
+  assert.deepEqual(g.head.suggestions.map((s) => s.source), ["ai", "ai"]);
+  assert.deepEqual(g.updates.map((u) => [u.id, u.hintsSource]), [["evt-c", "rule"], ["evt-m", "mixed"]]);
+  assert.deepEqual(g.updates[1].suggestions.map((s) => s.source), ["ai", "rule"]);
+  assert.equal(groups.find((x) => x.head.id === "evt-old")!.head.hintsSource, "rule");
+  const n = groups.find((x) => x.head.id === "evt-none")!.head;
+  assert.deepEqual(n.suggestions, []);
 });

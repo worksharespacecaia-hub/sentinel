@@ -9,7 +9,15 @@ import { extraCheckRows } from "@/lib/agentplan";
 export const dynamic = "force-dynamic";
 
 const VERDICT: Record<string, string> = { affected: "受影響", not_affected: "不受影響", need_check: "需確認" };
-const HINT_SOURCE: Record<string, string> = { rule: "規則", ai: "AI 推測" };
+/**
+ * 來源欄（specs/check-hints-ai R5.2）：AI 推測；規則推測（source=rule 且 inferred=true）；
+ * 依原因與通用建議（source=rule、非推測）為「程式」。source 不認得時顯示「—」，不替它宣稱來源。
+ */
+function hintSourceText(source: string | null, inferred: boolean): string {
+  if (source === "ai") return "AI 推測";
+  if (source === "rule") return inferred ? "規則推測" : "程式";
+  return "—";
+}
 
 interface HintRow { hypothesis: string; check: string; systems: string; how: string; controls: string; basis: string; source: string; inferred: boolean }
 
@@ -23,6 +31,7 @@ function hintRows(raw: unknown): HintRow[] {
     const systems = objs(s.systems).map((x) => txt(x.label) ?? txt(x.asset_id)).filter((x): x is string => x !== null);
     const controls = objs(s.controls).map((c) => `${txt(c.title) ?? txt(c.control_id) ?? "—"}：${txt(c.status_label) ?? "資料不足"}`);
     const source = txt(s.source);
+    const inferred = s.inferred === true;
     return {
       hypothesis: txt(s.hypothesis) ?? "—",
       check: txt(s.check) ?? "—",
@@ -30,8 +39,8 @@ function hintRows(raw: unknown): HintRow[] {
       how: txt(s.how) ?? "—",
       controls: controls.length ? controls.join("；") : "—",
       basis: txt(s.basis) ?? "—",
-      source: (source && HINT_SOURCE[source]) ?? "—",
-      inferred: s.inferred === true,
+      source: hintSourceText(source, inferred),
+      inferred,
     };
   });
 }
