@@ -45,6 +45,18 @@ class EvalInput:
     agent_plan: dict | None = None             # 動態派工：A1 計畫（已由 agent_plan.load_agent_plan 核對）；只追加呈現，不影響判定
 
 
+def _without_entry_points(events: list) -> list:
+    """AI 推測欄位只能來自 daily-intel 入口（specs/check-hints R4.6）：其他來源的 raw 事件一律移除，不看事件自己填的 kind。
+    複製後再移除，不修改呼叫端傳入的事件。"""
+    out = []
+    for e in events:
+        if isinstance(e, dict):
+            e = dict(e)
+            e.pop("possible_entry_points", None)
+        out.append(e)
+    return out
+
+
 def event_sources(inp: EvalInput) -> list[dict]:
     raw = []
     if "archive" in inp.intel_kinds:
@@ -56,7 +68,8 @@ def event_sources(inp: EvalInput) -> list[dict]:
         raw += load_events(INTEL_DIR / "demo-events")
     for d in inp.extra_event_dirs:
         raw += load_events(d)
-    raw += inp.live_events
+    raw = _without_entry_points(raw)
+    raw += inp.live_events                 # 只有 daily_intel 清理後的快照保留 possible_entry_points
     return raw
 
 

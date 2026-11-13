@@ -181,6 +181,13 @@ class Source(_Model):
     verification_basis: Literal["live", "archived", "demo", "unverified", "official_api"] = "unverified"
 
 
+class EntryPoint(_Model):
+    """daily-intel 的 AI 推測「可能從哪裡進來」（specs/check-hints R4）：只用於顯示，不進比對與評分。"""
+    topic: str | None = None                       # rules/check-hints.json 的 target ID
+    text: str = Field(min_length=1, max_length=100)
+    basis: str = Field(min_length=1, max_length=120)
+
+
 class IntelEvent(_Model):
     id: str
     kind: Literal["live", "archive", "demo", "advisory"]
@@ -201,6 +208,8 @@ class IntelEvent(_Model):
     facts: list[dict] = Field(default_factory=list)
     summary: str | None = None
     fixture_note: str | None = None
+    # 只有 daily-intel 入口可帶（pipeline.event_sources 移除其他來源的這個欄位，R4.6）
+    possible_entry_points: list[EntryPoint] = Field(default_factory=list, max_length=3)
 
 
 class StackImpact(_Model):

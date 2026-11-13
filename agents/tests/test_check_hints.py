@@ -1,4 +1,4 @@
-"""需確認項目的查核建議（specs/check-hints，T1）：規則表驗證、R2 依原因、R3 破口推測、R4 AI 推測消費端、R8.1 固定資料。"""
+"""需確認項目的查核建議（specs/check-hints，T1～T3）：規則表驗證、R2 依原因、R3 破口推測、R4 AI 推測消費端、R8.1 固定資料、情資報告 markdown。"""
 import copy
 import json
 import re
@@ -482,3 +482,109 @@ def test_r81_arara_and_false_positive_rules(rules, fx_events, fx_graph):
     ez = {h["target"]["id"] for h in ch.detect_targets(fx_events["live-eztravel-member-center-breach-2026-11"], rules)}
     sf = {h["target"]["id"] for h in ch.detect_targets(fx_events["live-sharefull-admin-breach-2026-11"], rules)}
     assert "mail" not in ez and not {"mail", "member-portal"} & sf
+
+
+# ── R5.3：情資報告（intel_report）──────────────────────────────
+
+def _report_match(need_suggestions=None):
+    """一件受影響＋兩件需確認的比對結果；need_suggestions 為 None 時需確認項目不帶 suggestions 鍵（舊資料）。"""
+    from tools.intel_report import build_report   # noqa: F401（確認可匯入）
+    e = {**ev(title="某公司遭駭"), "date": "2026-11-10", "confidence": "provisional", "sources": [
+        {"url": "https://example.test/1", "title": "來源一", "quote": "q"}]}
+    impacts = [
+        {"event_id": e["id"], "asset_id": "storefront", "basis": "version", "our_state": "next 15.0.0", "verdict": "affected",
+         "risk_id": "r-x", "reason": "版本在受影響範圍", "to_verify": []},
+        {"event_id": e["id"], "asset_id": "*", "basis": "control", "our_state": "沒有比對依據", "verdict": "need_check",
+         "risk_id": None, "reason": "事件沒有可比對的產品", "to_verify": [GENERIC_1, GENERIC_2]},
+        {"event_id": e["id"], "asset_id": "cache-redis", "basis": "version", "our_state": "redis 7.0.15",
+         "verdict": "need_check", "risk_id": None, "reason": "版本範圍無法判斷", "to_verify": []},
+    ]
+    if need_suggestions is not None:
+        impacts[1]["suggestions"], impacts[2]["suggestions"] = need_suggestions
+    return {"event": e, "impacts": impacts, "status": "need_check", "notes": [], "complete": True}
+
+
+def test_report_rows_only_need_check_carry_suggestions(rules, fx_graph):
+    from tools.intel_report import build_report
+    rule = ch.suggest_for_event(ev(title="某公司會員中心遭駭"), graph=fx_graph, controls={}, rules=rules, labels={})
+    rep = build_report(_report_match((rule, [])), {}, {})
+    affected = [r for r in rep["blocks"]["4_unaffected_and_check"]["need_check"] + rep["blocks"]["3_affected"]
+                if r["verdict"] == "affected"]
+    assert affected and all("suggestions" not in r for r in affected)
+    need = rep["blocks"]["4_unaffected_and_check"]["need_check"]
+    assert [r["suggestions"] for r in need] == [rule, []]
+    old = build_report(_report_match(None), {}, {})                      # 舊資料：需確認項目沒有 suggestions 時為空陣列
+    assert [r["suggestions"] for r in old["blocks"]["4_unaffected_and_check"]["need_check"]] == [[], []]
+    assert all("suggestions" not in r for r in old["blocks"]["3_affected"])
+
+
+def test_markdown_suggestion_subitems_and_inferred_mark(rules, fx_graph):
+    from tools.intel_report import build_report, to_markdown
+    labels = {"mail-service": "寄信服務"}
+    rule = ch.suggest_for_event(ev(title="某寄信服務商遭入侵"), graph=fx_graph, controls={}, rules=rules, labels=labels)
+    pep = [{"text": "可能是後台帳號遭盜用；查後台登入紀錄", "basis": "攻擊過程第 1 步"}]
+    ai = ch.suggest_for_event(ev(title="某公司遭駭", possible_entry_points=pep), graph=fx_graph, controls={}, rules=rules,
+                              labels=labels)
+    r2 = ch.reason_suggestions({"asset_id": "cache-redis"}, {"kind": "version_unknown", "product": "redis",
+                                                             "ecosystem": "generic", "affected": []},
+                               controls={}, labels=labels)
+    generic = ch.generic_suggestions(ev())
+    md = to_markdown(build_report(_report_match((rule + ai + generic, r2)), {}, {}))
+    lines = md.split("\n")
+    i = lines.index(f"- 需確認：*：{GENERIC_1}；{GENERIC_2}")
+    sub = lines[i + 1: i + 1 + len(rule) + len(ai) + len(generic)]
+    assert all(s.startswith("  - ") for s in sub)
+    # R3 規則推測：標「（推測）」；系統有白話名稱用名稱，沒有時顯示 asset_id
+    first = rule[0]
+    assert first["id"] == "vendor-data-leak"
+    names = "、".join(x["label"] or x["asset_id"] for x in first["systems"])
+    assert sub[0] == f"  - （推測）{first['hypothesis']}；查：{first['check']}；系統：{names}"
+    assert "寄信服務" in names and any(x["label"] is None and x["asset_id"] in names for x in first["systems"])
+    # AI 推測：標「（推測）」；hypothesis 與 check 同文不重複；沒有 topic 時不列系統
+    assert sub[len(rule)] == f"  - （推測）{pep[0]['text']}"
+    # 通用建議（R3.7）不加「（推測）」
+    assert sub[len(rule) + 1:] == [f"  - 查：{GENERIC_1}", f"  - 查：{GENERIC_2}"]
+    # R2 依原因：不加「（推測）」，系統顯示 asset_id（沒有白話名稱）
+    j = lines.index("- 需確認：cache-redis：版本範圍無法判斷")
+    assert lines[j + 1] == f"  - 查：{r2[0]['check']}；系統：cache-redis"
+    assert "（推測）" not in lines[j + 1] and not lines[j + 2].startswith("  - ")
+    # 沒有相關系統的破口假設仍保留，顯示「盤點中沒有對應系統」（R3.3）
+    lonely = ch.suggest_for_event(ev(title="某公司會員中心遭駭"), graph={}, controls={}, rules=rules, labels={})
+    md2 = to_markdown(build_report(_report_match((lonely[:1], [])), {}, {}))
+    assert f"  - （推測）{lonely[0]['hypothesis']}；查：{lonely[0]['check']}；系統：盤點中沒有對應系統" in md2.split("\n")
+
+
+MD_WITHOUT_SUGGESTIONS = f"""# 某公司遭駭
+`真實` `暫定`
+
+**結論：1 項受影響，最高風險為未評。storefront：next 15.0.0。**
+
+## 事件摘要
+某公司遭駭
+
+_自動摘要未產生_
+
+## 受影響項目
+| 資產 | 我們的狀況 | 比對依據 | 結論 | 風險 |
+|------|----------|---------|------|------|
+| storefront | next 15.0.0 | version | 受影響 | — |
+
+## 不受影響與需確認
+- 需確認：*：{GENERIC_1}；{GENERIC_2}
+- 需確認：cache-redis：版本範圍無法判斷
+
+## 處理狀態
+待處理
+
+## 來源
+- 來源一：https://example.test/1
+"""
+
+
+def test_markdown_without_suggestions_is_unchanged():
+    """沒有建議的報告（舊資料沒有 suggestions 鍵，或空陣列）markdown 與改動前相同。"""
+    from tools.intel_report import build_report, to_markdown
+    old = to_markdown(build_report(_report_match(None), {}, {}))
+    assert old == MD_WITHOUT_SUGGESTIONS                                  # 與改動前的 to_markdown 輸出逐字相同
+    assert to_markdown(build_report(_report_match(([], [])), {}, {})) == old
+    assert not any(line.startswith("  - ") for line in old.split("\n"))

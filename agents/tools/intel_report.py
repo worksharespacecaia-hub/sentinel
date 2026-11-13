@@ -21,11 +21,15 @@ def build_report(match: dict, risks_by_id: dict[str, dict], graph_nodes: dict, *
     rows = []
     for i in affected + need:
         r = risks_by_id.get(i.get("risk_id") or "")
-        rows.append({"asset_id": i["asset_id"], "our_state": i["our_state"], "basis": i["basis"], "verdict": i["verdict"],
-                     "reason": i.get("reason", ""), "risk_id": i.get("risk_id"),
-                     "level": r["level"] if r else None, "score": r["score"] if r else None,
-                     "breakdown": r["breakdown"] if r else [], "app_impact": i.get("app_impact"),
-                     "to_verify": i.get("to_verify", []), "observed_at": observed_at})
+        row = {"asset_id": i["asset_id"], "our_state": i["our_state"], "basis": i["basis"], "verdict": i["verdict"],
+               "reason": i.get("reason", ""), "risk_id": i.get("risk_id"),
+               "level": r["level"] if r else None, "score": r["score"] if r else None,
+               "breakdown": r["breakdown"] if r else [], "app_impact": i.get("app_impact"),
+               "to_verify": i.get("to_verify", []), "observed_at": observed_at}
+        if i["verdict"] == "need_check":
+            # 查核建議（specs/check-hints）只附在需確認項目；受影響項目不加這個鍵，JSON 與改動前相同
+            row["suggestions"] = i.get("suggestions") or []
+        rows.append(row)
 
     if affected:
         status = "open"
@@ -95,6 +99,22 @@ def build_report(match: dict, risks_by_id: dict[str, dict], graph_nodes: dict, *
     }
 
 
+def _suggestion_line(s: dict) -> str:
+    """需確認項目下的查核建議子項（design §5.3）：推測加「（推測）」；系統顯示白話名稱，沒有時顯示 ID。"""
+    check = s.get("check") or ""
+    head = s.get("hypothesis") or ""
+    parts = [head] if head else []
+    if check and check != head:            # AI 推測的 hypothesis 與 check 同文，不重複
+        parts.append(f"查：{check}")
+    systems = [x.get("label") or x.get("asset_id") for x in s.get("systems") or [] if isinstance(x, dict)]
+    systems = [x for x in systems if x]
+    if systems:
+        parts.append(f"系統：{'、'.join(systems)}")
+    elif s.get("source") == "rule" and s.get("target"):
+        parts.append("系統：盤點中沒有對應系統")   # R3.3：沒有相關系統的破口假設仍保留
+    return ("（推測）" if s.get("inferred") else "") + "；".join(parts)
+
+
 def to_markdown(rep: dict) -> str:
     b = rep["blocks"]
     s1 = b["1_summary"]
@@ -123,7 +143,9 @@ def to_markdown(rep: dict) -> str:
     if u["not_affected"] or u["need_check"] or u["notes"]:
         lines.append("## 不受影響與需確認")
         lines += [f"- {i['asset_id']}：{i['our_state']}，{i['reason']}" for i in u["not_affected"]]
-        lines += [f"- 需確認：{i['asset_id']}：{'；'.join(i['to_verify']) or i['reason']}" for i in u["need_check"]]
+        for i in u["need_check"]:
+            lines.append(f"- 需確認：{i['asset_id']}：{'；'.join(i['to_verify']) or i['reason']}")
+            lines += [f"  - {_suggestion_line(s)}" for s in i.get("suggestions") or [] if isinstance(s, dict)]
         lines += [f"- {n}" for n in u["notes"]]
         lines.append("")
     if b.get("8_extra_checks"):
