@@ -4,11 +4,11 @@
 """
 from __future__ import annotations
 
+import copy
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 
-from tools.agent_plan import planner_checks
 from tools.attack_path import find_paths
 from tools.check_hints import attach as attach_check_hints
 from tools.check_hints import load_rules as load_check_rules
@@ -19,6 +19,7 @@ from tools.intel_match import inherit_updates, match_event, merge_findings, stac
 from tools.intel_verify import load_events, verify_event
 from tools.lights import LABEL, compute_light
 from tools.loaders import TargetData, load_target
+from tools.orchestration import planner_checks
 from tools.reconcile import reconcile
 from tools.risk_engine import attach_paths, build_risks, link_events, mark_fixed
 from tools.scoring import load_weights
@@ -42,7 +43,7 @@ class EvalInput:
     signal_overrides: dict | None = None
     target_sha: str | None = None
     preverified: list[dict] | None = None      # A1 已驗證的 [{event, verification}]，避免重抓來源
-    agent_plan: dict | None = None             # 動態派工：A1 計畫（已由 agent_plan.load_agent_plan 核對）；只追加呈現，不影響判定
+    agent_plan: dict | None = None             # 派工單核准的 control（orchestration.approve_core 帶入 {"approved": [...]}）；只追加呈現，不影響判定
 
 
 def _without_entry_points(events: list) -> list:
@@ -84,7 +85,8 @@ def evaluate(inp: EvalInput) -> dict:
     g = build_graph(data, recon)
 
     if inp.preverified is not None:
-        verified = list(inp.preverified)
+        # 獨立拷貝（R5.1b）：inherit_updates 會原地改寫事件；A1 原始 verified 只用於計算雜湊與核對，不能被改動
+        verified = copy.deepcopy(inp.preverified)
     else:
         verified = [verify_event(raw, as_of=inp.as_of, online=inp.online_verify) for raw in event_sources(inp)]
     events = [v["event"] for v in verified]

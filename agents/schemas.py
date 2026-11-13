@@ -226,6 +226,18 @@ class StackImpact(_Model):
     suggestions: list[dict] = Field(default_factory=list)   # 查核建議：只有 need_check 有內容；由 tools/check_hints 產生（specs/check-hints）
 
 
+class OrchestratorResult(_Model):
+    """Orchestrator 的追加結果（specs/orchestrator R5.7）：派工（A2 事件導向解讀、A3 回溯搜查）與驗收（A5 追加任務）。
+    只補充說明，不影響分數、燈號與結論；text 已去敏。"""
+    stage: Literal["dispatch", "review"]
+    agent: str
+    subagent: str
+    target_type: Literal["event", "risk"]
+    target_id: str
+    text: str = Field(max_length=600)
+    source: ResultSource
+
+
 class IntelMatchReport(_Model):
     event: IntelEvent
     conclusion: str
@@ -240,6 +252,7 @@ class IntelMatchReport(_Model):
     summary_source: ResultSource
     summary: str = ""
     blocks: dict = Field(default_factory=dict)
+    orchestrator_results: list[OrchestratorResult] = Field(default_factory=list)   # 只放 target 為這件事件的追加結果
 
 
 class Manifest(_Model):
@@ -286,7 +299,10 @@ class Report(_Model):
     app_impact: dict = Field(default_factory=dict)
     scoring: dict | None = None                # 本次使用的燈號權重（rules/scoring.json）
     execution_mode: Literal["replay", "record", "live", "template"] = "template"
-    agent_plan: dict | None = None             # 動態派工：AI 建議、程式核准的計數與明細（不影響分數、燈號、結論）
+    # Orchestrator（specs/orchestrator R9.2）：{"dispatch": 派工單, "review": 驗收單}，最終有效的計畫（停用的為 null），
+    # 各含來源、計數、核准與拒絕明細（驗收單另有 summary）；兩份都停用時為 None。不影響分數、燈號、結論
+    agent_plan: dict | None = None
+    orchestrator_results: list[OrchestratorResult] = Field(default_factory=list)   # 全部追加結果（R5.7）
 
 
 class IntelWatchResult(_Model):

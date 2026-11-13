@@ -36,22 +36,28 @@ function Card({ a }: { a: AgentInfo }) {
   );
 }
 
-const ORCHESTRATOR: AgentInfo = { id: "路由", title: "開工路由", subs: [], note: "純程式依觸發來源決定流程，不派 Subagent" };
+// 開工路由（router）：純程式，不屬於 Orchestrator，也不在 registry
+const ROUTER: AgentInfo = { id: "開工路由", title: "純程式", subs: [], note: "依觸發來源決定流程（要不要重新掃描、讀每日新聞），不派 Subagent" };
 
+// 依新流程分兩列：開工路由 → A0 → A1 → Orchestrator 派工；派工完成後 A2、A3 → A4 → Orchestrator 驗收 → A5
 export default function SubagentMap() {
   const s = AGENT_SUBAGENTS;
   return (
     <div className="sa-map">
       <div className="sa-flow">
-        <div className="sa-stage"><Card a={ORCHESTRATOR} /></div>
+        <div className="sa-stage"><Card a={ROUTER} /></div>
         <div className="sa-stage"><Card a={s.a0} /></div>
+        <div className="sa-stage"><Card a={s.a1} /></div>
+        <div className="sa-stage"><Card a={s.dispatch} /></div>
+      </div>
+      <div className="sa-flow next">
         <div className="sa-stage parallel">
-          <div className="sa-par-label">A1～A3 同時進行</div>
-          <Card a={s.a1} />
+          <div className="sa-par-label">派工完成後，A2、A3 同時進行</div>
           <Card a={s.a2} />
           <Card a={s.a3} />
         </div>
         <div className="sa-stage"><Card a={s.a4} /></div>
+        <div className="sa-stage"><Card a={s.review} /></div>
         <div className="sa-stage"><Card a={s.a5} /></div>
       </div>
       <div className="sa-side">

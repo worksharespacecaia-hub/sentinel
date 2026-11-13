@@ -13,10 +13,9 @@
 """
 from __future__ import annotations
 
-import copy
 import json
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 
 import yaml
@@ -186,24 +185,14 @@ def sanitize_event(raw: dict, index: int, controls: set[str]) -> dict:
 
 @dataclass
 class DailyIntelSnapshot:
-    """同一次讀取的 intel-daily.json：A1 的事件驗證與訂閱方案建議共用，避免讀到兩份不同內容。原始 data 只留在記憶體。"""
+    """同一次讀取的 intel-daily.json（A1 的事件驗證使用）。原始 data 只留在記憶體。
+
+    v0.13.0 起每日情資不再寫派工建議（agent_plan）：AI 派工改由 Orchestrator 在 A1 之後執行（specs/orchestrator R1.1）。
+    """
     data: dict | None
     events: list[dict]
     issues: list[str]
-    id_map: dict[str, str] = field(default_factory=dict)   # 原始字串 ID／canonical live ID → 清理後 live ID（只收唯一可定位者）
     read_issue: str | None = None                          # None 表示檔案可讀且頂層結構有效
-
-
-def _id_aliases(raw_events: list) -> dict[int, list[str]]:
-    """每個原始位置的別名：原始字串 ID（strip 後）與 canonical live ID。空 ID 只有 canonical（live-event-N）。"""
-    out = {}
-    for i, raw in enumerate(raw_events):
-        rid = raw.get("id") if isinstance(raw, dict) else None
-        names = [_live_id(rid, i)]
-        if isinstance(rid, str) and rid.strip():
-            names.append(rid.strip())
-        out[i] = list(dict.fromkeys(names))
-    return out
 
 
 def load_daily_snapshot(path: Path) -> DailyIntelSnapshot:
@@ -224,14 +213,7 @@ def load_daily_snapshot(path: Path) -> DailyIntelSnapshot:
     if len(raw_events) > MAX_EVENTS:
         issues.append(f"事件超過 {MAX_EVENTS} 件，只處理前 {MAX_EVENTS} 件")
     controls = _known_controls()
-    # 先掃描所有原始 ID（含超額事件）找出歧義別名：同一個別名指向兩個以上位置時，相關事件的所有別名都不收
-    aliases = _id_aliases(raw_events)
-    owners: dict[str, set[int]] = {}
-    for i, names in aliases.items():
-        for n in names:
-            owners.setdefault(n, set()).add(i)
-    ambiguous = {i for n, idx in owners.items() if len(idx) > 1 for i in idx}
-    events, seen, id_map = [], set(), {}
+    events, seen = [], set()
     for i, raw in enumerate(raw_events[:MAX_EVENTS]):
         try:
             ev = sanitize_event(raw, i, controls)
@@ -243,36 +225,10 @@ def load_daily_snapshot(path: Path) -> DailyIntelSnapshot:
             continue
         seen.add(ev["id"])
         events.append(ev)
-        if i not in ambiguous:
-            for n in aliases[i]:
-                id_map[n] = ev["id"]
-    return DailyIntelSnapshot(data, events, issues, id_map)
+    return DailyIntelSnapshot(data, events, issues)
 
 
 def load_daily_intel(path: Path) -> tuple[list[dict], list[str]]:
     """回傳（可用事件, 問題清單）。檔案不存在時回傳空清單、無問題（daily-intel 沒執行或失敗由 A5 另外標示）。"""
     snap = load_daily_snapshot(path)
     return snap.events, snap.issues
-
-
-def load_daily_plan(snapshot: DailyIntelSnapshot) -> tuple[dict | None, str | None]:
-    """訂閱方案的 AI 建議（頂層 agent_plan）。回傳（建議, 安全原因）；None 表示要退回 A1 planner。
-
-    格式有效時把每個字串 event_id 以同一份快照的 id_map 換成本次 live ID；無法唯一對應的改為空字串，交給 approve 拒絕。
-    不信任任何計數、核准狀態或額外欄位；合法 {} 代表沒有建議，不退回 API。
-    """
-    from tools.agent_plan import TOP_KEYS, validate_plan_shape
-    if snapshot.read_issue or not isinstance(snapshot.data, dict):
-        return None, snapshot.read_issue or "每日情資格式不符"
-    if "agent_plan" not in snapshot.data:
-        return None, "訂閱方案未提供建議"
-    try:
-        plan = validate_plan_shape(copy.deepcopy(snapshot.data["agent_plan"]))
-    except ValueError:
-        return None, "訂閱方案建議格式不符"
-    for k in TOP_KEYS:
-        for item in plan.get(k) or []:
-            eid = item.get("event_id")
-            if isinstance(eid, str):
-                item["event_id"] = snapshot.id_map.get(eid.strip(), "")
-    return plan, None

@@ -11,8 +11,13 @@ export type NodeStatus = "waiting" | "running" | "success" | "failure" | "skippe
 export interface FlowNode { key: string; label: string; status: NodeStatus; note?: string; seconds?: number; url?: string }
 export interface FlowStage { title: string; nodes: FlowNode[] }
 
-const STAGES: { title: string; nodes: { key: string; label: string; skippedNote?: string; failureNote?: string }[] }[] = [
-  { title: "規劃", nodes: [{ key: "orchestrator", label: "開工路由（程式）" }] },
+// 階段依 workflow 的 DAG（specs/orchestrator R1.1）：開工路由是純程式，不屬於 Orchestrator，所以第一階段叫「開工」，
+// 「派工」「驗收」才是 Orchestrator（AI 提案＋程式核准）。A3 要等派工完成，和 A2 同在「分析」。
+// legacy：v0.13 以前的 Job 名稱（開工路由原名 orchestrator），只在新名稱的 Job 不存在時採用，顯示舊版標籤。
+interface StageNode { key: string; label: string; skippedNote?: string; failureNote?: string; legacy?: { key: string; label: string } }
+
+const STAGES: { title: string; nodes: StageNode[] }[] = [
+  { title: "開工", nodes: [{ key: "router", label: "開工路由（程式）", legacy: { key: "orchestrator", label: "開工路由（舊版）" } }] },
   { title: "資產", nodes: [{ key: "a0-assets", label: "A0 資產探索與對帳" }] },
   { title: "掃描與蒐集", nodes: [
     { key: "scanners (trivy)", label: "掃描：Trivy" },
@@ -20,10 +25,16 @@ const STAGES: { title: string; nodes: { key: string; label: string; skippedNote?
     { key: "scanners (checkov)", label: "掃描：Checkov" },
     { key: "daily-intel", label: "每日情資（程式抓新聞＋Claude 判讀）", skippedNote: "只在每日排程與 GitHub 手動 daily 執行",
       failureNote: "失敗不影響流程，報告標示今日新聞情資未更新" },
-    { key: "a3-signals", label: "A3 早期訊號" },
   ] },
-  { title: "分析", nodes: [{ key: "a1-intel", label: "A1 外部情資" }, { key: "a2-scan", label: "A2 弱點掃描" }] },
+  { title: "外部情資", nodes: [{ key: "a1-intel", label: "A1 外部情資" }] },
+  { title: "派工", nodes: [{ key: "orchestrator-dispatch", label: "Orchestrator 派工（AI 提案＋程式核准）",
+                           skippedNote: "未執行時 A2～A4 只跑必要任務",
+                           failureNote: "失敗不影響流程：只停用派工單，A2～A4 照跑必要任務，報告照常產生" }] },
+  { title: "分析", nodes: [{ key: "a2-scan", label: "A2 弱點掃描" }, { key: "a3-signals", label: "A3 早期訊號" }] },
   { title: "風險", nodes: [{ key: "a4-risk", label: "A4 攻擊鏈與風險" }] },
+  { title: "驗收", nodes: [{ key: "orchestrator-review", label: "Orchestrator 驗收（AI 提案＋程式核准）",
+                           skippedNote: "未執行時 A5 只跑必要任務",
+                           failureNote: "失敗不影響流程：只停用驗收單，A5 照跑必要任務，報告照常產生" }] },
   { title: "撰寫", nodes: [{ key: "claude-analysis", label: "Claude 撰寫說明（訂閱方案）", skippedNote: "只在每日排程與 GitHub 手動 daily 執行",
                             failureNote: "失敗不影響流程，說明文字改用程式範本" }] },
   { title: "發布", nodes: [{ key: "a5-report", label: "A5 報告與發布" }] },
@@ -58,12 +69,13 @@ export function flowStages(jobs: JobInfo[], now: number = Date.now()): FlowStage
   return STAGES.map((stage) => ({
     title: stage.title,
     nodes: stage.nodes.map((n) => {
-      const job = byName.get(n.key);
+      const old = !byName.has(n.key) && n.legacy && byName.has(n.legacy.key) ? n.legacy : null;
+      const job = byName.get(old ? old.key : n.key);
       const status = statusOf(job);
       const note = status === "skipped" ? n.skippedNote : status === "failure" ? n.failureNote : undefined;
       const url = job?.html_url && GH_JOB_URL.test(job.html_url) ? job.html_url : undefined;
       const secs = status === "skipped" || status === "waiting" ? undefined : seconds(job, now);
-      return { key: n.key, label: n.label, status, note, seconds: secs, url };
+      return { key: n.key, label: old ? old.label : n.label, status, note, seconds: secs, url };
     }),
   }));
 }

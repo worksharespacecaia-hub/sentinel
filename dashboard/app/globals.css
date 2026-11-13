@@ -64,7 +64,8 @@ pre { overflow-x: auto; white-space: pre; background: var(--bg); border: 1px sol
 button:disabled { opacity: .6; cursor: progress; }
 a.button { display: inline-block; text-decoration: none; padding: 6px 12px; border-radius: 8px; }
 a.button.primary { background: var(--accent); color: #fff; }
-.flow { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; margin: 8px 0; }
+/* 10 個階段（開工～發布）：桌機每列 5 個 */
+.flow { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin: 8px 0; }
 .flow-stage { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .flow-node { display: flex; flex-direction: column; border: 1px solid var(--line); border-left-width: 4px; border-radius: 8px;
   padding: 6px 8px; background: var(--bg); color: var(--text); text-decoration: none; font-size: 14px; }
@@ -282,8 +283,10 @@ a.button.primary { background: var(--accent); color: #fff; }
 
 /* 運作原理：每個 Agent 底下的 Subagent（桌機橫向流程、900px 以下改直式） */
 .sa-map { margin: 0; }
-.sa-flow { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1fr) minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1.2fr);
-  gap: 12px 30px; align-items: center; }
+/* 兩列：開工路由 → A0 → A1 → Orchestrator 派工；接著（.next）A2、A3 → A4 → Orchestrator 驗收 → A5 */
+.sa-flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 30px; align-items: center; }
+.sa-flow.next { position: relative; margin-top: 30px; grid-template-columns: minmax(0, 1.2fr) repeat(3, minmax(0, 1fr)); }
+.sa-flow.next::before { content: "↓"; position: absolute; left: 50%; top: -27px; transform: translateX(-50%); color: var(--muted); font-size: 18px; }
 .sa-stage { position: relative; display: grid; gap: 8px; min-width: 0; }
 .sa-stage + .sa-stage::before { content: "→"; position: absolute; left: -24px; top: 50%; transform: translateY(-50%);
   color: var(--muted); font-size: 18px; }
@@ -302,7 +305,9 @@ a.button.primary { background: var(--accent); color: #fff; }
 .sa-par-label { font-size: 12px; color: var(--muted); text-align: center; grid-column: 1 / -1; }
 .sa-map figcaption { margin-top: 10px; }
 @media (max-width: 900px) {
-  .sa-flow { grid-template-columns: 1fr; gap: 26px; }
+  .sa-flow, .sa-flow.next { grid-template-columns: 1fr; gap: 26px; }
+  .sa-flow.next { margin-top: 26px; }
+  .sa-flow.next::before { top: -24px; }
   .sa-stage.parallel { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); align-items: start; }
   .sa-stage + .sa-stage::before { content: "↓"; left: 50%; top: -24px; transform: translateX(-50%); }
 }
