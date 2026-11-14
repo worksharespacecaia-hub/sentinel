@@ -80,6 +80,12 @@
       "check_name": "Ensure that S3 bucket has cross-region replication enabled"
     },
     {
+      "check_id": "CKV2_AWS_50",
+      "resource": "aws_elasticache_replication_group.cache",
+      "file": "/main.tf",
+      "check_name": "Ensure AWS ElastiCache Redis cluster with Multi-AZ Automatic Failover feature set to enabled"
+    },
+    {
       "check_id": "CKV_AWS_18",
       "resource": "aws_s3_bucket.order_exports",
       "file": "/main.tf",
@@ -96,12 +102,6 @@
       "resource": "aws_s3_bucket.order_exports",
       "file": "/main.tf",
       "check_name": "Ensure that an S3 bucket has a lifecycle configuration"
-    },
-    {
-      "check_id": "CKV2_AWS_50",
-      "resource": "aws_elasticache_replication_group.cache",
-      "file": "/main.tf",
-      "check_name": "Ensure AWS ElastiCache Redis cluster with Multi-AZ Automatic Failover feature set to enabled"
     }
   ]
 }

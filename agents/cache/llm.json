@@ -2121,5 +2121,355 @@
       "task": "dispatch:live-php2shell-checkpoint-exploit-2026-11:phpmyadmin:php:vuln",
       "scope": "daily"
     }
+  },
+  "87ebe9a48298105ea722451e9e6d32a785d162c0c3e7151ec494095bee989b72": {
+    "output": [
+      {
+        "id": "member-api:body-parser:vuln",
+        "explanation": "body-parser 1.20.1 存在 3 個已知漏洞，最高 CVSS 7.5（CVE-2024-45590），可能造成服務拒絕。建議升級至 1.20.3。",
+        "confidence": "high"
+      },
+      {
+        "id": "member-api:cookie:vuln",
+        "explanation": "cookie 0.5.0 存在 1 個已知漏洞，最高 CVSS 3.7（CVE-2024-47764），影響層級較低。建議升級至 0.7.0。",
+        "confidence": "high"
+      },
+      {
+        "id": "member-api:express:vuln",
+        "explanation": "express 4.18.2 存在 2 個已知漏洞，最高 CVSS 6.1（CVE-2024-29041），可能涉及開放式重新導向相關風險。建議升級至 4.19.2 或 5.0.0-beta.3。",
+        "confidence": "high"
+      },
+      {
+        "id": "member-api:lodash:vuln",
+        "explanation": "lodash 4.17.20 存在 4 個已知漏洞，最高 CVSS 9.8（CVE-2026-4800），嚴重程度高。建議升級至 4.18.0。",
+        "confidence": "high"
+      },
+      {
+        "id": "member-api:path-to-regexp:vuln",
+        "explanation": "path-to-regexp 0.1.7 存在 3 個已知漏洞，最高 CVSS 7.5（CVE-2024-45296），可能造成服務拒絕。可依所用分支選擇修補版本 0.1.10、1.9.0、3.3.0、6.3.0 或 8.0.0。",
+        "confidence": "high"
+      },
+      {
+        "id": "member-api:qs:vuln",
+        "explanation": "qs 6.11.0 存在 4 個已知漏洞，最高 CVSS 7.5（CVE-2025-15284），可能造成服務拒絕。建議升級至 6.14.1。",
+        "confidence": "high"
+      },
+      {
+        "id": "member-api:send:vuln",
+        "explanation": "send 0.18.0 存在 1 個已知漏洞，最高 CVSS 5.0（CVE-2024-43799），影響中等。建議升級至 0.19.0。",
+        "confidence": "high"
+      },
+      {
+        "id": "member-api:serve-static:vuln",
+        "explanation": "serve-static 1.15.0 存在 1 個已知漏洞，最高 CVSS 5.0（CVE-2024-43800），影響中等。可升級至 1.16.0 或 2.1.0。",
+        "confidence": "high"
+      },
+      {
+        "id": "storefront:next:vuln",
+        "explanation": "next 14.1.0 存在 36 個已知漏洞，最高 CVSS 9.1（CVE-2025-29927），其中中介層授權繞過風險嚴重。可依主版本升級至 14.2.25、13.5.9、12.3.5 或 15.2.3。",
+        "confidence": "high"
+      },
+      {
+        "id": "storefront:postcss:vuln",
+        "explanation": "postcss 8.4.31 存在 4 個已知漏洞，最高 CVSS 9.1（CVE-2026-45623），嚴重程度高。建議升級至 8.5.12。",
+        "confidence": "high"
+      },
+      {
+        "id": "marketing-site:apache-httpd:vuln",
+        "explanation": "apache-httpd 2.4.57 依 NVD 比對有 69 個確定漏洞，最高 CVSS 9.8（CVE-2024-38474），其中 CVE-2024-38475 已列入 CISA KEV 並遭實際利用，應優先處理。資料顯示部分漏洞無明確修補版本，建議人工確認後再規劃升級路徑。",
+        "confidence": "low"
+      },
+      {
+        "id": "gitlab:gitlab-ce:vuln",
+        "explanation": "gitlab-ce 18.4.1 依 NVD 比對有 163 個確定漏洞，最高 CVSS 10.0（CVE-2026-110264），風險極高。建議升級至 19.3.6，升級前應審閱版本跨度與相容性說明。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "dependency-analyst#0",
+      "scope": "daily"
+    }
+  },
+  "6203ed82a8e34b0d361190539764787262ea9177ed7be27a7712b80f9b432265": {
+    "output": [
+      {
+        "id": "api-gateway:nginx:vuln",
+        "explanation": "nginx 1.27.2 經本地比對確定有 16 個已知漏洞，最高 CVSS 9.2（CVE-2026-42055）。資料中無法確定修補版本，需由維護者查證官方公告後再規劃升級。",
+        "confidence": "low"
+      },
+      {
+        "id": "marketing-site:php:vuln",
+        "explanation": "php 8.1.27 經本地比對確定有 27 個已知漏洞，最高 CVSS 9.8（CVE-2024-11236），另有 3 個需確認。CVE-2026-109618 與 CVE-2026-109619 已列入 CISA KEV，代表已遭實際利用，建議優先處理，修補版本為 8.2.35。",
+        "confidence": "high"
+      },
+      {
+        "id": "phpmyadmin:php:vuln",
+        "explanation": "php 8.3.20 經本地比對確定有 28 個已知漏洞，最高 CVSS 9.8（CVE-2025-14179），另有 3 個需確認。CVE-2026-109618 與 CVE-2026-109619 已列入 CISA KEV，建議優先處理，修補版本為 8.3.36。",
+        "confidence": "high"
+      },
+      {
+        "id": "report-svc:php:vuln",
+        "explanation": "php 8.4.27 目前確定漏洞數為 0，僅有 1 個需確認的 CVE-2007-3205，因 NVD 版本範圍無法判斷。資料中無法確定修補版本，建議先確認實際執行環境是否受影響。",
+        "confidence": "low"
+      },
+      {
+        "id": "member-db-prod:postgresql:vuln",
+        "explanation": "postgresql 15.6 經本地比對確定有 44 個已知漏洞，最高 CVSS 8.8（CVE-2024-10979）。資料提供的修補版本為 15.19，建議規劃同一小版本線的更新。",
+        "confidence": "high"
+      },
+      {
+        "id": "order-db-prod:postgresql:vuln",
+        "explanation": "postgresql 15.6 經本地比對確定有 44 個已知漏洞，最高 CVSS 8.8（CVE-2024-10979）。資料提供的修補版本為 15.19，此為正式環境資料庫，建議排定維護窗口升級。",
+        "confidence": "high"
+      },
+      {
+        "id": "order-db-test:postgresql:vuln",
+        "explanation": "postgresql 15.6 經本地比對確定有 44 個已知漏洞，最高 CVSS 8.8（CVE-2024-10979）。資料提供的修補版本為 15.19，建議先在測試環境驗證後再套用至正式環境。",
+        "confidence": "high"
+      },
+      {
+        "id": "cache-redis:redis:vuln",
+        "explanation": "redis 7.0.15 經本地比對確定有 11 個已知漏洞，最高 CVSS 9.9（CVE-2025-49844）。資料提供的修補版本為 8.6.3，該版本跨越主版本，升級前需評估相容性。",
+        "confidence": "high"
+      },
+      {
+        "id": "nas-office-01:synology-dsm:vuln",
+        "explanation": "synology-dsm 7.2.1-69057 Update 5 經本地比對確定有 5 個已知漏洞，最高 CVSS 9.8（CVE-2024-10441）。資料提供的修補版本為 7.2.1-69057-7，建議盡快套用該更新。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "dependency-analyst#1",
+      "scope": "daily"
+    }
+  },
+  "1be107a614f553ced3fb8dc1547c91b68bd36f30710c80850bd90aac8991e581": {
+    "output": [
+      {
+        "id": "gitlab:C-SECRET-IN-GIT",
+        "explanation": "config/db.yml 第 4 行的資料庫連線憑證類型屬於正式環境，且存放於 Git 版本庫中。需確認是否已撤銷或輪替，並移除版本歷史中的紀錄。",
+        "confidence": "high"
+      },
+      {
+        "id": "brand-app:C-SECRET-IN-GIT",
+        "explanation": "services/brand-app/src/config.ts 第 3 行含有正式環境金鑰，且已提交至 Git。應立即輪替該金鑰，並提供撤銷或輪替證據，單純刪除檔案不足以修復。",
+        "confidence": "high"
+      },
+      {
+        "id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "explanation": "此為第三方郵件服務 API 金鑰，已 461 天未輪替且未設定 IP 白名單，明顯超過 90 天的輪替要求。建議立即輪替並設定 IP 白名單，環境類型目前無法確定。",
+        "confidence": "high"
+      },
+      {
+        "id": "order-db-test-cred:test-secret-in-git",
+        "explanation": "config/db.yml 第 7 行為測試環境的資料庫憑證，存放於 Git 中。雖屬測試環境，仍不可忽略，應輪替並移除版本紀錄中的內容。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "secret-analyst",
+      "task": "secret-analyst#0",
+      "scope": "daily"
+    }
+  },
+  "b170fe6b2fe40146b203f286292d86e6c0a0fe1abd6e280ad2d537816230d3b7": {
+    "output": [
+      {
+        "id": "member-db-prod:postgresql:vuln",
+        "explanation": "影響：PostgreSQL 15.6 屬於 15.x 分支，受 CVE-2026-6460 等 52 個漏洞影響，需具建立資料庫物件權限的使用者執行 ALTER … SET DATA TYPE 等 DDL 才能觸發型別混淆，進而以資料庫 OS 使用者身分執行任意程式碼。修補版本依事件範圍判定為 15.20 以上（NVD 所列 CVE-2024-10979 修補版本為 15.19，15.20 已涵蓋）。風險等級：高，正式環境，建議儘速升級至 15.20 以上並檢視具 DDL 權限的帳號。",
+        "confidence": "high"
+      },
+      {
+        "id": "order-db-prod:postgresql:vuln",
+        "explanation": "影響：與 member-db-prod 相同的 PostgreSQL 15.6 版本與弱點，前提同樣是具 DDL 權限的使用者可觸發型別混淆並取得 OS 層級程式碼執行。修補版本依事件範圍判定為 15.20 以上。風險等級：高，正式環境，建議儘速升級至 15.20 以上並限縮 DDL 權限。",
+        "confidence": "high"
+      },
+      {
+        "id": "order-db-test:postgresql:vuln",
+        "explanation": "影響：測試環境同樣為 PostgreSQL 15.6，存在相同弱點，但測試環境通常資料與存取面較小，實際風險低於正式環境。修補版本依事件範圍判定為 15.20 以上。風險等級：中，建議排入升級計畫並在測試環境先行驗證相容性，不應長期保留未修補版本。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "event:live-postgresql-cve-2026-6460-6467:dependency-analyst",
+      "scope": "daily"
+    }
+  },
+  "f6bc6c8efccbefc8574442fd61aeaeb45b7be5687b3b53bc4e70442951af117d": {
+    "output": [
+      {
+        "id": "marketing-site:apache-httpd:vuln",
+        "explanation": "apache-httpd 2.4.57 經 NVD CPE 比對與本地版本重算確認 69 個漏洞，另 2 個待確認，其中 CVE-2024-38475 已列入 CISA KEV。事件 CVE-2026-119618 的前提（是否啟用 mod_http2、h2 或 h2c）未知，且不在此證據清單中，無法確認受影響；修補版本無法確定，需依原廠公告核對後再排定升級，風險等級以程式結果為準。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "event:live-apache-httpd-mod-http2-cve-2026-119618:dependency-analyst",
+      "scope": "daily"
+    }
+  },
+  "72ffe39045471ce97a5fed19c3482f5a4179e4d45b8f5533c34a024f013483f7": {
+    "output": [
+      {
+        "id": "marketing-site:apache-httpd:vuln",
+        "explanation": "圖譜僅找到 1 個使用 apache-httpd 2.4.57 的資產（marketing-site，prod，對外暴露於 443，未登錄、無負責人、非 crown jewel，資料分類為空，來源為行銷外包 FTP 上傳）。圖譜未提供品牌數與安裝數，也沒有資料欄位資訊，因此無法確認這些數字；依拆解，基礎漏洞、已遭利用、對外暴露與同業事件各項分數均為程式計算結果。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "marketing-site:apache-httpd:vuln",
+      "scope": "daily"
+    }
+  },
+  "34b1539a0f3376f550b9cacdfbe2c58fe48dd485e6038ed628e01c07f96bf638": {
+    "output": [
+      {
+        "id": "order-db-prod:postgresql:vuln",
+        "explanation": "圖譜顯示 postgresql 15.6 共出現在 3 個資產（order-db-prod、member-db-prod、order-db-test），其中 order-db-prod 為正式環境 crown jewel，資料類別為 order 與 pii，且為平台層資產。圖譜未提供明確的品牌數，影響所有品牌的判斷來自 breakdown 的「平台層」描述。",
+        "confidence": "low"
+      },
+      {
+        "id": "order-db-prod:postgresql:vuln",
+        "explanation": "攻擊路徑為 internet → internal-tool → order-db-prod，前提假設為空（assumption: null），內部工具可經 5432 連到資料庫，因此 CVE 被利用後可能直接影響訂單與個資。order-db-prod 目前標示 exposed_to_internet 為 false，路徑的起點須由內部工具暴露面再確認。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "order-db-prod:postgresql:vuln",
+      "scope": "daily"
+    }
+  },
+  "97d87b61b2c3a4d039c2e64a590e42c343592b630982881313c3f4641667c710": {
+    "output": [
+      {
+        "id": "internal-tool:opsbuilder:vuln",
+        "explanation": "圖譜中僅一筆受影響資產 internal-tool（opsbuilder 1.88，prod，對外可達 443，屬 shadow IT 且無負責人），攻擊路徑為 internet→internal-tool→order-db-prod（5432）。圖譜未提供品牌數、安裝數與資料欄位（data_classes 為空），業務影響無法從圖譜判定；分數 11 依 breakdown 所列，未重新計分。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "internal-tool:opsbuilder:vuln",
+      "scope": "daily"
+    }
+  },
+  "5eaae022bcfed2a4fbe3abf5a0edf05b61fe99cb1404a94fdd2f3b2ead63a20b": {
+    "output": [
+      {
+        "id": "storefront:node:vuln",
+        "explanation": "圖譜無法直接查詢 storefront:node:vuln（不在本次資產範圍），改以 node 22.11.0 的三個資產對應：storefront（prod、對外、資料 order/pii、平台層）、member-api（prod、非對外、資料 pii、平台層）、internal-tool（prod、對外、未登記的 shadow IT、無資料欄位標記但可連 order-db-prod）。圖譜未提供品牌數與安裝數欄位，任務所稱「影響所有品牌」無法驗證，分數仍以 breakdown 為準。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "storefront:node:vuln",
+      "scope": "daily"
+    }
+  },
+  "108918b62d50fa3fa744990180eae353e1511a9e35c8e1aa3ee87f907454dc55": {
+    "output": [
+      {
+        "id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+        "explanation": "圖譜顯示 internal-tool（prod，owner 未登記，手動 docker run 啟動）可從 internet 經 443 連入，並可經 5432 連到 order-db-prod，且位於 internet→internal-tool→order-db-prod 這條攻擊路徑的必要一步，因此「對外暴露」與「完整攻擊鏈」兩項扣分成立。圖譜沒有品牌數、安裝數、業務影響資料，data_classes 為空，這些項目無法確認。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+      "scope": "daily"
+    }
+  },
+  "74c09092a8f4a9308eb4c8360dfd08301ffd4d261ef2b32ce64215d98d291de5": {
+    "output": [
+      {
+        "id": "internal-tool:node:vuln",
+        "explanation": "查詢時 internal-tool:node:vuln 不在本次資產範圍，無法取得其資產脈絡。圖譜中有 3 個資產使用 node 22.11.0：internal-tool（對外可由 internet 連入 443，資料分類為空，但可連到 order-db-prod 與 gitlab），storefront（對外暴露，資料含 order 與 pii，連 order-db-prod 與 payment-service），member-api（未對外，資料含 pii，連 member-db-prod）。圖譜未提供品牌數與安裝數，無法說明；分數 8 依 breakdown 所列，未自行重算。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "internal-tool:node:vuln",
+      "scope": "daily"
+    }
+  },
+  "174afc775151861130d6f37f524ea5a4572729c8c9ddba253a3e1b8969eb8bac": {
+    "output": [
+      {
+        "id": "member-api:node:vuln",
+        "explanation": "圖譜回報此資產不在本次資產範圍內，且以 node 22.11.0 搜尋無結果，因此無法確認影響品牌數、安裝數、資料欄位與業務影響。分數拆解依程式結果保留：CVSS 9.8 漏洞 3 分、已遭實際利用 2 分、pii 資料敏感 1 分、平台層影響所有品牌 1 分、同業事件命中 1 分。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "member-api:node:vuln",
+      "scope": "daily"
+    }
+  },
+  "4d5f9217b863d046da9935c816fcd09e086a57018ef6d8a2abd633fa2f6da22a": {
+    "output": [
+      {
+        "id": "member-db-prod:postgresql:vuln",
+        "explanation": "分數拆解為：基礎漏洞分 2 分（CVSS 8.8）、資料敏感 1 分（含 pii）、影響範圍 1 分（平台層，影響所有品牌）、同業事件命中 1 分（同批 live-postgresql-cve-2026-6460-6467）。圖譜顯示 member-db-prod 為 crown_jewel、未對外網際網路開放、資料類別含 pii，但任務資料與圖譜皆未提供受影響的品牌數與安裝數，因此無法量化這兩項。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "dispatch:live-postgresql-cve-2026-6460-6467:member-db-prod:postgresql:vuln",
+      "scope": "daily"
+    }
+  },
+  "bb492dd3ff3756e31b4689dde05f8a005fc9f3ef02dbd71d226f92ad10dd9139": {
+    "output": [
+      {
+        "id": "order-db-prod:C-NET-SEGMENT",
+        "explanation": "分數拆解為：基礎分 2（控制項不符）、資料敏感 1（order、pii）、影響範圍 1（平台層）、同業事件命中 1（evt-91app-2026-10），合計由程式計算。圖譜顯示 order-db-prod 為正式環境、crown_jewel 且為平台層，並有 order-db-test 經 5432 連入，與「非正式環境連線正式庫」的風險相符；但任務資料與圖譜皆未提供影響品牌數與安裝數，無法量化，業務影響需由負責團隊（dba-team）確認。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "dispatch:live-postgresql-cve-2026-6460-6467:order-db-prod:C-NET-SEGMENT",
+      "scope": "daily"
+    }
+  },
+  "ee15433975c1fc2cbfc7121fc22d2956ad83be27f9eb414b99bd007e9dd4c788": {
+    "output": [
+      {
+        "id": "order-db-test:postgresql:vuln",
+        "explanation": "本任務的分數拆解為：漏洞基礎分 2 分（最高 CVSS 8.8，NVD 共 44 個已知漏洞）加上同業事件命中 1 分（事件代號 live-postgresql-cve-2026-6460-6467）。任務資料未提供影響品牌數、安裝數、業務影響等資訊，且圖譜查詢因資產不在本次範圍而無法補充，因此無法說明這些面向。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "dispatch:live-postgresql-cve-2026-6460-6467:order-db-test:postgresql:vuln",
+      "scope": "daily"
+    }
   }
 }

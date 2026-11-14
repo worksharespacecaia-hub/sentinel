@@ -108,52 +108,16 @@
     "demo": false
   },
   {
-    "id": "live-cyberbiz-vendor-breach-2026-11",
+    "id": "live-apache-httpd-mod-http2-cve-2026-119618",
     "kind": "live",
-    "title": "電商平台委外廠商順立智慧（Cyberbiz）資安事件，波及大金零件商城與威力德生醫線上商店",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "need_check",
-    "demo": false
-  },
-  {
-    "id": "live-mierkuai-order-api-2026-11",
-    "kind": "live",
-    "title": "美而快電商系統遭異常存取，部分請求涉及會員訂單 API",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "need_check",
-    "demo": false
-  },
-  {
-    "id": "live-zhengnengliang-woocommerce-2026-11",
-    "kind": "live",
-    "title": "正能量智能子公司 WooCommerce 電商資料庫遭未經授權存取",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "need_check",
-    "demo": false
-  },
-  {
-    "id": "live-nitori-member-data-2026-11",
-    "kind": "live",
-    "title": "日本宜得利伺服器遭非法存取，最多 3762 萬筆會員個資恐外洩",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "need_check",
-    "demo": false
-  },
-  {
-    "id": "live-apache-mod-http2-cve-2026-119618",
-    "kind": "live",
-    "title": "Apache HTTP Server mod_http2 重大 RCE 漏洞 CVE-2026-119618",
+    "title": "Apache HTTP Server mod_http2 重大漏洞 CVE-2026-119618，未經驗證即可遠端執行程式碼",
     "affected_count": 1,
     "max_level": "high",
     "status": "open",
     "demo": false
   },
   {
-    "id": "live-nodejs-http2-flaws-2026-11",
+    "id": "live-nodejs-http2-https-memory-flaws-2026-11",
     "kind": "live",
     "title": "Node.js 修補 16 個漏洞，含 HTTP/2 當機與跨連線記憶體洩漏",
     "affected_count": 3,
@@ -162,21 +126,66 @@
     "demo": false
   },
   {
-    "id": "live-synology-dsm-sa-26-19",
+    "id": "live-postgresql-cve-2026-6460-6467",
     "kind": "live",
-    "title": "Synology DSM 登入驗證介面 SQL 注入漏洞（CVSS 9.8），無暫時緩解措施",
-    "affected_count": 1,
+    "title": "PostgreSQL 一次修補 52 個漏洞，含已有 PoC 的型別混淆程式碼執行缺陷 CVE-2026-6460",
+    "affected_count": 3,
     "max_level": "high",
     "status": "open",
     "demo": false
   },
   {
-    "id": "live-php2shell-checkpoint-exploit-2026-11",
+    "id": "live-cyberbiz-ecommerce-vendor-breach-2026-11",
     "kind": "live",
-    "title": "PHP2Shell 漏洞遭用於攻擊 Check Point 閘道，植入 TSGA 後門並清除 ESXi 檔案",
-    "affected_count": 2,
-    "max_level": "high",
-    "status": "open",
+    "title": "電商平台服務商順立智慧（Cyberbiz）資安事件，多家上市櫃品牌商城資料受波及",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
+    "demo": false
+  },
+  {
+    "id": "live-mercuries-order-api-abnormal-access-2026-11",
+    "kind": "live",
+    "title": "美而快電商系統遭異常存取，部分請求涉及會員訂單 API",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
+    "demo": false
+  },
+  {
+    "id": "live-woocommerce-db-breach-zhengnengliang-2026-11",
+    "kind": "live",
+    "title": "正能量智能子公司 WooCommerce 電商資料庫遭未經授權存取",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
+    "demo": false
+  },
+  {
+    "id": "live-nitori-member-data-breach-2026-11",
+    "kind": "live",
+    "title": "日本宜得利伺服器遭非法存取，最多 3762 萬筆會員及網購個資恐外洩",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
+    "demo": false
+  },
+  {
+    "id": "live-arara-email-service-breach-2026-11",
+    "kind": "live",
+    "title": "日本郵件發送服務 Arara 遭駭，數千萬筆電子郵件外洩並被用來寄發假冒金融機構的惡意郵件",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
+    "demo": false
+  },
+  {
+    "id": "live-bossai-taiwan-sqli-cvv-2026-11",
+    "kind": "live",
+    "title": "AI 自動化攻擊系統 BossAI 鎖定台灣：貸款公司遭 SQL 注入、行動支付綁卡流程未驗證 CVV",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
     "demo": false
   }
 ]

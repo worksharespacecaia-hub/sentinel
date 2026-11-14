@@ -126,7 +126,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "laptop-eng-07 持有可連到 deploy-pipeline 的部署權杖（高，7 分，位於完整攻擊鏈），ai-code-assistant 的權杖可繞過 Pipeline 審核直接部署（中，4 分）。建議撤銷這些權杖並限制只能由 Pipeline 部署。",
+  "summary": "laptop-eng-07 持有可連到 deploy-pipeline 的部署權杖（高風險 7 分），ai-code-assistant 也能繞過 Pipeline 部署（中風險 4 分），與此事件的入侵手法相符。",
   "blocks": {
     "1_summary": {
       "title": "幣安 63.4 億美元駭案：假面試惡意程式入侵開發者電腦，取得容器部署憑證後攻陷錢包簽章服務",
@@ -176,7 +176,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "laptop-eng-07 持有可連到 deploy-pipeline 的部署權杖（高，7 分，位於完整攻擊鏈），ai-code-assistant 的權杖可繞過 Pipeline 審核直接部署（中，4 分）。建議撤銷這些權杖並限制只能由 Pipeline 部署。",
+      "summary": "laptop-eng-07 持有可連到 deploy-pipeline 的部署權杖（高風險 7 分），ai-code-assistant 也能繞過 Pipeline 部署（中風險 4 分），與此事件的入侵手法相符。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -219,7 +219,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T09:55:53Z"
+        "observed_at": "2026-11-14T03:48:42Z"
       },
       {
         "asset_id": "ai-code-assistant",
@@ -249,7 +249,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T09:55:53Z"
+        "observed_at": "2026-11-14T03:48:42Z"
       }
     ],
     "4_unaffected_and_check": {

@@ -1,0 +1,238 @@
+{
+  "event": {
+    "id": "live-bossai-taiwan-sqli-cvv-2026-11",
+    "kind": "live",
+    "title": "AI 自動化攻擊系統 BossAI 鎖定台灣：貸款公司遭 SQL 注入、行動支付綁卡流程未驗證 CVV",
+    "date": "2026-11-13",
+    "industry": "支付",
+    "attack_chain": [
+      "BossAI 自動化攻擊系統掃描並鎖定目標",
+      "對貸款服務公司進行 SQL 注入攻擊",
+      "行動支付公司的信用卡綁定流程未正確驗證 CVV 碼被發現"
+    ],
+    "attck": [
+      "T1190"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180500",
+        "title": "【資安週報】1109～1113，Cyberbiz事件擴大、多家上市櫃公司接連公告，資安救火人力不足恐浮現",
+        "quote": "AI自動化攻擊系統BossAI鎖定臺灣緊急應變服務 AI自動化攻擊系統BossAI鎖定11國與數百個組織，根據資安公司Acronis的揭露，其中針對臺灣的部分，緊急應變服務是主要目標，並有事故發生，如臺北市消防相關緊急病患照護記錄平臺，可能洩漏多種醫療資料；臺北市119緊急派遣系統遭入侵，存取涵蓋7個行政區的案件記錄；臺灣一家貸款服務公司也遭到SQL注入攻擊，另有一家行動支付公司被發現信用卡綁定流程未正確驗證CVV碼。",
+        "published": "2026-11-13",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-14T03:48:42Z",
+        "content_hash": "sha256:e2206e27f9716456aa259a16ccedc9e9d15507af70d01a8848b92429dc436819",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "信用卡綁定流程須驗證 CVV，且對外 API 需防 SQL 注入",
+        "reason": "來源指出行動支付公司的綁卡流程未正確驗證 CVV、貸款公司遭 SQL 注入；現有控制項沒有涵蓋支付流程驗證與輸入處理。"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-bossai-taiwan-sqli-cvv-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：信用卡綁定流程須驗證 CVV，且對外 API 需防 SQL 注入"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "ai-1",
+          "source": "ai",
+          "inferred": true,
+          "target": null,
+          "hypothesis": "對外 API 或網頁表單的輸入驗證不足，可能被注入查詢",
+          "why": null,
+          "check": "檢查商店與 API 閘道接收的參數是否使用參數化查詢，並查日誌中 SQL 注入特徵的請求",
+          "how": null,
+          "plain": "對外 API 或網頁表單的輸入驗證不足，可能被注入查詢",
+          "basis": "AI 依事件推測：攻擊過程提到貸款服務公司遭 SQL 注入攻擊",
+          "systems": [
+            {
+              "asset_id": "api-gateway",
+              "label": "API 閘道"
+            },
+            {
+              "asset_id": "storefront",
+              "label": "商店網站"
+            }
+          ],
+          "controls": []
+        },
+        {
+          "id": "ai-2",
+          "source": "ai",
+          "inferred": true,
+          "target": null,
+          "hypothesis": "支付與綁卡流程可能漏掉卡片驗證碼檢查",
+          "why": null,
+          "check": "測試綁卡與付款流程在 CVV 缺漏或錯誤時是否會被拒絕，並查有無異常的綁卡嘗試",
+          "how": null,
+          "plain": "支付與綁卡流程可能漏掉卡片驗證碼檢查",
+          "basis": "AI 依事件推測：攻擊過程提到行動支付公司信用卡綁定流程未正確驗證 CVV 碼",
+          "systems": [
+            {
+              "asset_id": "payment-service",
+              "label": "金流服務"
+            },
+            {
+              "asset_id": "storefront",
+              "label": "商店網站"
+            }
+          ],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "iThome 週報引述 Acronis，BossAI 鎖定 11 國數百個組織，在台灣以緊急應變服務為主要目標；另有一家貸款服務公司遭 SQL 注入攻擊，一家行動支付公司被發現信用卡綁定流程未正確驗證 CVV 碼。來源未指名這兩家公司。",
+  "blocks": {
+    "1_summary": {
+      "title": "AI 自動化攻擊系統 BossAI 鎖定台灣：貸款公司遭 SQL 注入、行動支付綁卡流程未驗證 CVV",
+      "date": "2026-11-13",
+      "industry": "支付",
+      "attack_chain": [
+        "BossAI 自動化攻擊系統掃描並鎖定目標",
+        "對貸款服務公司進行 SQL 注入攻擊",
+        "行動支付公司的信用卡綁定流程未正確驗證 CVV 碼被發現"
+      ],
+      "attck": [
+        "T1190"
+      ],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180500",
+          "title": "【資安週報】1109～1113，Cyberbiz事件擴大、多家上市櫃公司接連公告，資安救火人力不足恐浮現",
+          "quote": "AI自動化攻擊系統BossAI鎖定臺灣緊急應變服務 AI自動化攻擊系統BossAI鎖定11國與數百個組織，根據資安公司Acronis的揭露，其中針對臺灣的部分，緊急應變服務是主要目標，並有事故發生，如臺北市消防相關緊急病患照護記錄平臺，可能洩漏多種醫療資料；臺北市119緊急派遣系統遭入侵，存取涵蓋7個行政區的案件記錄；臺灣一家貸款服務公司也遭到SQL注入攻擊，另有一家行動支付公司被發現信用卡綁定流程未正確驗證CVV碼。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-14T03:48:42Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "iThome 週報引述 Acronis，BossAI 鎖定 11 國數百個組織，在台灣以緊急應變服務為主要目標；另有一家貸款服務公司遭 SQL 注入攻擊，一家行動支付公司被發現信用卡綁定流程未正確驗證 CVV 碼。來源未指名這兩家公司。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：信用卡綁定流程須驗證 CVV，且對外 API 需防 SQL 注入"
+          ],
+          "observed_at": "2026-11-14T03:48:42Z",
+          "suggestions": [
+            {
+              "id": "ai-1",
+              "source": "ai",
+              "inferred": true,
+              "target": null,
+              "hypothesis": "對外 API 或網頁表單的輸入驗證不足，可能被注入查詢",
+              "why": null,
+              "check": "檢查商店與 API 閘道接收的參數是否使用參數化查詢，並查日誌中 SQL 注入特徵的請求",
+              "how": null,
+              "plain": "對外 API 或網頁表單的輸入驗證不足，可能被注入查詢",
+              "basis": "AI 依事件推測：攻擊過程提到貸款服務公司遭 SQL 注入攻擊",
+              "systems": [
+                {
+                  "asset_id": "api-gateway",
+                  "label": "API 閘道"
+                },
+                {
+                  "asset_id": "storefront",
+                  "label": "商店網站"
+                }
+              ],
+              "controls": []
+            },
+            {
+              "id": "ai-2",
+              "source": "ai",
+              "inferred": true,
+              "target": null,
+              "hypothesis": "支付與綁卡流程可能漏掉卡片驗證碼檢查",
+              "why": null,
+              "check": "測試綁卡與付款流程在 CVV 缺漏或錯誤時是否會被拒絕，並查有無異常的綁卡嘗試",
+              "how": null,
+              "plain": "支付與綁卡流程可能漏掉卡片驗證碼檢查",
+              "basis": "AI 依事件推測：攻擊過程提到行動支付公司信用卡綁定流程未正確驗證 CVV 碼",
+              "systems": [
+                {
+                  "asset_id": "payment-service",
+                  "label": "金流服務"
+                },
+                {
+                  "asset_id": "storefront",
+                  "label": "商店網站"
+                }
+              ],
+              "controls": []
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  },
+  "orchestrator_results": []
+}

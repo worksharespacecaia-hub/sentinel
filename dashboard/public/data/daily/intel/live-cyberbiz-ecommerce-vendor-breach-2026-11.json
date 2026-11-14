@@ -1,0 +1,270 @@
+{
+  "event": {
+    "id": "live-cyberbiz-ecommerce-vendor-breach-2026-11",
+    "kind": "live",
+    "title": "電商平台服務商順立智慧（Cyberbiz）資安事件，多家上市櫃品牌商城資料受波及",
+    "date": "2026-11-13",
+    "industry": "電商",
+    "attack_chain": [
+      "委外電商平台服務商 Cyberbiz 資料庫部分內容遭未經授權的異常存取",
+      "使用其平台的品牌商城訂單與個資（訂單編號、電子郵件、手機號碼）受波及",
+      "品牌商通知消費者留意詐騙"
+    ],
+    "attck": [],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180482",
+        "title": "大金空調零件線上商城委外廠商發生資安事件，141筆訂單資料受波及、132筆個資遭未經授權存取",
+        "quote": "這是近期因電商委外服務廠商造成資料外洩的重大訊息裡，首度有上市櫃公司明確透露受到影響的資料範圍。",
+        "published": "2026-11-13",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-14T03:48:42Z",
+        "content_hash": "sha256:8bae0271f7f2c6fda1f56b71c7d80636405975c305c92fd1804fbb8aca789fc9",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://www.ithome.com.tw/news/180476",
+        "title": "威力德生醫線上商店委外廠商發生資安事件，部分消費者訂單資料遭異常存取",
+        "quote": "威力德生醫已要求順立智慧進行資安檢視，並採取必要的安全強化措施，後續也將持續追蹤改善進度，同時強化對委外服務廠商的資安監督管理。",
+        "published": "2026-11-13",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-14T03:48:42Z",
+        "content_hash": "sha256:45c6c0d87d451fcd90cd2eb55f435e92f42f325445a2b36db1bd573a6bbc1553",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://www.ithome.com.tw/news/180500",
+        "title": "【資安週報】1109～1113，Cyberbiz事件擴大、多家上市櫃公司接連公告，資安救火人力不足恐浮現",
+        "quote": "【資安週報】1109～1113，Cyberbiz事件擴大、多家上市櫃公司接連公告，資安救火人力不足恐浮現",
+        "published": "2026-11-13",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-14T03:48:42Z",
+        "content_hash": "sha256:e2206e27f9716456aa259a16ccedc9e9d15507af70d01a8848b92429dc436819",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "電商委外平台業者須有資料存取範圍管控與事件通報機制",
+        "reason": "來源指出委外電商平台服務商資料庫遭未授權存取，波及多家品牌商城訂單與個資；現有控制項未涵蓋第三方平台的資料存取範圍與通報要求。"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-cyberbiz-ecommerce-vendor-breach-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：電商委外平台業者須有資料存取範圍管控與事件通報機制"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "ai-1",
+          "source": "ai",
+          "inferred": true,
+          "target": null,
+          "hypothesis": "委外的電商或架站服務商若被入侵，我們的訂單與會員資料會連帶外洩",
+          "why": null,
+          "check": "盤點是否使用 Cyberbiz 或同類委外電商、架站平台（含未登記的 saas-quicksite-builder），確認其可存取的訂單與個資範圍，並向供應商索取事件說明",
+          "how": null,
+          "plain": "委外的電商或架站服務商若被入侵，我們的訂單與會員資料會連帶外洩",
+          "basis": "AI 依事件推測：來源指出事件源自委外服務商 Cyberbiz 的資料庫遭存取，而非品牌商自身系統",
+          "systems": [
+            {
+              "asset_id": "saas-quicksite-builder",
+              "label": "未登記的架站服務"
+            },
+            {
+              "asset_id": "storefront",
+              "label": "商店網站"
+            },
+            {
+              "asset_id": "order-exports-bucket",
+              "label": "訂單匯出檔案儲存區"
+            }
+          ],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "程式無法自動判定此事件是否影響我們，需人工確認是否委外使用該電商服務商；若有，訂單與會員資料可能連帶外洩。",
+  "blocks": {
+    "1_summary": {
+      "title": "電商平台服務商順立智慧（Cyberbiz）資安事件，多家上市櫃品牌商城資料受波及",
+      "date": "2026-11-13",
+      "industry": "電商",
+      "attack_chain": [
+        "委外電商平台服務商 Cyberbiz 資料庫部分內容遭未經授權的異常存取",
+        "使用其平台的品牌商城訂單與個資（訂單編號、電子郵件、手機號碼）受波及",
+        "品牌商通知消費者留意詐騙"
+      ],
+      "attck": [],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180482",
+          "title": "大金空調零件線上商城委外廠商發生資安事件，141筆訂單資料受波及、132筆個資遭未經授權存取",
+          "quote": "這是近期因電商委外服務廠商造成資料外洩的重大訊息裡，首度有上市櫃公司明確透露受到影響的資料範圍。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-14T03:48:42Z"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/180476",
+          "title": "威力德生醫線上商店委外廠商發生資安事件，部分消費者訂單資料遭異常存取",
+          "quote": "威力德生醫已要求順立智慧進行資安檢視，並採取必要的安全強化措施，後續也將持續追蹤改善進度，同時強化對委外服務廠商的資安監督管理。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-14T03:48:42Z"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/180500",
+          "title": "【資安週報】1109～1113，Cyberbiz事件擴大、多家上市櫃公司接連公告，資安救火人力不足恐浮現",
+          "quote": "【資安週報】1109～1113，Cyberbiz事件擴大、多家上市櫃公司接連公告，資安救火人力不足恐浮現",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-14T03:48:42Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "程式無法自動判定此事件是否影響我們，需人工確認是否委外使用該電商服務商；若有，訂單與會員資料可能連帶外洩。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：電商委外平台業者須有資料存取範圍管控與事件通報機制"
+          ],
+          "observed_at": "2026-11-14T03:48:42Z",
+          "suggestions": [
+            {
+              "id": "ai-1",
+              "source": "ai",
+              "inferred": true,
+              "target": null,
+              "hypothesis": "委外的電商或架站服務商若被入侵，我們的訂單與會員資料會連帶外洩",
+              "why": null,
+              "check": "盤點是否使用 Cyberbiz 或同類委外電商、架站平台（含未登記的 saas-quicksite-builder），確認其可存取的訂單與個資範圍，並向供應商索取事件說明",
+              "how": null,
+              "plain": "委外的電商或架站服務商若被入侵，我們的訂單與會員資料會連帶外洩",
+              "basis": "AI 依事件推測：來源指出事件源自委外服務商 Cyberbiz 的資料庫遭存取，而非品牌商自身系統",
+              "systems": [
+                {
+                  "asset_id": "saas-quicksite-builder",
+                  "label": "未登記的架站服務"
+                },
+                {
+                  "asset_id": "storefront",
+                  "label": "商店網站"
+                },
+                {
+                  "asset_id": "order-exports-bucket",
+                  "label": "訂單匯出檔案儲存區"
+                }
+              ],
+              "controls": []
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    },
+    "8_extra_checks": [
+      {
+        "control_id": "C-CLOUD-STORAGE-PUBLIC",
+        "title": "雲端儲存空間不得公開讀取",
+        "status": "fail",
+        "assets": [
+          {
+            "asset_id": "firebase-brand-app-storage",
+            "evidence": [
+              "firebase-config.json: /user-uploads/{allPaths=**} read if true",
+              "external-scan.json: storage.shopsaas-demo.example 可匿名列出內容"
+            ]
+          },
+          {
+            "asset_id": "order-exports-bucket",
+            "evidence": [
+              "external-scan.json: shopsaas-demo-order-exports.s3.example 可匿名列出內容",
+              "infra/terraform/main.tf: aws_s3_bucket_acl acl = \"public-read\""
+            ]
+          }
+        ],
+        "check_reason": "雲端儲存空間可公開讀取",
+        "suggested_reason": "電商服務商事件波及訂單資料，需確認訂單匯出的儲存空間沒有公開讀取。",
+        "status_label": "不符合"
+      }
+    ]
+  },
+  "orchestrator_results": [
+    {
+      "stage": "review",
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "target_type": "event",
+      "target_id": "live-cyberbiz-ecommerce-vendor-breach-2026-11",
+      "text": "程式無法自動判定此事件是否影響我們，需人工確認是否委外使用該電商服務商；若有，訂單與會員資料可能連帶外洩。",
+      "source": "live"
+    }
+  ]
+}

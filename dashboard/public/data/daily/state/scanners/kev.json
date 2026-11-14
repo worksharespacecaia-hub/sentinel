@@ -1,9 +1,23 @@
 {
   "tool": "kev",
-  "tool_version": "2026.11.10",
-  "database_revision": "2026-11-10T19:03:29.8375Z",
-  "count": 1779,
+  "tool_version": "2026.11.13",
+  "database_revision": "2026-11-13T20:24:18.3008Z",
+  "count": 1781,
   "cves": {
+    "CVE-2026-114713": {
+      "added": "2026-11-13",
+      "vendor": "UnrealIRCd",
+      "product": "UnrealIRCd",
+      "name": "UnrealIRCd Improper Neutralization of Delimiters Vulnerability",
+      "ransomware": false
+    },
+    "CVE-2026-123039": {
+      "added": "2026-11-13",
+      "vendor": "Check Point",
+      "product": "Multiple Products",
+      "name": "Check Point Multiple Products Incorrect Permission Assignment for Critical Resource Vulnerability",
+      "ransomware": false
+    },
     "CVE-2026-124194": {
       "added": "2026-11-10",
       "vendor": "Microsoft",

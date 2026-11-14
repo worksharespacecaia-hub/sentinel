@@ -47,7 +47,7 @@
     "is_update_of": null,
     "proposed_controls": []
   },
-  "conclusion": "1 項受影響，最高風險為中。mail-api-key：secrets.json: mail-api-key：460 天未輪替、無 IP 白名單。",
+  "conclusion": "1 項受影響，最高風險為中。mail-api-key：secrets.json: mail-api-key：461 天未輪替、無 IP 白名單。",
   "affected_count": 1,
   "max_level": "medium",
   "impacts": [
@@ -55,7 +55,7 @@
       "event_id": "evt-1shop-2026-10",
       "asset_id": "mail-api-key",
       "basis": "control",
-      "our_state": "secrets.json: mail-api-key：460 天未輪替、無 IP 白名單",
+      "our_state": "secrets.json: mail-api-key：461 天未輪替、無 IP 白名單",
       "verdict": "affected",
       "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
       "reason": "不符合 C-THIRD-PARTY-KEY-ROTATION（第三方服務金鑰 90 天內輪替且有 IP 白名單）"
@@ -89,7 +89,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "事件為 1shop 疑似 Mailgun API 金鑰遭取得；我們的 mail-api-key 460 天未輪替且無 IP 白名單，程式判定為中風險（6 分）。建議輪替並加上 IP 白名單。",
+  "summary": "此事件為寄信服務金鑰疑遭取得，我們的 mail-api-key 已 461 天未輪替且沒有 IP 白名單，程式判定為受影響、中風險（6 分）。",
   "blocks": {
     "1_summary": {
       "title": "1shop 一頁購物疑 Mailgun API 金鑰遭取得，詐騙信內容吻合真實訂單",
@@ -129,19 +129,19 @@
         "max_level": null,
         "note": null
       },
-      "summary": "事件為 1shop 疑似 Mailgun API 金鑰遭取得；我們的 mail-api-key 460 天未輪替且無 IP 白名單，程式判定為中風險（6 分）。建議輪替並加上 IP 白名單。",
+      "summary": "此事件為寄信服務金鑰疑遭取得，我們的 mail-api-key 已 461 天未輪替且沒有 IP 白名單，程式判定為受影響、中風險（6 分）。",
       "summary_note": null,
       "fixture_note": null
     },
     "2_conclusion": {
-      "text": "1 項受影響，最高風險為中。mail-api-key：secrets.json: mail-api-key：460 天未輪替、無 IP 白名單。",
+      "text": "1 項受影響，最高風險為中。mail-api-key：secrets.json: mail-api-key：461 天未輪替、無 IP 白名單。",
       "affected_count": 1,
       "max_level": "medium"
     },
     "3_affected": [
       {
         "asset_id": "mail-api-key",
-        "our_state": "secrets.json: mail-api-key：460 天未輪替、無 IP 白名單",
+        "our_state": "secrets.json: mail-api-key：461 天未輪替、無 IP 白名單",
         "basis": "control",
         "verdict": "affected",
         "reason": "不符合 C-THIRD-PARTY-KEY-ROTATION（第三方服務金鑰 90 天內輪替且有 IP 白名單）",
@@ -172,7 +172,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T09:55:53Z"
+        "observed_at": "2026-11-14T03:48:42Z"
       }
     ],
     "4_unaffected_and_check": {

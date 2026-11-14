@@ -199,7 +199,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "與 91APP 事件相符的共 5 項：internal-tool 對外開放（高，8 分）、gitlab 與 brand-app 的金鑰留在 Git（高，8 與 10 分）、nas-office-01 對外開放與 order-db-prod 被測試環境連線（中，各 5 分）。其中前三項位於完整攻擊鏈，應優先處理。",
+  "summary": "此事件的破口與我們相似：internal-tool 對外開放（高風險 8 分），且 brand-app 有金鑰在程式碼中（高風險 10 分）；另有 nas-office-01、gitlab、order-db-prod 共 5 項受影響。",
   "blocks": {
     "1_summary": {
       "title": "91APP 訂單資料庫遭入侵：未更新的內部工具 Appsmith 成破口，自內部 GitLab 取得資料庫金鑰",
@@ -243,7 +243,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "與 91APP 事件相符的共 5 項：internal-tool 對外開放（高，8 分）、gitlab 與 brand-app 的金鑰留在 Git（高，8 與 10 分）、nas-office-01 對外開放與 order-db-prod 被測試環境連線（中，各 5 分）。其中前三項位於完整攻擊鏈，應優先處理。",
+      "summary": "此事件的破口與我們相似：internal-tool 對外開放（高風險 8 分），且 brand-app 有金鑰在程式碼中（高風險 10 分）；另有 nas-office-01、gitlab、order-db-prod 共 5 項受影響。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -286,7 +286,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T09:55:53Z"
+        "observed_at": "2026-11-14T03:48:42Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -316,7 +316,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T09:55:53Z"
+        "observed_at": "2026-11-14T03:48:42Z"
       },
       {
         "asset_id": "gitlab",
@@ -325,8 +325,8 @@
         "verdict": "affected",
         "reason": "不符合 C-SECRET-IN-GIT（Git 中不得有正式環境金鑰）",
         "risk_id": "gitlab:C-SECRET-IN-GIT",
-        "level": "high",
-        "score": 8,
+        "level": "medium",
+        "score": 5,
         "breakdown": [
           {
             "factor": "基礎分：控制項不符",
@@ -347,16 +347,11 @@
             "factor": "同業事件命中",
             "points": 1,
             "reason": "evt-91app-2026-10"
-          },
-          {
-            "factor": "位於完整攻擊鏈",
-            "points": 3,
-            "reason": "攻擊路徑前提的必要一步"
           }
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T09:55:53Z"
+        "observed_at": "2026-11-14T03:48:42Z"
       },
       {
         "asset_id": "brand-app",
@@ -401,7 +396,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T09:55:53Z"
+        "observed_at": "2026-11-14T03:48:42Z"
       },
       {
         "asset_id": "order-db-prod",
@@ -436,7 +431,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T09:55:53Z"
+        "observed_at": "2026-11-14T03:48:42Z"
       }
     ],
     "4_unaffected_and_check": {

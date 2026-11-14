@@ -107,7 +107,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "internal-tool 使用 opsbuilder 1.88 且對外，登入頁可連到，程式判定為高風險（11 分，位於完整攻擊鏈）。此公告為示範用的虛構產品；建議先收回對外連線再升級。",
+  "summary": "internal-tool 使用 opsbuilder 1.88、登入頁可從外部連到，落在受影響範圍，程式判定為高風險（11 分）。",
   "blocks": {
     "1_summary": {
       "title": "示範公告：OpsBuilder 1.90 以前版本的帳號接管漏洞（虛構產品）",
@@ -141,7 +141,7 @@
         "issues": [],
         "max_level": null
       },
-      "summary": "internal-tool 使用 opsbuilder 1.88 且對外，登入頁可連到，程式判定為高風險（11 分，位於完整攻擊鏈）。此公告為示範用的虛構產品；建議先收回對外連線再升級。",
+      "summary": "internal-tool 使用 opsbuilder 1.88、登入頁可從外部連到，落在受影響範圍，程式判定為高風險（11 分）。",
       "summary_note": null,
       "fixture_note": "虛構產品 OpsBuilder 的示範公告；CVSS 與已利用旗標為明確標示的模擬 fixture 值（規格第 7.4 節）"
     },
@@ -189,7 +189,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T09:55:53Z"
+        "observed_at": "2026-11-14T03:48:42Z"
       }
     ],
     "4_unaffected_and_check": {
