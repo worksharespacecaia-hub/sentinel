@@ -83,9 +83,9 @@
     "is_update_of": null,
     "proposed_controls": []
   },
-  "conclusion": "3 項受影響，最高風險為高。nas-office-01：synology-dsm 7.2.1-69057 Update 5，對外。",
+  "conclusion": "3 項受影響，最高風險為中。nas-office-01：synology-dsm 7.2.1-69057 Update 5，對外。",
   "affected_count": 3,
-  "max_level": "high",
+  "max_level": "medium",
   "impacts": [
     {
       "event_id": "evt-synology-2026-10",
@@ -126,7 +126,7 @@
           "name": "修補",
           "action": "升級到修補版本",
           "cost": "需回歸測試",
-          "timing": "24 小時內"
+          "timing": "168 小時內"
         },
         {
           "name": "緩解",
@@ -182,7 +182,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "nas-office-01 的管理介面對外開放且版本受影響，為高風險（8 分）；同時備份未與設備隔離、從未做過還原測試（中風險 5 分）。",
+  "summary": "nas-office-01 有 3 項相符，皆為中風險：系統版本有漏洞且管理介面對外（8 分）、備份未與來源隔離且從未做過還原測試（5 分）、內部工具對外開放（5 分）。建議關閉對外連線並將備份隔離。",
   "blocks": {
     "1_summary": {
       "title": "Synology NAS 遭 C3RB3R 勒索軟體加密：DSM 登入頁對外暴露，常駐連接的備份碟一併被加密",
@@ -223,14 +223,14 @@
         "max_level": null,
         "note": null
       },
-      "summary": "nas-office-01 的管理介面對外開放且版本受影響，為高風險（8 分）；同時備份未與設備隔離、從未做過還原測試（中風險 5 分）。",
+      "summary": "nas-office-01 有 3 項相符，皆為中風險：系統版本有漏洞且管理介面對外（8 分）、備份未與來源隔離且從未做過還原測試（5 分）、內部工具對外開放（5 分）。建議關閉對外連線並將備份隔離。",
       "summary_note": null,
       "fixture_note": null
     },
     "2_conclusion": {
-      "text": "3 項受影響，最高風險為高。nas-office-01：synology-dsm 7.2.1-69057 Update 5，對外。",
+      "text": "3 項受影響，最高風險為中。nas-office-01：synology-dsm 7.2.1-69057 Update 5，對外。",
       "affected_count": 3,
-      "max_level": "high"
+      "max_level": "medium"
     },
     "3_affected": [
       {
@@ -240,7 +240,7 @@
         "verdict": "affected",
         "reason": "版本落在受影響範圍，利用條件成立：management_interface_internet_exposed=True",
         "risk_id": "nas-office-01:synology-dsm:vuln",
-        "level": "high",
+        "level": "medium",
         "score": 8,
         "breakdown": [
           {
@@ -266,7 +266,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-14T03:48:42Z"
+        "observed_at": "2026-11-15T03:29:33Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -296,7 +296,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-14T03:48:42Z"
+        "observed_at": "2026-11-15T03:29:33Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -326,7 +326,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-14T03:48:42Z"
+        "observed_at": "2026-11-15T03:29:33Z"
       }
     ],
     "4_unaffected_and_check": {
@@ -344,7 +344,7 @@
             "name": "修補",
             "action": "升級到修補版本",
             "cost": "需回歸測試",
-            "timing": "24 小時內"
+            "timing": "168 小時內"
           },
           {
             "name": "緩解",

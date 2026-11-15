@@ -199,7 +199,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "此事件的破口與我們相似：internal-tool 對外開放（高風險 8 分），且 brand-app 有金鑰在程式碼中（高風險 10 分）；另有 nas-office-01、gitlab、order-db-prod 共 5 項受影響。",
+  "summary": "此事件與我們有 5 項相符，最高為高風險：brand-app 程式碼含正式金鑰（10 分）、internal-tool 對外開放（8 分），另有 gitlab 金鑰、nas-office-01 對外開放與測試環境可連到正式訂單資料庫（各 5 分，中風險）。建議先關閉對外開放並輪替金鑰。",
   "blocks": {
     "1_summary": {
       "title": "91APP 訂單資料庫遭入侵：未更新的內部工具 Appsmith 成破口，自內部 GitLab 取得資料庫金鑰",
@@ -243,7 +243,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "此事件的破口與我們相似：internal-tool 對外開放（高風險 8 分），且 brand-app 有金鑰在程式碼中（高風險 10 分）；另有 nas-office-01、gitlab、order-db-prod 共 5 項受影響。",
+      "summary": "此事件與我們有 5 項相符，最高為高風險：brand-app 程式碼含正式金鑰（10 分）、internal-tool 對外開放（8 分），另有 gitlab 金鑰、nas-office-01 對外開放與測試環境可連到正式訂單資料庫（各 5 分，中風險）。建議先關閉對外開放並輪替金鑰。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -286,7 +286,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-14T03:48:42Z"
+        "observed_at": "2026-11-15T03:29:33Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -316,7 +316,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-14T03:48:42Z"
+        "observed_at": "2026-11-15T03:29:33Z"
       },
       {
         "asset_id": "gitlab",
@@ -351,7 +351,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-14T03:48:42Z"
+        "observed_at": "2026-11-15T03:29:33Z"
       },
       {
         "asset_id": "brand-app",
@@ -396,7 +396,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-14T03:48:42Z"
+        "observed_at": "2026-11-15T03:29:33Z"
       },
       {
         "asset_id": "order-db-prod",
@@ -431,7 +431,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-14T03:48:42Z"
+        "observed_at": "2026-11-15T03:29:33Z"
       }
     ],
     "4_unaffected_and_check": {

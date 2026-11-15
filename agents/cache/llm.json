@@ -2471,5 +2471,305 @@
       "task": "dispatch:live-postgresql-cve-2026-6460-6467:order-db-test:postgresql:vuln",
       "scope": "daily"
     }
+  },
+  "23bd5af9c3e734a23c9723a8cead8701220779da5871f469aa4354e8cafcfd32": {
+    "output": [
+      {
+        "id": "member-api:body-parser:vuln",
+        "explanation": "body-parser 1.20.1 存在 3 個已知漏洞，最高 CVSS 7.5（CVE-2024-45590）。建議升級至 1.20.3。",
+        "confidence": "high"
+      },
+      {
+        "id": "member-api:cookie:vuln",
+        "explanation": "cookie 0.5.0 存在 1 個已知漏洞，CVSS 3.7（CVE-2024-47764）。建議升級至 0.7.0。",
+        "confidence": "high"
+      },
+      {
+        "id": "member-api:express:vuln",
+        "explanation": "express 4.18.2 存在 2 個已知漏洞，最高 CVSS 6.1（CVE-2024-29041）。建議升級至 4.19.2 或 5.0.0-beta.3 以上。",
+        "confidence": "high"
+      },
+      {
+        "id": "member-api:lodash:vuln",
+        "explanation": "lodash 4.17.20 存在 4 個已知漏洞，最高 CVSS 9.8（CVE-2026-4800），風險最高。建議升級至 4.18.0。",
+        "confidence": "high"
+      },
+      {
+        "id": "member-api:path-to-regexp:vuln",
+        "explanation": "path-to-regexp 0.1.7 存在 3 個已知漏洞，最高 CVSS 7.5（CVE-2024-45296）。資料列出多個修補版本，應依所用分支選擇 0.1.10 等對應版本。",
+        "confidence": "high"
+      },
+      {
+        "id": "member-api:qs:vuln",
+        "explanation": "qs 6.11.0 存在 4 個已知漏洞，最高 CVSS 7.5（CVE-2025-15284）。建議升級至 6.14.1。",
+        "confidence": "high"
+      },
+      {
+        "id": "member-api:send:vuln",
+        "explanation": "send 0.18.0 存在 1 個已知漏洞，CVSS 5.0（CVE-2024-43799）。建議升級至 0.19.0。",
+        "confidence": "high"
+      },
+      {
+        "id": "member-api:serve-static:vuln",
+        "explanation": "serve-static 1.15.0 存在 1 個已知漏洞，CVSS 5.0（CVE-2024-43800）。建議升級至 1.16.0 或 2.1.0。",
+        "confidence": "high"
+      },
+      {
+        "id": "storefront:next:vuln",
+        "explanation": "next 14.1.0 存在 36 個已知漏洞，最高 CVSS 9.1（CVE-2025-29927），數量多且影響面大。建議依主版本升級至 14.2.25 或其他資料列出的修補版本。",
+        "confidence": "high"
+      },
+      {
+        "id": "storefront:postcss:vuln",
+        "explanation": "postcss 8.4.31 存在 4 個已知漏洞，最高 CVSS 9.1（CVE-2026-45623）。建議升級至 8.5.12。",
+        "confidence": "high"
+      },
+      {
+        "id": "marketing-site:apache-httpd:vuln",
+        "explanation": "apache-httpd 2.4.57 依 NVD 比對有 69 個確定漏洞、2 個待確認，最高 CVSS 9.8（CVE-2024-38474），其中 CVE-2024-38475 已列入 CISA KEV 且遭實際利用，應優先處理。資料顯示部分漏洞無明確修補版本，需人工確認可行的升級目標。",
+        "confidence": "low"
+      },
+      {
+        "id": "api-gateway:nginx:vuln",
+        "explanation": "nginx 1.27.2 依 NVD 比對有 17 個確定漏洞，最高 CVSS 9.2（CVE-2026-42055）。資料顯示修補版本無法確定，建議人工查閱官方公告後再決定升級目標。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "dependency-analyst#0",
+      "scope": "daily"
+    }
+  },
+  "5116fbcac6a610717b83f992644011584050cb720b6c2ba968336735f4962a52": {
+    "output": [
+      {
+        "id": "marketing-site:php:vuln",
+        "explanation": "php 8.1.27 有 27 個確定命中的已知漏洞，最高 CVSS 9.8，且 CVE-2026-109618、CVE-2026-109619 已遭實際利用（CISA KEV），建議升級至 8.2.35。",
+        "confidence": "high"
+      },
+      {
+        "id": "phpmyadmin:phpmyadmin:vuln",
+        "explanation": "phpmyadmin 5.2.1 有 7 個確定命中的已知漏洞，最高 CVSS 8.8，但資料顯示無法確定修補版本，需人工逐一確認各 CVE 的修補範圍後再決定升級目標。",
+        "confidence": "low"
+      },
+      {
+        "id": "member-db-prod:postgresql:vuln",
+        "explanation": "生產環境 member-db-prod 的 postgresql 15.6 有 44 個確定命中的已知漏洞，最高 CVSS 8.8，建議升級至 15.19。",
+        "confidence": "high"
+      },
+      {
+        "id": "order-db-prod:postgresql:vuln",
+        "explanation": "生產環境 order-db-prod 的 postgresql 15.6 有 44 個確定命中的已知漏洞，最高 CVSS 8.8，建議升級至 15.19。",
+        "confidence": "high"
+      },
+      {
+        "id": "order-db-test:postgresql:vuln",
+        "explanation": "測試環境 order-db-test 的 postgresql 15.6 有 44 個確定命中的已知漏洞，最高 CVSS 8.8，建議升級至 15.19，並可視情況先在測試環境驗證。",
+        "confidence": "high"
+      },
+      {
+        "id": "cache-redis:redis:vuln",
+        "explanation": "redis 7.0.15 有 11 個確定命中的已知漏洞，最高 CVSS 9.9，建議升級至 8.6.3，注意主版本跨度較大，升級前需確認相容性。",
+        "confidence": "high"
+      },
+      {
+        "id": "marketing-site:wordpress:vuln",
+        "explanation": "wordpress 6.4.3 有 3 個確定命中與 1 個需確認的已知漏洞，最高 CVSS 8.1，且 CVE-2026-119977、CVE-2026-87902 已遭實際利用（CISA KEV），但資料顯示無法確定修補版本，需人工確認。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "dependency-analyst#1",
+      "scope": "daily"
+    }
+  },
+  "4c3f1dfc7205f2630948d3bc6a9b9ccc8364d5aaa4fdd7ad75314c2a5aa1f8c2": {
+    "output": [
+      {
+        "id": "gitlab:C-SECRET-IN-GIT",
+        "explanation": "config/db.yml:4 的 gitlab 相關金鑰被標記為正式環境金鑰並存在於 Git 中，屬於正式環境憑證外洩風險，需立即撤銷並輪替。Git 歷史中的副本也須一併清除。",
+        "confidence": "high"
+      },
+      {
+        "id": "brand-app:C-SECRET-IN-GIT",
+        "explanation": "services/brand-app/src/config.ts:3 的 brand-app 金鑰被標記為正式環境金鑰並存在於 Git 中，屬於正式環境憑證外洩風險，需立即撤銷並輪替。刪除檔案本身不足以修復，需有撤銷或輪替證據。",
+        "confidence": "high"
+      },
+      {
+        "id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "explanation": "secrets.json 中的 mail-api-key 已 462 天未輪替且未設定 IP 白名單，違反第三方金鑰 90 天輪替與 IP 限制規則。資料未標示其環境與權限範圍，環境與風險等級需進一步確認。",
+        "confidence": "low"
+      },
+      {
+        "id": "order-db-test-cred:test-secret-in-git",
+        "explanation": "config/db.yml:7 的資料庫憑證屬於測試環境，但仍存在於 Git 中。雖風險低於正式環境，仍應撤銷或輪替並移除歷史紀錄中的副本。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "secret-analyst",
+      "task": "secret-analyst#0",
+      "scope": "daily"
+    }
+  },
+  "72cbe9f3b2801466b95cd21307c4d27ac80e4ff8a460f28f6f4eb9a148ef0723": {
+    "output": [
+      {
+        "id": "marketing-site:php:vuln",
+        "explanation": "依本地版本比對，php 8.1.27 確定受 27 個已知漏洞影響，另有 3 個需確認；修補版本為 8.2.35。其中 CVE-2026-109618 與 CVE-2026-109619 已列入 CISA KEV 且有實際利用紀錄。",
+        "confidence": "high"
+      },
+      {
+        "id": "phpmyadmin:php:vuln",
+        "explanation": "php 8.3.20 落在 PHP2Shell 受影響區間（8.3.0 至 8.3.36 之前），也落在 KEV 條目 CVE-2026-109618 的區間內，判定受影響；修補版本為 8.3.36。利用前提為 fpm-fcgi 環境且 session.upload_progress.enabled=On，依資料此前提已成立。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "event:live-php2shell-checkpoint-2026-11:dependency-analyst",
+      "scope": "daily"
+    }
+  },
+  "5c373b9fcd69ed86788bda13120f25950dc345808d915b5c5b0d24d8b94fd7d6": {
+    "output": [
+      {
+        "id": "marketing-site:php:eol",
+        "explanation": "依 eol.json，PHP 8.1 支援已於 2025-12-31 結束，至 2026-11-15 已超過期限，上游不再提供安全修補；後續發現的漏洞將無修補可用。其利用條件（如是否對外暴露、是否符合 PHP2Shell 類漏洞前提）目前需確認，本項不能僅因 EOL 即判定可被利用，建議升級至仍受支援的 PHP 版本並確認對外暴露面與 CVE 狀態（僅報告，未修改系統）。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "runtime-analyst",
+      "task": "event:live-php2shell-checkpoint-2026-11:runtime-analyst",
+      "scope": "daily"
+    }
+  },
+  "7f584f82774f4b8813e0f305cf10565ea65f797423d2a0118fe8bc1f06b159fa": {
+    "output": [
+      {
+        "id": "marketing-site:php:vuln",
+        "explanation": "依 breakdown 逐項說明：CVSS 9.8 的已知漏洞計 3 分；KEV 或官方確認的實際利用計 2 分；可從 internet 連到的對外暴露計 2 分；同業事件 evt-php2shell-2026-10 與 live-php2shell-checkpoint-2026-11 命中計 1 分；無修補可用的已停止支援計 1 分，合計 9 分（分數以程式結果為準，未修改）。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "marketing-site:php:vuln",
+      "scope": "daily"
+    }
+  },
+  "8580d0b6b4e9d04b4b1e088693916f203d96220dddd9ac94a24882b6b398e524": {
+    "output": [
+      {
+        "id": "storefront:node:vuln",
+        "explanation": "基礎分 3 分來自漏洞 CVSS 9.8 的嚴重程度；已遭實際利用 2 分因該漏洞列於 CISA KEV 或經官方確認已被利用；對外暴露 2 分因服務可從 internet 連線；資料敏感 1 分因可能涉及訂單（order）與個資（pii）；影響範圍 1 分因屬平台層元件，影響所有品牌；同業事件命中 1 分因與 live-nodejs-http2-nov-2026 事件相符。以上六項合計 10 分，分數與等級以程式結果為準。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "storefront:node:vuln",
+      "scope": "daily"
+    }
+  },
+  "bce426f469feb8e3ba5852b9ff8a1e0630a51756830c74b211a8cbeb8fd5cbd6": {
+    "output": [
+      {
+        "id": "internal-tool:node:vuln",
+        "explanation": "分數拆解共四項：基礎漏洞分 3 分（CVSS 9.8，屬高嚴重度）、已遭實際利用 2 分（依輸入為 KEV 收錄或官方確認，兩者未分開註記）、對外暴露 2 分（可從 internet 連線）、同業事件命中 1 分（命中 evt-91app-2026-10 與 live-nodejs-http2-nov-2026）。分數與等級以程式結果為準，本說明未更動。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "internal-tool:node:vuln",
+      "scope": "daily"
+    }
+  },
+  "954e924b75e413a175e1c226ae7ffb1beb44bbdebf80071d500d3f7ffa03978d": {
+    "output": [
+      {
+        "id": "marketing-site:apache-httpd:vuln",
+        "explanation": "分數由四項拆解組成：漏洞基礎分 3 分（最高 CVSS 9.8）、已遭實際利用 2 分（依輸入為 KEV 或官方確認）、對外暴露 2 分（可從 internet 連線）、同業事件命中 1 分（對應 live-apache-mod-http2-cve-2026-119618）。總分與等級以程式結果為準，本說明未更動任何分數。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "marketing-site:apache-httpd:vuln",
+      "scope": "daily"
+    }
+  },
+  "b23a6a4eca486809cb8dc97d3197188fad8fec0529e5853316921b9986bc54fc": {
+    "output": [
+      {
+        "id": "member-api:node:vuln",
+        "explanation": "此項目為 node 22.11.0 的 CISA KEV 漏洞，CVSS 9.8 給基礎分 3 分；已遭實際利用加 2 分，資料敏感（PII）加 1 分，平台層影響所有品牌加 1 分，同業事件命中 live-nodejs-http2-nov-2026 加 1 分。各項加總為程式給定的 8 分，等級以程式結果為準。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "member-api:node:vuln",
+      "scope": "daily"
+    }
+  },
+  "845bca7ce3422e8e573068c3b7ec5428377eaddbe43cff1dcfa7bebb0a6a71a8": {
+    "output": [
+      {
+        "id": "order-db-prod:postgresql:vuln",
+        "explanation": "此風險為 postgresql 15.6 存在 44 個已知漏洞（最高 CVSS 8.8，CVE-2024-10979），評分依拆解含基礎漏洞分、資料敏感（order、pii）、平台層影響所有品牌、同業事件命中（evt-91app-2026-10 等），以及位於攻擊路徑（internet → internal-tool → order-db-prod）前提的必要一步。分數與等級以程式輸出為準，本說明未修改。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "order-db-prod:postgresql:vuln",
+      "scope": "daily"
+    }
+  },
+  "faa943d9109603188524e70288ba9fd93d16f357f599488843d3098c36c53d87": {
+    "output": [
+      {
+        "id": "nas-office-01:C-INTERNAL-TOOL-EXPOSED",
+        "explanation": "依 breakdown，本項由控制項不符（基礎 2 分）、對外暴露（2 分）與同業事件命中（1 分，evt-91app-2026-10、evt-synology-2026-10）組成。圖譜顯示 nas-office-01 為 Synology DSM 7.2.1-69057 Update 5 的未登錄 shadow IT 裝置，可從 internet 經 5001 埠連入且具管理介面，但未標示資料類別、負責人或攻擊路徑（paths 為空），故無法確認品牌數、安裝數與具體資料欄位的影響，業務影響也待確認；建議優先確認此 NAS 是否必要對外，若否則移除 5001 對外連線並納入資產登錄與負責人指派。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "dispatch:live-php2shell-checkpoint-2026-11:nas-office-01:C-INTERNAL-TOOL-EXPOSED",
+      "scope": "daily"
+    }
+  },
+  "3652250e830486381bb7c76d6642e14df2e6aa5e8414618c40c8c3c02b0f10c5": {
+    "output": [
+      {
+        "id": "phpmyadmin:php:vuln",
+        "explanation": "圖譜查無此資產（資產不在本次範圍，且以 php 8.3.20 查詢無結果），無法確認受影響品牌數、安裝數與攻擊路徑。依拆解，風險來自 CVSS 9.8 漏洞、已遭實際利用、order 與 pii 資料敏感度與同業事件命中，並因 network.json 限制 corp-vpn 連入而扣 3 分補償；此補償依本次快照證據，需再確認實際生效。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "dispatch:live-php2shell-checkpoint-2026-11:phpmyadmin:php:vuln",
+      "scope": "daily"
+    }
   }
 }

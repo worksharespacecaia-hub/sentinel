@@ -3,11 +3,12 @@
     "id": "live-zhengnengliang-woocommerce-2026-11",
     "kind": "live",
     "title": "正能量智能子公司 WooCommerce 電商資料庫遭未經授權存取",
-    "date": "2026-11-11",
+    "date": "2026-11-13",
     "industry": "電商",
     "attack_chain": [
       "WooCommerce 電商系統資料庫遭未經授權存取及資料擷取",
-      "公司對相關系統採取隔離、防堵及安全漏洞修補措施"
+      "公司啟動資安應變，採取隔離、防堵與漏洞修補措施",
+      "向主管機關通報並通知受影響消費者"
     ],
     "attck": [],
     "cves": [],
@@ -23,14 +24,19 @@
         "published": "2026-11-13",
         "fetch_status": "ok",
         "verified": true,
-        "verified_at": "2026-11-13T09:55:53Z",
-        "content_hash": "sha256:4c144aae9c711943c0883496b419750a7bda1c5bd60142371f377771451fbd01",
+        "verified_at": "2026-11-15T03:29:33Z",
+        "content_hash": "sha256:c4c23c837700d086ee570f6ccce711c5785c1829f048689d852ba4ea552527ba",
         "verification_basis": "live"
       }
     ],
     "demo": false,
     "is_update_of": null,
-    "proposed_controls": []
+    "proposed_controls": [
+      {
+        "title": "電商網站資料庫不得對外直接連線且需有存取稽核",
+        "reason": "來源指出電商資料庫遭未經授權存取及資料擷取，公司事後隔離並修補漏洞；現有控制項沒有涵蓋電商資料庫的存取稽核。"
+      }
+    ]
   },
   "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
   "affected_count": 0,
@@ -45,7 +51,8 @@
       "risk_id": null,
       "to_verify": [
         "人工判斷事件的攻擊手法是否適用於我們的系統",
-        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增"
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：電商網站資料庫不得對外直接連線且需有存取稽核"
       ],
       "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
       "suggestions": [
@@ -54,12 +61,12 @@
           "source": "ai",
           "inferred": true,
           "target": null,
-          "hypothesis": "WordPress 類電商外掛或後台可能是破口",
+          "hypothesis": "對外的 WordPress 網站外掛或電商模組可能有未修補漏洞",
           "why": null,
-          "check": "檢查行銷官網 WordPress 與外掛是否為最新版，查後台登入與資料庫匯出紀錄是否有異常",
+          "check": "確認行銷官網是否安裝 WooCommerce 或其他電商外掛，檢查 WordPress 6.4.3 與外掛版本、對外管理頁面，以及資料庫連線來源",
           "how": null,
-          "plain": "WordPress 類電商外掛或後台可能是破口",
-          "basis": "AI 依事件推測：事件為 WooCommerce（WordPress 外掛）資料庫被存取，來源未交代手法，只提到事後修補安全漏洞",
+          "plain": "對外的 WordPress 網站外掛或電商模組可能有未修補漏洞",
+          "basis": "AI 依事件推測：來源指出 WooCommerce 資料庫被存取，公司事後採取漏洞修補措施，但未交代入侵手法",
           "systems": [
             {
               "asset_id": "marketing-site",
@@ -83,15 +90,16 @@
   ],
   "complete": true,
   "summary_source": "template",
-  "summary": "正能量智能子公司正能量運動的 WooCommerce 電商系統資料庫遭未經授權存取及資料擷取。公司已隔離、防堵並修補漏洞，通報主管機關並通知受影響消費者。",
+  "summary": "正能量智能於 11 月 11 日公告，子公司正能量運動的 WooCommerce 電商系統資料庫遭未經授權存取及資料擷取。公司已隔離防堵並修補漏洞、向主管機關通報，並通知受影響消費者。",
   "blocks": {
     "1_summary": {
       "title": "正能量智能子公司 WooCommerce 電商資料庫遭未經授權存取",
-      "date": "2026-11-11",
+      "date": "2026-11-13",
       "industry": "電商",
       "attack_chain": [
         "WooCommerce 電商系統資料庫遭未經授權存取及資料擷取",
-        "公司對相關系統採取隔離、防堵及安全漏洞修補措施"
+        "公司啟動資安應變，採取隔離、防堵與漏洞修補措施",
+        "向主管機關通報並通知受影響消費者"
       ],
       "attck": [],
       "cves": [],
@@ -104,7 +112,7 @@
           "quote": "正能量智能子公司電商資料庫遭未經授權存取，已通知受影響消費者並啟動資安應變",
           "fetch_status": "ok",
           "verification_basis": "live",
-          "verified_at": "2026-11-13T09:55:53Z"
+          "verified_at": "2026-11-15T03:29:33Z"
         }
       ],
       "verification": {
@@ -113,7 +121,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "正能量智能子公司正能量運動的 WooCommerce 電商系統資料庫遭未經授權存取及資料擷取。公司已隔離、防堵並修補漏洞，通報主管機關並通知受影響消費者。",
+      "summary": "正能量智能於 11 月 11 日公告，子公司正能量運動的 WooCommerce 電商系統資料庫遭未經授權存取及資料擷取。公司已隔離防堵並修補漏洞、向主管機關通報，並通知受影響消費者。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -138,21 +146,22 @@
           "app_impact": null,
           "to_verify": [
             "人工判斷事件的攻擊手法是否適用於我們的系統",
-            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增"
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：電商網站資料庫不得對外直接連線且需有存取稽核"
           ],
-          "observed_at": "2026-11-13T09:55:53Z",
+          "observed_at": "2026-11-15T03:29:33Z",
           "suggestions": [
             {
               "id": "ai-1",
               "source": "ai",
               "inferred": true,
               "target": null,
-              "hypothesis": "WordPress 類電商外掛或後台可能是破口",
+              "hypothesis": "對外的 WordPress 網站外掛或電商模組可能有未修補漏洞",
               "why": null,
-              "check": "檢查行銷官網 WordPress 與外掛是否為最新版，查後台登入與資料庫匯出紀錄是否有異常",
+              "check": "確認行銷官網是否安裝 WooCommerce 或其他電商外掛，檢查 WordPress 6.4.3 與外掛版本、對外管理頁面，以及資料庫連線來源",
               "how": null,
-              "plain": "WordPress 類電商外掛或後台可能是破口",
-              "basis": "AI 依事件推測：事件為 WooCommerce（WordPress 外掛）資料庫被存取，來源未交代手法，只提到事後修補安全漏洞",
+              "plain": "對外的 WordPress 網站外掛或電商模組可能有未修補漏洞",
+              "basis": "AI 依事件推測：來源指出 WooCommerce 資料庫被存取，公司事後採取漏洞修補措施，但未交代入侵手法",
               "systems": [
                 {
                   "asset_id": "marketing-site",
