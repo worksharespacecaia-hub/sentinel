@@ -13,7 +13,7 @@
       ]
     }
   ],
-  "dispatched": false,
+  "dispatched": true,
   "items": [
     {
       "advisory_id": "adv-opsbuilder-2026-001",
@@ -125,7 +125,7 @@
     {
       "advisory_id": "kev-cve-2026-109618",
       "revision": "2026-11-15T01:18:01.333",
-      "status": "queued",
+      "status": "pending",
       "verdict": "affected",
       "asset_ids": [
         "marketing-site",
@@ -135,7 +135,8 @@
       "reason": "命中 marketing-site, phpmyadmin",
       "matched_component": [
         "php"
-      ]
+      ],
+      "error": null
     }
   ],
   "graph_fresh": true,
