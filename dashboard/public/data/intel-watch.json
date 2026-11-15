@@ -1,18 +1,7 @@
 {
-  "checked_at": "2026-11-15T10:56:33Z",
+  "checked_at": "2026-11-15T17:43:36Z",
   "advisories_checked": 6,
-  "hits": [
-    {
-      "advisory_id": "kev-cve-2026-109618",
-      "asset_ids": [
-        "marketing-site",
-        "phpmyadmin"
-      ],
-      "matched_component": [
-        "php"
-      ]
-    }
-  ],
+  "hits": [],
   "dispatched": false,
   "items": [
     {
@@ -610,12 +599,12 @@
       "revision": null
     },
     "CVE-2026-116606": {
-      "checked_at": "2026-11-14T11:29:43Z",
+      "checked_at": "2026-11-15T17:43:36Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-116779": {
-      "checked_at": "2026-11-14T11:29:43Z",
+      "checked_at": "2026-11-15T17:43:36Z",
       "mapped": false,
       "revision": null
     },
@@ -625,7 +614,7 @@
       "revision": null
     },
     "CVE-2026-119977": {
-      "checked_at": "2026-11-14T11:29:43Z",
+      "checked_at": "2026-11-15T17:43:36Z",
       "mapped": true,
       "revision": "2026-11-04T12:52:38.683"
     },
@@ -645,12 +634,12 @@
       "revision": null
     },
     "CVE-2026-124194": {
-      "checked_at": "2026-11-14T11:29:43Z",
+      "checked_at": "2026-11-15T17:43:36Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-125350": {
-      "checked_at": "2026-11-14T11:29:43Z",
+      "checked_at": "2026-11-15T17:43:36Z",
       "mapped": false,
       "revision": null
     },
@@ -695,7 +684,7 @@
       "revision": null
     },
     "CVE-2026-96652": {
-      "checked_at": "2026-11-14T11:29:43Z",
+      "checked_at": "2026-11-15T17:43:36Z",
       "mapped": false,
       "revision": null
     },
@@ -710,7 +699,7 @@
       "revision": null
     },
     "CVE-2026-96656": {
-      "checked_at": "2026-11-14T11:29:43Z",
+      "checked_at": "2026-11-15T17:43:36Z",
       "mapped": false,
       "revision": null
     },
@@ -720,7 +709,7 @@
       "revision": null
     },
     "CVE-2026-97229": {
-      "checked_at": "2026-11-14T03:18:05Z",
+      "checked_at": "2026-11-15T17:43:36Z",
       "mapped": true,
       "revision": "2026-11-02T13:30:16.800"
     }
@@ -733,12 +722,10 @@
   "auto_status": {
     "status": "partial",
     "new": [],
-    "updated": [
-      "kev-cve-2026-109618"
-    ],
+    "updated": [],
     "remaining": 0,
     "errors": [
-      "CVE-2026-97229：RuntimeError"
+      "CVE-2026-110936：RuntimeError"
     ]
   }
 }
