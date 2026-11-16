@@ -1118,7 +1118,7 @@
           "impact": "other"
         }
       ],
-      "revision": "2026-11-05T19:17:07.900",
+      "revision": "2026-11-15T01:18:01.333",
       "controls": [],
       "confidence": "confirmed",
       "sources": [
@@ -1129,7 +1129,7 @@
           "published": "2026-10-26",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-10T17:04:44Z",
+          "verified_at": "2026-11-15T10:56:33Z",
           "content_hash": null,
           "verification_basis": "official_api"
         },
@@ -1140,7 +1140,7 @@
           "published": "2026-10-21",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-10T17:04:44Z",
+          "verified_at": "2026-11-15T10:56:33Z",
           "content_hash": null,
           "verification_basis": "official_api"
         }
@@ -1152,7 +1152,7 @@
       "fixture_note": null,
       "possible_entry_points": [],
       "generated_by": "kev-nvd",
-      "generated_at": "2026-11-10T17:04:44Z"
+      "generated_at": "2026-11-15T10:56:33Z"
     },
     {
       "id": "kev-cve-2026-109619",
@@ -1530,502 +1530,20 @@
       "generated_at": "2026-11-10T17:04:44Z"
     },
     {
-      "id": "live-cyberbiz-supply-chain-2026-11",
+      "id": "live-postgresql-cve-2026-6460",
       "kind": "live",
       "is_update_of": null,
-      "title": "順立智慧（Cyberbiz）電商平台資安事件擴大，大金零件商城、威力德生醫等多家上市櫃公司公告受影響",
+      "title": "PostgreSQL 修補 52 個漏洞，含存在 22 年的已驗證遠端程式碼執行漏洞 CVE-2026-6460",
       "date": "2026-11-13",
-      "industry": "電商",
+      "industry": "資料庫",
       "attack_chain": [
-        "順立智慧（Cyberbiz）發生資安事件，其線上商店平台資料庫部分資料遭未經授權的異常存取",
-        "使用該平台的客戶商店訂單資料受波及，個資欄位包括訂單編號、收件人與購買人的電子郵件和手機號碼",
-        "客戶接獲通知後啟動應變，並通知消費者留意詐騙",
-        "事件擴大，至少 13 家上市櫃及興櫃公司陸續發布相關公告"
+        "攻擊者具備登入資料庫及建立資料庫物件的帳號權限",
+        "變更資料欄位型別，觸發類型混淆",
+        "在資料庫伺服器執行任意程式碼"
       ],
-      "attck": [
-        "T1199"
-      ],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://www.ithome.com.tw/news/180482",
-          "title": "大金空調零件線上商城委外廠商發生資安事件，141筆訂單資料受波及、132筆個資遭未經授權存取",
-          "quote": "和泰服務行銷已啟動事件應變措施，並通知受影響消費者留意詐騙風險。",
-          "published": "2026-11-13",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-15T03:29:33Z",
-          "content_hash": "sha256:c0b05d3915d4ce7f13ea02ef84af58516b0e66a041bb1644c041e8fa4044739f",
-          "verification_basis": "live"
-        },
-        {
-          "url": "https://www.ithome.com.tw/news/180476",
-          "title": "威力德生醫線上商店委外廠商發生資安事件，部分消費者訂單資料遭異常存取",
-          "quote": "威力德生醫已要求順立智慧進行資安檢視，並採取必要的安全強化措施，後續也將持續追蹤改善進度，同時強化對委外服務廠商的資安監督管理。",
-          "published": "2026-11-13",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-15T03:29:33Z",
-          "content_hash": "sha256:8013f086e57b79ff7197164e71dc0f1af03bfd5f25703c899cc23f5519347dd8",
-          "verification_basis": "live"
-        },
-        {
-          "url": "https://www.ithome.com.tw/news/180500",
-          "title": "【資安週報】1109～1113，Cyberbiz事件擴大、多家上市櫃公司接連公告，資安救火人力不足恐浮現",
-          "quote": "臺灣也出現多家第三方業者遭駭，導致其服務的企業客戶必須公開說明其受到影響。",
-          "published": "2026-11-12",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-15T03:29:33Z",
-          "content_hash": "sha256:e2206e27f9716456aa259a16ccedc9e9d15507af70d01a8848b92429dc436819",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [
-        {
-          "title": "委外電商與架站平台須盤點並定期檢視其資安狀態",
-          "reason": "來源指出事件出在委外平台廠商的資料庫，波及多家客戶商店的訂單與個資；現有控制項沒有涵蓋委外平台廠商的盤點與監督。"
-        }
-      ],
-      "demo": false,
-      "facts": [],
-      "summary": "和泰車公告子公司的委外廠商順立智慧發生資安事件，大金空調零件線上商城資料庫部分內容遭未經授權存取，141 筆訂單資料受波及、其中 132 筆涉及個資。威力德生醫也接獲順立智慧通知，線上商店部分消費者訂單資料遭異常存取。iThome 週報指出本週至少 13 家上市櫃及興櫃公司陸續公告，Cyberbiz 尚未揭露具體受影響客戶家數。",
-      "fixture_note": null,
-      "possible_entry_points": [
-        {
-          "text": "我們若使用同類委外電商或架站平台，資料可能經平台廠商外洩",
-          "check": "確認是否使用 Cyberbiz 或同類託管平台；查未登記的架站服務 saas-quicksite-builder 是否存放訂單或會員資料，並向廠商索取受影響範圍說明",
-          "systems": [
-            "saas-quicksite-builder",
-            "mail-service",
-            "storefront"
-          ],
-          "basis": "來源指出事件發生在委外廠商平台資料庫，客戶商店訂單資料連帶受波及，來源未交代入侵手法"
-        }
-      ]
-    },
-    {
-      "id": "live-mirror-fast-ecommerce-2026-11",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "美而快電商系統遭異常存取，部分請求涉及會員訂單 API",
-      "date": "2026-11-13",
-      "industry": "電商",
-      "attack_chain": [
-        "消費者收到疑似詐騙電子郵件並向公司反映",
-        "回溯存取紀錄，發現外部特定 IP 位址對電商系統異常存取",
-        "部分請求涉及會員訂單相關 API"
-      ],
-      "attck": [],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://www.ithome.com.tw/news/180488",
-          "title": "美而快電商系統遭異常存取，部分請求涉及會員訂單API",
-          "quote": "美而快電商系統遭異常存取，部分請求涉及會員訂單API",
-          "published": "2026-11-13",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-15T03:29:33Z",
-          "content_hash": "sha256:c96a3df3969269d3370d8cd1db746775b63343e3dd60038dd2ddec0e2d6f7139",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [
-        {
-          "title": "會員訂單 API 需驗證資料擁有者並有流量限制與異常告警",
-          "reason": "來源指出外部 IP 異常存取會員訂單相關 API 後，消費者收到疑似詐騙信；現有控制項沒有涵蓋訂單 API 的存取控制與限流。"
-        }
-      ],
-      "demo": false,
-      "facts": [],
-      "summary": "美而快於 11 月 10 日接獲客戶反映有消費者收到疑似詐騙電子郵件，回溯存取紀錄後發現外部特定 IP 曾對電商系統異常存取，部分請求涉及會員訂單相關 API。公司仍在釐清影響範圍，並引入第三方資安服務協助鑑識。",
-      "fixture_note": null,
-      "possible_entry_points": [
-        {
-          "text": "會員訂單 API 可能缺少存取控制或限流",
-          "check": "檢查訂單相關 API 是否驗證資料擁有者、有無頻率限制，並查存取紀錄中的異常 IP 與大量請求",
-          "systems": [
-            "api-gateway",
-            "storefront",
-            "member-api"
-          ],
-          "basis": "來源指出外部特定 IP 的異常請求涉及會員訂單相關 API，但未說明手法"
-        }
-      ]
-    },
-    {
-      "id": "live-zhengnengliang-woocommerce-2026-11",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "正能量智能子公司 WooCommerce 電商資料庫遭未經授權存取",
-      "date": "2026-11-13",
-      "industry": "電商",
-      "attack_chain": [
-        "WooCommerce 電商系統資料庫遭未經授權存取及資料擷取",
-        "公司啟動資安應變，採取隔離、防堵與漏洞修補措施",
-        "向主管機關通報並通知受影響消費者"
-      ],
-      "attck": [],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://www.ithome.com.tw/news/180478",
-          "title": "正能量智能子公司電商資料庫遭未經授權存取，已通知受影響消費者並啟動資安應變",
-          "quote": "正能量智能子公司電商資料庫遭未經授權存取，已通知受影響消費者並啟動資安應變",
-          "published": "2026-11-13",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-15T03:29:33Z",
-          "content_hash": "sha256:c4c23c837700d086ee570f6ccce711c5785c1829f048689d852ba4ea552527ba",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [
-        {
-          "title": "電商網站資料庫不得對外直接連線且需有存取稽核",
-          "reason": "來源指出電商資料庫遭未經授權存取及資料擷取，公司事後隔離並修補漏洞；現有控制項沒有涵蓋電商資料庫的存取稽核。"
-        }
-      ],
-      "demo": false,
-      "facts": [],
-      "summary": "正能量智能於 11 月 11 日公告，子公司正能量運動的 WooCommerce 電商系統資料庫遭未經授權存取及資料擷取。公司已隔離防堵並修補漏洞、向主管機關通報，並通知受影響消費者。",
-      "fixture_note": null,
-      "possible_entry_points": [
-        {
-          "text": "對外的 WordPress 網站外掛或電商模組可能有未修補漏洞",
-          "check": "確認行銷官網是否安裝 WooCommerce 或其他電商外掛，檢查 WordPress 6.4.3 與外掛版本、對外管理頁面，以及資料庫連線來源",
-          "systems": [
-            "marketing-site",
-            "storefront"
-          ],
-          "basis": "來源指出 WooCommerce 資料庫被存取，公司事後採取漏洞修補措施，但未交代入侵手法"
-        }
-      ]
-    },
-    {
-      "id": "live-arara-japan-email-2026-11",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "日本郵件服務商 Arara 遭駭，大量電子郵件位址外洩並被用於寄送惡意郵件",
-      "date": "2026-11-13",
-      "industry": "SaaS",
-      "attack_chain": [
-        "11 月 2 日 Arara 的電子郵件發送服務遭攻擊",
-        "近 400 家客戶的電子郵件位址外洩",
-        "駭客利用其郵件發送服務寄出數百萬封假冒信用卡公司與金融機構的惡意郵件"
-      ],
-      "attck": [
-        "T1566",
-        "T1199"
-      ],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://therecord.media/city-of-osaka-japan-email-data-breach",
-          "title": "City of Osaka warns of data breach impacting 1 million as Japan reels from dozens of cyber incidents",
-          "quote": "The company said a November 2 cyberattack exposed 77 million email addresses from nearly 400 customers, including TKC, gaming giant Sega and others.",
-          "published": "2026-11-13",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-15T03:29:33Z",
-          "content_hash": "sha256:5aa89515c96c50771dbbc4466c83794af0d735b64c8ce820f7b3b319c961c8f1",
-          "verification_basis": "live"
-        },
-        {
-          "url": "https://www.ithome.com.tw/news/180500",
-          "title": "【資安週報】1109～1113，Cyberbiz事件擴大、多家上市櫃公司接連公告，資安救火人力不足恐浮現",
-          "quote": "臺灣也出現多家第三方業者遭駭，導致其服務的企業客戶必須公開說明其受到影響。",
-          "published": "2026-11-12",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-15T03:29:33Z",
-          "content_hash": "sha256:e2206e27f9716456aa259a16ccedc9e9d15507af70d01a8848b92429dc436819",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [
-        {
-          "title": "第三方郵件發送服務金鑰須限制來源並可快速停用",
-          "reason": "來源指出駭客利用被入侵的郵件發送服務對外寄送惡意郵件；現有控制項只涵蓋金鑰輪替，未涵蓋寄信服務被濫用時的偵測與停用。"
-        }
-      ],
-      "demo": false,
-      "facts": [],
-      "summary": "The Record 報導 Arara 在 11 月 2 日遭攻擊，近 400 家客戶的 7,700 萬個電子郵件位址外洩，客戶包括 TKC 與 Sega；駭客並利用其郵件發送服務寄出數百萬封假冒信用卡公司與金融機構的惡意郵件。iThome 週報則寫逾 8,100 萬筆、影響超過 380 家企業客戶，兩篇數字不同。",
-      "fixture_note": null,
-      "possible_entry_points": [
-        {
-          "text": "我們的寄信服務若被入侵，可能被拿來寄假冒信件給會員",
-          "check": "檢查寄信服務與寄信金鑰的寄送量、收件人與來源 IP 有無異常，確認金鑰有 IP 白名單，並向廠商確認是否受 Arara 類事件影響",
-          "systems": [
-            "mail-service",
-            "mail-api-key"
-          ],
-          "basis": "來源指出駭客利用郵件發送服務寄出數百萬封假冒金融機構的郵件，來源未交代入侵手法"
-        }
-      ]
-    },
-    {
-      "id": "live-silentair-taiwan-sms-2fa-2026-11",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "SilentAir 入侵亞洲電信業者設備，攔截台灣用戶簡訊 2FA 驗證碼",
-      "date": "2026-11-13",
-      "industry": "其他",
-      "attack_chain": [
-        "入侵亞洲電信業者內部設備，攻擊來源分布於至少 6 個亞洲國家",
-        "從被入侵設備向 IPX 共用交換網路發送攻擊訊令",
-        "向目標用戶所屬業者送出 UpdateLocation 訊息，謊稱手機由攻擊者設備服務",
-        "業者若接受，通話與簡訊被轉送給攻擊者",
-        "部分目標的雙因素驗證碼被攔截"
-      ],
-      "attck": [
-        "T1111",
-        "T1638"
-      ],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://thehackernews.com/2026/11/silentair-hijacks-asian-telecom.html",
-          "title": "SilentAir Hijacks Asian Telecom Networks to Intercept SMS 2FA Codes and Spy on Taiwanese Users",
-          "quote": "For some targets, the company observed two-factor authentication (2FA) codes being intercepted immediately after the diversion took effect.",
-          "published": "2026-11-13",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-15T03:29:33Z",
-          "content_hash": "sha256:52e6785ce762ae459c3021ecdfba14c231ba98ea80f0fd95e5d32c3470530903",
-          "verification_basis": "live"
-        },
-        {
-          "url": "https://cyberq.tw/2026/11/14/silentair-sms-2fa-interception/",
-          "title": "國家級駭客 SilentAir 鎖定台灣用戶 簡訊驗證碼在電信端就被截走",
-          "quote": "整個過程發生在電信業者之間，手機端不會出現任何異狀，使用者幾乎無從察覺。",
-          "published": "2026-11-14",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-15T03:29:33Z",
-          "content_hash": "sha256:71a21f193efce47ddfbe2a73a95e6c5644c1906911634680dac01cb247545f81",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [
-        {
-          "title": "高權限與客戶帳號不得僅以簡訊驗證碼作為第二因素",
-          "reason": "來源指出攻擊者在電信端轉走簡訊並攔截 2FA 驗證碼，手機端無異狀；現有控制項沒有涵蓋簡訊驗證碼的風險。"
-        }
-      ],
-      "demo": false,
-      "facts": [],
-      "summary": "Enea 揭露新駭客組織 SilentAir，利用被入侵的亞洲電信業者內部設備，透過 SS7/Diameter 的 UpdateLocation 訊息轉走特定用戶的通話與簡訊，主要目標是台灣用戶。部分目標的 2FA 驗證碼在轉接生效後立即被攔截。",
-      "fixture_note": null,
-      "possible_entry_points": []
-    },
-    {
-      "id": "live-bossai-taiwan-2026-11",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "AI 自動化攻擊系統 BossAI 鎖定台灣緊急應變服務、貸款公司與行動支付公司",
-      "date": "2026-11-13",
-      "industry": "支付",
-      "attack_chain": [
-        "BossAI 自動化攻擊系統鎖定 11 國數百個組織",
-        "台灣的貸款服務公司遭 SQL 注入攻擊",
-        "行動支付公司的信用卡綁定流程未正確驗證 CVV 碼"
-      ],
-      "attck": [
-        "T1190"
-      ],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://www.ithome.com.tw/news/180500",
-          "title": "【資安週報】1109～1113，Cyberbiz事件擴大、多家上市櫃公司接連公告，資安救火人力不足恐浮現",
-          "quote": "AI資安 AI代理自動化攻擊威脅持續帶來資安挑戰，有攻擊者以BossAI系統鎖定臺灣緊急應變服務及全球11國數百個組織，中國駭客也利用AI代理框架Cairn入侵亞洲多國政府機關與企業。",
-          "published": "2026-11-12",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-15T03:29:33Z",
-          "content_hash": "sha256:e2206e27f9716456aa259a16ccedc9e9d15507af70d01a8848b92429dc436819",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [
-        {
-          "title": "支付綁卡流程須在伺服端驗證卡片資料並防範 SQL 注入",
-          "reason": "來源指出行動支付公司的信用卡綁定流程未正確驗證 CVV 碼，貸款公司遭 SQL 注入；現有控制項沒有涵蓋支付流程的輸入與驗證。"
-        }
-      ],
-      "demo": false,
-      "facts": [],
-      "summary": "iThome 週報引述 Acronis 揭露，BossAI 鎖定 11 國數百個組織；在台灣，緊急應變服務是主要目標，一家貸款服務公司遭 SQL 注入攻擊，一家行動支付公司的信用卡綁定流程未正確驗證 CVV 碼。來源僅有這一篇週報。",
-      "fixture_note": null,
-      "possible_entry_points": [
-        {
-          "text": "支付或綁卡流程的伺服端驗證可能不足",
-          "check": "檢查金流服務與對外 API 的卡片資料驗證是否在伺服端完成、輸入是否參數化，並查 API 閘道紀錄中的自動化大量請求",
-          "systems": [
-            "payment-service",
-            "api-gateway"
-          ],
-          "basis": "來源指出行動支付公司綁卡流程未正確驗證 CVV 碼、貸款公司遭 SQL 注入"
-        }
-      ]
-    },
-    {
-      "id": "live-apache-mod-http2-cve-2026-119618",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "Apache HTTP Server mod_http2 重大漏洞 CVE-2026-119618，未經驗證即可遠端執行程式碼",
-      "date": "2026-11-12",
-      "industry": "其他",
-      "attack_chain": [],
       "attck": [],
       "cves": [
-        "CVE-2026-119618"
-      ],
-      "products": [
-        {
-          "name": "apache-httpd",
-          "ecosystem": "generic",
-          "affected": [
-            {
-              "introduced": "2.4.55",
-              "fixed": "2.4.71"
-            }
-          ],
-          "cvss": 9.8,
-          "impact": "remote_code_execution"
-        }
-      ],
-      "revision": "1",
-      "controls": [],
-      "confidence": "confirmed",
-      "sources": [
-        {
-          "url": "https://thehackernews.com/2026/11/critical-apache-http2-flaw-could-let.html",
-          "title": "Critical Apache HTTP/2 Flaw Could Let Unauthenticated Attackers Execute Code Remotely",
-          "quote": "Tracked as CVE-2026-119618 , it affects versions 2.4.55 through 2.4.70 and is fixed in version 2.4.71, released yesterday.",
-          "published": "2026-11-12",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-15T03:29:33Z",
-          "content_hash": "sha256:05ccfd30e20623d6a593a0c06eba921019412631d80bbe65b1ada19b810d5c19",
-          "verification_basis": "live"
-        },
-        {
-          "url": "https://www.ithome.com.tw/news/180490",
-          "title": "Apache修補網頁伺服器HTTP/2模組的重大漏洞，64%雲端環境恐曝險",
-          "quote": "Apache修補網頁伺服器HTTP/2模組的重大漏洞，64%雲端環境恐曝險",
-          "published": "2026-11-13",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-15T03:29:33Z",
-          "content_hash": "sha256:5d00c1664b396a955bd1c42b2f86e93640c7d72dda11faec46d29ddaddae0ef0",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [],
-      "demo": false,
-      "facts": [],
-      "summary": "Apache HTTP Server 2.4.55 至 2.4.70 的 mod_http2 存在競爭條件漏洞，未經驗證的遠端攻擊者可執行任意程式碼，Red Hat 評為 CVSS 9.8，2.4.71 已修補。只有啟用 HTTP/2 的伺服器受影響。Wiz 表示無公開利用程式、尚無在野利用回報。",
-      "fixture_note": null,
-      "possible_entry_points": []
-    },
-    {
-      "id": "live-nodejs-http2-nov-2026",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "Node.js 修補 16 個漏洞，含 HTTP/2 崩潰與跨連線記憶體洩漏",
-      "date": "2026-11-12",
-      "industry": "其他",
-      "attack_chain": [],
-      "attck": [],
-      "cves": [
-        "CVE-2026-123863",
-        "CVE-2026-123864",
-        "CVE-2026-123866"
-      ],
-      "products": [
-        {
-          "name": "node",
-          "ecosystem": "generic",
-          "affected": [
-            {
-              "introduced": "22.0.0",
-              "fixed": "22.23.5"
-            },
-            {
-              "introduced": "24.0.0",
-              "fixed": "24.22.3"
-            },
-            {
-              "introduced": "26.0.0",
-              "fixed": "26.13.1"
-            }
-          ],
-          "impact": "data_exposure"
-        }
-      ],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://thehackernews.com/2026/11/nodejs-fixes-16-flaws-including-http2.html",
-          "title": "Node.js Fixes 16 Flaws, Including HTTP/2 Bugs That Crash Servers and Leak Other Connections' Data",
-          "quote": "Fixed versions were released for all three supported lines: 22.23.5, 24.22.3, and 26.13.1.",
-          "published": "2026-11-12",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-15T03:29:33Z",
-          "content_hash": "sha256:1054a209f7821d4d46bc7bcf40f0d51a612b4add44b037f640c8bb54a4aaeb56",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [],
-      "demo": false,
-      "facts": [],
-      "summary": "Node.js 發布 22.23.5、24.22.3、26.13.1。CVE-2026-123863 影響 24.x 與 26.x，可使 HTTP/2 伺服器崩潰；CVE-2026-123866 影響三條線，可能洩漏其他連線的回應；CVE-2026-123864 影響三條線，HTTPS 伺服器在特定處理方式下可讀取他人連線記憶體，包含 TLS 私鑰。",
-      "fixture_note": null,
-      "possible_entry_points": []
-    },
-    {
-      "id": "live-postgresql-nov-2026-52-fixes",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "PostgreSQL 修補 52 個漏洞，含已有公開寫法的認證後遠端程式碼執行 CVE-2026-6460",
-      "date": "2026-11-13",
-      "industry": "其他",
-      "attack_chain": [],
-      "attck": [],
-      "cves": [
-        "CVE-2026-6460",
-        "CVE-2026-6467"
+        "CVE-2026-6460"
       ],
       "products": [
         {
@@ -2068,41 +1586,344 @@
           "published": "2026-11-13",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-15T03:29:33Z",
+          "verified_at": "2026-11-16T03:28:54Z",
           "content_hash": "sha256:68ecb24f922c3d16e6fde81ccad0962ead334723c6a0230c9a4a9aa7a4a398c0",
           "verification_basis": "live"
         },
         {
-          "url": "https://cyberq.tw/2026/11/14/postgresql-patched-52-vulnerabilities/",
-          "title": "PostgreSQL 一口氣修補 52 個漏洞，20 年歷史的程式碼執行缺陷成焦點",
-          "quote": "受影響版本為 PostgreSQL 18.7、17.12、16.16、15.20 與 14.25 之前的版本。",
-          "published": "2026-11-14",
+          "url": "https://www.ithome.com.tw/news/180518",
+          "title": "PostgreSQL修補52個漏洞，含存在22年的遠端程式碼執行漏洞",
+          "quote": "PostgreSQL修補52個漏洞，含存在22年的遠端程式碼執行漏洞",
+          "published": "2026-11-16",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-15T03:29:33Z",
-          "content_hash": "sha256:3744c6641b1997edb9c795394c1cdee564093defab3675a7470fee92ef35f498",
+          "verified_at": "2026-11-16T03:28:54Z",
+          "content_hash": "sha256:353f70c82775597315115024d18e208078668a5d61f5682f7e914401a883583f",
           "verification_basis": "live"
         }
       ],
       "proposed_controls": [],
       "demo": false,
       "facts": [],
-      "summary": "PostgreSQL 14 至 18 的更新修補 52 個漏洞。CVE-2026-6460（CVSS 8.8）為型別混淆，具建立資料庫物件權限者可用資料庫的作業系統使用者身分執行程式碼；CVE-2026-6467（CVSS 7.2）為搜尋路徑問題。專案未回報攻擊，研究者已發表可行的利用方式。",
+      "summary": "PostgreSQL 發布 18.7、17.12、16.16、15.20、14.25 修補 52 個漏洞，CVE-2026-6460 CVSS 8.8，因複合類型的類型混淆可在伺服器執行任意程式碼。攻擊者須先有登入並建立資料庫物件的權限。完整防護還需重新編譯 C 語言擴充套件，廠商尚未回報遭攻擊。",
       "fixture_note": null,
       "possible_entry_points": []
     },
     {
-      "id": "live-php2shell-checkpoint-2026-11",
+      "id": "live-apache-httpd-http2-cve-2026-119618",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "Apache HTTP Server mod_http2 重大漏洞 CVE-2026-119618",
+      "date": "2026-11-13",
+      "industry": "網頁伺服器",
+      "attack_chain": [
+        "對啟用 HTTP/2 的 Apache HTTP Server 送出請求",
+        "多執行緒存取共用資源缺乏同步，造成記憶體損毀",
+        "未經驗證的遠端攻擊者執行任意程式碼"
+      ],
+      "attck": [],
+      "cves": [
+        "CVE-2026-119618"
+      ],
+      "products": [
+        {
+          "name": "apache-httpd",
+          "ecosystem": "generic",
+          "affected": [
+            {
+              "introduced": "2.4.55",
+              "fixed": "2.4.71"
+            }
+          ],
+          "cvss": 9.8,
+          "impact": "remote_code_execution"
+        }
+      ],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180490",
+          "title": "Apache修補網頁伺服器HTTP/2模組的重大漏洞，64%雲端環境恐曝險",
+          "quote": "Apache修補網頁伺服器HTTP/2模組的重大漏洞，64%雲端環境恐曝險",
+          "published": "2026-11-13",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-16T03:28:54Z",
+          "content_hash": "sha256:62030b29eed3e8e87f3b66872185478f02cb065243d3fa3b193f3dc961e73fba",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [],
+      "summary": "ASF 發布 Apache HTTP Server 2.4.71，修補 mod_http2 因多執行緒競爭條件導致記憶體損毀、可讓未經驗證的遠端攻擊者執行任意程式碼的漏洞，影響 2.4.55 至 2.4.70。Red Hat 評 CVSS 9.8，利用須啟用 HTTP/2。",
+      "fixture_note": null,
+      "possible_entry_points": []
+    },
+    {
+      "id": "live-nhn-dooray-breach-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "韓國協作平臺 NHN Dooray! 遭駭，部分客戶資料外洩並停用 API",
+      "date": "2026-11-14",
+      "industry": "SaaS",
+      "attack_chain": [
+        "11 月 12 日晚間至 13 日凌晨，攻擊者利用忘記密碼流程反覆嘗試輸入驗證碼並通過驗證",
+        "變更部分使用者帳號密碼並未經授權登入",
+        "Open API 服務漏洞導致部分 API 金鑰外洩，外部人士利用金鑰呼叫 API",
+        "專案、雲端硬碟、即時通訊、行事曆等業務資料及員工個資外洩"
+      ],
+      "attck": [
+        "T1110",
+        "T1098",
+        "T1078"
+      ],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180513",
+          "title": "韓國企業協作平臺Dooray!遭駭恐波及多家企業，已證實部分客戶資料外洩，緊急停用API服務",
+          "quote": "韓國企業協作平臺Dooray!遭駭恐波及多家企業，已證實部分客戶資料外洩，緊急停用API服務",
+          "published": "2026-11-16",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-16T03:28:54Z",
+          "content_hash": "sha256:f88310acb1bbee63aafd34a656ade9e61f03bc507146c134c4f76cb4371d05b6",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [
+        {
+          "title": "忘記密碼流程的驗證碼須限制嘗試次數",
+          "reason": "來源指出攻擊者反覆嘗試忘記密碼流程的驗證碼並成功通過驗證、變更密碼，現有控制項沒有涵蓋帳號復原流程。"
+        }
+      ],
+      "demo": false,
+      "facts": [],
+      "summary": "NHN Dooray 公告攻擊者利用忘記密碼流程反覆嘗試驗證碼並變更帳號密碼，另 Open API 服務漏洞導致部分 API 金鑰外洩。部分客戶的業務資料與員工個資外洩，業者已撤銷所有 API 金鑰並通報主管機關。",
+      "fixture_note": null,
+      "possible_entry_points": []
+    },
+    {
+      "id": "live-evergreen-logistics-breach-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "長榮物流資安事故：員工個資及營業資料外洩",
+      "date": "2026-11-13",
+      "industry": "物流",
+      "attack_chain": [
+        "員工個人資料及部分公司營業資料外洩",
+        "公司完成系統隔離與異常連線阻斷"
+      ],
+      "attck": [],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180512",
+          "title": "長榮物流資安事故調查結果出爐，員工個資及營業資料外洩",
+          "quote": "長榮物流資安事故調查結果出爐，員工個資及營業資料外洩",
+          "published": "2026-11-16",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-16T03:28:54Z",
+          "content_hash": "sha256:5dedd0213737cefa473864a48956be826ed044181c6c98b9a6068d497dce31c7",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [],
+      "summary": "榮運於 11 月 13 日公告，經外部資安公司鑑識，確認子公司長榮物流事件涉及員工個人資料及部分公司營業資料外洩。已完成系統隔離與異常連線阻斷，持續清查範圍並依法通報。",
+      "fixture_note": null,
+      "possible_entry_points": [
+        {
+          "text": "對外系統或員工帳號遭入侵後橫向取得內部資料",
+          "check": "檢查內部營運工具與行銷官網的存取紀錄，找異常登入、異常連線與大量資料匯出，並確認員工帳號有無異常登入",
+          "systems": [
+            "internal-tool",
+            "marketing-site"
+          ],
+          "basis": "來源只說員工個資與營業資料外洩、已阻斷異常連線，未交代入侵手法"
+        }
+      ]
+    },
+    {
+      "id": "live-arara-email-service-breach-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "日本 Arara 郵件發送服務遭駭，大阪市逾 100 萬電子郵件地址外洩",
+      "date": "2026-11-13",
+      "industry": "SaaS",
+      "attack_chain": [
+        "11 月 2 日 Arara 郵件發送服務遭攻擊，客戶電子郵件地址外洩",
+        "駭客利用該發送服務寄出數百萬封冒充信用卡公司與金融機構的惡意郵件"
+      ],
+      "attck": [
+        "T1566"
+      ],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://therecord.media/city-of-osaka-japan-email-data-breach",
+          "title": "City of Osaka warns of data breach impacting 1 million as Japan reels from dozens of cyber incidents",
+          "quote": "The attack on Arara has had a cascading effect on dozens of large businesses and governments in Japan.",
+          "published": "2026-11-13",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-16T03:28:54Z",
+          "content_hash": "sha256:5aa89515c96c50771dbbc4466c83794af0d735b64c8ce820f7b3b319c961c8f1",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [],
+      "summary": "大阪市通報，TKC 使用的 Arara 郵件發送服務遭駭，逾 100 萬個電子郵件地址外洩。Arara 稱 11 月 2 日的攻擊曝露近 400 家客戶共 7,700 萬個電子郵件地址，駭客並利用該服務寄出冒充信用卡公司與金融機構的惡意郵件。",
+      "fixture_note": null,
+      "possible_entry_points": [
+        {
+          "text": "第三方寄信服務遭入侵後被用來寄出假冒通知信",
+          "check": "確認寄信服務金鑰是否有 IP 白名單與輪替紀錄，並查寄信服務近期是否有異常大量寄出或未知收件人",
+          "systems": [
+            "mail-service",
+            "mail-api-key"
+          ],
+          "basis": "來源指出駭客利用 Arara 郵件發送服務寄出數百萬封惡意郵件，初始入侵手法未交代"
+        }
+      ]
+    },
+    {
+      "id": "live-silentair-sms-2fa-interception-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "SilentAir 入侵亞洲電信設備，攔截以台灣用戶為主的簡訊 2FA 驗證碼",
+      "date": "2026-11-13",
+      "industry": "電信",
+      "attack_chain": [
+        "入侵亞洲電信業者內部設備",
+        "從遭入侵設備對 IPX 送出攻擊訊令",
+        "向目標用戶的歸屬業者送出 UpdateLocation，謊稱手機由攻擊者設備服務",
+        "歸屬業者接受後，通話與簡訊轉送給攻擊者並攔截 2FA 碼"
+      ],
+      "attck": [
+        "T1111",
+        "T1638"
+      ],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [],
+      "confidence": "confirmed",
+      "sources": [
+        {
+          "url": "https://thehackernews.com/2026/11/silentair-hijacks-asian-telecom.html",
+          "title": "SilentAir Hijacks Asian Telecom Networks to Intercept SMS 2FA Codes and Spy on Taiwanese Users",
+          "quote": "SilentAir Hijacks Asian Telecom Networks to Intercept SMS 2FA Codes and Spy on Taiwanese Users",
+          "published": "2026-11-13",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-16T03:28:54Z",
+          "content_hash": "sha256:52e6785ce762ae459c3021ecdfba14c231ba98ea80f0fd95e5d32c3470530903",
+          "verification_basis": "live"
+        },
+        {
+          "url": "https://cyberq.tw/2026/11/14/silentair-sms-2fa-interception/",
+          "title": "國家級駭客 SilentAir 鎖定台灣用戶 簡訊驗證碼在電信端就被截走",
+          "quote": "國家級駭客 SilentAir 鎖定台灣用戶 簡訊驗證碼在電信端就被截走",
+          "published": "2026-11-14",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-16T03:28:54Z",
+          "content_hash": "sha256:71a21f193efce47ddfbe2a73a95e6c5644c1906911634680dac01cb247545f81",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [
+        {
+          "title": "高權限與客戶帳號不得僅以簡訊驗證碼作為第二因素",
+          "reason": "來源指出攻擊者在電信端攔截簡訊並取得 2FA 碼，現有控制項沒有涵蓋簡訊驗證碼的風險。"
+        }
+      ],
+      "demo": false,
+      "facts": [],
+      "summary": "Enea 揭露 SilentAir 利用遭入侵的亞洲電信業者內部設備，經 SS7 與 Diameter 送出假的 UpdateLocation，將目標的通話與簡訊轉走，主要目標為台灣行動用戶。部分目標被轉走通訊後，立即有 2FA 碼被攔截。",
+      "fixture_note": null,
+      "possible_entry_points": []
+    },
+    {
+      "id": "live-91app-artex-update-2026-11",
+      "kind": "live",
+      "is_update_of": "evt-91app-2026-10",
+      "title": "91APP 事件新進度：調查發現 ARTEX 使用痕跡，FBI 發布警示",
+      "date": "2026-11-16",
+      "industry": "電商",
+      "attack_chain": [
+        "利用內部第三方工具 Appsmith 尚未修補的漏洞入侵",
+        "從 GitLab 取得一組資料庫存取金鑰",
+        "存取 Commerce Cloud 的訂單資料庫",
+        "調查發現 ARTEX 使用痕跡"
+      ],
+      "attck": [
+        "T1190",
+        "T1552",
+        "T1078",
+        "T1595.002"
+      ],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [
+        "C-INTERNAL-TOOL-EXPOSED",
+        "C-SECRET-IN-GIT",
+        "C-NET-SEGMENT"
+      ],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180508",
+          "title": "FBI警告駭客利用AI工具ARTEX加速入侵，部分事件不到3小時取得系統高權限",
+          "quote": "電商技術服務業者91APP於10月22日 公布遭駭事件調查結果 ，確認旗下電商服務平臺Commerce Cloud的一座訂單資料庫遭非法存取，調查過程也發現ARTEX的使用痕跡。",
+          "published": "2026-11-16",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-16T03:28:54Z",
+          "content_hash": "sha256:ef8cf2d14b81ab2c19f419dcad6c1521b05e4bc7f59a787714a61cf1ccfbc171",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [],
+      "summary": "iThome 報導 FBI 警告駭客利用開源 AI 滲透測試工具 ARTEX，91APP 事件調查過程也發現 ARTEX 的使用痕跡。91APP 說明攻擊者利用 Appsmith 未修補漏洞入侵，再從 GitLab 取得資料庫存取金鑰。",
+      "fixture_note": null,
+      "possible_entry_points": [],
+      "inherited_from": "evt-91app-2026-10"
+    },
+    {
+      "id": "live-php2shell-check-point-update-2026-11",
       "kind": "live",
       "is_update_of": "evt-php2shell-2026-10",
-      "title": "Check Point 閘道遭 PHP2Shell 鏈式攻擊，VMware ESXi 主機資料被抹除",
+      "title": "PHP2Shell 事件新進度：Check Point 閘道遭鏈式攻擊，ESXi 主機資料被抹除",
       "date": "2026-11-15",
-      "industry": "其他",
+      "industry": "資安設備",
       "attack_chain": [
         "以 PHP2Shell 攻擊 Check Point 安全閘道",
-        "把多個漏洞串成鏈，從邊界設備一路打進虛擬化底層",
-        "在 VMware ESXi 主機上部署抹除型惡意程式",
-        "已植入的後門不會因修補原始漏洞而清除"
+        "串接多個漏洞，從邊界設備進入虛擬化底層",
+        "在 VMware ESXi 主機部署抹除型惡意程式"
       ],
       "attck": [
         "T1190",
@@ -2186,7 +2007,7 @@
           "published": "2026-11-15",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-15T03:29:33Z",
+          "verified_at": "2026-11-16T03:28:54Z",
           "content_hash": "sha256:908d680f45afa73065b3f6c346a9fd5f5c911652c89bf137bbb1f228e43c7f57",
           "verification_basis": "live"
         }
@@ -2194,7 +2015,7 @@
       "proposed_controls": [],
       "demo": false,
       "facts": [],
-      "summary": "Check Point 安全閘道遭 PHP2Shell 攻擊後，攻擊者在 VMware ESXi 主機部署抹除型惡意程式。Check Point 公告證實提權漏洞 CVE-2026-123039 遭實際利用，受害客戶約二十多家；來源指出 PHP2Shell 是上游 PHP 缺陷，但未給 PHP 的受影響版本範圍。",
+      "summary": "CyberQ 報導 Check Point 安全閘道遭 PHP2Shell 攻擊後，攻擊者在 VMware ESXi 主機部署抹除型惡意程式。Check Point 公告證實提權漏洞 CVE-2026-123039 遭實際利用，受影響版本為 R81 到 R82.20。",
       "fixture_note": null,
       "possible_entry_points": [],
       "inherited_from": "evt-php2shell-2026-10"
@@ -2272,61 +2093,49 @@
       "max_level": null,
       "note": "程式取自 CISA KEV 與 NVD API"
     },
-    "live-cyberbiz-supply-chain-2026-11": {
+    "live-postgresql-cve-2026-6460": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-mirror-fast-ecommerce-2026-11": {
+    "live-apache-httpd-http2-cve-2026-119618": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-zhengnengliang-woocommerce-2026-11": {
+    "live-nhn-dooray-breach-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-arara-japan-email-2026-11": {
+    "live-evergreen-logistics-breach-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-silentair-taiwan-sms-2fa-2026-11": {
+    "live-arara-email-service-breach-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-bossai-taiwan-2026-11": {
+    "live-silentair-sms-2fa-interception-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-apache-mod-http2-cve-2026-119618": {
+    "live-91app-artex-update-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-nodejs-http2-nov-2026": {
-      "status": "ok",
-      "issues": [],
-      "max_level": null,
-      "note": null
-    },
-    "live-postgresql-nov-2026-52-fixes": {
-      "status": "ok",
-      "issues": [],
-      "max_level": null,
-      "note": null
-    },
-    "live-php2shell-checkpoint-2026-11": {
+    "live-php2shell-check-point-update-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,

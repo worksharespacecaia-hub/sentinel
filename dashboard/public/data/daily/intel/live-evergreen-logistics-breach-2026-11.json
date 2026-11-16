@@ -1,0 +1,179 @@
+{
+  "event": {
+    "id": "live-evergreen-logistics-breach-2026-11",
+    "kind": "live",
+    "title": "長榮物流資安事故：員工個資及營業資料外洩",
+    "date": "2026-11-13",
+    "industry": "物流",
+    "attack_chain": [
+      "員工個人資料及部分公司營業資料外洩",
+      "公司完成系統隔離與異常連線阻斷"
+    ],
+    "attck": [],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180512",
+        "title": "長榮物流資安事故調查結果出爐，員工個資及營業資料外洩",
+        "quote": "長榮物流資安事故調查結果出爐，員工個資及營業資料外洩",
+        "published": "2026-11-16",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-16T03:28:54Z",
+        "content_hash": "sha256:5dedd0213737cefa473864a48956be826ed044181c6c98b9a6068d497dce31c7",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-evergreen-logistics-breach-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "ai-1",
+          "source": "ai",
+          "inferred": true,
+          "target": null,
+          "hypothesis": "對外系統或員工帳號遭入侵後橫向取得內部資料",
+          "why": null,
+          "check": "檢查內部營運工具與行銷官網的存取紀錄，找異常登入、異常連線與大量資料匯出，並確認員工帳號有無異常登入",
+          "how": null,
+          "plain": "對外系統或員工帳號遭入侵後橫向取得內部資料",
+          "basis": "AI 依事件推測：來源只說員工個資與營業資料外洩、已阻斷異常連線，未交代入侵手法",
+          "systems": [
+            {
+              "asset_id": "internal-tool",
+              "label": "內部營運工具"
+            },
+            {
+              "asset_id": "marketing-site",
+              "label": "行銷官網"
+            }
+          ],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "榮運於 11 月 13 日公告，經外部資安公司鑑識，確認子公司長榮物流事件涉及員工個人資料及部分公司營業資料外洩。已完成系統隔離與異常連線阻斷，持續清查範圍並依法通報。",
+  "blocks": {
+    "1_summary": {
+      "title": "長榮物流資安事故：員工個資及營業資料外洩",
+      "date": "2026-11-13",
+      "industry": "物流",
+      "attack_chain": [
+        "員工個人資料及部分公司營業資料外洩",
+        "公司完成系統隔離與異常連線阻斷"
+      ],
+      "attck": [],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180512",
+          "title": "長榮物流資安事故調查結果出爐，員工個資及營業資料外洩",
+          "quote": "長榮物流資安事故調查結果出爐，員工個資及營業資料外洩",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-16T03:28:54Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "榮運於 11 月 13 日公告，經外部資安公司鑑識，確認子公司長榮物流事件涉及員工個人資料及部分公司營業資料外洩。已完成系統隔離與異常連線阻斷，持續清查範圍並依法通報。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增"
+          ],
+          "observed_at": "2026-11-16T03:28:54Z",
+          "suggestions": [
+            {
+              "id": "ai-1",
+              "source": "ai",
+              "inferred": true,
+              "target": null,
+              "hypothesis": "對外系統或員工帳號遭入侵後橫向取得內部資料",
+              "why": null,
+              "check": "檢查內部營運工具與行銷官網的存取紀錄，找異常登入、異常連線與大量資料匯出，並確認員工帳號有無異常登入",
+              "how": null,
+              "plain": "對外系統或員工帳號遭入侵後橫向取得內部資料",
+              "basis": "AI 依事件推測：來源只說員工個資與營業資料外洩、已阻斷異常連線，未交代入侵手法",
+              "systems": [
+                {
+                  "asset_id": "internal-tool",
+                  "label": "內部營運工具"
+                },
+                {
+                  "asset_id": "marketing-site",
+                  "label": "行銷官網"
+                }
+              ],
+              "controls": []
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  },
+  "orchestrator_results": []
+}

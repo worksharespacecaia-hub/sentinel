@@ -1,0 +1,253 @@
+{
+  "event": {
+    "id": "live-silentair-sms-2fa-interception-2026-11",
+    "kind": "live",
+    "title": "SilentAir 入侵亞洲電信設備，攔截以台灣用戶為主的簡訊 2FA 驗證碼",
+    "date": "2026-11-13",
+    "industry": "電信",
+    "attack_chain": [
+      "入侵亞洲電信業者內部設備",
+      "從遭入侵設備對 IPX 送出攻擊訊令",
+      "向目標用戶的歸屬業者送出 UpdateLocation，謊稱手機由攻擊者設備服務",
+      "歸屬業者接受後，通話與簡訊轉送給攻擊者並攔截 2FA 碼"
+    ],
+    "attck": [
+      "T1111",
+      "T1638"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "confirmed",
+    "sources": [
+      {
+        "url": "https://thehackernews.com/2026/11/silentair-hijacks-asian-telecom.html",
+        "title": "SilentAir Hijacks Asian Telecom Networks to Intercept SMS 2FA Codes and Spy on Taiwanese Users",
+        "quote": "SilentAir Hijacks Asian Telecom Networks to Intercept SMS 2FA Codes and Spy on Taiwanese Users",
+        "published": "2026-11-13",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-16T03:28:54Z",
+        "content_hash": "sha256:52e6785ce762ae459c3021ecdfba14c231ba98ea80f0fd95e5d32c3470530903",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://cyberq.tw/2026/11/14/silentair-sms-2fa-interception/",
+        "title": "國家級駭客 SilentAir 鎖定台灣用戶 簡訊驗證碼在電信端就被截走",
+        "quote": "國家級駭客 SilentAir 鎖定台灣用戶 簡訊驗證碼在電信端就被截走",
+        "published": "2026-11-14",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-16T03:28:54Z",
+        "content_hash": "sha256:71a21f193efce47ddfbe2a73a95e6c5644c1906911634680dac01cb247545f81",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "高權限與客戶帳號不得僅以簡訊驗證碼作為第二因素",
+        "reason": "來源指出攻擊者在電信端攔截簡訊並取得 2FA 碼，現有控制項沒有涵蓋簡訊驗證碼的風險。"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-silentair-sms-2fa-interception-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：高權限與客戶帳號不得僅以簡訊驗證碼作為第二因素"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "generic-1",
+          "source": "rule",
+          "inferred": false,
+          "target": null,
+          "hypothesis": null,
+          "why": null,
+          "check": "人工判斷事件的攻擊手法是否適用於我們的系統",
+          "how": null,
+          "plain": "依事件內容人工判斷是否適用",
+          "basis": "事件沒有可比對的產品、CVE 或控制項",
+          "systems": [],
+          "controls": []
+        },
+        {
+          "id": "generic-2",
+          "source": "rule",
+          "inferred": false,
+          "target": null,
+          "hypothesis": null,
+          "why": null,
+          "check": "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+          "how": null,
+          "plain": null,
+          "basis": "事件沒有可比對的產品、CVE 或控制項",
+          "systems": [],
+          "controls": []
+        },
+        {
+          "id": "generic-3",
+          "source": "rule",
+          "inferred": false,
+          "target": null,
+          "hypothesis": null,
+          "why": null,
+          "check": "建議新增控制項：高權限與客戶帳號不得僅以簡訊驗證碼作為第二因素",
+          "how": null,
+          "plain": null,
+          "basis": "事件沒有可比對的產品、CVE 或控制項",
+          "systems": [],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "Enea 揭露 SilentAir 利用遭入侵的亞洲電信業者內部設備，經 SS7 與 Diameter 送出假的 UpdateLocation，將目標的通話與簡訊轉走，主要目標為台灣行動用戶。部分目標被轉走通訊後，立即有 2FA 碼被攔截。",
+  "blocks": {
+    "1_summary": {
+      "title": "SilentAir 入侵亞洲電信設備，攔截以台灣用戶為主的簡訊 2FA 驗證碼",
+      "date": "2026-11-13",
+      "industry": "電信",
+      "attack_chain": [
+        "入侵亞洲電信業者內部設備",
+        "從遭入侵設備對 IPX 送出攻擊訊令",
+        "向目標用戶的歸屬業者送出 UpdateLocation，謊稱手機由攻擊者設備服務",
+        "歸屬業者接受後，通話與簡訊轉送給攻擊者並攔截 2FA 碼"
+      ],
+      "attck": [
+        "T1111",
+        "T1638"
+      ],
+      "cves": [],
+      "confidence": "已確認",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://thehackernews.com/2026/11/silentair-hijacks-asian-telecom.html",
+          "title": "SilentAir Hijacks Asian Telecom Networks to Intercept SMS 2FA Codes and Spy on Taiwanese Users",
+          "quote": "SilentAir Hijacks Asian Telecom Networks to Intercept SMS 2FA Codes and Spy on Taiwanese Users",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-16T03:28:54Z"
+        },
+        {
+          "url": "https://cyberq.tw/2026/11/14/silentair-sms-2fa-interception/",
+          "title": "國家級駭客 SilentAir 鎖定台灣用戶 簡訊驗證碼在電信端就被截走",
+          "quote": "國家級駭客 SilentAir 鎖定台灣用戶 簡訊驗證碼在電信端就被截走",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-16T03:28:54Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "Enea 揭露 SilentAir 利用遭入侵的亞洲電信業者內部設備，經 SS7 與 Diameter 送出假的 UpdateLocation，將目標的通話與簡訊轉走，主要目標為台灣行動用戶。部分目標被轉走通訊後，立即有 2FA 碼被攔截。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：高權限與客戶帳號不得僅以簡訊驗證碼作為第二因素"
+          ],
+          "observed_at": "2026-11-16T03:28:54Z",
+          "suggestions": [
+            {
+              "id": "generic-1",
+              "source": "rule",
+              "inferred": false,
+              "target": null,
+              "hypothesis": null,
+              "why": null,
+              "check": "人工判斷事件的攻擊手法是否適用於我們的系統",
+              "how": null,
+              "plain": "依事件內容人工判斷是否適用",
+              "basis": "事件沒有可比對的產品、CVE 或控制項",
+              "systems": [],
+              "controls": []
+            },
+            {
+              "id": "generic-2",
+              "source": "rule",
+              "inferred": false,
+              "target": null,
+              "hypothesis": null,
+              "why": null,
+              "check": "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+              "how": null,
+              "plain": null,
+              "basis": "事件沒有可比對的產品、CVE 或控制項",
+              "systems": [],
+              "controls": []
+            },
+            {
+              "id": "generic-3",
+              "source": "rule",
+              "inferred": false,
+              "target": null,
+              "hypothesis": null,
+              "why": null,
+              "check": "建議新增控制項：高權限與客戶帳號不得僅以簡訊驗證碼作為第二因素",
+              "how": null,
+              "plain": null,
+              "basis": "事件沒有可比對的產品、CVE 或控制項",
+              "systems": [],
+              "controls": []
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  },
+  "orchestrator_results": []
+}

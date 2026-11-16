@@ -218,7 +218,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "marketing-site 的 PHP 8.1.27 落在受影響範圍、對外開放且利用條件成立，並已停止支援、無修補版本，為高風險（9 分）；phpmyadmin 同樣受影響，但因只允許公司 VPN 連入，為中風險（4 分）。",
+  "summary": "marketing-site 的 php 8.1.27 對外、條件成立且已停止支援、無修補版本，程式判定高風險（9 分）；phpmyadmin 因僅允許 corp-vpn 連入有補償措施，為中風險（4 分）。建議對 marketing-site 在修補、緩解、下架中做決策。",
   "blocks": {
     "1_summary": {
       "title": "PHP2Shell：PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619）",
@@ -270,7 +270,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "marketing-site 的 PHP 8.1.27 落在受影響範圍、對外開放且利用條件成立，並已停止支援、無修補版本，為高風險（9 分）；phpmyadmin 同樣受影響，但因只允許公司 VPN 連入，為中風險（4 分）。",
+      "summary": "marketing-site 的 php 8.1.27 對外、條件成立且已停止支援、無修補版本，程式判定高風險（9 分）；phpmyadmin 因僅允許 corp-vpn 連入有補償措施，為中風險（4 分）。建議對 marketing-site 在修補、緩解、下架中做決策。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -308,7 +308,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-php2shell-2026-10、live-php2shell-checkpoint-2026-11"
+            "reason": "evt-php2shell-2026-10、live-php2shell-check-point-update-2026-11"
           },
           {
             "factor": "已停止支援",
@@ -318,7 +318,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-15T03:29:33Z"
+        "observed_at": "2026-11-16T03:28:54Z"
       },
       {
         "asset_id": "phpmyadmin",
@@ -348,7 +348,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-php2shell-2026-10、live-php2shell-checkpoint-2026-11"
+            "reason": "evt-php2shell-2026-10、live-php2shell-check-point-update-2026-11"
           },
           {
             "factor": "補償措施",
@@ -358,7 +358,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-15T03:29:33Z"
+        "observed_at": "2026-11-16T03:28:54Z"
       }
     ],
     "4_unaffected_and_check": {
@@ -436,8 +436,8 @@
   "orchestrator_results": [],
   "updates": [
     {
-      "id": "live-php2shell-checkpoint-2026-11",
-      "title": "Check Point 閘道遭 PHP2Shell 鏈式攻擊，VMware ESXi 主機資料被抹除",
+      "id": "live-php2shell-check-point-update-2026-11",
+      "title": "PHP2Shell 事件新進度：Check Point 閘道遭鏈式攻擊，ESXi 主機資料被抹除",
       "date": "2026-11-15",
       "status": "open",
       "conclusion": "2 項受影響，最高風險為高。marketing-site：php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On。",
