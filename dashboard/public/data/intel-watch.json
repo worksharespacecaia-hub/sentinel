@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-15T22:50:04Z",
+  "checked_at": "2026-11-16T02:45:02Z",
   "advisories_checked": 6,
   "hits": [],
   "dispatched": false,
@@ -725,6 +725,8 @@
     "updated": [],
     "remaining": 0,
     "errors": [
+      "CVE-2026-114713：ReadTimeout",
+      "CVE-2026-111560：RuntimeError",
       "CVE-2026-19868：RuntimeError"
     ]
   }
