@@ -20,8 +20,10 @@ from tools.common import SECRET_RE  # noqa: F401 - 其他模組沿用 llm.SECRET
 from tools.graph_query import GraphQuery, ScopeError
 from tools.trace import Tracer
 
-# LLM 可撰寫的 Solution 欄位（source 由 A5 依實際來源填入）；對應 schemas.Solution
-SOLUTION_FIELDS = frozenset({"risk_id", "temporary", "permanent", "options", "suggested_owner", "verify"})
+# LLM 可撰寫的 Solution 欄位（source、plain_source 由 A5 依實際來源填入）；對應 schemas.Solution
+# plain_dropped：_validate 移除的白話欄位數（隨快取保存，A5 記到 trace 後移除，不進報告；specs/plain-brief R2.5）
+SOLUTION_FIELDS = frozenset({"risk_id", "temporary", "permanent", "options", "suggested_owner", "verify",
+                             "plain_title", "if_ignored", "plain_dropped"})
 
 
 @dataclass
@@ -46,8 +48,17 @@ def scrubbed_environ():
 
 
 def _validate(kind: str, output, task_ids: set[str]):
+    """API、訂閱方案（collected）、replay、快取四種來源都走這裡。"""
     if output is None:
         raise ValueError("沒有輸出")
+    if kind == "solutions":
+        if not isinstance(output, list):
+            raise ValueError("需要 Solution 陣列")
+        # 白話欄位先逐欄檢查（specs/plain-brief R2.4）：不合格只移除該欄並記數，剩下的內容才做整份機敏檢查
+        from tools.plain_text import screen_fields   # 延遲匯入：plain_text 經 orchestration 間接匯入本模組
+        for item in output:
+            if isinstance(item, dict):
+                screen_fields(item)
     text = json.dumps(output, ensure_ascii=False)
     if SECRET_RE.search(text):
         raise ValueError("輸出含疑似機敏值")
@@ -58,8 +69,6 @@ def _validate(kind: str, output, task_ids: set[str]):
             if item.get("id") not in task_ids or not isinstance(item.get("explanation"), str):
                 raise ValueError(f"ID 不在本次範圍或缺少說明：{item.get('id')}")
     elif kind == "solutions":
-        if not isinstance(output, list):
-            raise ValueError("需要 Solution 陣列")
         for item in output:
             if not isinstance(item, dict) or item.get("risk_id") not in task_ids:
                 raise ValueError(f"risk_id 不在本次範圍：{item.get('risk_id') if isinstance(item, dict) else item}")

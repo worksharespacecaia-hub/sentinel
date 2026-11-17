@@ -168,14 +168,18 @@ AGENTS: dict[str, AgentSpec] = {
                     [G, "remediation-playbooks", "brand-notice", "ceo-brief", "intel-report"], 0.50, {
         "remediation-advisor": _s("remediation-advisor", "為中高風險撰寫暫時緩解、根本修復與修補／緩解／下架選項（只建議，不執行）",
                                   "依 remediation-playbooks 中命中的劇本撰寫建議解法。需要更多資產資訊時可查詢圖譜。版本、分數、結論以程式結果為準，"
-                                  "不得改動。輸出 Solution JSON 陣列。", skills=["remediation-playbooks"], **WRITER, graph=True, read_references=True,
+                                  "不得改動。每個風險另寫給 CEO 看的 plain_title（40 字內）與 if_ignored（100 字內）：依 Skill 的白話規則，"
+                                  "系統用 asset_name、path_names 稱呼，只用任務內容的事實，不寫系統代號、CVE、版本號與技術術語。"
+                                  "輸出 Solution JSON 陣列。", skills=["remediation-playbooks"], **WRITER, graph=True, read_references=True,
                                   output="solutions"),
         "key-rotation-advisor": _s("key-rotation-advisor", "金鑰輪替順序、影響服務與需撤銷的長效授權",
                                    "任務內容附上金鑰清單與授權關係。" + OUT_EXPLAIN),
         "brand-notice-writer": _s("brand-notice-writer", "品牌商通知草稿與防詐提醒", "任務內容附上事件與受影響範圍。" + OUT_EXPLAIN,
                                   skills=["brand-notice"], **WRITER),
         "ceo-briefer": _s("ceo-briefer", "燈號 + 三句話摘要 + 今日需決策事項", "任務內容附上燈號與風險摘要。只輸出 JSON "
-                          "{\"ceo_summary\": [三句], \"decisions\": [...]}，用詞避免技術術語。", skills=["ceo-brief"], **WRITER, output="ceo"),
+                          "{\"ceo_summary\": [三句], \"decisions\": [...]}，用詞避免技術術語。系統用任務內容的白話名稱，不寫系統代號；"
+                          "每條決策寫成「問題？——不決定的話：後果」；每個數字緊接著寫它是什麼（例如「14 個高風險」）。",
+                          skills=["ceo-brief"], **WRITER, output="ceo"),
         "intel-report-writer": _s("intel-report-writer", "情資比對報告的摘要、解法與通知（只處理新的命中事件）",
                                   "任務內容附上程式算好的比對結果。不得改動版本、分數、結論。" + OUT_EXPLAIN, skills=["intel-report"], **WRITER),
     }),

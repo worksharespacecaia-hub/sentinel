@@ -41,7 +41,8 @@ def event_status(match: dict, risks_by_id: dict[str, dict]) -> tuple[str, bool]:
 
 def build_report(match: dict, risks_by_id: dict[str, dict], graph_nodes: dict, *, verification: dict | None = None,
                  observed_at: str | None = None, llm_text: dict | None = None, notice_extra: dict | None = None,
-                 orchestrator_results: list[dict] | None = None) -> dict:
+                 orchestrator_results: list[dict] | None = None, labels: dict | None = None) -> dict:
+    """labels：系統白話名稱（specs/plain-brief design §2.3），只傳給範本解法；事件投影不加 brand（R2.6 只在 report.events）。"""
     ev = match["event"]
     affected = [i for i in match["impacts"] if i["verdict"] == "affected"]
     need = [i for i in match["impacts"] if i["verdict"] == "need_check"]
@@ -74,7 +75,7 @@ def build_report(match: dict, risks_by_id: dict[str, dict], graph_nodes: dict, *
         reason = (match.get("notes") or ["沒有符合的資產"])[0]
         conclusion = f"不受影響：{reason}。"
 
-    solutions = [] if not affected else [solution_for(risks_by_id[i["risk_id"]], graph_nodes)
+    solutions = [] if not affected else [solution_for(risks_by_id[i["risk_id"]], graph_nodes, labels)
                                          for i in affected if i.get("risk_id") in risks_by_id]
     # 摘要：受影響事件（必要任務）與需確認事件（驗收追加的 intel-report-writer）才採用 LLM 文字；不受影響的事件不呼叫 LLM
     text = (llm_text or {}) if affected or status == "need_check" else {}

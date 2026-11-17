@@ -1,0 +1,8 @@
+{"schema_version": 1, "words": [
+  ["real_affected", "真實.*有關|有關.*真實"], ["real_checked", "真實事件"],
+  ["high", "高風險"], ["medium", "中風險"], ["low", "低風險"],
+  ["chained", "入侵路徑|串|闖"], ["eol", "停止支援|官方更新|修補"],
+  ["shadow_it", "未登記|沒登記|沒有登記|納管|除役|列管"],
+  ["affected", "與我們有關|有關|命中|受影響|我們也有|同樣的問題"],
+  ["checked", "外部資安事件|外部事件|資安事件|檢查"]],
+ "refines": {"real_checked": "checked", "real_affected": "affected"}}
