@@ -106,7 +106,7 @@
   "solutions": [
     {
       "risk_id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
-      "temporary": "確認 internal-tool 的狀況並限制存取",
+      "temporary": "先確認內部營運工具的狀況並限制誰能使用",
       "permanent": "依控制項要求修正，並在下次掃描確認",
       "options": [
         {
@@ -118,11 +118,14 @@
       ],
       "suggested_owner": "devops-team",
       "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-      "source": "template"
+      "source": "template",
+      "plain_title": "內部營運工具有安全設定問題",
+      "if_ignored": "問題會一直存在，增加被入侵的機會。",
+      "plain_source": "template"
     },
     {
       "risk_id": "nas-office-01:C-INTERNAL-TOOL-EXPOSED",
-      "temporary": "確認 nas-office-01 的狀況並限制存取",
+      "temporary": "先確認辦公室 NAS 的狀況並限制誰能使用",
       "permanent": "依控制項要求修正，並在下次掃描確認",
       "options": [
         {
@@ -134,11 +137,14 @@
       ],
       "suggested_owner": "it-team",
       "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-      "source": "template"
+      "source": "template",
+      "plain_title": "辦公室 NAS 有安全設定問題",
+      "if_ignored": "問題會一直存在，增加被入侵的機會。",
+      "plain_source": "template"
     },
     {
       "risk_id": "gitlab:C-SECRET-IN-GIT",
-      "temporary": "撤銷並輪替 gitlab，確認撤銷後舊值無法使用",
+      "temporary": "馬上把這組密碼或金鑰作廢換新，並檢查最近有沒有被別人用過",
       "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
       "options": [
         {
@@ -150,11 +156,14 @@
       ],
       "suggested_owner": "devops-team",
       "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-      "source": "template"
+      "source": "template",
+      "plain_title": "內部程式碼管理平台的密碼或金鑰保管不當，可能造成訂單資料、會員個資外洩",
+      "if_ignored": "拿到這組密碼或金鑰的人，可能直接登入相關系統，讀走訂單資料、會員個資；不換掉，這個破口就一直在。",
+      "plain_source": "template"
     },
     {
       "risk_id": "brand-app:C-SECRET-IN-GIT",
-      "temporary": "撤銷並輪替 brand-app，確認撤銷後舊值無法使用",
+      "temporary": "馬上把這組密碼或金鑰作廢換新，並檢查最近有沒有被別人用過",
       "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
       "options": [
         {
@@ -166,11 +175,14 @@
       ],
       "suggested_owner": "mobile-team",
       "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-      "source": "template"
+      "source": "template",
+      "plain_title": "品牌 App 的密碼或金鑰保管不當，可能造成會員個資外洩",
+      "if_ignored": "拿到這組密碼或金鑰的人，可能直接登入相關系統，讀走會員個資；不換掉，這個破口就一直在。",
+      "plain_source": "template"
     },
     {
       "risk_id": "order-db-prod:C-NET-SEGMENT",
-      "temporary": "確認 order-db-prod 的狀況並限制存取",
+      "temporary": "先確認正式訂單資料庫的狀況並限制誰能使用",
       "permanent": "依控制項要求修正，並在下次掃描確認",
       "options": [
         {
@@ -182,7 +194,10 @@
       ],
       "suggested_owner": "dba-team",
       "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-      "source": "template"
+      "source": "template",
+      "plain_title": "正式訂單資料庫有安全設定問題",
+      "if_ignored": "問題會一直存在，增加被入侵的機會。",
+      "plain_source": "template"
     }
   ],
   "notice": {
@@ -199,7 +214,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "此事件的入侵路徑（對外的內部工具、Git 內的資料庫金鑰）與我們有 5 項吻合，程式判定受影響、最高為高風險，其中 brand-app（10 分）與 internal-tool（8 分）最優先；建議先關閉內部工具對外連線並輪替 Git 內金鑰。",
+  "summary": "程式比對出 5 項受影響，最高為高風險：內部營運工具對外開放、程式碼管理平台與品牌 App 內有正式金鑰，與 91APP 事件的入侵手法相符；另有辦公室 NAS 對外開放與測試環境可連正式訂單資料庫 2 項中風險，建議優先關閉對外開放並輪替金鑰。",
   "blocks": {
     "1_summary": {
       "title": "91APP 訂單資料庫遭入侵：未更新的內部工具 Appsmith 成破口，自內部 GitLab 取得資料庫金鑰",
@@ -243,7 +258,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "此事件的入侵路徑（對外的內部工具、Git 內的資料庫金鑰）與我們有 5 項吻合，程式判定受影響、最高為高風險，其中 brand-app（10 分）與 internal-tool（8 分）最優先；建議先關閉內部工具對外連線並輪替 Git 內金鑰。",
+      "summary": "程式比對出 5 項受影響，最高為高風險：內部營運工具對外開放、程式碼管理平台與品牌 App 內有正式金鑰，與 91APP 事件的入侵手法相符；另有辦公室 NAS 對外開放與測試環境可連正式訂單資料庫 2 項中風險，建議優先關閉對外開放並輪替金鑰。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -276,7 +291,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、live-91app-artex-update-2026-11"
+            "reason": "evt-91app-2026-10"
           },
           {
             "factor": "位於完整攻擊鏈",
@@ -286,7 +301,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-16T03:28:54Z"
+        "observed_at": "2026-11-17T05:28:31Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -311,12 +326,12 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、evt-synology-2026-10、live-91app-artex-update-2026-11"
+            "reason": "evt-91app-2026-10、evt-synology-2026-10"
           }
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-16T03:28:54Z"
+        "observed_at": "2026-11-17T05:28:31Z"
       },
       {
         "asset_id": "gitlab",
@@ -325,8 +340,8 @@
         "verdict": "affected",
         "reason": "不符合 C-SECRET-IN-GIT（Git 中不得有正式環境金鑰）",
         "risk_id": "gitlab:C-SECRET-IN-GIT",
-        "level": "medium",
-        "score": 5,
+        "level": "high",
+        "score": 8,
         "breakdown": [
           {
             "factor": "基礎分：控制項不符",
@@ -346,12 +361,17 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、live-91app-artex-update-2026-11"
+            "reason": "evt-91app-2026-10"
+          },
+          {
+            "factor": "位於完整攻擊鏈",
+            "points": 3,
+            "reason": "攻擊路徑前提的必要一步"
           }
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-16T03:28:54Z"
+        "observed_at": "2026-11-17T05:28:31Z"
       },
       {
         "asset_id": "brand-app",
@@ -386,7 +406,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、live-91app-artex-update-2026-11"
+            "reason": "evt-91app-2026-10"
           },
           {
             "factor": "位於完整攻擊鏈",
@@ -396,7 +416,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-16T03:28:54Z"
+        "observed_at": "2026-11-17T05:28:31Z"
       },
       {
         "asset_id": "order-db-prod",
@@ -426,12 +446,12 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、live-91app-artex-update-2026-11"
+            "reason": "evt-91app-2026-10"
           }
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-16T03:28:54Z"
+        "observed_at": "2026-11-17T05:28:31Z"
       }
     ],
     "4_unaffected_and_check": {
@@ -442,7 +462,7 @@
     "5_solutions": [
       {
         "risk_id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
-        "temporary": "確認 internal-tool 的狀況並限制存取",
+        "temporary": "先確認內部營運工具的狀況並限制誰能使用",
         "permanent": "依控制項要求修正，並在下次掃描確認",
         "options": [
           {
@@ -454,11 +474,14 @@
         ],
         "suggested_owner": "devops-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "內部營運工具有安全設定問題",
+        "if_ignored": "問題會一直存在，增加被入侵的機會。",
+        "plain_source": "template"
       },
       {
         "risk_id": "nas-office-01:C-INTERNAL-TOOL-EXPOSED",
-        "temporary": "確認 nas-office-01 的狀況並限制存取",
+        "temporary": "先確認辦公室 NAS 的狀況並限制誰能使用",
         "permanent": "依控制項要求修正，並在下次掃描確認",
         "options": [
           {
@@ -470,11 +493,14 @@
         ],
         "suggested_owner": "it-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "辦公室 NAS 有安全設定問題",
+        "if_ignored": "問題會一直存在，增加被入侵的機會。",
+        "plain_source": "template"
       },
       {
         "risk_id": "gitlab:C-SECRET-IN-GIT",
-        "temporary": "撤銷並輪替 gitlab，確認撤銷後舊值無法使用",
+        "temporary": "馬上把這組密碼或金鑰作廢換新，並檢查最近有沒有被別人用過",
         "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
         "options": [
           {
@@ -486,11 +512,14 @@
         ],
         "suggested_owner": "devops-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "內部程式碼管理平台的密碼或金鑰保管不當，可能造成訂單資料、會員個資外洩",
+        "if_ignored": "拿到這組密碼或金鑰的人，可能直接登入相關系統，讀走訂單資料、會員個資；不換掉，這個破口就一直在。",
+        "plain_source": "template"
       },
       {
         "risk_id": "brand-app:C-SECRET-IN-GIT",
-        "temporary": "撤銷並輪替 brand-app，確認撤銷後舊值無法使用",
+        "temporary": "馬上把這組密碼或金鑰作廢換新，並檢查最近有沒有被別人用過",
         "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
         "options": [
           {
@@ -502,11 +531,14 @@
         ],
         "suggested_owner": "mobile-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "品牌 App 的密碼或金鑰保管不當，可能造成會員個資外洩",
+        "if_ignored": "拿到這組密碼或金鑰的人，可能直接登入相關系統，讀走會員個資；不換掉，這個破口就一直在。",
+        "plain_source": "template"
       },
       {
         "risk_id": "order-db-prod:C-NET-SEGMENT",
-        "temporary": "確認 order-db-prod 的狀況並限制存取",
+        "temporary": "先確認正式訂單資料庫的狀況並限制誰能使用",
         "permanent": "依控制項要求修正，並在下次掃描確認",
         "options": [
           {
@@ -518,7 +550,10 @@
         ],
         "suggested_owner": "dba-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "正式訂單資料庫有安全設定問題",
+        "if_ignored": "問題會一直存在，增加被入侵的機會。",
+        "plain_source": "template"
       }
     ],
     "6_notice": {
@@ -530,15 +565,5 @@
       "label": "待處理"
     }
   },
-  "orchestrator_results": [],
-  "updates": [
-    {
-      "id": "live-91app-artex-update-2026-11",
-      "title": "91APP 事件新進度：調查發現 ARTEX 使用痕跡，FBI 發布警示",
-      "date": "2026-11-16",
-      "status": "open",
-      "conclusion": "5 項受影響，最高風險為高。internal-tool：network.json: internet → internal-tool:443。",
-      "confidence": "provisional"
-    }
-  ]
+  "orchestrator_results": []
 }

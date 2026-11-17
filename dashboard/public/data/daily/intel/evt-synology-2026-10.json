@@ -119,7 +119,7 @@
   "solutions": [
     {
       "risk_id": "nas-office-01:synology-dsm:vuln",
-      "temporary": "確認 nas-office-01 的暴露範圍，先以 WAF 或存取限制降低風險",
+      "temporary": "先確認辦公室 NAS 有哪些地方外人連得到，能關的先關，並盡快安排更新",
       "permanent": "將 nas-office-01 的受影響元件升級到修補版本",
       "options": [
         {
@@ -137,11 +137,14 @@
       ],
       "suggested_owner": "it-team",
       "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-      "source": "template"
+      "source": "template",
+      "plain_title": "辦公室 NAS 有已經被用來攻擊的漏洞",
+      "if_ignored": "外人可能利用這個漏洞入侵辦公室 NAS；這個漏洞已經有人在用。",
+      "plain_source": "template"
     },
     {
       "risk_id": "nas-office-01:C-BACKUP-ISOLATION",
-      "temporary": "建立一份離線或不同帳號的備份",
+      "temporary": "先另外做一份分開保存的備份",
       "permanent": "備份與來源隔離（不同帳號或離線），每 90 天做一次還原測試",
       "options": [
         {
@@ -153,11 +156,14 @@
       ],
       "suggested_owner": "it-team",
       "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-      "source": "template"
+      "source": "template",
+      "plain_title": "辦公室 NAS 的備份沒有分開保存",
+      "if_ignored": "遇到勒索軟體時，備份可能跟著一起被加密，資料救不回來。",
+      "plain_source": "template"
     },
     {
       "risk_id": "nas-office-01:C-INTERNAL-TOOL-EXPOSED",
-      "temporary": "確認 nas-office-01 的狀況並限制存取",
+      "temporary": "先確認辦公室 NAS 的狀況並限制誰能使用",
       "permanent": "依控制項要求修正，並在下次掃描確認",
       "options": [
         {
@@ -169,7 +175,10 @@
       ],
       "suggested_owner": "it-team",
       "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-      "source": "template"
+      "source": "template",
+      "plain_title": "辦公室 NAS 有安全設定問題",
+      "if_ignored": "問題會一直存在，增加被入侵的機會。",
+      "plain_source": "template"
     }
   ],
   "notice": {
@@ -182,7 +191,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "nas-office-01 的 DSM 管理介面對外且版本受影響，程式判定高風險（8 分），另有備份未隔離與內部工具對外兩項中風險（各 5 分）；建議關閉對外連線並讓備份與來源隔離。",
+  "summary": "辦公室 NAS 版本落在受影響範圍且管理頁對外，為高風險（8 分）；另有備份與來源未隔離、管理頁對外開放 2 項中風險（各 5 分），與該事件勒索加密備份碟的情況相同，建議先關閉對外並隔離備份。",
   "blocks": {
     "1_summary": {
       "title": "Synology NAS 遭 C3RB3R 勒索軟體加密：DSM 登入頁對外暴露，常駐連接的備份碟一併被加密",
@@ -223,7 +232,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "nas-office-01 的 DSM 管理介面對外且版本受影響，程式判定高風險（8 分），另有備份未隔離與內部工具對外兩項中風險（各 5 分）；建議關閉對外連線並讓備份與來源隔離。",
+      "summary": "辦公室 NAS 版本落在受影響範圍且管理頁對外，為高風險（8 分）；另有備份與來源未隔離、管理頁對外開放 2 項中風險（各 5 分），與該事件勒索加密備份碟的情況相同，建議先關閉對外並隔離備份。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -261,12 +270,12 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、evt-synology-2026-10、live-91app-artex-update-2026-11"
+            "reason": "evt-91app-2026-10、evt-synology-2026-10"
           }
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-16T03:28:54Z"
+        "observed_at": "2026-11-17T05:28:31Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -296,7 +305,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-16T03:28:54Z"
+        "observed_at": "2026-11-17T05:28:31Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -321,12 +330,12 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、evt-synology-2026-10、live-91app-artex-update-2026-11"
+            "reason": "evt-91app-2026-10、evt-synology-2026-10"
           }
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-16T03:28:54Z"
+        "observed_at": "2026-11-17T05:28:31Z"
       }
     ],
     "4_unaffected_and_check": {
@@ -337,7 +346,7 @@
     "5_solutions": [
       {
         "risk_id": "nas-office-01:synology-dsm:vuln",
-        "temporary": "確認 nas-office-01 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "temporary": "先確認辦公室 NAS 有哪些地方外人連得到，能關的先關，並盡快安排更新",
         "permanent": "將 nas-office-01 的受影響元件升級到修補版本",
         "options": [
           {
@@ -355,11 +364,14 @@
         ],
         "suggested_owner": "it-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "辦公室 NAS 有已經被用來攻擊的漏洞",
+        "if_ignored": "外人可能利用這個漏洞入侵辦公室 NAS；這個漏洞已經有人在用。",
+        "plain_source": "template"
       },
       {
         "risk_id": "nas-office-01:C-BACKUP-ISOLATION",
-        "temporary": "建立一份離線或不同帳號的備份",
+        "temporary": "先另外做一份分開保存的備份",
         "permanent": "備份與來源隔離（不同帳號或離線），每 90 天做一次還原測試",
         "options": [
           {
@@ -371,11 +383,14 @@
         ],
         "suggested_owner": "it-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "辦公室 NAS 的備份沒有分開保存",
+        "if_ignored": "遇到勒索軟體時，備份可能跟著一起被加密，資料救不回來。",
+        "plain_source": "template"
       },
       {
         "risk_id": "nas-office-01:C-INTERNAL-TOOL-EXPOSED",
-        "temporary": "確認 nas-office-01 的狀況並限制存取",
+        "temporary": "先確認辦公室 NAS 的狀況並限制誰能使用",
         "permanent": "依控制項要求修正，並在下次掃描確認",
         "options": [
           {
@@ -387,7 +402,10 @@
         ],
         "suggested_owner": "it-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "辦公室 NAS 有安全設定問題",
+        "if_ignored": "問題會一直存在，增加被入侵的機會。",
+        "plain_source": "template"
       }
     ],
     "6_notice": {

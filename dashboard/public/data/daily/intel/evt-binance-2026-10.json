@@ -84,7 +84,7 @@
   "solutions": [
     {
       "risk_id": "laptop-eng-07:C-DEV-DEVICE-TOKEN",
-      "temporary": "撤銷並輪替 laptop-eng-07，確認撤銷後舊值無法使用",
+      "temporary": "馬上把這組密碼或金鑰作廢換新，並檢查最近有沒有被別人用過",
       "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
       "options": [
         {
@@ -96,11 +96,14 @@
       ],
       "suggested_owner": "eng-07",
       "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-      "source": "template"
+      "source": "template",
+      "plain_title": "工程部門筆電（乙）的密碼或金鑰保管不當",
+      "if_ignored": "拿到這組密碼或金鑰的人，可能直接登入相關系統；不換掉，這個破口就一直在。",
+      "plain_source": "template"
     },
     {
       "risk_id": "ai-code-assistant:C-NON-CI-DEPLOY",
-      "temporary": "確認 ai-code-assistant 的狀況並限制存取",
+      "temporary": "先確認 AI 程式碼助理的狀況並限制誰能使用",
       "permanent": "依控制項要求修正，並在下次掃描確認",
       "options": [
         {
@@ -112,7 +115,10 @@
       ],
       "suggested_owner": "devops-team",
       "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-      "source": "template"
+      "source": "template",
+      "plain_title": "AI 程式碼助理有安全設定問題",
+      "if_ignored": "問題會一直存在，增加被入侵的機會。",
+      "plain_source": "template"
     }
   ],
   "notice": {
@@ -126,7 +132,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "laptop-eng-07 持有可連到 deploy-pipeline 的部署權杖（高風險，7 分），ai-code-assistant 也能繞過 Pipeline 直接部署（中風險，4 分）；建議撤銷並重發權杖，部署一律走 Pipeline。",
+  "summary": "程式比對出 2 項受影響：工程部門筆電（乙）持有正式部署憑證為高風險（7 分），AI 程式助理可繞過審核直接部署為中風險（4 分）；建議撤銷憑證並讓正式部署只走自動部署流程。",
   "blocks": {
     "1_summary": {
       "title": "幣安 63.4 億美元駭案：假面試惡意程式入侵開發者電腦，取得容器部署憑證後攻陷錢包簽章服務",
@@ -176,7 +182,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "laptop-eng-07 持有可連到 deploy-pipeline 的部署權杖（高風險，7 分），ai-code-assistant 也能繞過 Pipeline 直接部署（中風險，4 分）；建議撤銷並重發權杖，部署一律走 Pipeline。",
+      "summary": "程式比對出 2 項受影響：工程部門筆電（乙）持有正式部署憑證為高風險（7 分），AI 程式助理可繞過審核直接部署為中風險（4 分）；建議撤銷憑證並讓正式部署只走自動部署流程。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -219,7 +225,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-16T03:28:54Z"
+        "observed_at": "2026-11-17T05:28:31Z"
       },
       {
         "asset_id": "ai-code-assistant",
@@ -249,7 +255,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-16T03:28:54Z"
+        "observed_at": "2026-11-17T05:28:31Z"
       }
     ],
     "4_unaffected_and_check": {
@@ -260,7 +266,7 @@
     "5_solutions": [
       {
         "risk_id": "laptop-eng-07:C-DEV-DEVICE-TOKEN",
-        "temporary": "撤銷並輪替 laptop-eng-07，確認撤銷後舊值無法使用",
+        "temporary": "馬上把這組密碼或金鑰作廢換新，並檢查最近有沒有被別人用過",
         "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
         "options": [
           {
@@ -272,11 +278,14 @@
         ],
         "suggested_owner": "eng-07",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "工程部門筆電（乙）的密碼或金鑰保管不當",
+        "if_ignored": "拿到這組密碼或金鑰的人，可能直接登入相關系統；不換掉，這個破口就一直在。",
+        "plain_source": "template"
       },
       {
         "risk_id": "ai-code-assistant:C-NON-CI-DEPLOY",
-        "temporary": "確認 ai-code-assistant 的狀況並限制存取",
+        "temporary": "先確認 AI 程式碼助理的狀況並限制誰能使用",
         "permanent": "依控制項要求修正，並在下次掃描確認",
         "options": [
           {
@@ -288,7 +297,10 @@
         ],
         "suggested_owner": "devops-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "AI 程式碼助理有安全設定問題",
+        "if_ignored": "問題會一直存在，增加被入侵的機會。",
+        "plain_source": "template"
       }
     ],
     "6_notice": {

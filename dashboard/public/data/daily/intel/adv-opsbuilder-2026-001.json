@@ -76,7 +76,7 @@
   "solutions": [
     {
       "risk_id": "internal-tool:opsbuilder:vuln",
-      "temporary": "確認 internal-tool 的暴露範圍，先以 WAF 或存取限制降低風險",
+      "temporary": "先確認內部營運工具有哪些地方外人連得到，能關的先關，並盡快安排更新",
       "permanent": "將 internal-tool 的受影響元件升級到修補版本",
       "options": [
         {
@@ -94,7 +94,10 @@
       ],
       "suggested_owner": "devops-team",
       "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-      "source": "template"
+      "source": "template",
+      "plain_title": "內部營運工具有已經被用來攻擊的漏洞，可能造成訂單資料、會員個資外洩",
+      "if_ignored": "外人可能利用這個漏洞入侵內部營運工具，一路碰到訂單資料、會員個資；這個漏洞已經有人在用。",
+      "plain_source": "template"
     }
   ],
   "notice": {
@@ -107,7 +110,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "internal-tool 使用 opsbuilder 1.88 且登入頁可從外部連到，程式判定受影響、高風險（11 分）；建議升級至 1.90 以上並先限縮對外存取。",
+  "summary": "內部營運工具使用的版本落在受影響範圍，登入頁可從外部連到，利用條件成立，程式判定為高風險（11 分）；建議升級到已修補版本並限制登入來源。",
   "blocks": {
     "1_summary": {
       "title": "示範公告：OpsBuilder 1.90 以前版本的帳號接管漏洞（虛構產品）",
@@ -141,7 +144,7 @@
         "issues": [],
         "max_level": null
       },
-      "summary": "internal-tool 使用 opsbuilder 1.88 且登入頁可從外部連到，程式判定受影響、高風險（11 分）；建議升級至 1.90 以上並先限縮對外存取。",
+      "summary": "內部營運工具使用的版本落在受影響範圍，登入頁可從外部連到，利用條件成立，程式判定為高風險（11 分）；建議升級到已修補版本並限制登入來源。",
       "summary_note": null,
       "fixture_note": "虛構產品 OpsBuilder 的示範公告；CVSS 與已利用旗標為明確標示的模擬 fixture 值（規格第 7.4 節）"
     },
@@ -179,7 +182,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、live-91app-artex-update-2026-11"
+            "reason": "evt-91app-2026-10"
           },
           {
             "factor": "位於完整攻擊鏈",
@@ -189,7 +192,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-16T03:28:54Z"
+        "observed_at": "2026-11-17T05:28:31Z"
       }
     ],
     "4_unaffected_and_check": {
@@ -200,7 +203,7 @@
     "5_solutions": [
       {
         "risk_id": "internal-tool:opsbuilder:vuln",
-        "temporary": "確認 internal-tool 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "temporary": "先確認內部營運工具有哪些地方外人連得到，能關的先關，並盡快安排更新",
         "permanent": "將 internal-tool 的受影響元件升級到修補版本",
         "options": [
           {
@@ -218,7 +221,10 @@
         ],
         "suggested_owner": "devops-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "內部營運工具有已經被用來攻擊的漏洞，可能造成訂單資料、會員個資外洩",
+        "if_ignored": "外人可能利用這個漏洞入侵內部營運工具，一路碰到訂單資料、會員個資；這個漏洞已經有人在用。",
+        "plain_source": "template"
       }
     ],
     "6_notice": {

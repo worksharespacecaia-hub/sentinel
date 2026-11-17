@@ -1,7 +1,7 @@
 {
   "tool": "nvd",
   "tool_version": "NVD CVE API 2.0",
-  "database_revision": "2026-11-16T03:29:34Z",
+  "database_revision": "2026-11-17T05:29:25Z",
   "api_key": false,
   "results": [
     {
@@ -8694,25 +8694,628 @@
       "asset_ids": [
         "api-gateway"
       ],
-      "status": "failed",
+      "status": "ok",
       "queries": [
         {
           "cpe": "cpe:2.3:a:f5:nginx_open_source:1.27.2:*:*:*:*:*:*:*",
-          "status": "failed",
-          "reason": "RuntimeError: NVD HTTP 503"
+          "status": "ok",
+          "truncated": false,
+          "candidates": 16
         },
         {
           "cpe": "cpe:2.3:a:f5:nginx:1.27.2:*:*:*:*:*:*:*",
-          "status": "failed",
-          "reason": "RuntimeError: NVD HTTP 503"
+          "status": "ok",
+          "truncated": false,
+          "candidates": 1
         },
         {
           "cpe": "cpe:2.3:a:nginx:nginx:1.27.2:*:*:*:*:*:*:*",
-          "status": "failed",
-          "reason": "RuntimeError: NVD HTTP 503"
+          "status": "ok",
+          "truncated": false,
+          "candidates": 0
         }
       ],
-      "cves": []
+      "cves": [
+        {
+          "id": "CVE-2025-23419",
+          "published": "2025-02-05T18:15:33.347",
+          "last_modified": "2026-06-17T08:54:13.083",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 5.3,
+          "summary": "When multiple server blocks are configured to share the same IP address and port, an attacker can use session resumption to bypass client certificate authentication requirements on these servers. This",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.11.4",
+                      "versionEndExcluding": "1.26.3"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.27.0",
+                      "versionEndExcluding": "1.27.4"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-53859",
+          "published": "2025-08-13T15:15:37.657",
+          "last_modified": "2026-06-17T09:39:02.413",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 6.3,
+          "summary": "NGINX Open Source and NGINX Plus have a vulnerability in the ngx_mail_smtp_module that might allow an unauthenticated attacker to over-read NGINX SMTP authentication process memory; as a result, the s",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "0.7.22",
+                      "versionEndExcluding": "1.29.1"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-1642",
+          "published": "2026-02-04T15:16:14.190",
+          "last_modified": "2026-06-17T10:16:14.457",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 8.2,
+          "summary": "A vulnerability exists in NGINX OSS and NGINX Plus when configured to proxy to upstream Transport Layer Security (TLS) servers. An attacker with a man-in-the-middle (MITM) position on the upstream ser",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.3.0",
+                      "versionEndExcluding": "1.28.2"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.29.0",
+                      "versionEndExcluding": "1.29.5"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-27651",
+          "published": "2026-03-24T15:16:32.910",
+          "last_modified": "2026-07-15T02:19:09.153",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 8.7,
+          "summary": "When the ngx_mail_auth_http_module module is enabled on NGINX Plus or NGINX Open Source, undisclosed requests can cause worker processes to terminate. This issue may occur when (1) CRAM-MD5 or APOP au",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "0.5.15",
+                      "versionEndIncluding": "0.9.7"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.0.0",
+                      "versionEndExcluding": "1.28.3"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.29.0",
+                      "versionEndExcluding": "1.29.7"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-27654",
+          "published": "2026-03-24T15:16:33.130",
+          "last_modified": "2026-07-15T02:19:09.470",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 8.8,
+          "summary": "NGINX Open Source and NGINX Plus have a vulnerability in the ngx_http_dav_module module that might allow an attacker to trigger a buffer overflow to the NGINX worker process; this vulnerability may re",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "0.5.13",
+                      "versionEndIncluding": "0.9.7"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.0.0",
+                      "versionEndExcluding": "1.28.3"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.29.0",
+                      "versionEndExcluding": "1.29.7"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-27784",
+          "published": "2026-03-24T15:16:33.350",
+          "last_modified": "2026-07-15T02:19:10.063",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 8.5,
+          "summary": "The 32-bit implementation of NGINX Open Source has a vulnerability in the ngx_http_mp4_module module, which might allow an attacker to over-read or over-write NGINX worker memory resulting in its term",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.1.19",
+                      "versionEndExcluding": "1.28.3"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.29.0",
+                      "versionEndExcluding": "1.29.7"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-28753",
+          "published": "2026-03-24T15:16:33.560",
+          "last_modified": "2026-06-17T10:28:59.190",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 6.3,
+          "summary": "NGINX Plus and NGINX Open Source have a vulnerability in the ngx_mail_smtp_module module due to the improper handling of CRLF sequences in DNS responses. This allows an attacker-controlled DNS server ",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "0.6.27",
+                      "versionEndIncluding": "0.9.7"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.0.0",
+                      "versionEndExcluding": "1.28.3"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.29.0",
+                      "versionEndExcluding": "1.29.7"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-28755",
+          "published": "2026-03-24T15:16:33.773",
+          "last_modified": "2026-06-17T10:28:59.433",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 5.4,
+          "summary": "NGINX Plus and NGINX Open Source have a vulnerability in the ngx_stream_ssl_module module due to the improper handling of revoked certificates when configured with the ssl_verify_client on and ssl_ocs",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "0.5.13",
+                      "versionEndIncluding": "0.9.7"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.27.2",
+                      "versionEndExcluding": "1.28.3"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.29.0",
+                      "versionEndExcluding": "1.29.7"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-32647",
+          "published": "2026-03-24T15:16:34.667",
+          "last_modified": "2026-07-15T02:20:00.083",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 8.5,
+          "summary": "NGINX Open Source and NGINX Plus have a vulnerability in the ngx_http_mp4_module module, which might allow an attacker to trigger a buffer over-read or over-write to the NGINX worker memory resulting ",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.1.19",
+                      "versionEndExcluding": "1.28.3"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.29.0",
+                      "versionEndExcluding": "1.29.7"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-40460",
+          "published": "2026-05-13T16:16:42.823",
+          "last_modified": "2026-10-26T17:10:03.270",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 6.9,
+          "summary": "When NGINX Plus or NGINX Open Source are configured to use the HTTP/3 QUIC module, an attacker may be able to spoof their source IP address allowing for bypass of authorization or bypass of rate limit",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.25.0",
+                      "versionEndIncluding": "1.30.0"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-40701",
+          "published": "2026-05-13T16:16:43.863",
+          "last_modified": "2026-10-26T17:10:03.270",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 6.3,
+          "summary": "NGINX Plus and NGINX Open Source have a vulnerability in the ngx_http_ssl_module module when the ssl_verify_client directive is set to \"on\" or \"optional,\" and the ssl_ocsp directive is set to \"on\" or ",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.19.0",
+                      "versionEndIncluding": "1.30.0"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-42055",
+          "published": "2026-06-17T15:16:50.353",
+          "last_modified": "2026-09-14T13:18:34.690",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 9.2,
+          "summary": "NGINX Plus and NGINX Open Source have a vulnerability in the ngx_http_proxy_v2_module and ngx_http_grpc_module modules. This vulnerability exists when the proxy_http_version to 2 or grpc_pass directiv",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.0.0",
+                      "versionEndIncluding": "1.30.2"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.31.0",
+                      "versionEndIncluding": "1.31.1"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-42934",
+          "published": "2026-05-13T16:16:49.910",
+          "last_modified": "2026-10-26T14:10:00.130",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 6.3,
+          "summary": "NGINX Plus and NGINX Open Source have a vulnerability in the ngx_http_charset_module module. When charset, source_charset, and charset_map and proxy_pass with disabled buffering (\"off\") directives are",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "0.3.50",
+                      "versionEndIncluding": "0.9.7"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.0.0",
+                      "versionEndIncluding": "1.30.0"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-42945",
+          "published": "2026-05-13T16:16:50.190",
+          "last_modified": "2026-10-26T14:10:00.130",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 9.2,
+          "summary": "NGINX Plus and NGINX Open Source have a vulnerability in the ngx_http_rewrite_module module. This vulnerability exists when the rewrite directive is followed by a rewrite, if, or set directive and an ",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "0.6.27",
+                      "versionEndIncluding": "1.30.0"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-42946",
+          "published": "2026-05-13T16:16:50.340",
+          "last_modified": "2026-10-26T14:10:00.130",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 8.3,
+          "summary": "A vulnerability exists in the ngx_http_scgi_module and ngx_http_uwsgi_module modules that may result in excessive memory allocation or an over-read of data. When scgi_pass or uwsgi_pass is configured,",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "0.8.42",
+                      "versionEndIncluding": "0.9.7"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.0.0",
+                      "versionEndIncluding": "1.30.0"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-48142",
+          "published": "2026-06-17T15:16:59.040",
+          "last_modified": "2026-08-11T15:03:44.877",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 6.3,
+          "summary": "NGINX Plus and NGINX Open Source have a vulnerability in the ngx_http_charset_module module. When content is served or proxied through a location block with both source_charset utf-8; and a charset di",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.0.0",
+                      "versionEndIncluding": "1.30.2"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.31.0",
+                      "versionEndIncluding": "1.31.1"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-9256",
+          "published": "2026-05-22T15:16:27.073",
+          "last_modified": "2026-08-25T13:19:33.400",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 9.2,
+          "summary": "NGINX Plus and NGINX Open Source have a vulnerability in the ngx_http_rewrite_module module. This vulnerability exists when a rewrite directive uses a regex pattern with distinct, overlapping Perl-Com",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "0.1.17",
+                      "versionEndIncluding": "0.9.7"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.0.0",
+                      "versionEndExcluding": "1.30.2"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:1.31.0:*:*:*:*:*:*:*",
+                      "vulnerable": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "name": "node",
@@ -10842,8 +11445,8 @@
         {
           "id": "CVE-2026-109618",
           "published": "2026-10-21T14:17:09.357",
-          "last_modified": "2026-11-15T01:18:01.333",
-          "status": "Modified",
+          "last_modified": "2026-11-16T16:54:58.603",
+          "status": "Analyzed",
           "kev_added": "2026-10-26",
           "cvss": 9.8,
           "summary": "PHP uses longjmp() for out-of-memory (OOM) errors to exit the current context and abort handling of the request. Some contexts may not properly account for this scenario and leave request memory in an",
@@ -10889,7 +11492,7 @@
         {
           "id": "CVE-2026-109619",
           "published": "2026-10-21T14:17:09.823",
-          "last_modified": "2026-11-05T19:17:08.397",
+          "last_modified": "2026-11-16T16:17:46.967",
           "status": "Analyzed",
           "kev_added": "2026-10-26",
           "cvss": 9.2,
@@ -10945,15 +11548,1490 @@
       "asset_ids": [
         "phpmyadmin"
       ],
-      "status": "failed",
+      "status": "ok",
       "queries": [
         {
           "cpe": "cpe:2.3:a:php:php:8.3.20:*:*:*:*:*:*:*",
-          "status": "failed",
-          "reason": "RuntimeError: NVD HTTP 503"
+          "status": "ok",
+          "truncated": false,
+          "candidates": 31
         }
       ],
-      "cves": []
+      "cves": [
+        {
+          "id": "CVE-2007-3205",
+          "published": "2007-06-13T10:30:00.000",
+          "last_modified": "2026-06-16T22:41:16.190",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 5.0,
+          "summary": "The parse_str function in (1) PHP, (2) Hardened-PHP, and (3) Suhosin, when called without a second parameter, might allow remote attackers to overwrite arbitrary variables by specifying variable names",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-1218",
+          "published": "2026-09-25T21:17:20.993",
+          "last_modified": "2026-10-23T14:55:37.780",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 5.9,
+          "summary": "The mysqlnd wire protocol parser reads fields out of server packets before checking that the packet still holds enough bytes for them. A malicious or compromised MySQL server can send a truncated pack",
+          "configurations": [
+            {
+              "operator": "AND",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.34"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.35"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.26"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.11"
+                    }
+                  ]
+                },
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:o:microsoft:windows:-:*:*:*:*:*:*:*",
+                      "vulnerable": false
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-1220",
+          "published": "2025-07-13T23:15:22.773",
+          "last_modified": "2026-06-17T08:38:37.710",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 5.3,
+          "summary": "In PHP versions:8.1.* before 8.1.33, 8.2.* before 8.2.29, 8.3.* before 8.3.23, 8.4.* before 8.4.10 some functions like fsockopen() lack validation that the hostname supplied does not contain null char",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.1.0",
+                      "versionEndExcluding": "8.1.33"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.29"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.23"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.10"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-14177",
+          "published": "2025-12-27T20:15:40.400",
+          "last_modified": "2026-10-13T09:10:00.323",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "In PHP versions:8.1.* before 8.1.34, 8.2.* before 8.2.30, 8.3.* before 8.3.29, 8.4.* before 8.4.16, 8.5.* before 8.5.1, the getimagesize() function may leak uninitialized heap memory into the APPn seg",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.1.0",
+                      "versionEndExcluding": "8.1.34"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.30"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.29"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.16"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:8.5.0:*:*:*:*:*:*:*",
+                      "vulnerable": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-14178",
+          "published": "2025-12-27T20:15:40.570",
+          "last_modified": "2026-10-13T09:10:00.323",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 8.2,
+          "summary": "In PHP versions:8.1.* before 8.1.34, 8.2.* before 8.2.30, 8.3.* before 8.3.29, 8.4.* before 8.4.16, 8.5.* before 8.5.1, a heap buffer overflow occurs in array_merge() when the total element count of p",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.1.0",
+                      "versionEndExcluding": "8.1.34"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.30"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.29"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.16"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.1"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-14179",
+          "published": "2026-05-10T05:16:09.853",
+          "last_modified": "2026-07-25T11:10:00.100",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 9.8,
+          "summary": "In PHP versions 8.2.* before 8.2.31, 8.3.* before 8.3.31, 8.4.* before 8.4.21, and 8.5.* before 8.5.6, the PDO Firebird driver improperly handles NUL bytes when preparing SQL queries. During token-by-",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.31"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.31"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.21"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.6"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-14180",
+          "published": "2025-12-27T20:15:40.717",
+          "last_modified": "2026-10-13T09:10:00.323",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 8.2,
+          "summary": "In PHP versions 8.1.* before 8.1.34, 8.2.* before 8.2.30, 8.3.* before 8.3.29, 8.4.* before 8.4.16, 8.5.* before 8.5.1 when using the PDO PostgreSQL driver with PDO::ATTR_EMULATE_PREPARES enabled, an ",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.1.0",
+                      "versionEndExcluding": "8.1.34"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.30"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.29"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.16"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.1"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-14181",
+          "published": "2026-09-25T21:17:19.840",
+          "last_modified": "2026-10-23T14:56:56.713",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 6.5,
+          "summary": "The SOAP HTTP client guards its response buffer growth with a check that relies on signed integer overflow, which is undefined behaviour and is not guaranteed to trigger. When the check is optimised a",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.34"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.35"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.26"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.11"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-1735",
+          "published": "2025-07-13T23:15:22.940",
+          "last_modified": "2026-06-17T08:39:41.143",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "In PHP versions:8.1.* before 8.1.33, 8.2.* before 8.2.29, 8.3.* before 8.3.23, 8.4.* pgsql and pdo_pgsql escaping functions do not check if the underlying quoting functions returned errors. This could",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.1.0",
+                      "versionEndExcluding": "8.1.33"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.29"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.23"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.10"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-6491",
+          "published": "2025-07-13T22:15:23.353",
+          "last_modified": "2026-06-17T10:02:00.527",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 5.9,
+          "summary": "In PHP versions:8.1.* before 8.1.33, 8.2.* before 8.2.29, 8.3.* before 8.3.23, 8.4.* before 8.4.10 when parsing XML data in SOAP extensions, overly large (>2Gb) XML namespace prefix may lead to null p",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.1.0",
+                      "versionEndExcluding": "8.1.33"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.29"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.23"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.10"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-109618",
+          "published": "2026-10-21T14:17:09.357",
+          "last_modified": "2026-11-16T16:54:58.603",
+          "status": "Analyzed",
+          "kev_added": "2026-10-26",
+          "cvss": 9.8,
+          "summary": "PHP uses longjmp() for out-of-memory (OOM) errors to exit the current context and abort handling of the request. Some contexts may not properly account for this scenario and leave request memory in an",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "7.3.0",
+                      "versionEndExcluding": "8.2.35"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.36"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.27"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.12"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-109619",
+          "published": "2026-10-21T14:17:09.823",
+          "last_modified": "2026-11-16T16:17:46.967",
+          "status": "Analyzed",
+          "kev_added": "2026-10-26",
+          "cvss": 9.2,
+          "summary": "PHP has various global state that temporarily points into request memory. In some scenarios, global state may not be correctly reset, or may be repopulated after being reset. The global state may then",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "5.4.0",
+                      "versionEndExcluding": "8.2.35"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.36"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.27"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.12"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-14355",
+          "published": "2026-07-03T21:16:55.783",
+          "last_modified": "2026-07-08T20:11:16.060",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 5.6,
+          "summary": "In PHP versions 8.2.* before 8.2.32, 8.3.* before 8.3.32, 8.4.* before 8.4.23, 8.5.* before 8.5.8, the AES-WRAP-PAD algorithm implementation in OpenSSL extension contains a buffer allocation flaw. The",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.32"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.32"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.23"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.8"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-17543",
+          "published": "2026-07-30T12:17:27.120",
+          "last_modified": "2026-10-23T22:10:00.160",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 9.8,
+          "summary": "Improper escaping of backslashes in attacker-provided parameters would allow for trivial SQL injection in PHP versions from 8.2.* before 8.2.33, from 8.3.* before 8.3.33, from 8.4.* before 8.4.24, and",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.33"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.33"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.24"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.9"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-17545",
+          "published": "2026-09-25T21:17:23.253",
+          "last_modified": "2026-10-23T14:43:15.817",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "On Windows, PHP's filesystem and stream APIs do not reject reserved device names such as CON, PRN, AUX, NUL, COM1 to COM9, LPT1 to LPT9, CONIN$ and CONOUT$ when they appear as a component of a path. A",
+          "configurations": [
+            {
+              "operator": "AND",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.34"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.35"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.26"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.11"
+                    }
+                  ]
+                },
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:o:microsoft:windows:-:*:*:*:*:*:*:*",
+                      "vulnerable": false
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-6103",
+          "published": "2026-09-25T21:17:23.790",
+          "last_modified": "2026-10-23T14:07:18.323",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 4.3,
+          "summary": "phar_tar_number() parses the octal size field of a TAR header into a uint32_t with no overflow check. The field is 11 octal digits wide and holds values up to 0x1FFFFFFFF, so a size above 0xFFFFFFFF s",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.34"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.35"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.26"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.11"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-6722",
+          "published": "2026-05-10T05:16:11.070",
+          "last_modified": "2026-07-24T08:10:00.150",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 9.8,
+          "summary": "In PHP versions 8.2.* before 8.2.31, 8.3.* before 8.3.31, 8.4.* before 8.4.21, and 8.5.* before 8.5.6, the SOAP extension's object deduplication mechanism stores pointers to PHP objects in a global ma",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.31"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.31"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.21"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.6"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-6735",
+          "published": "2026-05-10T05:16:11.213",
+          "last_modified": "2026-07-24T08:10:00.150",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.3,
+          "summary": "In PHP versions 8.2.* before 8.2.31, 8.3.* before 8.3.31, 8.4.* before 8.4.21, 8.5.* before 8.5.6, due to improper sanitation of user data, it allows an attacker to compose an URL, which will cause th",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.31"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.31"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.21"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.6"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-7258",
+          "published": "2026-05-10T05:16:11.360",
+          "last_modified": "2026-07-24T08:10:00.150",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "In PHP versions 8.2.* before 8.2.31, 8.3.* before 8.3.31, 8.4.* before 8.4.21, and 8.5.* before 8.5.6, some functions, including urldecode(), pass signed char to ctype functions (like isxdigit()). On ",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.21"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.31"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.21"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.6"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-7259",
+          "published": "2026-05-10T05:16:11.507",
+          "last_modified": "2026-07-24T08:10:00.150",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 6.5,
+          "summary": "In PHP versions 8.2.* before 8.2.31, 8.3.* before 8.3.31, 8.4.* before 8.4.21, and 8.5.* before 8.5.6, a mismatch between encoding lists in Oniguruma and mbfl leads to  a NULL pointer dereference, res",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.31"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.31"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.21"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.6"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-7260",
+          "published": "2026-07-30T12:19:04.300",
+          "last_modified": "2026-10-23T22:10:00.160",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 5.5,
+          "summary": "Circular symbolic links in phar archives could lead to unbounded recursion, exhausting the C stack and crashing the PHP process, in PHP versions from 8.2.* before 8.2.33, from 8.3.* before 8.3.33, fro",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.33"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.33"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.24"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.9"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-7261",
+          "published": "2026-05-10T05:16:11.640",
+          "last_modified": "2026-07-24T08:10:00.150",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 9.8,
+          "summary": "In PHP versions 8.2.* before 8.2.31, 8.3.* before 8.3.31, 8.4.* before 8.4.21, and 8.5.* before 8.5.6, when SoapServer is configured with SOAP_PERSISTENCE_SESSION, the handler object is persisted acro",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.31"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.31"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.21"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.6"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-7262",
+          "published": "2026-05-10T05:16:11.780",
+          "last_modified": "2026-07-24T08:10:00.150",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "In PHP versions 8.2.* before 8.2.31, 8.3.* before 8.3.31, 8.4.* before 8.4.21, and 8.5.* before 8.5.6, when a SOAP server has a typemap configured, the decoding process contains a mistake which checks",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.31"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.31"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.21"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.6"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-7568",
+          "published": "2026-05-10T05:16:11.920",
+          "last_modified": "2026-07-24T08:10:00.150",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "In PHP versions 8.2.* before 8.2.31, 8.3.* before 8.3.31, 8.4.* before 8.4.21, and 8.5.* before 8.5.6, the metaphone() function in ext/standard/metaphone.c uses a signed int variable to track the curr",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.31"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.31"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.21"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.6"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-91765",
+          "published": "2026-09-25T21:17:24.550",
+          "last_modified": "2026-10-23T13:49:32.333",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "cleanup_xml_node() in the SOAP XML parser recurses once per XML nesting level with no depth limit. An unauthenticated attacker can post a SOAP request containing tens of thousands of nested elements t",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.34"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.35"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.26"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.11"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-91766",
+          "published": "2026-09-25T21:17:24.673",
+          "last_modified": "2026-10-23T13:46:07.313",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 5.9,
+          "summary": "When the http:// stream wrapper follows a redirect it forwards the user-supplied Authorization, Cookie and Proxy-Authorization headers unchanged, even when the redirect target is a different host, a d",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.34"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.35"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.26"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.11"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-91767",
+          "published": "2026-09-25T21:17:24.793",
+          "last_modified": "2026-10-27T13:14:13.607",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 6.5,
+          "summary": "php_openssl_matches_wildcard_name() in ext/openssl/xp_ssl.c underflows the length argument passed to memchr() when a TLS server certificate presents a wildcard name whose literal characters are togeth",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.34"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.35"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.26"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.11"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-91768",
+          "published": "2026-09-25T22:18:49.807",
+          "last_modified": "2026-10-27T15:40:27.307",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 6.5,
+          "summary": "The IPv6 branch of the FastCGI client access check compares only the first 12 bytes of a 16-byte IPv6 address, so listen.allowed_clients matches on a /96 prefix instead of the exact address. An attack",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.34"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.35"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.26"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.11"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-91769",
+          "published": "2026-09-25T21:17:24.913",
+          "last_modified": "2026-10-23T13:20:43.460",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 4.3,
+          "summary": "PHP's OpenSSL stream peer verification checks the certificate's subjectAltName entries first and, whenever no entry matches, falls back to the Common Name. RFC 6125 requires the CN to be ignored once ",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.34"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.35"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.26"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.11"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-92842",
+          "published": "2026-09-25T22:18:49.943",
+          "last_modified": "2026-10-27T15:33:55.553",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 5.9,
+          "summary": "The convert.base64-encode, convert.quoted-printable-encode and convert.quoted-printable-decode stream filters accept a line-break-chars option whose length is tracked separately from the string itself",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.34"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.35"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.26"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.11"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-93682",
+          "published": "2026-09-25T20:17:47.597",
+          "last_modified": "2026-10-23T14:58:22.930",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 5.8,
+          "summary": "When the HTTP stream wrapper follows a redirect and the response carries a Location header with an empty value, the redirect code reads one byte past the end of the heap buffer holding the location. T",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.34"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.3.0",
+                      "versionEndExcluding": "8.3.35"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.4.0",
+                      "versionEndExcluding": "8.4.26"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:php:php:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.5.0",
+                      "versionEndExcluding": "8.5.11"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "name": "php",
@@ -13614,15 +15692,477 @@
       "asset_ids": [
         "cache-redis"
       ],
-      "status": "failed",
+      "status": "ok",
       "queries": [
         {
           "cpe": "cpe:2.3:a:redis:redis:7.0.15:*:*:*:*:*:*:*",
-          "status": "failed",
-          "reason": "RuntimeError: NVD HTTP 503"
+          "status": "ok",
+          "truncated": false,
+          "candidates": 11
         }
       ],
-      "cves": []
+      "cves": [
+        {
+          "id": "CVE-2024-31227",
+          "published": "2024-10-07T20:15:05.050",
+          "last_modified": "2026-06-17T07:28:01.180",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 4.4,
+          "summary": "Redis is an open source, in-memory database that persists on disk. An authenticated with sufficient privileges may create a malformed ACL selector which, when accessed, triggers a server panic and sub",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "7.0.0",
+                      "versionEndExcluding": "7.2.6"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:7.4.0:*:*:*:*:*:*:*",
+                      "vulnerable": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2024-51741",
+          "published": "2025-01-06T22:15:09.827",
+          "last_modified": "2026-06-17T08:06:13.863",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 4.4,
+          "summary": "Redis is an open source, in-memory database that persists on disk. An authenticated with sufficient privileges may create a malformed ACL selector which, when accessed, triggers a server panic and sub",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "7.0.0",
+                      "versionEndExcluding": "7.2.7"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "7.4.0",
+                      "versionEndExcluding": "7.4.2"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-21605",
+          "published": "2025-04-23T16:15:34.770",
+          "last_modified": "2026-06-17T08:43:50.390",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "Redis is an open source, in-memory database that persists on disk. In versions starting at 2.6 and prior to 7.4.3, An unauthenticated client can cause unlimited growth of output buffers, until the ser",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.6.0",
+                      "versionEndExcluding": "6.2.18"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "7.0",
+                      "versionEndExcluding": "7.2.8"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "7.4.0",
+                      "versionEndExcluding": "7.4.3"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-27151",
+          "published": "2025-05-29T09:15:25.980",
+          "last_modified": "2026-06-17T09:03:06.450",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 9.8,
+          "summary": "Redis is an open source, in-memory database that persists on disk. In versions starting from 7.0.0 to before 8.0.2, a stack-based buffer overflow exists in redis-check-aof due to the use of memcpy wit",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "7.0.0",
+                      "versionEndExcluding": "7.2.9"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "7.4.0",
+                      "versionEndExcluding": "7.4.4"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.0.0",
+                      "versionEndExcluding": "8.0.2"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-46817",
+          "published": "2025-10-03T18:15:35.527",
+          "last_modified": "2026-10-19T17:10:00.173",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 8.8,
+          "summary": "Redis is an open source, in-memory database that persists on disk. Versions 8.2.1 and below allow an authenticated user to use a specially crafted Lua script to cause an integer overflow and potential",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "6.2.20"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "7.0",
+                      "versionEndExcluding": "7.2.11"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "7.4.0",
+                      "versionEndExcluding": "7.4.6"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.0.0",
+                      "versionEndExcluding": "8.0.4"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.2"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-46818",
+          "published": "2025-10-03T19:15:43.330",
+          "last_modified": "2026-10-19T17:10:00.173",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.3,
+          "summary": "Redis is an open source, in-memory database that persists on disk. Versions 8.2.1 and below allow an authenticated user to use a specially crafted Lua script to manipulate different LUA objects and po",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "6.2.20"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "7.0",
+                      "versionEndExcluding": "7.2.11"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "7.4.0",
+                      "versionEndExcluding": "7.4.6"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.0.0",
+                      "versionEndExcluding": "8.0.4"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.2"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-46819",
+          "published": "2025-10-03T19:15:43.490",
+          "last_modified": "2026-10-19T17:10:00.173",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.1,
+          "summary": "Redis is an open source, in-memory database that persists on disk. Versions 8.2.1 and below allow an authenticated user to use a specially crafted LUA script to read out-of-bound data or crash the ser",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "6.2.20"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "7.0",
+                      "versionEndExcluding": "7.2.11"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "7.4.0",
+                      "versionEndExcluding": "7.4.6"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.0.0",
+                      "versionEndExcluding": "8.0.4"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.2"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-48367",
+          "published": "2025-07-07T16:15:24.063",
+          "last_modified": "2026-06-17T09:29:33.337",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "Redis is an open source, in-memory database that persists on disk. An unauthenticated connection can cause repeated IP protocol errors, leading to client starvation and, ultimately, a denial of servic",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "6.2.19"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "7.0",
+                      "versionEndExcluding": "7.2.10"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "7.4.0",
+                      "versionEndExcluding": "7.4.5"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.0.0",
+                      "versionEndExcluding": "8.0.3"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-49844",
+          "published": "2025-10-03T20:15:32.823",
+          "last_modified": "2026-10-19T16:10:00.260",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 9.9,
+          "summary": "Redis is an open source, in-memory database that persists on disk. Versions 8.2.1 and below allow an authenticated user to use a specially crafted Lua script to manipulate the garbage collector, trigg",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "6.2.20"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "7.0",
+                      "versionEndExcluding": "7.2.11"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "7.4.0",
+                      "versionEndExcluding": "7.4.6"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.0.0",
+                      "versionEndExcluding": "8.0.4"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "8.2.0",
+                      "versionEndExcluding": "8.2.2"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-23631",
+          "published": "2026-05-05T17:17:03.503",
+          "last_modified": "2026-07-25T11:10:00.100",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 8.8,
+          "summary": "Redis is an in-memory data structure store. In all versions of redis-server with Lua scripting, an authenticated attacker can exploit the master-replica synchronization mechanism to trigger a use-afte",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "8.6.3"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-25243",
+          "published": "2026-05-05T17:17:03.667",
+          "last_modified": "2026-07-25T11:10:00.100",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 8.8,
+          "summary": "Redis is an in-memory data structure store. In versions of redis-server up to 8.6.3, the RESTORE command does not properly validate serialized values. An authenticated attacker with permission to exec",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:redis:redis:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "8.6.3"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "name": "synology-dsm",

@@ -157,7 +157,7 @@
   "solutions": [
     {
       "risk_id": "marketing-site:php:vuln",
-      "temporary": "立即限制 marketing-site 的對外存取（WAF 規則、關閉高風險功能），並加強監控",
+      "temporary": "先限制外人連到行銷官網並加強監看，同時評估是否暫時關掉",
       "permanent": "將 marketing-site 升級到仍受支援且已修補的版本，完成回歸測試後上線",
       "options": [
         {
@@ -181,11 +181,14 @@
       ],
       "suggested_owner": "security-team",
       "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-      "source": "template"
+      "source": "template",
+      "plain_title": "行銷官網的軟體原廠已不再修補，有可被入侵的漏洞",
+      "if_ignored": "漏洞不會再有官方修補，外人可能藉此控制行銷官網或竄改內容。",
+      "plain_source": "template"
     },
     {
       "risk_id": "phpmyadmin:php:vuln",
-      "temporary": "確認 phpmyadmin 的暴露範圍，先以 WAF 或存取限制降低風險",
+      "temporary": "先確認資料庫網頁管理工具有哪些地方外人連得到，能關的先關，並盡快安排更新",
       "permanent": "將 phpmyadmin 的受影響元件升級到修補版本",
       "options": [
         {
@@ -203,7 +206,10 @@
       ],
       "suggested_owner": "dba-team",
       "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-      "source": "template"
+      "source": "template",
+      "plain_title": "資料庫網頁管理工具有已經被用來攻擊的漏洞，可能造成訂單資料、會員個資外洩",
+      "if_ignored": "外人可能利用這個漏洞入侵資料庫網頁管理工具，一路碰到訂單資料、會員個資；這個漏洞已經有人在用。",
+      "plain_source": "template"
     }
   ],
   "notice": {
@@ -218,7 +224,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "marketing-site 的 php 8.1.27 對外、條件成立且已停止支援、無修補版本，程式判定高風險（9 分）；phpmyadmin 因僅允許 corp-vpn 連入有補償措施，為中風險（4 分）。建議對 marketing-site 在修補、緩解、下架中做決策。",
+  "summary": "程式比對出 2 項受影響：行銷官網對外且原廠已不再修補，為高風險（9 分）；資料庫管理介面雖也命中，但僅允許公司網路連入，為中風險（4 分）。建議行銷官網優先升級或暫時下架。",
   "blocks": {
     "1_summary": {
       "title": "PHP2Shell：PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619）",
@@ -270,7 +276,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "marketing-site 的 php 8.1.27 對外、條件成立且已停止支援、無修補版本，程式判定高風險（9 分）；phpmyadmin 因僅允許 corp-vpn 連入有補償措施，為中風險（4 分）。建議對 marketing-site 在修補、緩解、下架中做決策。",
+      "summary": "程式比對出 2 項受影響：行銷官網對外且原廠已不再修補，為高風險（9 分）；資料庫管理介面雖也命中，但僅允許公司網路連入，為中風險（4 分）。建議行銷官網優先升級或暫時下架。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -308,7 +314,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-php2shell-2026-10、live-php2shell-check-point-update-2026-11"
+            "reason": "evt-php2shell-2026-10、live-php2shell-check-point-esxi-wiper-2026-11"
           },
           {
             "factor": "已停止支援",
@@ -318,7 +324,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-16T03:28:54Z"
+        "observed_at": "2026-11-17T05:28:31Z"
       },
       {
         "asset_id": "phpmyadmin",
@@ -348,7 +354,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-php2shell-2026-10、live-php2shell-check-point-update-2026-11"
+            "reason": "evt-php2shell-2026-10、live-php2shell-check-point-esxi-wiper-2026-11"
           },
           {
             "factor": "補償措施",
@@ -358,7 +364,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-16T03:28:54Z"
+        "observed_at": "2026-11-17T05:28:31Z"
       }
     ],
     "4_unaffected_and_check": {
@@ -375,7 +381,7 @@
     "5_solutions": [
       {
         "risk_id": "marketing-site:php:vuln",
-        "temporary": "立即限制 marketing-site 的對外存取（WAF 規則、關閉高風險功能），並加強監控",
+        "temporary": "先限制外人連到行銷官網並加強監看，同時評估是否暫時關掉",
         "permanent": "將 marketing-site 升級到仍受支援且已修補的版本，完成回歸測試後上線",
         "options": [
           {
@@ -399,11 +405,14 @@
         ],
         "suggested_owner": "security-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "行銷官網的軟體原廠已不再修補，有可被入侵的漏洞",
+        "if_ignored": "漏洞不會再有官方修補，外人可能藉此控制行銷官網或竄改內容。",
+        "plain_source": "template"
       },
       {
         "risk_id": "phpmyadmin:php:vuln",
-        "temporary": "確認 phpmyadmin 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "temporary": "先確認資料庫網頁管理工具有哪些地方外人連得到，能關的先關，並盡快安排更新",
         "permanent": "將 phpmyadmin 的受影響元件升級到修補版本",
         "options": [
           {
@@ -421,7 +430,10 @@
         ],
         "suggested_owner": "dba-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "資料庫網頁管理工具有已經被用來攻擊的漏洞，可能造成訂單資料、會員個資外洩",
+        "if_ignored": "外人可能利用這個漏洞入侵資料庫網頁管理工具，一路碰到訂單資料、會員個資；這個漏洞已經有人在用。",
+        "plain_source": "template"
       }
     ],
     "6_notice": {
@@ -436,8 +448,8 @@
   "orchestrator_results": [],
   "updates": [
     {
-      "id": "live-php2shell-check-point-update-2026-11",
-      "title": "PHP2Shell 事件新進度：Check Point 閘道遭鏈式攻擊，ESXi 主機資料被抹除",
+      "id": "live-php2shell-check-point-esxi-wiper-2026-11",
+      "title": "Check Point 閘道遭 PHP2Shell 鏈式攻擊，VMware ESXi 主機資料被抹除",
       "date": "2026-11-15",
       "status": "open",
       "conclusion": "2 項受影響，最高風險為高。marketing-site：php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On。",
