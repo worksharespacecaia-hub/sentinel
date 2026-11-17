@@ -348,3 +348,128 @@ def test_green_light_unaffected_by_invalid_rules_note():
     a = compute_light(risks=[], signals=[], open_alerts=[], coverage=cov_ok, data_issues=[])
     b = compute_light(risks=[], signals=[], open_alerts=[], coverage=cov_ok, data_issues=[HINT_NOTE])
     assert a == b and a[0] == "green"
+
+
+# ── 白話欄位與事件品牌（specs/plain-brief R1、R2.6、R3.1、design §3.4）──────────────
+def _report_ids(rep):
+    ids = set()
+    for r in rep["risks"]:
+        ids.add(r["asset_id"])
+        ids.update(r.get("attack_path") or [])
+    ids.update(rep["coverage"].get("unregistered_exposed_ids") or [])
+    ids.update(x["asset_id"] for x in rep["reconcile"])
+    return ids
+
+
+def test_report_plain_fields_labels_and_brands(baseline, demo_result):
+    from tools.plain_text import exact_public, risk_brands
+    built = assemble(baseline, run_id="pb", scenario="daily", trigger_source="manual", scope="daily", generated_at=AS_OF)
+    rep = built["report"]
+    Report.model_validate(rep)
+    open_mh = [r for r in rep["risks"] if r["level"] in ("high", "medium") and r["status"] != "fixed"]
+    assert open_mh and all(r["solution"]["plain_title"] and r["solution"]["if_ignored"] and r["solution"]["plain_source"] == "template"
+                           for r in open_mh)
+    labels = rep["asset_labels"]
+    assert labels and set(labels) <= _report_ids(rep)                                   # 只收 R1.2 的 ID
+    assert all(exact_public(v, 60) for v in labels.values())                             # 全部通過 R8
+    assert labels["internal-tool"] == "內部營運工具"
+    brands = {e["id"]: e["brand"] for e in rep["events"]}
+    assert brands == {"evt-91app-2026-10": "91APP", "evt-binance-2026-10": "幣安",
+                      "evt-nextjs-cve-2025-29927": None, "evt-php2shell-2026-10": None,        # 漏洞公告類 archive：沒有品牌
+                      "evt-synology-2026-10": None, "evt-1shop-2026-10": None,                 # 暫定：不帶品牌
+                      "adv-opsbuilder-2026-001": None}                                         # advisory
+    tool = next(r for r in rep["risks"] if r["id"] == "internal-tool:opsbuilder:vuln")
+    assert risk_brands(tool, brands)[0] == "91APP"                                         # matched_events 中第一個有品牌的
+    for r in built["intel_reports"]:
+        assert "brand" not in r["event"]                                                   # 情資報告的事件投影不變
+    demo = assemble(demo_result, run_id="pb", scenario="intel-demo", trigger_source="manual", scope="scenario", generated_at=AS_OF)
+    Report.model_validate(demo["report"])
+    assert all(e["brand"] is None for e in demo["report"]["events"])                       # 示範事件沒有品牌
+
+
+def test_ai_solution_merge_never_mixes_plain_sources(baseline):
+    rid = "internal-tool:opsbuilder:vuln"
+    ai = {"risk_id": rid, "temporary": "AI 今天先做", "permanent": "AI 根本", "options": [], "verify": "AI 驗證",
+          "suggested_owner": None, "source": "live"}
+
+    def sol(llm):
+        built = assemble(baseline, run_id="m", scenario="daily", trigger_source="manual", scope="daily", generated_at=AS_OF, llm=llm)
+        Report.model_validate(built["report"])
+        return next(r for r in built["report"]["risks"] if r["id"] == rid)["solution"]
+    tpl = sol(None)
+    one = sol({"solutions": {rid: {**ai, "plain_title": "AI 白話標題", "plain_dropped": 1}}})   # AI 只給一欄 → 兩欄都用範本
+    assert (one["plain_title"], one["if_ignored"], one["plain_source"]) == (tpl["plain_title"], tpl["if_ignored"], "template")
+    assert one["temporary"] == "AI 今天先做" and one["source"] == "live" and "plain_dropped" not in one
+    both = sol({"solutions": {rid: {**ai, "plain_title": "AI 白話標題", "if_ignored": "AI 不處理的話。"}}})
+    assert (both["plain_title"], both["if_ignored"], both["plain_source"]) == ("AI 白話標題", "AI 不處理的話。", "live")
+
+
+def _yaml_event(directory, eid, kind, **extra):
+    import yaml
+    directory.mkdir(parents=True, exist_ok=True)
+    doc = {"id": eid, "kind": kind, "title": f"{eid} 品牌事件", "date": "2026-11-08", "revision": "1", "confidence": "confirmed",
+           "sources": [], **extra}
+    (directory / f"{eid}.yaml").write_text(yaml.safe_dump(doc, allow_unicode=True), encoding="utf-8")
+    return doc
+
+
+def test_event_sources_strip_brand_outside_archive(tmp_path, monkeypatch):
+    from tools import pipeline
+    from tools.pipeline import event_sources
+    intel = tmp_path / "intel"
+    _yaml_event(intel / "archive", "arc-1", "archive", brand="arc-1")
+    _yaml_event(intel / "advisories", "adv-1", "advisory", brand="adv-1")
+    _yaml_event(intel / "demo-events", "demo-1", "demo", brand="demo-1", demo=True)
+    _yaml_event(tmp_path / "extra", "extra-1", "archive", brand="extra-1")   # 自稱 archive 也一樣移除：只看來源
+    monkeypatch.setattr(pipeline, "INTEL_DIR", intel)
+    auto = [{"id": "kev-cve-2026-0001", "kind": "advisory", "brand": "KEV"}]
+    live = [{"id": "live-1", "kind": "live", "brand": "自稱品牌", "possible_entry_points": []}]
+    inp = EvalInput(target_root=tmp_path, as_of=None, scanners_dir=tmp_path, intel_kinds=["archive", "advisory", "demo"],
+                    extra_event_dirs=[tmp_path / "extra"], auto_advisories=copy.deepcopy(auto), live_events=copy.deepcopy(live))
+    got = {e["id"]: e for e in event_sources(inp)}
+    assert set(got) == {"arc-1", "adv-1", "demo-1", "extra-1", "kev-cve-2026-0001", "live-1"}
+    assert [i for i, e in got.items() if "brand" in e] == ["arc-1"]
+    assert "possible_entry_points" in got["live-1"]                                      # 其他欄位不受影響
+    assert inp.auto_advisories == auto and inp.live_events == live                       # 不修改呼叫端傳入的事件
+
+
+def test_archive_yaml_brands_validate():
+    from schemas import IntelEvent
+    from tools.common import INTEL_DIR
+    from tools.intel_verify import load_events
+    from tools.plain_text import event_brand
+    brands = {}
+    for raw in load_events(INTEL_DIR / "archive"):
+        ev = IntelEvent.model_validate({k: v for k, v in raw.items() if k in IntelEvent.model_fields})
+        if ev.brand is not None:
+            assert event_brand(ev.brand, ev.title) == ev.brand                           # 標題子字串、20 字內、通過 R8
+        brands[ev.id] = ev.brand
+    assert brands == {"evt-91app-2026-10": "91APP", "evt-binance-2026-10": "幣安", "evt-synology-2026-10": "Synology NAS",
+                      "evt-1shop-2026-10": "1shop", "evt-nextjs-cve-2025-29927": None, "evt-php2shell-2026-10": None}
+
+
+def test_live_update_inherits_archive_brand_only():
+    """live 後續報導沿用原 archive 事件的品牌；live 自己帶的品牌不採用（R2.6）。來源驗證以 preverified 模擬通過。"""
+    from dataclasses import replace
+
+    from tools.intel_verify import verify_event
+    from tools.pipeline import event_sources
+    base = {"kind": "live", "date": "2026-11-10", "revision": "1", "confidence": "confirmed", "products": [], "cves": [],
+            "controls": [], "sources": [{"url": None, "title": "報導", "quote": None, "published": None}]}
+    follow = {**base, "id": "live-91app-followup-2026-11", "title": "91APP 事件後續：受影響訂單增加",
+              "is_update_of": "evt-91app-2026-10"}
+    own = {**base, "id": "live-own-brand-2026-11", "title": "某品牌遭駭", "brand": "某品牌"}
+    inp = EvalInput(target_root=FIXTURE_TARGET, as_of=AS_OF, scanners_dir=FIXTURE_SCANNERS, live_events=[follow, own])
+    verified = [verify_event(raw, as_of=AS_OF, online=False) for raw in event_sources(inp)]
+    for v in verified:
+        if v["event"]["kind"] == "live":
+            assert v["event"]["brand"] is None
+            v["event"]["confidence"] = "confirmed"                                       # 模擬來源驗證通過
+    res = evaluate(replace(inp, preverified=verified))
+    built = assemble(res, run_id="lv", scenario="daily", trigger_source="manual", scope="daily", generated_at=AS_OF)
+    Report.model_validate(built["report"])
+    brands = {e["id"]: e["brand"] for e in built["report"]["events"]}
+    assert brands["live-91app-followup-2026-11"] == "91APP" and brands["live-own-brand-2026-11"] is None
+    unverified = evaluate(inp)                                                           # 沒有通過驗證（暫定）：不沿用
+    built = assemble(unverified, run_id="lv", scenario="daily", trigger_source="manual", scope="daily", generated_at=AS_OF)
+    assert {e["id"]: e["brand"] for e in built["report"]["events"]}["live-91app-followup-2026-11"] is None

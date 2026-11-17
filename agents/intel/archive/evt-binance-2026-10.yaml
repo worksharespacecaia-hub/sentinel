@@ -2,6 +2,7 @@ id: evt-binance-2026-10
 kind: archive
 demo: false
 title: 幣安 63.4 億美元駭案：假面試惡意程式入侵開發者電腦，取得容器部署憑證後攻陷錢包簽章服務
+brand: '幣安'   # 真實受害事件的主角（人工整理；specs/plain-brief R2.6）
 date: '2026-10-30'
 industry: 加密貨幣
 attack_chain:

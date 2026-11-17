@@ -12,7 +12,8 @@ from schemas import Report
 from tools.common import SCHEMA_VERSION, iso, sha256_file, sha256_json, write_json
 from tools.orchestration import public_plan
 from tools.intel_report import build_report, to_markdown
-from tools.templates import ceo_summary, decisions, solution_for
+from tools.plain_text import exact_public, report_brands
+from tools.templates import LABEL_LIMIT, ceo_summary, decisions, solution_for
 
 PUBLIC_RISK_KEYS = ("id", "finding_ids", "asset_id", "title", "category", "level", "score", "raw_score", "score_level",
                     "level_reason", "breakdown", "attack_path", "matched_events", "deadline_hours", "solution", "status",
@@ -35,6 +36,39 @@ def link_updates(intel_reports: list[dict], event_updates: dict[str, list[str]])
                               "status": orig["status"] if orig else None}
 
 
+def public_labels(result: dict, nodes: dict | None = None) -> dict[str, str]:
+    """系統白話名稱（specs/plain-brief design §2.3）：digest.public_asset_labels 的結果再經 R8 過濾，
+    過濾結果與原文完全相同才採用。名稱來源只讀檔案與圖譜，A5 與 claude-analysis 算出相同結果。"""
+    from tools import digest   # 延遲匯入：digest 會匯入 llm
+    file_labels, _ = digest.load_asset_label_file()   # 格式問題由 A5 的資安事件整理回報，這裡不重複記錄
+    nodes = nodes if nodes is not None else dict(result["graph"].nodes(data=True))
+    raw = digest.public_asset_labels(result["data"].services, result["data"].vendors, nodes, file_labels)
+    return {k: v for k, v in raw.items() if exact_public(v, LABEL_LIMIT)}
+
+
+def _referenced_ids(risks: list[dict], coverage: dict, records: list[dict]) -> set[str]:
+    """report.asset_labels 只收（R1.2）：風險的 asset_id、攻擊路徑節點、coverage.unregistered_exposed_ids、reconcile 的 asset_id。"""
+    ids = set()
+    for r in risks:
+        ids.add(r.get("asset_id"))
+        ids.update(r.get("attack_path") or [])
+    ids.update((coverage or {}).get("unregistered_exposed_ids") or [])
+    ids.update(rec.get("asset_id") for rec in records or [] if isinstance(rec, dict))
+    return {i for i in ids if isinstance(i, str)}
+
+
+def _merge_solution(tpl: dict, sol: dict | None) -> dict:
+    """AI 解法與範本合併（design §3.4）：白話兩欄都有才用 AI 的，否則兩欄一起改用範本（不混用來源，R3.1）。"""
+    if not sol:
+        return tpl
+    sol = {k: v for k, v in sol.items() if k != "plain_dropped"}
+    if sol.get("plain_title") and sol.get("if_ignored"):
+        sol["plain_source"] = sol["source"]
+    else:
+        sol["plain_title"], sol["if_ignored"], sol["plain_source"] = tpl["plain_title"], tpl["if_ignored"], "template"
+    return sol
+
+
 def assemble(result: dict, *, run_id: str, scenario: str, trigger_source: str, scope: str, generated_at,
              execution_mode: str = "template", daily_intel_status: str = "skipped", llm: dict | None = None,
              cost: dict | None = None, open_alerts: list[dict] | None = None,
@@ -42,12 +76,14 @@ def assemble(result: dict, *, run_id: str, scenario: str, trigger_source: str, s
     llm = llm or {}
     extra = [dict(r) for r in orchestrator_results or []]
     nodes = dict(result["graph"].nodes(data=True))
+    labels = public_labels(result, nodes)
+    llm_solutions = llm.get("solutions") or {}
     risks = []
     for r in result["risks"]:
         rr = {k: r.get(k) for k in PUBLIC_RISK_KEYS}
         rr["provisional_basis"] = bool(rr.get("provisional_basis"))
         if r["level"] in ("high", "medium") and r["status"] != "fixed":
-            rr["solution"] = (llm.get("solutions") or {}).get(r["id"]) or solution_for(r, nodes)
+            rr["solution"] = _merge_solution(solution_for(r, nodes, labels), llm_solutions.get(r["id"]))
         risks.append(rr)
     risks_by_id = {r["id"]: r for r in risks}
     observed = iso(result["data"].as_of)
@@ -57,8 +93,10 @@ def assemble(result: dict, *, run_id: str, scenario: str, trigger_source: str, s
         rep = build_report(m, risks_by_id, nodes, verification=result["verification"].get(eid),
                            observed_at=observed, llm_text=(llm.get("intel") or {}).get(eid),
                            notice_extra=(llm.get("notice_extra") or {}).get(eid),
-                           orchestrator_results=[dict(r) for r in extra if r["target_type"] == "event" and r["target_id"] == eid])
+                           orchestrator_results=[dict(r) for r in extra if r["target_type"] == "event" and r["target_id"] == eid],
+                           labels=labels)
         intel_reports.append(rep)
+    brands = report_brands(result["events"])          # 依 ID 從原始事件取（情資報告的事件投影沒有 brand）
     link_updates(intel_reports, result.get("event_updates") or {})
     real = [r for r in intel_reports if r["event"]["kind"] in ("archive", "live")]
     intel_summary = {
@@ -73,13 +111,14 @@ def assemble(result: dict, *, run_id: str, scenario: str, trigger_source: str, s
         "run_id": run_id, "scenario": scenario, "trigger_source": trigger_source, "scope": scope,
         "target_sha": result["data"].target_sha, "completeness": completeness, "data_issues": result["data_issues"],
         "generated_at": iso(generated_at), "as_of": observed, "light": result["light"], "light_reasons": result["light_reasons"],
-        "ceo_summary": llm.get("ceo_summary") or ceo_summary(result["light"], risks, intel_summary, nodes),
-        "decisions": llm.get("decisions") or decisions(risks), "counts": counts, "coverage": result["recon"]["coverage"],
+        "ceo_summary": llm.get("ceo_summary") or ceo_summary(result["light"], risks, intel_summary, nodes, labels),
+        "decisions": llm.get("decisions") or decisions(risks, labels), "counts": counts, "coverage": result["recon"]["coverage"],
         "risks": risks,
         "events": [{"id": r["event"]["id"], "kind": r["event"]["kind"], "title": r["event"]["title"],
                     "affected_count": r["affected_count"], "max_level": r["max_level"], "status": r["status"],
                     "demo": bool(r["event"].get("demo")), "updates": [u["id"] for u in r.get("updates", [])],
-                    "update_of": (r.get("update_of") or {}).get("id")} for r in intel_reports],
+                    "update_of": (r.get("update_of") or {}).get("id"), "brand": brands.get(r["event"]["id"])}
+                   for r in intel_reports],
         "proposed_controls": [pc for e in result["events"] for pc in e.get("proposed_controls", [])],
         "open_alerts": open_alerts or [], "intel_summary": intel_summary, "daily_intel_status": daily_intel_status,
         "cost": cost or {"total_usd": 0.0, "per_agent": {}, "cache_hit_rate": None},
@@ -87,9 +126,12 @@ def assemble(result: dict, *, run_id: str, scenario: str, trigger_source: str, s
         "execution_mode": execution_mode, "scoring": result.get("scoring"),
         "agent_plan": public_plan(result.get("agent_plan")),
         "orchestrator_results": extra,
+        "asset_labels": {i: labels[i] for i in sorted(_referenced_ids(risks, result["recon"]["coverage"], result["recon"]["records"]))
+                         if i in labels},
     }
     Report.model_validate(report)
-    return {"report": report, "intel_reports": intel_reports, "risks_full": result["risks"]}
+    # labels：A5 撰寫白話的任務內容（_llm_texts）用同一份名稱（design §2.3）；不寫入任何輸出檔
+    return {"report": report, "intel_reports": intel_reports, "risks_full": result["risks"], "labels": labels}
 
 
 def engineer_markdown(report: dict, result: dict) -> str:

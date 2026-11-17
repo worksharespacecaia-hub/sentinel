@@ -88,3 +88,33 @@ test("行動項目帶出相關事件名稱；事件帶出來源", () => {
   assert.deepEqual(a.items[0].events, [{ id: "e1", title: "事件一" }]);
   assert.equal(a.events[0].sources[0].publisher, "x.example");
 });
+
+test("v0.14 新欄位：標題用白話標題並保留原始技術標題（所有類別）；帶出品牌與不處理的話；有品牌不加事件標籤", () => {
+  const sol = { risk_id: "s", temporary: "馬上把這組密碼作廢換新", permanent: "改用金鑰管理服務", options: [], suggested_owner: "App 團隊",
+    verify: "重新掃描", source: "live" as const, plain_title: "品牌 App 的系統密碼寫在程式碼裡，可能造成會員個資外洩",
+    if_ignored: "拿到程式碼的人就能讀走會員個資。", plain_source: "live" as const };
+  const rep: Report = {
+    ...report([risk({ id: "s", category: "secret", asset_id: "brand-app", title: "Git 中不得有正式環境金鑰：brand-app", solution: sol,
+                     matched_events: ["e2", "e1"], attack_path: ["internet", "brand-app", "member-db-prod"] })]),
+    events: [{ id: "e1", kind: "archive", title: "91APP 訂單資料庫遭入侵", affected_count: 2, max_level: "high", status: "open", demo: false, brand: "91APP" },
+             { id: "e2", kind: "advisory", title: "公告", affected_count: 1, max_level: "high", status: "open", demo: false, brand: null }],
+    asset_labels: { "brand-app": "品牌 App", "member-db-prod": "正式會員資料庫" },
+  };
+  const [it] = buildActionReport(rep, { now: NOW }).items;
+  assert.equal(it.headline, "品牌 App 的系統密碼寫在程式碼裡，可能造成會員個資外洩");
+  assert.equal(it.detail, "Git 中不得有正式環境金鑰：brand-app");
+  assert.equal(it.if_ignored, "拿到程式碼的人就能讀走會員個資。");
+  assert.equal(it.brand, "91APP");
+  assert.deepEqual(it.tags, ["可一路闖到正式會員資料庫"]);
+});
+
+test("舊報告（沒有新欄位）：品牌與不處理的話為 null，標題維持現在的寫法", () => {
+  const rep = report([risk({ id: "v", category: "vuln", asset_id: "storefront", title: "node 22.11.0 有 17 個已知漏洞", score: 9,
+                              matched_events: ["e1"], solution: { risk_id: "v", temporary: "t", permanent: "p", options: [], suggested_owner: null,
+                                                                  verify: "v", source: "template" } }),
+                      risk({ id: "c", title: "內部工具不得對外開放：internal-tool", asset_id: "internal-tool" })]);
+  const [v, c] = buildActionReport(rep, { now: NOW }).items;
+  assert.deepEqual([v.headline, v.detail, v.if_ignored, v.brand], ["storefront 有可被入侵的漏洞", "node 22.11.0 有 17 個已知漏洞", null, null]);
+  assert.deepEqual(v.tags, ["外部已有相關事件"]);
+  assert.deepEqual([c.headline, c.detail, c.if_ignored, c.brand], ["內部工具不得對外開放：internal-tool", null, null, null]);
+});

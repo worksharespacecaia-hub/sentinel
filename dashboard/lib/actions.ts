@@ -1,7 +1,7 @@
 // 行動報告（純函式）：彙整需要採取行動的結果，網頁、PDF、LINE 訊息與到期提醒共用同一份資料。
 // 只整理程式已算好的等級、分數、建議與期限；「處理中」是人為追蹤，不改變風險狀態與燈號。
 import type { EventSummary, Level, Light, Report } from "./data";
-import { groupDecisions, openRisks, riskHeadline, riskTags, suggestedDeadline } from "./brief.ts";
+import { groupDecisions, ifIgnored, openRisks, riskBrand, riskHeadline, riskTags, suggestedDeadline } from "./brief.ts";
 
 export const REMIND_BEFORE_MS = 24 * 3600 * 1000;
 export const MAX_DUE_MS = 30 * 86400 * 1000;
@@ -36,7 +36,14 @@ export interface ActionItem {
   id: string; level: Level; score: number; need_check: boolean; asset_id: string;
   /** 相關的同業事件（可對應到報告中的事件來源）。 */
   events: { id: string; title: string }[];
-  headline: string; detail: string | null; tags: string[];
+  /** 白話標題（舊報告退回舊寫法）；LINE 訊息也用這一欄，不加品牌標記。 */
+  headline: string;
+  /** 原始技術標題（有白話標題時所有類別都保留；舊報告只有漏洞類有）。 */
+  detail: string | null; tags: string[];
+  /** 不處理的話會怎樣；舊報告沒有時為 null。 */
+  if_ignored: string | null;
+  /** 相關事件的品牌（「{brand} 事件同款破口」）；沒有時為 null。 */
+  brand: string | null;
   temporary: string | null; permanent: string | null; owner: string | null;
   suggested_due: string | null; tracking: Tracking | null; track_state: TrackState; beyond_suggested: boolean;
 }
@@ -53,13 +60,15 @@ export function buildActionReport(report: Report, opts: { light?: Light; trackin
   const tracking = opts.tracking ?? {};
   const titles = new Map(report.events.map((e) => [e.id, e.title]));
   const items: ActionItem[] = openRisks(report, ["high", "medium"]).map((r) => {
-    const h = riskHeadline(r);
+    const h = riskHeadline(r, report.asset_labels);
+    const brand = riskBrand(r, report.events);
     const suggested = suggestedDeadline(r);
     const t = tracking[r.id]?.status === "in_progress" ? tracking[r.id] : null;
     return {
       id: r.id, level: r.level, score: r.score, need_check: r.status === "need_check", asset_id: r.asset_id,
       events: r.matched_events.filter((e) => titles.has(e)).map((e) => ({ id: e, title: titles.get(e)! })),
-      headline: h.headline, detail: h.detail, tags: riskTags(r),
+      headline: h.headline, detail: h.detail, tags: riskTags(r, { labels: report.asset_labels, events: report.events, brand }),
+      if_ignored: ifIgnored(r), brand,
       temporary: r.solution?.temporary ?? null, permanent: r.solution?.permanent ?? null, owner: r.solution?.suggested_owner ?? null,
       suggested_due: suggested ? suggested.toISOString() : null, tracking: t, track_state: trackState(t, now),
       beyond_suggested: Boolean(t && suggested && Date.parse(t.due_at) > suggested.getTime()),
