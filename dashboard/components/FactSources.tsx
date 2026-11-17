@@ -7,7 +7,9 @@ import { PAGES } from "@/lib/nav";
 
 const ORDER: FactKey[] = ["high", "medium", "low", "chained", "eol", "shadow_it", "checked", "affected", "real_checked", "real_affected"];
 
-export default function FactSources({ facts, q, actionIds }: { facts: Record<FactKey, Fact>; q: string; actionIds: Set<string> }) {
+/** labels：report.asset_labels（系統白話名稱）；舊報告沒有時省略，標題退回原本的寫法。 */
+export default function FactSources({ facts, q, actionIds, labels }:
+  { facts: Record<FactKey, Fact>; q: string; actionIds: Set<string>; labels?: Record<string, string> }) {
   return (
     <section className="panel report-section" id="facts">
       <h2>數字從哪來</h2>
@@ -19,8 +21,8 @@ export default function FactSources({ facts, q, actionIds }: { facts: Record<Fac
             {f.risks.map((r) => (
               <li key={r.id}>
                 <span className={`lv-${r.level}`}>{LEVEL_TEXT[r.level]}</span>｜
-                {actionIds.has(r.id) ? <a href={`#${r.id}`}>{riskHeadline(r).headline}</a>
-                  : <Link href={`${PAGES.risks.href}${q}`}>{riskHeadline(r).headline}</Link>}
+                {actionIds.has(r.id) ? <a href={`#${r.id}`}>{riskHeadline(r, labels).headline}</a>
+                  : <Link href={`${PAGES.risks.href}${q}`}>{riskHeadline(r, labels).headline}</Link>}
                 <span className="muted">（{r.asset_id}，{r.score} 分）</span>
               </li>
             ))}

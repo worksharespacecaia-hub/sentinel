@@ -12,6 +12,12 @@ export interface SolutionOption { name: string; action: string; cost: string; ti
 export interface Solution {
   risk_id: string; temporary: string; permanent: string; options: SolutionOption[];
   suggested_owner: string | null; verify: string; source: "live" | "replay" | "template";
+  /** 白話標題（給 CEO 看）；v0.14.0 起才有，舊報告沒有這個欄位。 */
+  plain_title?: string | null;
+  /** 不處理的話會怎樣；v0.14.0 起才有。 */
+  if_ignored?: string | null;
+  /** 上面兩欄的來源（兩欄一定同一來源）；v0.14.0 起才有。 */
+  plain_source?: "live" | "replay" | "template" | null;
 }
 export interface Risk {
   id: string; asset_id: string; title: string; category: string; level: Level; score: number; raw_score: number;
@@ -28,7 +34,11 @@ export interface ScoringInfo {
   version: number; hash: string; factors: Record<string, number>; thresholds: { high: number; medium: number };
   is_default: boolean; updated_at: string | null; updated_by: string | null;
 }
-export interface EventSummary { id: string; kind: string; title: string; affected_count: number; max_level: Level | null; status: string; demo: boolean }
+export interface EventSummary {
+  id: string; kind: string; title: string; affected_count: number; max_level: Level | null; status: string; demo: boolean;
+  /** 真實受害事件的主角（例如 91APP）：只由人工在 archive 填寫；v0.14.0 起才有，舊報告沒有這個欄位。 */
+  brand?: string | null;
+}
 export interface Report {
   run_id: string; scenario: string; trigger_source: string; scope: string; target_sha: string;
   completeness: string; data_issues: { source: string; status: string; impact?: string }[];
@@ -46,6 +56,8 @@ export interface Report {
   agent_plan?: RawAgentPlan;
   /** Orchestrator 追加結果（v0.13 起）：派工（A2、A3）與驗收（A5）追加任務的文字；舊報告沒有這個欄位 */
   orchestrator_results?: OrchestratorResult[];
+  /** 本份報告中出現的系統 ID → 系統白話名稱（已通過公開文字過濾）；v0.14.0 起才有，舊報告沒有這個欄位。 */
+  asset_labels?: Record<string, string>;
 }
 export interface IndexEntry { run_id: string; generated_at: string; target_sha: string; completeness: string; path: string; light: Light; execution_mode: string }
 export interface DataIndex {

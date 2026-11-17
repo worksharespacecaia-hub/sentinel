@@ -5,6 +5,7 @@ import { openAlertsInfo } from "@/lib/alerts";
 import { fmtTime, LIGHT_TEXT } from "@/lib/labels";
 import { LightBadge, RiskRow, SimNotice, SourceSwitcher } from "@/components/ui";
 import { PAGES } from "@/lib/nav";
+import { splitDecision } from "@/lib/brief";
 
 export const dynamic = "force-dynamic";
 
@@ -49,7 +50,9 @@ export default async function Overview({ searchParams }: { searchParams: Promise
         <h2 style={{ marginTop: 0 }}>CEO 摘要</h2>
         <ol>{report.ceo_summary.map((s, i) => <li key={i}>{s}</li>)}</ol>
         <h2>今日決策事項</h2>
-        <ul>{report.decisions.map((d, i) => <li key={i}>{d}</li>)}</ul>
+        <ul>{report.decisions.map(splitDecision).map((d, i) => (
+          <li key={i}>{d.question}{d.ifNot && <div className="if-ignored"><b>不決定的話：</b>{d.ifNot}</div>}</li>
+        ))}</ul>
       </div>
       <div className="panel">
         <h2 style={{ marginTop: 0 }}>可見度指標</h2>

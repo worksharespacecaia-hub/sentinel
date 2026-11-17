@@ -45,7 +45,8 @@ test("siteUrl 只接受 HTTPS origin", () => {
 
 const item: ActionItem = {
   id: "internal-tool:opsbuilder:vuln", level: "high", score: 11, need_check: false, asset_id: "internal-tool", events: [],
-  headline: "internal-tool 有可被入侵的漏洞", detail: null, tags: [], temporary: "關閉對外入口", permanent: null, owner: "devops-team",
+  headline: "internal-tool 有可被入侵的漏洞", detail: null, tags: [], if_ignored: null, brand: null,
+  temporary: "關閉對外入口", permanent: null, owner: "devops-team",
   suggested_due: "2026-11-11T00:00:00Z", track_state: "overdue", beyond_suggested: false,
   tracking: { risk_id: "internal-tool:opsbuilder:vuln", status: "in_progress", owner: "devops", due_at: "2026-11-10T00:00:00Z", note: "",
               set_by: "admin", set_at: "2026-11-09T00:00:00Z", history: [] },
@@ -69,4 +70,16 @@ test("LINE 訊息：標題寫燈號／等級文字；沒有網站網址時不放
   const rem = JSON.stringify(reminderMessage(item, "overdue", "https://sentinel.example.com"));
   assert.match(rem, /已逾期｜高風險/);
   assert.match(rem, /report#internal-tool%3Aopsbuilder%3Avuln/);
+});
+
+test("LINE 訊息沿用白話標題（headline），不加品牌標記與不處理的話", () => {
+  const plain: ActionItem = { ...item, headline: "內部營運工具有帳號被盜用的漏洞", detail: "opsbuilder 1.88：帳號接管漏洞",
+    brand: "91APP", if_ignored: "外人可以冒用帳號登入。" };
+  const report: ActionReport = { light: "red", generated_at: "2026-11-10T00:00:00Z", summary: ["a"], decisions: [], items: [plain],
+    events: [], notices: [], counts: { high: 1, medium: 0, in_progress: 1, due_soon: 0, overdue: 1, unassigned_high: 0 } };
+  for (const msg of [actionReportMessage(report, "https://sentinel.example.com"), reminderMessage(plain, "overdue", null)]) {
+    const s = JSON.stringify(msg);
+    assert.match(s, /內部營運工具有帳號被盜用的漏洞/);
+    assert.doesNotMatch(s, /91APP|同款破口|外人可以冒用帳號登入/);
+  }
 });
