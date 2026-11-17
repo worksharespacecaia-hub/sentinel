@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-17T04:29:59Z",
+  "checked_at": "2026-11-17T14:26:46Z",
   "advisories_checked": 6,
   "hits": [],
   "dispatched": false,
@@ -628,7 +628,7 @@
       "revision": null
     },
     "CVE-2026-114713": {
-      "checked_at": "2026-11-16T11:22:21Z",
+      "checked_at": "2026-11-17T14:26:46Z",
       "mapped": false,
       "revision": null
     },
@@ -653,7 +653,7 @@
       "revision": "2026-11-04T12:52:38.683"
     },
     "CVE-2026-123039": {
-      "checked_at": "2026-11-16T11:22:21Z",
+      "checked_at": "2026-11-17T14:26:46Z",
       "mapped": false,
       "revision": null
     },
