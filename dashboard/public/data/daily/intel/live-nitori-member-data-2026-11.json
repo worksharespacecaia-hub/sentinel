@@ -4,10 +4,10 @@
     "kind": "live",
     "title": "日本宜得利伺服器遭非法存取，最多 3762 萬筆會員個資恐外洩",
     "date": "2026-11-11",
-    "industry": "零售、電商（日本）",
+    "industry": "零售",
     "attack_chain": [
-      "11 月 6 日確認伺服器遭到非法存取",
-      "會員及網路購物使用者個資可能外洩"
+      "宜得利伺服器遭非法存取",
+      "最多約 3762 萬筆會員及網路購物使用者個資可能外洩"
     ],
     "attck": [],
     "cves": [],
@@ -19,12 +19,12 @@
       {
         "url": "https://www.cna.com.tw/news/ait/202611110191.aspx",
         "title": "日本宜得利3762萬筆個資恐外洩 代理式AI助長網路攻擊",
-        "quote": "日本宜得利3762萬筆個資恐外洩 代理式AI助長網路攻擊",
+        "quote": "日本家具連鎖企業宜得利11日表示，伺服器遭到非法存取，最多可能有3762萬筆會員個資外洩。",
         "published": "2026-11-11",
         "fetch_status": "ok",
         "verified": true,
-        "verified_at": "2026-11-13T05:06:21Z",
-        "content_hash": "sha256:244d608b65e918892cb6cebea4f40eb5d2a5ca06c76d423b89d913a9ef8dc264",
+        "verified_at": "2026-11-13T09:55:53Z",
+        "content_hash": "sha256:76d3d654ee8a284d5ec120e7e7dad9119f4055ccdece13b853e0e9a8a360b542",
         "verification_basis": "live"
       }
     ],
@@ -54,12 +54,12 @@
           "source": "ai",
           "inferred": true,
           "target": null,
-          "hypothesis": "會員資料庫或對外服務的伺服器可能遭非法存取",
+          "hypothesis": "會員資料所在的伺服器可能被直接存取",
           "why": null,
-          "check": "檢查會員服務與資料庫的異常登入與大量查詢，並確認對外服務的伺服器存取紀錄有無不明來源",
+          "check": "檢查會員 API 與會員資料庫的存取來源、大量查詢或匯出紀錄，並確認資料庫不對外開放",
           "how": null,
-          "plain": "會員資料庫或對外服務的伺服器可能遭非法存取",
-          "basis": "AI 依事件推測：來源只說伺服器遭非法存取、會員及購物個資可能外洩，未交代手法",
+          "plain": "會員資料所在的伺服器可能被直接存取",
+          "basis": "AI 依事件推測：來源只說伺服器遭非法存取、會員個資外洩，未交代手法",
           "systems": [
             {
               "asset_id": "member-api",
@@ -70,8 +70,8 @@
               "label": "正式會員資料庫"
             },
             {
-              "asset_id": "storefront",
-              "label": "商店網站"
+              "asset_id": "api-gateway",
+              "label": "API 閘道"
             }
           ],
           "controls": []
@@ -87,15 +87,15 @@
   ],
   "complete": true,
   "summary_source": "template",
-  "summary": "宜得利控股 11 月 6 日確認伺服器遭非法存取，最多約 3762 萬筆會員及網路購物使用者個資可能外洩，含姓名、住址與電子郵件；系統未保存信用卡資訊。",
+  "summary": "日本家具連鎖企業宜得利表示 6 日確認伺服器遭非法存取，最多約 3762 萬筆會員及網購使用者個資可能外洩，包括姓名、住址及電子郵件；系統未保存信用卡資訊。",
   "blocks": {
     "1_summary": {
       "title": "日本宜得利伺服器遭非法存取，最多 3762 萬筆會員個資恐外洩",
       "date": "2026-11-11",
-      "industry": "零售、電商（日本）",
+      "industry": "零售",
       "attack_chain": [
-        "11 月 6 日確認伺服器遭到非法存取",
-        "會員及網路購物使用者個資可能外洩"
+        "宜得利伺服器遭非法存取",
+        "最多約 3762 萬筆會員及網路購物使用者個資可能外洩"
       ],
       "attck": [],
       "cves": [],
@@ -105,10 +105,10 @@
         {
           "url": "https://www.cna.com.tw/news/ait/202611110191.aspx",
           "title": "日本宜得利3762萬筆個資恐外洩 代理式AI助長網路攻擊",
-          "quote": "日本宜得利3762萬筆個資恐外洩 代理式AI助長網路攻擊",
+          "quote": "日本家具連鎖企業宜得利11日表示，伺服器遭到非法存取，最多可能有3762萬筆會員個資外洩。",
           "fetch_status": "ok",
           "verification_basis": "live",
-          "verified_at": "2026-11-13T05:06:21Z"
+          "verified_at": "2026-11-13T09:55:53Z"
         }
       ],
       "verification": {
@@ -117,7 +117,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "宜得利控股 11 月 6 日確認伺服器遭非法存取，最多約 3762 萬筆會員及網路購物使用者個資可能外洩，含姓名、住址與電子郵件；系統未保存信用卡資訊。",
+      "summary": "日本家具連鎖企業宜得利表示 6 日確認伺服器遭非法存取，最多約 3762 萬筆會員及網購使用者個資可能外洩，包括姓名、住址及電子郵件；系統未保存信用卡資訊。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -144,19 +144,19 @@
             "人工判斷事件的攻擊手法是否適用於我們的系統",
             "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增"
           ],
-          "observed_at": "2026-11-13T05:06:21Z",
+          "observed_at": "2026-11-13T09:55:53Z",
           "suggestions": [
             {
               "id": "ai-1",
               "source": "ai",
               "inferred": true,
               "target": null,
-              "hypothesis": "會員資料庫或對外服務的伺服器可能遭非法存取",
+              "hypothesis": "會員資料所在的伺服器可能被直接存取",
               "why": null,
-              "check": "檢查會員服務與資料庫的異常登入與大量查詢，並確認對外服務的伺服器存取紀錄有無不明來源",
+              "check": "檢查會員 API 與會員資料庫的存取來源、大量查詢或匯出紀錄，並確認資料庫不對外開放",
               "how": null,
-              "plain": "會員資料庫或對外服務的伺服器可能遭非法存取",
-              "basis": "AI 依事件推測：來源只說伺服器遭非法存取、會員及購物個資可能外洩，未交代手法",
+              "plain": "會員資料所在的伺服器可能被直接存取",
+              "basis": "AI 依事件推測：來源只說伺服器遭非法存取、會員個資外洩，未交代手法",
               "systems": [
                 {
                   "asset_id": "member-api",
@@ -167,8 +167,8 @@
                   "label": "正式會員資料庫"
                 },
                 {
-                  "asset_id": "storefront",
-                  "label": "商店網站"
+                  "asset_id": "api-gateway",
+                  "label": "API 閘道"
                 }
               ],
               "controls": []
@@ -182,5 +182,6 @@
       "status": "need_check",
       "label": "需確認"
     }
-  }
+  },
+  "orchestrator_results": []
 }

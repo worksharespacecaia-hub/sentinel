@@ -1,0 +1,414 @@
+{
+  "event": {
+    "id": "live-nhn-dooray-breach-2026-11",
+    "kind": "live",
+    "title": "韓國協作平臺 NHN Dooray! 遭駭，部分客戶資料外洩並停用 API",
+    "date": "2026-11-14",
+    "industry": "SaaS",
+    "attack_chain": [
+      "11 月 12 日晚間至 13 日凌晨，攻擊者利用忘記密碼流程反覆嘗試輸入驗證碼並通過驗證",
+      "變更部分使用者帳號密碼並未經授權登入",
+      "Open API 服務漏洞導致部分 API 金鑰外洩，外部人士利用金鑰呼叫 API",
+      "專案、雲端硬碟、即時通訊、行事曆等業務資料及員工個資外洩"
+    ],
+    "attck": [
+      "T1110",
+      "T1098",
+      "T1078"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180513",
+        "title": "韓國企業協作平臺Dooray!遭駭恐波及多家企業，已證實部分客戶資料外洩，緊急停用API服務",
+        "quote": "韓國企業協作平臺Dooray!遭駭恐波及多家企業，已證實部分客戶資料外洩，緊急停用API服務",
+        "published": "2026-11-16",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-16T03:28:54Z",
+        "content_hash": "sha256:f88310acb1bbee63aafd34a656ade9e61f03bc507146c134c4f76cb4371d05b6",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "忘記密碼流程的驗證碼須限制嘗試次數",
+        "reason": "來源指出攻擊者反覆嘗試忘記密碼流程的驗證碼並成功通過驗證、變更密碼，現有控制項沒有涵蓋帳號復原流程。"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-nhn-dooray-breach-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：忘記密碼流程的驗證碼須限制嘗試次數"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "endpoint-phishing",
+          "source": "rule",
+          "inferred": true,
+          "target": "endpoint",
+          "hypothesis": "員工帳號密碼被釣魚，攻擊者用它登入內部系統",
+          "why": "釣魚取得員工帳密是常見的初始入侵方式之一",
+          "check": "確認內部工具與管理介面都啟用雙因素驗證，檢查近期的異常登入",
+          "how": "查身分驗證服務的登入紀錄與雙因素驗證設定",
+          "plain": "員工的帳號密碼可能被釣魚騙走",
+          "basis": "攻擊過程第 2 步提到「帳號密碼」；ATT&CK T1078",
+          "systems": [
+            {
+              "asset_id": "internal-tool",
+              "label": "內部營運工具"
+            },
+            {
+              "asset_id": "nas-office-01",
+              "label": "辦公室 NAS"
+            },
+            {
+              "asset_id": "phpmyadmin",
+              "label": "資料庫網頁管理工具"
+            }
+          ],
+          "controls": []
+        },
+        {
+          "id": "server-remote-admin",
+          "source": "rule",
+          "inferred": true,
+          "target": "server",
+          "hypothesis": "伺服器的遠端管理帳密被猜中或外洩",
+          "why": "遠端管理服務對外時，弱密碼與外洩帳密常被利用",
+          "check": "確認遠端管理只允許公司網路或 VPN 連線，並停用純密碼登入或啟用雙因素驗證",
+          "how": "查防火牆規則、遠端管理服務設定與登入紀錄",
+          "plain": "伺服器的遠端管理帳號可能被猜中",
+          "basis": "攻擊過程第 3 步提到「漏洞」",
+          "systems": [
+            {
+              "asset_id": "nas-office-01",
+              "label": "辦公室 NAS"
+            }
+          ],
+          "controls": [
+            {
+              "control_id": "C-INTERNAL-TOOL-EXPOSED",
+              "title": "內部工具不得對外開放",
+              "status": "fail",
+              "status_label": "不符合"
+            }
+          ]
+        },
+        {
+          "id": "db-cred-leak",
+          "source": "rule",
+          "inferred": true,
+          "target": "database",
+          "hypothesis": "資料庫帳密或連線字串外洩（放在程式碼、設定檔或員工電腦上）",
+          "why": "拿到資料庫帳密就能不靠漏洞直接讀取資料",
+          "check": "確認資料庫帳密沒有放在程式碼或設定檔中，疑似外洩時立即輪替",
+          "how": "查程式碼倉庫的金鑰掃描結果、設定檔，以及部署用的機密管理設定",
+          "plain": "資料庫的帳號密碼可能外流被拿來登入",
+          "basis": "攻擊過程第 4 步提到「個資」",
+          "systems": [
+            {
+              "asset_id": "order-db-prod-cred",
+              "label": "正式訂單資料庫帳密"
+            },
+            {
+              "asset_id": "order-db-test-cred",
+              "label": "測試訂單資料庫帳密"
+            }
+          ],
+          "controls": [
+            {
+              "control_id": "C-SECRET-IN-GIT",
+              "title": "Git 中不得有正式環境金鑰",
+              "status": "fail",
+              "status_label": "不符合"
+            },
+            {
+              "control_id": "C-DEV-DEVICE-TOKEN",
+              "title": "員工電腦不得持有正式部署權杖",
+              "status": "fail",
+              "status_label": "不符合"
+            }
+          ]
+        },
+        {
+          "id": "endpoint-token",
+          "source": "rule",
+          "inferred": true,
+          "target": "endpoint",
+          "hypothesis": "員工電腦中毒，電腦上存的登入權杖或金鑰被拿走",
+          "why": "員工電腦上常存有部署或雲端權杖，中毒後會一起外流",
+          "check": "確認員工電腦上沒有長期有效的部署或雲端權杖，並檢查端點防護告警",
+          "how": "查端點管理平台的告警、電腦上的權杖清單與權杖有效期限",
+          "plain": "員工電腦上的登入權杖可能被偷走",
+          "basis": "攻擊過程第 2 步提到「帳號密碼」；ATT&CK T1078",
+          "systems": [
+            {
+              "asset_id": "fileserver-01",
+              "label": "辦公室檔案伺服器"
+            },
+            {
+              "asset_id": "laptop-eng-03",
+              "label": "工程部門筆電（甲）"
+            },
+            {
+              "asset_id": "laptop-eng-07",
+              "label": "工程部門筆電（乙）"
+            },
+            {
+              "asset_id": "laptop-ops-02",
+              "label": "維運部門筆電"
+            },
+            {
+              "asset_id": "nas-office-01",
+              "label": "辦公室 NAS"
+            }
+          ],
+          "controls": [
+            {
+              "control_id": "C-DEV-DEVICE-TOKEN",
+              "title": "員工電腦不得持有正式部署權杖",
+              "status": "fail",
+              "status_label": "不符合"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "NHN Dooray 公告攻擊者利用忘記密碼流程反覆嘗試驗證碼並變更帳號密碼，另 Open API 服務漏洞導致部分 API 金鑰外洩。部分客戶的業務資料與員工個資外洩，業者已撤銷所有 API 金鑰並通報主管機關。",
+  "blocks": {
+    "1_summary": {
+      "title": "韓國協作平臺 NHN Dooray! 遭駭，部分客戶資料外洩並停用 API",
+      "date": "2026-11-14",
+      "industry": "SaaS",
+      "attack_chain": [
+        "11 月 12 日晚間至 13 日凌晨，攻擊者利用忘記密碼流程反覆嘗試輸入驗證碼並通過驗證",
+        "變更部分使用者帳號密碼並未經授權登入",
+        "Open API 服務漏洞導致部分 API 金鑰外洩，外部人士利用金鑰呼叫 API",
+        "專案、雲端硬碟、即時通訊、行事曆等業務資料及員工個資外洩"
+      ],
+      "attck": [
+        "T1110",
+        "T1098",
+        "T1078"
+      ],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180513",
+          "title": "韓國企業協作平臺Dooray!遭駭恐波及多家企業，已證實部分客戶資料外洩，緊急停用API服務",
+          "quote": "韓國企業協作平臺Dooray!遭駭恐波及多家企業，已證實部分客戶資料外洩，緊急停用API服務",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-16T03:28:54Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "NHN Dooray 公告攻擊者利用忘記密碼流程反覆嘗試驗證碼並變更帳號密碼，另 Open API 服務漏洞導致部分 API 金鑰外洩。部分客戶的業務資料與員工個資外洩，業者已撤銷所有 API 金鑰並通報主管機關。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：忘記密碼流程的驗證碼須限制嘗試次數"
+          ],
+          "observed_at": "2026-11-16T03:28:54Z",
+          "suggestions": [
+            {
+              "id": "endpoint-phishing",
+              "source": "rule",
+              "inferred": true,
+              "target": "endpoint",
+              "hypothesis": "員工帳號密碼被釣魚，攻擊者用它登入內部系統",
+              "why": "釣魚取得員工帳密是常見的初始入侵方式之一",
+              "check": "確認內部工具與管理介面都啟用雙因素驗證，檢查近期的異常登入",
+              "how": "查身分驗證服務的登入紀錄與雙因素驗證設定",
+              "plain": "員工的帳號密碼可能被釣魚騙走",
+              "basis": "攻擊過程第 2 步提到「帳號密碼」；ATT&CK T1078",
+              "systems": [
+                {
+                  "asset_id": "internal-tool",
+                  "label": "內部營運工具"
+                },
+                {
+                  "asset_id": "nas-office-01",
+                  "label": "辦公室 NAS"
+                },
+                {
+                  "asset_id": "phpmyadmin",
+                  "label": "資料庫網頁管理工具"
+                }
+              ],
+              "controls": []
+            },
+            {
+              "id": "server-remote-admin",
+              "source": "rule",
+              "inferred": true,
+              "target": "server",
+              "hypothesis": "伺服器的遠端管理帳密被猜中或外洩",
+              "why": "遠端管理服務對外時，弱密碼與外洩帳密常被利用",
+              "check": "確認遠端管理只允許公司網路或 VPN 連線，並停用純密碼登入或啟用雙因素驗證",
+              "how": "查防火牆規則、遠端管理服務設定與登入紀錄",
+              "plain": "伺服器的遠端管理帳號可能被猜中",
+              "basis": "攻擊過程第 3 步提到「漏洞」",
+              "systems": [
+                {
+                  "asset_id": "nas-office-01",
+                  "label": "辦公室 NAS"
+                }
+              ],
+              "controls": [
+                {
+                  "control_id": "C-INTERNAL-TOOL-EXPOSED",
+                  "title": "內部工具不得對外開放",
+                  "status": "fail",
+                  "status_label": "不符合"
+                }
+              ]
+            },
+            {
+              "id": "db-cred-leak",
+              "source": "rule",
+              "inferred": true,
+              "target": "database",
+              "hypothesis": "資料庫帳密或連線字串外洩（放在程式碼、設定檔或員工電腦上）",
+              "why": "拿到資料庫帳密就能不靠漏洞直接讀取資料",
+              "check": "確認資料庫帳密沒有放在程式碼或設定檔中，疑似外洩時立即輪替",
+              "how": "查程式碼倉庫的金鑰掃描結果、設定檔，以及部署用的機密管理設定",
+              "plain": "資料庫的帳號密碼可能外流被拿來登入",
+              "basis": "攻擊過程第 4 步提到「個資」",
+              "systems": [
+                {
+                  "asset_id": "order-db-prod-cred",
+                  "label": "正式訂單資料庫帳密"
+                },
+                {
+                  "asset_id": "order-db-test-cred",
+                  "label": "測試訂單資料庫帳密"
+                }
+              ],
+              "controls": [
+                {
+                  "control_id": "C-SECRET-IN-GIT",
+                  "title": "Git 中不得有正式環境金鑰",
+                  "status": "fail",
+                  "status_label": "不符合"
+                },
+                {
+                  "control_id": "C-DEV-DEVICE-TOKEN",
+                  "title": "員工電腦不得持有正式部署權杖",
+                  "status": "fail",
+                  "status_label": "不符合"
+                }
+              ]
+            },
+            {
+              "id": "endpoint-token",
+              "source": "rule",
+              "inferred": true,
+              "target": "endpoint",
+              "hypothesis": "員工電腦中毒，電腦上存的登入權杖或金鑰被拿走",
+              "why": "員工電腦上常存有部署或雲端權杖，中毒後會一起外流",
+              "check": "確認員工電腦上沒有長期有效的部署或雲端權杖，並檢查端點防護告警",
+              "how": "查端點管理平台的告警、電腦上的權杖清單與權杖有效期限",
+              "plain": "員工電腦上的登入權杖可能被偷走",
+              "basis": "攻擊過程第 2 步提到「帳號密碼」；ATT&CK T1078",
+              "systems": [
+                {
+                  "asset_id": "fileserver-01",
+                  "label": "辦公室檔案伺服器"
+                },
+                {
+                  "asset_id": "laptop-eng-03",
+                  "label": "工程部門筆電（甲）"
+                },
+                {
+                  "asset_id": "laptop-eng-07",
+                  "label": "工程部門筆電（乙）"
+                },
+                {
+                  "asset_id": "laptop-ops-02",
+                  "label": "維運部門筆電"
+                },
+                {
+                  "asset_id": "nas-office-01",
+                  "label": "辦公室 NAS"
+                }
+              ],
+              "controls": [
+                {
+                  "control_id": "C-DEV-DEVICE-TOKEN",
+                  "title": "員工電腦不得持有正式部署權杖",
+                  "status": "fail",
+                  "status_label": "不符合"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  },
+  "orchestrator_results": []
+}

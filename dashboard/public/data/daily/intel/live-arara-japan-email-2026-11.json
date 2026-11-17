@@ -1,0 +1,241 @@
+{
+  "event": {
+    "id": "live-arara-japan-email-2026-11",
+    "kind": "live",
+    "title": "日本郵件服務商 Arara 遭駭，大量電子郵件位址外洩並被用於寄送惡意郵件",
+    "date": "2026-11-13",
+    "industry": "SaaS",
+    "attack_chain": [
+      "11 月 2 日 Arara 的電子郵件發送服務遭攻擊",
+      "近 400 家客戶的電子郵件位址外洩",
+      "駭客利用其郵件發送服務寄出數百萬封假冒信用卡公司與金融機構的惡意郵件"
+    ],
+    "attck": [
+      "T1566",
+      "T1199"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://therecord.media/city-of-osaka-japan-email-data-breach",
+        "title": "City of Osaka warns of data breach impacting 1 million as Japan reels from dozens of cyber incidents",
+        "quote": "The company said a November 2 cyberattack exposed 77 million email addresses from nearly 400 customers, including TKC, gaming giant Sega and others.",
+        "published": "2026-11-13",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-15T03:29:33Z",
+        "content_hash": "sha256:5aa89515c96c50771dbbc4466c83794af0d735b64c8ce820f7b3b319c961c8f1",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://www.ithome.com.tw/news/180500",
+        "title": "【資安週報】1109～1113，Cyberbiz事件擴大、多家上市櫃公司接連公告，資安救火人力不足恐浮現",
+        "quote": "臺灣也出現多家第三方業者遭駭，導致其服務的企業客戶必須公開說明其受到影響。",
+        "published": "2026-11-12",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-15T03:29:33Z",
+        "content_hash": "sha256:e2206e27f9716456aa259a16ccedc9e9d15507af70d01a8848b92429dc436819",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "第三方郵件發送服務金鑰須限制來源並可快速停用",
+        "reason": "來源指出駭客利用被入侵的郵件發送服務對外寄送惡意郵件；現有控制項只涵蓋金鑰輪替，未涵蓋寄信服務被濫用時的偵測與停用。"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-arara-japan-email-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：第三方郵件發送服務金鑰須限制來源並可快速停用"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "ai-1",
+          "source": "ai",
+          "inferred": true,
+          "target": null,
+          "hypothesis": "我們的寄信服務若被入侵，可能被拿來寄假冒信件給會員",
+          "why": null,
+          "check": "檢查寄信服務與寄信金鑰的寄送量、收件人與來源 IP 有無異常，確認金鑰有 IP 白名單，並向廠商確認是否受 Arara 類事件影響",
+          "how": null,
+          "plain": "我們的寄信服務若被入侵，可能被拿來寄假冒信件給會員",
+          "basis": "AI 依事件推測：來源指出駭客利用郵件發送服務寄出數百萬封假冒金融機構的郵件，來源未交代入侵手法",
+          "systems": [
+            {
+              "asset_id": "mail-service",
+              "label": "寄信服務"
+            },
+            {
+              "asset_id": "mail-api-key",
+              "label": "寄信服務金鑰"
+            }
+          ],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "程式無法自動判定此事件是否與我們有關，需人工確認；若我們的寄信服務被入侵，可能被用來寄假冒信件給會員。",
+  "blocks": {
+    "1_summary": {
+      "title": "日本郵件服務商 Arara 遭駭，大量電子郵件位址外洩並被用於寄送惡意郵件",
+      "date": "2026-11-13",
+      "industry": "SaaS",
+      "attack_chain": [
+        "11 月 2 日 Arara 的電子郵件發送服務遭攻擊",
+        "近 400 家客戶的電子郵件位址外洩",
+        "駭客利用其郵件發送服務寄出數百萬封假冒信用卡公司與金融機構的惡意郵件"
+      ],
+      "attck": [
+        "T1566",
+        "T1199"
+      ],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://therecord.media/city-of-osaka-japan-email-data-breach",
+          "title": "City of Osaka warns of data breach impacting 1 million as Japan reels from dozens of cyber incidents",
+          "quote": "The company said a November 2 cyberattack exposed 77 million email addresses from nearly 400 customers, including TKC, gaming giant Sega and others.",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-15T03:29:33Z"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/180500",
+          "title": "【資安週報】1109～1113，Cyberbiz事件擴大、多家上市櫃公司接連公告，資安救火人力不足恐浮現",
+          "quote": "臺灣也出現多家第三方業者遭駭，導致其服務的企業客戶必須公開說明其受到影響。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-15T03:29:33Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "程式無法自動判定此事件是否與我們有關，需人工確認；若我們的寄信服務被入侵，可能被用來寄假冒信件給會員。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：第三方郵件發送服務金鑰須限制來源並可快速停用"
+          ],
+          "observed_at": "2026-11-15T03:29:33Z",
+          "suggestions": [
+            {
+              "id": "ai-1",
+              "source": "ai",
+              "inferred": true,
+              "target": null,
+              "hypothesis": "我們的寄信服務若被入侵，可能被拿來寄假冒信件給會員",
+              "why": null,
+              "check": "檢查寄信服務與寄信金鑰的寄送量、收件人與來源 IP 有無異常，確認金鑰有 IP 白名單，並向廠商確認是否受 Arara 類事件影響",
+              "how": null,
+              "plain": "我們的寄信服務若被入侵，可能被拿來寄假冒信件給會員",
+              "basis": "AI 依事件推測：來源指出駭客利用郵件發送服務寄出數百萬封假冒金融機構的郵件，來源未交代入侵手法",
+              "systems": [
+                {
+                  "asset_id": "mail-service",
+                  "label": "寄信服務"
+                },
+                {
+                  "asset_id": "mail-api-key",
+                  "label": "寄信服務金鑰"
+                }
+              ],
+              "controls": []
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    },
+    "8_extra_checks": [
+      {
+        "control_id": "C-THIRD-PARTY-KEY-ROTATION",
+        "title": "第三方服務金鑰 90 天內輪替且有 IP 白名單",
+        "status": "fail",
+        "assets": [
+          {
+            "asset_id": "mail-api-key",
+            "evidence": [
+              "secrets.json: mail-api-key：462 天未輪替、無 IP 白名單"
+            ]
+          }
+        ],
+        "check_reason": "第三方金鑰未依規定輪替或無白名單",
+        "suggested_reason": "事件為寄信服務商遭駭並被濫用寄信，值得確認我們寄信服務金鑰是否定期輪替且有白名單。",
+        "status_label": "不符合"
+      }
+    ]
+  },
+  "orchestrator_results": [
+    {
+      "stage": "review",
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "target_type": "event",
+      "target_id": "live-arara-japan-email-2026-11",
+      "text": "程式無法自動判定此事件是否與我們有關，需人工確認；若我們的寄信服務被入侵，可能被用來寄假冒信件給會員。",
+      "source": "live"
+    }
+  ]
+}

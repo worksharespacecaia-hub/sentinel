@@ -1,0 +1,416 @@
+{
+  "event": {
+    "id": "live-php2shell-checkpoint-tsga-2026-11",
+    "kind": "live",
+    "title": "PHP2Shell 漏洞被用於攻擊 Check Point 閘道，部署 TSGA 後門並清除 ESXi 檔案",
+    "date": "2026-11-13",
+    "industry": "通用（網路設備）",
+    "attack_chain": [
+      "利用 PHP2Shell（CVE-2026-109618、CVE-2026-109619）攻擊 Mobile Access 入口取得初始存取",
+      "經 DynamicCLI 介面的 CVE-2026-123039 從服務帳號提權到 root",
+      "部署 PHP web shell 與 TSGA 後門及 TSProxy 元件",
+      "經 SSH 轉入 VMware ESXi 主機，部署 destroy_v6 wiper"
+    ],
+    "attck": [
+      "T1190",
+      "T1068",
+      "T1505.003",
+      "T1021.004",
+      "T1485"
+    ],
+    "cves": [
+      "CVE-2026-109618",
+      "CVE-2026-109619",
+      "CVE-2026-123039"
+    ],
+    "products": [
+      {
+        "name": "php",
+        "ecosystem": "php",
+        "affected": [
+          {
+            "introduced": "8.2.0",
+            "fixed": "8.2.35"
+          },
+          {
+            "introduced": "8.3.0",
+            "fixed": "8.3.36"
+          },
+          {
+            "introduced": "8.4.0",
+            "fixed": "8.4.27"
+          },
+          {
+            "introduced": "8.5.0",
+            "fixed": "8.5.12"
+          },
+          {
+            "introduced": "8.1.0",
+            "fixed": null
+          },
+          {
+            "introduced": "8.0.0",
+            "fixed": null
+          },
+          {
+            "introduced": "7.4.0",
+            "fixed": null
+          }
+        ],
+        "conditions": [
+          {
+            "key": "serves_web_requests",
+            "equals": true,
+            "source_ref": 0
+          }
+        ],
+        "unknown_below": "7.4.0",
+        "aggravating_conditions": [
+          {
+            "key": "session.upload_progress.enabled",
+            "equals": "On",
+            "source_ref": 0,
+            "applies_to": "CVE-2026-109619"
+          }
+        ],
+        "cvss": 9.2,
+        "known_exploited": true,
+        "impact": "remote_code_execution",
+        "confirmed": true,
+        "source_refs": [
+          0,
+          1,
+          2
+        ]
+      }
+    ],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://thehackernews.com/2026/11/hackers-exploit-php2shell-flaws-in.html",
+        "title": "Hackers Exploit PHP2Shell Flaws in Check Point Gateways to Deploy TSGA Backdoor and Wipe ESXi Files",
+        "quote": "Hackers Exploit PHP2Shell Flaws in Check Point Gateways to Deploy TSGA Backdoor and Wipe ESXi Files",
+        "published": "2026-11-13",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-13T09:42:59Z",
+        "content_hash": "sha256:a780adffaafe84d3d649f8ce3d6ba21b22bda81d40471f0725bdc7f506911d7c",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": "evt-php2shell-2026-10",
+    "proposed_controls": []
+  },
+  "conclusion": "2 項受影響，最高風險為高。marketing-site：php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On。",
+  "affected_count": 2,
+  "max_level": "high",
+  "impacts": [
+    {
+      "event_id": "live-php2shell-checkpoint-tsga-2026-11",
+      "asset_id": "marketing-site",
+      "basis": "condition",
+      "our_state": "php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On",
+      "verdict": "affected",
+      "risk_id": "marketing-site:php:vuln",
+      "to_verify": [],
+      "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True；停止支援且無修補"
+    },
+    {
+      "event_id": "live-php2shell-checkpoint-tsga-2026-11",
+      "asset_id": "report-svc",
+      "basis": "version",
+      "our_state": "php 8.4.27（fpm-fcgi）",
+      "verdict": "not_affected",
+      "risk_id": null,
+      "reason": "8.4.27 不在受影響範圍（已是修補版本或不同分支）"
+    },
+    {
+      "event_id": "live-php2shell-checkpoint-tsga-2026-11",
+      "asset_id": "phpmyadmin",
+      "basis": "condition",
+      "our_state": "php 8.3.20（fpm-fcgi），session.upload_progress.enabled=On",
+      "verdict": "affected",
+      "risk_id": "phpmyadmin:php:vuln",
+      "to_verify": [],
+      "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True"
+    }
+  ],
+  "solutions": [
+    {
+      "risk_id": "marketing-site:php:vuln",
+      "temporary": "立即限制 marketing-site 的對外存取（WAF 規則、關閉高風險功能），並加強監控",
+      "permanent": "將 marketing-site 升級到仍受支援且已修補的版本，完成回歸測試後上線",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "WAF 限制異常請求、關閉不必要的功能",
+          "cost": "需驗證不影響現有功能",
+          "timing": "今天"
+        },
+        {
+          "name": "下架",
+          "action": "暫停 marketing-site，改導向其他服務",
+          "cost": "相關流量中斷",
+          "timing": "今天"
+        },
+        {
+          "name": "修補",
+          "action": "升級到受支援的修補版本",
+          "cost": "需回歸測試",
+          "timing": "7 天內"
+        }
+      ],
+      "suggested_owner": "security-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template"
+    },
+    {
+      "risk_id": "phpmyadmin:php:vuln",
+      "temporary": "確認 phpmyadmin 的暴露範圍，先以 WAF 或存取限制降低風險",
+      "permanent": "將 phpmyadmin 的受影響元件升級到修補版本",
+      "options": [
+        {
+          "name": "修補",
+          "action": "升級到修補版本",
+          "cost": "需回歸測試",
+          "timing": "168 小時內"
+        },
+        {
+          "name": "緩解",
+          "action": "限制來源、關閉受影響功能",
+          "cost": "部分功能受限",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "dba-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template"
+    }
+  ],
+  "notice": {
+    "needed": false,
+    "draft": null
+  },
+  "status": "open",
+  "evaluated_asset_ids": [
+    "marketing-site",
+    "phpmyadmin",
+    "report-svc"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "Check Point 指出，未知攻擊者自 10 月 30 日起，利用 PHP2Shell 取得 Check Point 閘道初始存取，再以 CVE-2026-123039 提權到 root，部署 PHP web shell 與 TSGA 後門，並經 SSH 轉入 VMware ESXi 部署 wiper。",
+  "blocks": {
+    "1_summary": {
+      "title": "PHP2Shell 漏洞被用於攻擊 Check Point 閘道，部署 TSGA 後門並清除 ESXi 檔案",
+      "date": "2026-11-13",
+      "industry": "通用（網路設備）",
+      "attack_chain": [
+        "利用 PHP2Shell（CVE-2026-109618、CVE-2026-109619）攻擊 Mobile Access 入口取得初始存取",
+        "經 DynamicCLI 介面的 CVE-2026-123039 從服務帳號提權到 root",
+        "部署 PHP web shell 與 TSGA 後門及 TSProxy 元件",
+        "經 SSH 轉入 VMware ESXi 主機，部署 destroy_v6 wiper"
+      ],
+      "attck": [
+        "T1190",
+        "T1068",
+        "T1505.003",
+        "T1021.004",
+        "T1485"
+      ],
+      "cves": [
+        "CVE-2026-109618",
+        "CVE-2026-109619",
+        "CVE-2026-123039"
+      ],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://thehackernews.com/2026/11/hackers-exploit-php2shell-flaws-in.html",
+          "title": "Hackers Exploit PHP2Shell Flaws in Check Point Gateways to Deploy TSGA Backdoor and Wipe ESXi Files",
+          "quote": "Hackers Exploit PHP2Shell Flaws in Check Point Gateways to Deploy TSGA Backdoor and Wipe ESXi Files",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-13T09:42:59Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "Check Point 指出，未知攻擊者自 10 月 30 日起，利用 PHP2Shell 取得 Check Point 閘道初始存取，再以 CVE-2026-123039 提權到 root，部署 PHP web shell 與 TSGA 後門，並經 SSH 轉入 VMware ESXi 部署 wiper。",
+      "summary_note": "自動摘要未產生",
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "2 項受影響，最高風險為高。marketing-site：php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On。",
+      "affected_count": 2,
+      "max_level": "high"
+    },
+    "3_affected": [
+      {
+        "asset_id": "marketing-site",
+        "our_state": "php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On",
+        "basis": "condition",
+        "verdict": "affected",
+        "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True；停止支援且無修補",
+        "risk_id": "marketing-site:php:vuln",
+        "level": "high",
+        "score": 9,
+        "breakdown": [
+          {
+            "factor": "基礎分：漏洞",
+            "points": 3,
+            "reason": "CVSS 9.8"
+          },
+          {
+            "factor": "已遭實際利用",
+            "points": 2,
+            "reason": "KEV 或官方確認"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "可從 internet 連到"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-php2shell-2026-10、live-php2shell-checkpoint-tsga-2026-11"
+          },
+          {
+            "factor": "已停止支援",
+            "points": 1,
+            "reason": "無修補可用"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-13T09:42:59Z"
+      },
+      {
+        "asset_id": "phpmyadmin",
+        "our_state": "php 8.3.20（fpm-fcgi），session.upload_progress.enabled=On",
+        "basis": "condition",
+        "verdict": "affected",
+        "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True",
+        "risk_id": "phpmyadmin:php:vuln",
+        "level": "medium",
+        "score": 4,
+        "breakdown": [
+          {
+            "factor": "基礎分：漏洞",
+            "points": 3,
+            "reason": "CVSS 9.8"
+          },
+          {
+            "factor": "已遭實際利用",
+            "points": 2,
+            "reason": "KEV 或官方確認"
+          },
+          {
+            "factor": "資料敏感",
+            "points": 1,
+            "reason": "order、pii"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-php2shell-2026-10、live-php2shell-checkpoint-tsga-2026-11"
+          },
+          {
+            "factor": "補償措施",
+            "points": -3,
+            "reason": "network.json 顯示只允許 corp-vpn 連入（本次快照證據）"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-13T09:42:59Z"
+      }
+    ],
+    "4_unaffected_and_check": {
+      "not_affected": [
+        {
+          "asset_id": "report-svc",
+          "our_state": "php 8.4.27（fpm-fcgi）",
+          "reason": "8.4.27 不在受影響範圍（已是修補版本或不同分支）"
+        }
+      ],
+      "need_check": [],
+      "notes": []
+    },
+    "5_solutions": [
+      {
+        "risk_id": "marketing-site:php:vuln",
+        "temporary": "立即限制 marketing-site 的對外存取（WAF 規則、關閉高風險功能），並加強監控",
+        "permanent": "將 marketing-site 升級到仍受支援且已修補的版本，完成回歸測試後上線",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "WAF 限制異常請求、關閉不必要的功能",
+            "cost": "需驗證不影響現有功能",
+            "timing": "今天"
+          },
+          {
+            "name": "下架",
+            "action": "暫停 marketing-site，改導向其他服務",
+            "cost": "相關流量中斷",
+            "timing": "今天"
+          },
+          {
+            "name": "修補",
+            "action": "升級到受支援的修補版本",
+            "cost": "需回歸測試",
+            "timing": "7 天內"
+          }
+        ],
+        "suggested_owner": "security-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      },
+      {
+        "risk_id": "phpmyadmin:php:vuln",
+        "temporary": "確認 phpmyadmin 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "permanent": "將 phpmyadmin 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "168 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "dba-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template"
+      }
+    ],
+    "6_notice": {
+      "needed": false,
+      "draft": null
+    },
+    "7_status": {
+      "status": "open",
+      "label": "待處理"
+    }
+  },
+  "orchestrator_results": [],
+  "update_of": {
+    "id": "evt-php2shell-2026-10",
+    "title": "PHP2Shell：PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619）",
+    "status": "open"
+  }
+}

@@ -1,19 +1,19 @@
 {
   "schema_version": 1,
-  "run_id": "43369758939",
+  "run_id": "43798399319",
   "job": "scanners-nvd",
   "scope": "scanner",
   "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
-  "observed_at": "2026-11-13T05:10:57Z",
-  "valid_until": "2026-11-14T05:10:57Z",
+  "observed_at": "2026-11-16T03:33:23Z",
+  "valid_until": "2026-11-17T03:33:23Z",
   "tool_version": {
     "nvd": "NVD CVE API 2.0"
   },
   "database_revision": {
-    "nvd": "2026-11-13T05:07:07Z"
+    "nvd": "2026-11-16T03:29:34Z"
   },
   "files": {
-    "nvd.json": "447a27b27317876b15629ef11f2b77783d4c756b3b29ec3a43c988d42e409fbd"
+    "nvd.json": "e0f989db189fe91d1c9a9ddd24090c32078c0fa09c15d4016275aba1a29d755c"
   },
   "status": "ok"
 }

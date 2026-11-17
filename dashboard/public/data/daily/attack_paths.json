@@ -56,15 +56,12 @@
       ]
     },
     {
-      "id": "path:internet→internal-tool→gitlab-read-token-internal-tool→gitlab→order-db-prod-cred→order-db-prod",
+      "id": "path:internet→internal-tool→order-db-prod",
       "start": "internet",
       "target": "order-db-prod",
       "nodes": [
         "internet",
         "internal-tool",
-        "gitlab-read-token-internal-tool",
-        "gitlab",
-        "order-db-prod-cred",
         "order-db-prod"
       ],
       "assumption": null,
@@ -84,42 +81,14 @@
         },
         {
           "from": "internal-tool",
-          "to": "gitlab-read-token-internal-tool",
-          "kind": "read_secret",
-          "finding_ids": [],
-          "evidence": [
-            "secrets.json:gitlab-read-token-internal-tool.stored_in"
-          ]
-        },
-        {
-          "from": "gitlab-read-token-internal-tool",
-          "to": "gitlab",
-          "kind": "authorize",
-          "finding_ids": [],
-          "evidence": [
-            "secrets.json:gitlab-read-token-internal-tool.grants"
-          ]
-        },
-        {
-          "from": "gitlab",
-          "to": "order-db-prod-cred",
-          "kind": "read_secret",
-          "finding_ids": [
-            "gitlab:C-SECRET-IN-GIT"
-          ],
-          "evidence": [
-            "secrets.json:order-db-prod-cred.stored_in"
-          ]
-        },
-        {
-          "from": "order-db-prod-cred",
           "to": "order-db-prod",
-          "kind": "authorize",
+          "kind": "exploit",
           "finding_ids": [
-            "gitlab:C-SECRET-IN-GIT"
+            "order-db-prod:postgresql:vuln"
           ],
           "evidence": [
-            "secrets.json:order-db-prod-cred.grants"
+            "network.json",
+            "nvd: postgresql@15.6 依 CPE 取得候選後，本地重新比對版本（44 確定、0 需確認）"
           ]
         }
       ]
@@ -162,10 +131,10 @@
   ],
   "chain_finding_ids": [
     "brand-app:C-SECRET-IN-GIT",
-    "gitlab:C-SECRET-IN-GIT",
     "internal-tool:C-INTERNAL-TOOL-EXPOSED",
     "internal-tool:opsbuilder:vuln",
-    "laptop-eng-07:C-DEV-DEVICE-TOKEN"
+    "laptop-eng-07:C-DEV-DEVICE-TOKEN",
+    "order-db-prod:postgresql:vuln"
   ],
   "pending": [],
   "starts": [

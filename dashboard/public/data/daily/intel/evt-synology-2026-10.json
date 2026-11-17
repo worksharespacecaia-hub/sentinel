@@ -182,7 +182,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "nas-office-01 受影響共 3 項：DSM 版本對外且條件成立（高，8）、備份與來源未隔離且從未做過還原測試（中，5）、管理介面對外開放（中，5）；建議先關閉對外、升級並隔離備份。",
+  "summary": "nas-office-01 的 DSM 管理介面對外且版本受影響，程式判定高風險（8 分），另有備份未隔離與內部工具對外兩項中風險（各 5 分）；建議關閉對外連線並讓備份與來源隔離。",
   "blocks": {
     "1_summary": {
       "title": "Synology NAS 遭 C3RB3R 勒索軟體加密：DSM 登入頁對外暴露，常駐連接的備份碟一併被加密",
@@ -223,7 +223,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "nas-office-01 受影響共 3 項：DSM 版本對外且條件成立（高，8）、備份與來源未隔離且從未做過還原測試（中，5）、管理介面對外開放（中，5）；建議先關閉對外、升級並隔離備份。",
+      "summary": "nas-office-01 的 DSM 管理介面對外且版本受影響，程式判定高風險（8 分），另有備份未隔離與內部工具對外兩項中風險（各 5 分）；建議關閉對外連線並讓備份與來源隔離。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -261,12 +261,12 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、evt-synology-2026-10、live-synology-dsm-sa-26-19-2026-11"
+            "reason": "evt-91app-2026-10、evt-synology-2026-10、live-91app-artex-update-2026-11"
           }
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T05:06:21Z"
+        "observed_at": "2026-11-16T03:28:54Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -296,7 +296,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T05:06:21Z"
+        "observed_at": "2026-11-16T03:28:54Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -321,12 +321,12 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、evt-synology-2026-10"
+            "reason": "evt-91app-2026-10、evt-synology-2026-10、live-91app-artex-update-2026-11"
           }
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-13T05:06:21Z"
+        "observed_at": "2026-11-16T03:28:54Z"
       }
     ],
     "4_unaffected_and_check": {
@@ -398,5 +398,6 @@
       "status": "open",
       "label": "待處理"
     }
-  }
+  },
+  "orchestrator_results": []
 }

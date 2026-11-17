@@ -1,0 +1,28 @@
+{
+  "assets_total": 24,
+  "unregistered_exposed": 3,
+  "unregistered_exposed_ids": [
+    "internal-tool",
+    "marketing-site",
+    "nas-office-01"
+  ],
+  "owner_ratio": 0.833,
+  "version_known_ratio": 0.944,
+  "ci_ratio": 0.75,
+  "eol_exposed": 1,
+  "eol_exposed_items": [
+    {
+      "asset_id": "marketing-site",
+      "component": "php",
+      "version": "8.1.27",
+      "eol_date": "2025-12-31"
+    }
+  ],
+  "backup_verified_ratio": 0.75,
+  "shadow_it": [
+    "internal-tool",
+    "marketing-site",
+    "nas-office-01",
+    "saas-quicksite-builder"
+  ]
+}

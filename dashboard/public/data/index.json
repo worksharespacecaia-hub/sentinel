@@ -11,22 +11,22 @@
       "execution_mode": "replay"
     },
     "kev-cve-2026-109618": {
-      "run_id": "42861814708",
-      "generated_at": "2026-11-10T17:11:04Z",
+      "run_id": "43966945200",
+      "generated_at": "2026-11-16T22:07:54Z",
       "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
       "completeness": "complete",
-      "path": "advisories/kev-cve-2026-109618/42861814708",
+      "path": "advisories/kev-cve-2026-109618/43966945200",
       "light": "red",
-      "execution_mode": "replay"
+      "execution_mode": "live"
     },
     "kev-cve-2026-109619": {
-      "run_id": "42861820916",
-      "generated_at": "2026-11-10T17:13:10Z",
+      "run_id": "43966949496",
+      "generated_at": "2026-11-16T22:15:06Z",
       "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
       "completeness": "complete",
-      "path": "advisories/kev-cve-2026-109619/42861820916",
+      "path": "advisories/kev-cve-2026-109619/43966949496",
       "light": "red",
-      "execution_mode": "replay"
+      "execution_mode": "live"
     },
     "kev-cve-2026-111497": {
       "run_id": "43080719293",
@@ -86,23 +86,23 @@
     }
   },
   "latest_daily": {
-    "run_id": "43369758939",
-    "generated_at": "2026-11-13T05:06:21Z",
+    "run_id": "43798399319",
+    "generated_at": "2026-11-16T03:28:54Z",
     "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
     "completeness": "complete",
     "path": "daily",
     "light": "red",
-    "execution_mode": "replay"
+    "execution_mode": "live"
   },
   "latest_complete_daily": {
-    "run_id": "43369758939",
-    "generated_at": "2026-11-13T05:06:21Z",
+    "run_id": "43798399319",
+    "generated_at": "2026-11-16T03:28:54Z",
     "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
     "completeness": "complete",
     "path": "daily",
     "light": "red",
-    "execution_mode": "replay"
+    "execution_mode": "live"
   },
-  "updated_at": "2026-11-13T05:06:21Z",
+  "updated_at": "2026-11-16T22:15:06Z",
   "failures": {}
 }
