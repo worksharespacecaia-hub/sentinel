@@ -2,6 +2,7 @@ id: evt-synology-2026-10
 kind: archive
 demo: false
 title: Synology NAS 遭 C3RB3R 勒索軟體加密：DSM 登入頁對外暴露，常駐連接的備份碟一併被加密
+brand: 'Synology NAS'   # 真實受害事件的主角（人工整理；specs/plain-brief R2.6）
 date: '2026-10-28'
 industry: null
 attack_chain:

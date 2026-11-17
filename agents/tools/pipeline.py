@@ -58,10 +58,21 @@ def _without_entry_points(events: list) -> list:
     return out
 
 
+def _without_brand(events: list) -> list:
+    """事件品牌只能來自人工整理的 intel/archive（specs/plain-brief R2.6）：其他來源一律移除，不看事件自己填的 kind。
+    複製後再移除，不修改呼叫端傳入的事件。"""
+    out = []
+    for e in events:
+        if isinstance(e, dict) and "brand" in e:
+            e = dict(e)
+            e.pop("brand", None)
+        out.append(e)
+    return out
+
+
 def event_sources(inp: EvalInput) -> list[dict]:
+    archive = load_events(INTEL_DIR / "archive") if "archive" in inp.intel_kinds else []
     raw = []
-    if "archive" in inp.intel_kinds:
-        raw += load_events(INTEL_DIR / "archive")
     if "advisory" in inp.intel_kinds:
         raw += load_events(INTEL_DIR / "advisories")
         raw += inp.auto_advisories
@@ -69,8 +80,8 @@ def event_sources(inp: EvalInput) -> list[dict]:
         raw += load_events(INTEL_DIR / "demo-events")
     for d in inp.extra_event_dirs:
         raw += load_events(d)
-    raw = _without_entry_points(raw)
-    raw += inp.live_events                 # 只有 daily_intel 清理後的快照保留 possible_entry_points
+    raw = _without_entry_points([*archive, *_without_brand(raw)])
+    raw += _without_brand(inp.live_events)  # 只有 daily_intel 清理後的快照保留 possible_entry_points；brand 一律移除
     return raw
 
 

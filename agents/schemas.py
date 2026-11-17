@@ -81,6 +81,10 @@ class Solution(_Model):
     suggested_owner: str | None
     verify: str
     source: ResultSource
+    # 給 CEO 看的白話欄位（specs/plain-brief R1.1）：舊報告沒有；兩欄一定來自同一來源（plain_source）
+    plain_title: str | None = Field(None, max_length=120)
+    if_ignored: str | None = Field(None, max_length=300)
+    plain_source: ResultSource | None = None
 
 
 class Risk(_Model):
@@ -211,6 +215,8 @@ class IntelEvent(_Model):
     fixture_note: str | None = None
     # 只有 daily-intel 入口可帶（pipeline.event_sources 移除其他來源的這個欄位，R4.6）
     possible_entry_points: list[EntryPoint] = Field(default_factory=list, max_length=3)
+    # 事件品牌（specs/plain-brief R2.6）：只由人工在 intel/archive/*.yaml 填寫；其他來源由 pipeline.event_sources 移除
+    brand: str | None = Field(None, max_length=20)
 
 
 class StackImpact(_Model):
@@ -303,6 +309,8 @@ class Report(_Model):
     # 各含來源、計數、核准與拒絕明細（驗收單另有 summary）；兩份都停用時為 None。不影響分數、燈號、結論
     agent_plan: dict | None = None
     orchestrator_results: list[OrchestratorResult] = Field(default_factory=list)   # 全部追加結果（R5.7）
+    # 本份報告出現的系統 ID → 系統白話名稱（specs/plain-brief R1.2）；只收通過公開文字過濾的名稱
+    asset_labels: dict[str, str] = Field(default_factory=dict)
 
 
 class IntelWatchResult(_Model):

@@ -381,7 +381,8 @@ def test_a5_review_tasks_results_and_report(ctx, writer):
     first = {t.id: t.payload for t in calls[0]}
     assert first["remediation"]["ids"][:2] == ["brand-app:android-debuggable", "storefront:next:vuln"]      # 只重排前 12
     assert sorted(first["remediation"]["ids"]) == sorted(base_tasks["remediation"]["ids"])
-    assert first["ceo"]["top"][0] == next(r["title"] for r in before["risks"] if r["id"] == "storefront:next:vuln")
+    # top 用範本的白話標題（specs/plain-brief R4.4）：依風險 ID 由程式決定
+    assert first["ceo"]["top"][0] == next(r["solution"]["plain_title"] for r in before["risks"] if r["id"] == "storefront:next:vuln")
     assert sorted(first["ceo"]["top"]) == sorted(base_tasks["ceo"]["top"])                # 前 5 只重排（android 不在前 5）
     assert set(first) == set(base_tasks)
     extra = {t.id: t for t in calls[1]}

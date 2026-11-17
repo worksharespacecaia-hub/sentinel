@@ -43,9 +43,12 @@ def _fake_write(tasks):
             out[t["key"]] = [{"id": i, "explanation": f"Claude 說明 {i}"} for i in t["ids"]]
         elif t["output"] == "solutions":
             out[t["key"]] = [{"risk_id": i, "temporary": "暫時", "permanent": "根本", "verify": "確認", "score": 0, "level": "low",
-                              "options": [{"name": "緩解", "action": "做", "cost": "低", "timing": "今天"}]} for i in t["ids"]]
+                              "options": [{"name": "緩解", "action": "做", "cost": "低", "timing": "今天"}],
+                              "plain_title": "Claude 白話標題", "if_ignored": "Claude 寫的不處理的話。"} for i in t["ids"]]
         elif t["output"] == "ceo":
-            out[t["key"]] = {"ceo_summary": ["Claude 第一句。", "第二句。", "第三句。"], "decisions": ["決定事項"]}
+            # 決策格式「問題——不決定的話：後果」（specs/plain-brief R4.6）：缺分隔字串整份改用範本
+            out[t["key"]] = {"ceo_summary": ["Claude 第一句。", "第二句。", "第三句。"],
+                             "decisions": ["要不要決定事項？——不決定的話：後果"]}
     return out
 
 
@@ -89,11 +92,57 @@ def test_plan_validate_and_a5_adopt(ctx):
     a5_report.run(a5ctx)
     rep = json.loads((ctx.data_dir / "daily" / "report.json").read_text(encoding="utf-8"))
     assert rep["ceo_summary"][0] == "Claude 第一句。"
+    assert rep["decisions"] == ["要不要決定事項？——不決定的話：後果"]
     assert sum(1 for r in rep["risks"] if r.get("explanation_source") == "live") > 5
+    # 白話欄位成功採用（specs/plain-brief R2.1）：兩欄都來自訂閱方案
+    adopted = [r["solution"] for r in rep["risks"] if (r.get("solution") or {}).get("source") == "live"]
+    assert adopted and all((s["plain_title"], s["if_ignored"], s["plain_source"]) == ("Claude 白話標題", "Claude 寫的不處理的話。", "live")
+                           for s in adopted)
+    # remediation 任務內容含寫白話需要的事實（design §2.1）；91APP 相關風險的事件帶品牌
+    rem = next(t for t in doc["tasks"] if t["subagent"] == "remediation-advisor")
+    assert all({"status", "asset_name", "path_names", "may_reach", "events"} <= set(x) for x in rem["payload"]["risks"])
+    assert any(e["brand"] == "91APP" for x in rem["payload"]["risks"] for e in x["events"])
+    assert "internal-tool" not in json.dumps([x["asset_name"] for x in rem["payload"]["risks"]], ensure_ascii=False)
     trace = read_trace(ctx.data_dir / "daily" / "trace.jsonl")
     assert any(e["agent"] == "a5" and e["source"] == "live" and "訂閱方案" in e["detail"] for e in trace)
     for r in rep["risks"]:                                                    # 等級與分數不受 Claude 影響
         assert r["level"] in ("high", "medium", "low")
+
+
+def test_polluted_plain_fields_from_subscription_fall_back_to_template(ctx):
+    """訂閱方案寫的白話欄位被污染（specs/plain-brief R2.4、R2.5）：只移除該欄、整份解法仍採用；兩欄改用範本；trace 記數。
+    決策缺「不決定的話」時整份 CEO 文字改用範本（R4.6）。"""
+    _upstream(ctx)
+    llm_plan.plan(ctx)
+    doc = json.loads((ctx.out / "llm" / "tasks.json").read_text(encoding="utf-8"))
+    results = _fake_write(doc["tasks"])
+    rem = next(t for t in doc["tasks"] if t["subagent"] == "remediation-advisor")
+    sols = results[rem["key"]]
+    assert len(sols) >= 4
+    sols[0]["plain_title"] = "主機 10.0.0.5 有漏洞"                         # R8：_validate 只移除這一欄
+    sols[1]["if_ignored"] = "外人可以從 internal-tool 一路進來。"            # 本次系統 ID：A5 的 clean_plain 移除
+    sols[2]["plain_title"] = "金鑰 DEMO-FAKE-PASSWORD-0000"                  # 機敏值只在白話欄位：只移除這一欄，整份不拒收
+    ceo = next(t for t in doc["tasks"] if t["subagent"] == "ceo-briefer")
+    results[ceo["key"]]["decisions"] = ["要不要決定事項？"]                   # 缺分隔字串
+    (ctx.out / "llm" / "results.json").write_text(json.dumps(results, ensure_ascii=False), encoding="utf-8")
+    assert llm_plan.validate(ctx)["rejected"] == 0
+    validated = json.loads((ctx.out / "llm" / "validated.json").read_text(encoding="utf-8"))[rem["key"]]
+    assert "plain_title" not in validated[0] and validated[0]["plain_dropped"] == 1 and validated[0]["if_ignored"]
+    assert "plain_title" not in validated[2] and validated[2]["plain_dropped"] == 1
+    a5_report.run(replace(ctx, _llm_results=None, llm_plan=[]))
+    text = (ctx.data_dir / "daily" / "report.json").read_text(encoding="utf-8")
+    assert "DEMO-FAKE" not in text and "plain_dropped" not in text
+    rep = json.loads(text)
+    by = {r["id"]: r["solution"] for r in rep["risks"]}
+    for s in sols[:3]:
+        got = by[s["risk_id"]]
+        assert (got["source"], got["temporary"], got["plain_source"]) == ("live", "暫時", "template")
+        assert got["plain_title"] != "Claude 白話標題" and got["if_ignored"] != "Claude 寫的不處理的話。"
+    assert (by[sols[3]["risk_id"]]["plain_title"], by[sols[3]["risk_id"]]["plain_source"]) == ("Claude 白話標題", "live")
+    assert rep["ceo_summary"][0].startswith("今天是") and all("——不決定的話：" in d for d in rep["decisions"])
+    details = [e["detail"] for e in read_trace(ctx.data_dir / "daily" / "trace.jsonl") if e["agent"] == "a5"]
+    assert "白話欄位 3 項未通過檢查，改用程式範本" in details
+    assert any("不決定的話" in d and "改用程式範本" in d for d in details)
 
 
 def test_plan_keys_are_stable_across_jobs(ctx):

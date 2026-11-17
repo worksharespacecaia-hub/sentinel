@@ -25,6 +25,6 @@ description: 依程式整理好的任務（out/llm/tasks.json）撰寫 A2、A4�
 ## 輸出格式
 
 - `explanations`：`[{"id": "<ids 之一>", "explanation": "說明文字"}]`
-- `solutions`：`[{"risk_id": "<ids 之一>", "temporary": "暫時措施", "permanent": "根本修正", "options": [{"name": "修補|緩解|下架", "action": "做什麼", "cost": "代價", "timing": "今天|7 天內|30 天內"}], "verify": "如何確認已修好", "suggested_owner": "建議負責單位"}]`（不要包含 score、level、status）
-- `ceo`：`{"ceo_summary": ["第一句", "第二句", "第三句"], "decisions": ["今天需要決定的事項"]}`（`ceo_summary` 剛好三句）
+- `solutions`：`[{"risk_id": "<ids 之一>", "temporary": "暫時措施（白話）", "permanent": "根本修正", "options": [{"name": "修補|緩解|下架", "action": "做什麼", "cost": "代價", "timing": "今天|7 天內|30 天內"}], "verify": "如何確認已修好", "suggested_owner": "建議負責單位", "plain_title": "白話標題（40 字內）", "if_ignored": "不處理的話（100 字內）"}]`（不要包含 score、level、status；`plain_title`、`if_ignored` 依 remediation-playbooks 的「白話標題與不處理的話」，不合規則的欄位會被程式移除、改用範本）
+- `ceo`：`{"ceo_summary": ["第一句", "第二句", "第三句"], "decisions": ["問題？——不決定的話：後果"]}`（`ceo_summary` 剛好三句；每條決策剛好一個「——不決定的話：」；數字依 ceo-brief 的寫法，對不上時整份改用範本）
 - `extraction`：JSON 陣列，欄位依任務 `instructions`

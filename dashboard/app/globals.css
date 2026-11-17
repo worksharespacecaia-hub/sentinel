@@ -113,12 +113,23 @@ a.button.primary { background: var(--accent); color: #fff; }
 .kpi .num { font-size: 40px; font-weight: 700; line-height: 1.15; }
 .kpi .of { font-size: 20px; color: var(--muted); font-weight: 400; }
 .brief-risks { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 10px; }
-.brief-risk { overflow-wrap: anywhere; }
-.brief-risk > a { display: block; color: var(--text); text-decoration: none; border: 1px solid var(--line); border-left: 5px solid var(--line);
-  border-radius: 8px; padding: 10px 12px; background: var(--bg); }
-.brief-risk.high > a { border-left-color: var(--red); } .brief-risk.medium > a { border-left-color: var(--yellow); }
-.brief-risk > a:hover, .brief-risk > a:focus-visible { border-color: var(--accent); }
+/* 卡片本身不再是連結（v0.14.0）：外框改在 li 上；到行動報告的連結放在收合區塊內 */
+.brief-risk { overflow-wrap: anywhere; border: 1px solid var(--line); border-left: 5px solid var(--line); border-radius: 8px;
+  padding: 10px 12px; background: var(--bg); }
+.brief-risk.high { border-left-color: var(--red); } .brief-risk.medium { border-left-color: var(--yellow); }
 .brief-risk .tags { margin: 4px 0; }
+/* 不處理的話、收合細節、品牌標記（沿用 preview.html） */
+.if-ignored { margin: 8px 0; padding: 8px 10px; border-radius: 8px; background: var(--red-bg); }
+.if-ignored b { color: var(--red); }
+.brief-decisions .if-ignored { font-size: 16px; }
+.risk-more { margin-top: 8px; border-top: 1px dashed var(--line); padding-top: 6px; }
+.risk-more summary { cursor: pointer; color: var(--accent); font-size: 15px; }
+.risk-more dl { margin: 8px 0 0; font-size: 15px; }
+.risk-more dt { font-weight: 700; margin-top: 8px; }
+.risk-more dd { margin: 2px 0 0; }
+/* 導覽列的網站名稱也用 .brand，所以品牌標記只套用在今日重點與行動報告的標題 */
+.brief-risk .brand, .action-title .brand { display: inline-block; background: var(--yellow-bg); color: var(--yellow); border: 1px solid var(--yellow);
+  border-radius: 6px; padding: 0 8px; margin-right: 6px; }
 .brief-footer { margin-top: 4px; }
 @media (max-width: 640px) {
   .kpis { grid-template-columns: 1fr; }
@@ -147,6 +158,7 @@ a.button.primary { background: var(--accent); color: #fff; }
 .action-fields { display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; margin: 8px 0 0; font-size: 15px; }
 .action-fields dt { color: var(--muted); }
 .action-fields dd { margin: 0; }
+.action-fields dd.if-ignored-text { background: var(--red-bg); border-radius: 6px; padding: 0 8px; }
 .track-state.due_soon { color: var(--yellow); font-weight: 600; }
 .track-state.overdue { color: var(--red); font-weight: 700; }
 .track-form { margin-top: 8px; }
@@ -172,7 +184,7 @@ a.button.primary { background: var(--accent); color: #fff; }
   .action-item, .notice, tr, .traffic-light { break-inside: avoid; }
   h2 { break-after: avoid; }
   thead { display: table-header-group; }
-  .lamp, .action-item, .tag { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .lamp, .action-item, .tag, .action-title .brand, .if-ignored, .if-ignored-text { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
 
 /* 燈號權重 */

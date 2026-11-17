@@ -15,7 +15,7 @@ import TrackForm from "@/components/TrackForm";
 import SummaryText from "@/components/SummaryText";
 import FactSources from "@/components/FactSources";
 import OpenOnHash from "@/components/OpenOnHash";
-import { summaryFacts } from "@/lib/brief";
+import { splitDecision, summaryFacts } from "@/lib/brief";
 
 export const dynamic = "force-dynamic";
 
@@ -37,6 +37,7 @@ export default async function ReportPage({ searchParams }: SP) {
   const c = action.counts;
   const facts = summaryFacts(report);
   const q = source.simulated ? `?source=${encodeURIComponent(source.key)}` : "";
+  const labels = report.asset_labels;                                     // 系統白話名稱；舊報告沒有時退回系統 ID
 
   return (
     <div className="report">
@@ -54,13 +55,16 @@ export default async function ReportPage({ searchParams }: SP) {
 
       <section className="panel report-section">
         <TrafficLight light={action.light} />
-        <ol className="brief-summary">{action.summary.map((s, i) => <li key={i}><SummaryText text={s} facts={facts} base="" /></li>)}</ol>
+        <ol className="brief-summary">{action.summary.map((s, i) => <li key={i}><SummaryText text={s} facts={facts} base="" labels={labels} /></li>)}</ol>
         <p className="muted no-print">點底線數字可看是哪幾項（見下方「數字從哪來」）。</p>
       </section>
 
       <section className="panel report-section">
         <h2>今天要決定的事</h2>
-        {action.decisions.length ? <ol>{action.decisions.map((d, i) => <li key={i}><SummaryText text={d} facts={facts} base="" /></li>)}</ol> : <p>今天沒有需要決定的事項。</p>}
+        {action.decisions.length ? <ol>{action.decisions.map(splitDecision).map((d, i) => (
+          <li key={i}><SummaryText text={d.question} facts={facts} base="" labels={labels} />
+            {d.ifNot && <div className="if-ignored"><b>不決定的話：</b><SummaryText text={d.ifNot} facts={facts} base="" labels={labels} /></div>}</li>
+        ))}</ol> : <p>今天沒有需要決定的事項。</p>}
       </section>
 
       <section className="panel report-section">
@@ -78,13 +82,14 @@ export default async function ReportPage({ searchParams }: SP) {
                 <div className="action-title">
                   <span className={`tag lv-${it.level}`}>{LEVEL_TEXT[it.level]}風險</span>
                   {it.need_check && <span className="tag">需確認</span>}
-                  <strong>{it.headline}</strong>
+                  <strong>{it.brand && <span className="brand">{it.brand} 事件同款破口</span>}{it.headline}</strong>
                 </div>
-                {it.detail && <div className="muted">{it.detail}</div>}
+                {it.detail && <div className="muted">{it.detail}</div>}{/* 原始技術標題 */}
                 {it.tags.length > 0 && <div className="tags">{it.tags.map((t) => <span key={t} className="tag">{t}</span>)}</div>}
                 {it.events.length > 0 && <div className="item-events">相關事件：{it.events.map((e, i) => (
                   <span key={e.id}>{i > 0 && "、"}<a href={`#event-${e.id}`}>{e.title}</a></span>))}（來源見下方「與我們有關的外部事件」）</div>}
                 <dl className="action-fields">
+                  {it.if_ignored && <><dt>不處理的話</dt><dd className="if-ignored-text">{it.if_ignored}</dd></>}
                   <dt>建議先做</dt><dd>{it.temporary ?? "—"}</dd>
                   <dt>根本修復</dt><dd>{it.permanent ?? "—"}</dd>
                   <dt>負責團隊</dt><dd>{it.owner ?? "待指派"}</dd>
@@ -136,7 +141,7 @@ export default async function ReportPage({ searchParams }: SP) {
         )}
       </section>
 
-      <FactSources facts={facts} q={q} actionIds={new Set(action.items.map((i) => i.id))} />
+      <FactSources facts={facts} q={q} actionIds={new Set(action.items.map((i) => i.id))} labels={labels} />
       <OpenOnHash />
 
       {action.notices.length > 0 && (

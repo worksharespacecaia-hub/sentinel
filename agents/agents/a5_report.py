@@ -24,8 +24,9 @@ from tools.cache import merge_cache
 from tools.common import AGENTS_DIR, iso, read_json, write_json
 from tools.findings import redact
 from tools.graph_query import GraphQuery
+from tools.plain_text import clean_plain, exact_public, risk_brands
 from tools.report_builder import assemble, write_outputs
-from tools.templates import notice_draft, summary_facts, unsourced_numbers
+from tools.templates import asset_name, decision_ok, mismatched_numbers, notice_draft, risk_reach, summary_facts
 from tools.trace import merge_traces
 
 # 上游 Job 的 out/<名稱>/（trace、成本、快取 delta）。router 是原 orchestrator（開工路由）；orchestrator-dispatch／review 是
@@ -111,6 +112,55 @@ def _review_results(meta: dict, results: dict, llm: dict) -> list[dict]:
     return [r for r in out if r is not None]
 
 
+def _remediation_item(r: dict, nodes: dict, labels: dict, report_events: list[dict]) -> dict:
+    """remediation-advisor 的任務內容（specs/plain-brief design §2.1）：既有欄位不變，另加寫白話需要的事實。
+
+    新加入的名稱與事件標題一律經 R8 過濾且結果與原文相同才放入（R2.2）：名稱來自 asset_name（labels 已過濾、ID 備援另檢查），
+    事件標題用 exact_public 檢查，事件 ID 也要能原樣交給 AI（safe_id），不合格的事件整筆不放。
+    """
+    path = r.get("attack_path") or []
+    matched = set(r.get("matched_events") or [])
+    return {"id": r["id"], "title": r["title"], "level": r["level"], "breakdown": r["breakdown"], "category": r["category"],
+            "status": r["status"],
+            "asset_name": asset_name(r["asset_id"], labels),
+            "path_names": [asset_name(n, labels) for n in path] if len(path) > 1 else [],
+            "may_reach": risk_reach(r, nodes),
+            "events": [{"id": e["id"], "title": e["title"], "kind": e["kind"], "demo": e["demo"], "brand": e.get("brand")}
+                       for e in report_events
+                       if e["id"] in matched and o.safe_id(e["id"]) and exact_public(e["title"], 200)]}
+
+
+def _adopt_solutions(tr, sol: dict, remediation: list[dict], res: dict, report_events: list[dict]) -> dict:
+    """AI 解法：本次系統 ID 檢查（clean_plain，不改到快取保存的物件），移除數（含 _validate 的）記到 trace（R2.5）。"""
+    out = {}
+    internal_ids = set(res["graph"].nodes)
+    brands = {e["id"]: e.get("brand") for e in report_events}
+    by_id = {r["id"]: r for r in remediation}
+    dropped = 0
+    for s in sol.get("output") or []:
+        r = by_id.get(s["risk_id"]) or {}
+        cleaned, n = clean_plain(s, r, internal_ids, [b.lower() for b in risk_brands(r, brands)])
+        dropped += n
+        out[s["risk_id"]] = {**cleaned, "source": sol["source"], "suggested_owner": cleaned.get("suggested_owner")}
+    if dropped:
+        tr.emit("skip", f"白話欄位 {dropped} 項未通過檢查，改用程式範本", subagent="remediation-advisor", source="template")
+    return out
+
+
+def _ceo_problem(ceo: dict, facts: dict) -> str | None:
+    """CEO 文字的採用條件（design §5.3）；回傳不採用的原因，None 表示可以採用。"""
+    summary, decs = ceo.get("ceo_summary") or [], ceo.get("decisions") or []
+    if not isinstance(decs, list) or not all(isinstance(t, str) for t in [*summary, *decs]):
+        return "CEO 摘要或決策的格式不符"
+    bad = mismatched_numbers([*summary, *decs], facts)
+    if bad:
+        return f"CEO 摘要的數字 {sorted(set(bad))} 對不上程式結果（指標不符或無法判定）"
+    wrong = sum(1 for d in decs if not decision_ok(d))
+    if wrong:
+        return f"CEO 決策有 {wrong} 條缺少「不決定的話」或格式不符"
+    return None
+
+
 def _llm_texts(ctx: RunCtx, res: dict, built_template: dict, review: dict | None = None) -> dict:
     runner = ctx.runner("a5")
     tr = runner.tracer
@@ -121,18 +171,21 @@ def _llm_texts(ctx: RunCtx, res: dict, built_template: dict, review: dict | None
     top = o.prioritize(risks[:o.MAX_A5_CEO], prio)
     if prio:
         tr.emit("tool", f"驗收排優先：先寫 {'、'.join(prio)}（只調整順序）"[:300])
+    rep = built_template["report"]
+    nodes = dict(res["graph"].nodes(data=True))
+    labels = built_template.get("labels") or {}
     tasks = [Task(id="remediation", subagent="remediation-advisor",
                   payload={"ids": [r["id"] for r in remediation],
-                           "risks": [{"id": r["id"], "title": r["title"], "level": r["level"], "breakdown": r["breakdown"],
-                                      "category": r["category"]} for r in remediation]})]
+                           "risks": [_remediation_item(r, nodes, labels, rep["events"]) for r in remediation]})]
     secrets = [r for r in risks if r["category"] in ("secret", "identity")]
     if secrets:
         tasks.append(Task(id="key-rotation", subagent="key-rotation-advisor",
                           payload={"ids": [r["id"] for r in secrets], "items": [{"id": r["id"], "title": r["title"]} for r in secrets]}))
-    rep = built_template["report"]
+    # top 用範本的白話標題（R4.4）：依風險 ID 由程式決定，不依賴同次 AI 解法，A5 與 claude-analysis 算出相同任務鍵
+    plain = {x["id"]: (x.get("solution") or {}).get("plain_title") for x in rep["risks"]}
     tasks.append(Task(id="ceo", subagent="ceo-briefer", payload={"ids": ["ceo"], "light": rep["light"], "counts": rep["counts"],
                                                                 "light_reasons": rep["light_reasons"],
-                                                                "top": [r["title"] for r in top],
+                                                                "top": [plain.get(r["id"]) or r["title"] for r in top],
                                                                 # 程式範本的白話版本（確定性）：Claude 以此為底改寫，數字以上方欄位為準
                                                                 "draft_summary": rep["ceo_summary"],
                                                                 "draft_decisions": rep["decisions"]}))
@@ -153,17 +206,15 @@ def _llm_texts(ctx: RunCtx, res: dict, built_template: dict, review: dict | None
     results = runner.run(tasks, graph_query=gq)             # 必要任務先跑：追加任務不影響必要任務的預算與結果
     extra, meta = _review_tasks(review, res, built_template, tr)
     extra_results = runner.run(extra, graph_query=gq) if extra else {}
-    llm: dict = {"solutions": {}, "intel": {}, "notice_extra": {}}
-    sol = results.get("remediation", {})
-    for s in sol.get("output") or []:
-        llm["solutions"][s["risk_id"]] = {**s, "source": sol["source"], "suggested_owner": s.get("suggested_owner")}
+    llm: dict = {"solutions": _adopt_solutions(tr, results.get("remediation", {}), remediation, res, rep["events"]),
+                 "intel": {}, "notice_extra": {}}
     ceo = (results.get("ceo") or {}).get("output")
     if ceo:
-        # 摘要裡的數字必須都能對應程式結果（網站會把數字連到來源）；對不上就用程式範本
-        facts = summary_facts(rep["risks"], rep["intel_summary"])
-        bad = unsourced_numbers([*ceo["ceo_summary"], *(ceo.get("decisions") or [])], facts)
-        if bad:
-            tr.emit("skip", f"CEO 摘要的數字 {sorted(set(bad))} 對不上程式結果，改用程式範本", subagent="ceo-briefer", source="template")
+        # 摘要與決策的每個數字都要對到同一個指標（rules/fact-words.json，網站用同一套規則連到來源），決策要有「不決定的話」；
+        # 任一不合就整份改用程式範本（R4.5、R4.6）
+        problem = _ceo_problem(ceo, summary_facts(rep["risks"], rep["intel_summary"]))
+        if problem:
+            tr.emit("skip", f"{problem}，改用程式範本", subagent="ceo-briefer", source="template")
         else:
             llm["ceo_summary"], llm["decisions"] = ceo["ceo_summary"], ceo.get("decisions") or []
     for r in affected:
