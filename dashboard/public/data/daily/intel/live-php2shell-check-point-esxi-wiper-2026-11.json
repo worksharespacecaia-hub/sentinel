@@ -1,0 +1,459 @@
+{
+  "event": {
+    "id": "live-php2shell-check-point-esxi-wiper-2026-11",
+    "kind": "live",
+    "title": "Check Point 閘道遭 PHP2Shell 鏈式攻擊，VMware ESXi 主機資料被抹除",
+    "date": "2026-11-15",
+    "industry": "其他",
+    "attack_chain": [
+      "Check Point 安全閘道遭 PHP2Shell 攻擊",
+      "攻擊者把多個漏洞串成鏈，從邊界設備一路打進虛擬化底層",
+      "在 VMware ESXi 主機上部署抹除型惡意程式"
+    ],
+    "attck": [
+      "T1190",
+      "T1068",
+      "T1485"
+    ],
+    "cves": [
+      "CVE-2026-109618",
+      "CVE-2026-109619",
+      "CVE-2026-123039"
+    ],
+    "products": [
+      {
+        "name": "php",
+        "ecosystem": "php",
+        "affected": [
+          {
+            "introduced": "8.2.0",
+            "fixed": "8.2.35"
+          },
+          {
+            "introduced": "8.3.0",
+            "fixed": "8.3.36"
+          },
+          {
+            "introduced": "8.4.0",
+            "fixed": "8.4.27"
+          },
+          {
+            "introduced": "8.5.0",
+            "fixed": "8.5.12"
+          },
+          {
+            "introduced": "8.1.0",
+            "fixed": null
+          },
+          {
+            "introduced": "8.0.0",
+            "fixed": null
+          },
+          {
+            "introduced": "7.4.0",
+            "fixed": null
+          }
+        ],
+        "conditions": [
+          {
+            "key": "serves_web_requests",
+            "equals": true,
+            "source_ref": 0
+          }
+        ],
+        "unknown_below": "7.4.0",
+        "aggravating_conditions": [
+          {
+            "key": "session.upload_progress.enabled",
+            "equals": "On",
+            "source_ref": 0,
+            "applies_to": "CVE-2026-109619"
+          }
+        ],
+        "cvss": 9.2,
+        "known_exploited": true,
+        "impact": "remote_code_execution",
+        "confirmed": true,
+        "source_refs": [
+          0,
+          1,
+          2
+        ]
+      }
+    ],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://cyberq.tw/2026/11/15/check-point-gateway-was-compromised/",
+        "title": "Check Point 閘道遭 PHP2Shell 鏈式攻擊，VMware ESXi 主機資料被抹除",
+        "quote": "Check Point 已在官方公告 sk1000362 證實提權漏洞 CVE-2026-123039 遭到實際利用，受害客戶約「二十多家」。",
+        "published": "2026-11-15",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-17T05:28:31Z",
+        "content_hash": "sha256:908d680f45afa73065b3f6c346a9fd5f5c911652c89bf137bbb1f228e43c7f57",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": "evt-php2shell-2026-10",
+    "proposed_controls": [
+      {
+        "title": "邊界安全設備須於時限內套用修補並汰換已停止支援版本",
+        "reason": "來源指出 CVE-2026-123039 已遭實際利用，且 R81.10 與 R81 已結束支援、不會有修補；現有控制項沒有涵蓋邊界設備修補與 EOL 管理。"
+      }
+    ]
+  },
+  "conclusion": "2 項受影響，最高風險為高。marketing-site：php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On。",
+  "affected_count": 2,
+  "max_level": "high",
+  "impacts": [
+    {
+      "event_id": "live-php2shell-check-point-esxi-wiper-2026-11",
+      "asset_id": "marketing-site",
+      "basis": "condition",
+      "our_state": "php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On",
+      "verdict": "affected",
+      "risk_id": "marketing-site:php:vuln",
+      "to_verify": [],
+      "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True；停止支援且無修補"
+    },
+    {
+      "event_id": "live-php2shell-check-point-esxi-wiper-2026-11",
+      "asset_id": "report-svc",
+      "basis": "version",
+      "our_state": "php 8.4.27（fpm-fcgi）",
+      "verdict": "not_affected",
+      "risk_id": null,
+      "reason": "8.4.27 不在受影響範圍（已是修補版本或不同分支）"
+    },
+    {
+      "event_id": "live-php2shell-check-point-esxi-wiper-2026-11",
+      "asset_id": "phpmyadmin",
+      "basis": "condition",
+      "our_state": "php 8.3.20（fpm-fcgi），session.upload_progress.enabled=On",
+      "verdict": "affected",
+      "risk_id": "phpmyadmin:php:vuln",
+      "to_verify": [],
+      "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True"
+    }
+  ],
+  "solutions": [
+    {
+      "risk_id": "marketing-site:php:vuln",
+      "temporary": "先限制外人連到行銷官網並加強監看，同時評估是否暫時關掉",
+      "permanent": "將 marketing-site 升級到仍受支援且已修補的版本，完成回歸測試後上線",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "WAF 限制異常請求、關閉不必要的功能",
+          "cost": "需驗證不影響現有功能",
+          "timing": "今天"
+        },
+        {
+          "name": "下架",
+          "action": "暫停 marketing-site，改導向其他服務",
+          "cost": "相關流量中斷",
+          "timing": "今天"
+        },
+        {
+          "name": "修補",
+          "action": "升級到受支援的修補版本",
+          "cost": "需回歸測試",
+          "timing": "7 天內"
+        }
+      ],
+      "suggested_owner": "security-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template",
+      "plain_title": "行銷官網的軟體原廠已不再修補，有可被入侵的漏洞",
+      "if_ignored": "漏洞不會再有官方修補，外人可能藉此控制行銷官網或竄改內容。",
+      "plain_source": "template"
+    },
+    {
+      "risk_id": "phpmyadmin:php:vuln",
+      "temporary": "先確認資料庫網頁管理工具有哪些地方外人連得到，能關的先關，並盡快安排更新",
+      "permanent": "將 phpmyadmin 的受影響元件升級到修補版本",
+      "options": [
+        {
+          "name": "修補",
+          "action": "升級到修補版本",
+          "cost": "需回歸測試",
+          "timing": "168 小時內"
+        },
+        {
+          "name": "緩解",
+          "action": "限制來源、關閉受影響功能",
+          "cost": "部分功能受限",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "dba-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template",
+      "plain_title": "資料庫網頁管理工具有已經被用來攻擊的漏洞，可能造成訂單資料、會員個資外洩",
+      "if_ignored": "外人可能利用這個漏洞入侵資料庫網頁管理工具，一路碰到訂單資料、會員個資；這個漏洞已經有人在用。",
+      "plain_source": "template"
+    }
+  ],
+  "notice": {
+    "needed": false,
+    "draft": null,
+    "draft_extra": "通知草稿：告知品牌商同業遭鏈式攻擊、資料被抹除，我們已發現行銷官網有相同漏洞並安排處理，目前尚無證據顯示資料遭影響；並提醒留意可疑的詐騙訊息。",
+    "draft_extra_source": "live"
+  },
+  "status": "open",
+  "evaluated_asset_ids": [
+    "marketing-site",
+    "phpmyadmin",
+    "report-svc"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "此事件利用的漏洞與我們相同：行銷官網對外且原廠已不再修補，為高風險（9 分）；資料庫管理介面僅限公司網路連入，為中風險（4 分）。",
+  "blocks": {
+    "1_summary": {
+      "title": "Check Point 閘道遭 PHP2Shell 鏈式攻擊，VMware ESXi 主機資料被抹除",
+      "date": "2026-11-15",
+      "industry": "其他",
+      "attack_chain": [
+        "Check Point 安全閘道遭 PHP2Shell 攻擊",
+        "攻擊者把多個漏洞串成鏈，從邊界設備一路打進虛擬化底層",
+        "在 VMware ESXi 主機上部署抹除型惡意程式"
+      ],
+      "attck": [
+        "T1190",
+        "T1068",
+        "T1485"
+      ],
+      "cves": [
+        "CVE-2026-109618",
+        "CVE-2026-109619",
+        "CVE-2026-123039"
+      ],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://cyberq.tw/2026/11/15/check-point-gateway-was-compromised/",
+          "title": "Check Point 閘道遭 PHP2Shell 鏈式攻擊，VMware ESXi 主機資料被抹除",
+          "quote": "Check Point 已在官方公告 sk1000362 證實提權漏洞 CVE-2026-123039 遭到實際利用，受害客戶約「二十多家」。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-17T05:28:31Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "此事件利用的漏洞與我們相同：行銷官網對外且原廠已不再修補，為高風險（9 分）；資料庫管理介面僅限公司網路連入，為中風險（4 分）。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "2 項受影響，最高風險為高。marketing-site：php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On。",
+      "affected_count": 2,
+      "max_level": "high"
+    },
+    "3_affected": [
+      {
+        "asset_id": "marketing-site",
+        "our_state": "php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On",
+        "basis": "condition",
+        "verdict": "affected",
+        "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True；停止支援且無修補",
+        "risk_id": "marketing-site:php:vuln",
+        "level": "high",
+        "score": 9,
+        "breakdown": [
+          {
+            "factor": "基礎分：漏洞",
+            "points": 3,
+            "reason": "CVSS 9.8"
+          },
+          {
+            "factor": "已遭實際利用",
+            "points": 2,
+            "reason": "KEV 或官方確認"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "可從 internet 連到"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-php2shell-2026-10、live-php2shell-check-point-esxi-wiper-2026-11"
+          },
+          {
+            "factor": "已停止支援",
+            "points": 1,
+            "reason": "無修補可用"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-17T05:28:31Z"
+      },
+      {
+        "asset_id": "phpmyadmin",
+        "our_state": "php 8.3.20（fpm-fcgi），session.upload_progress.enabled=On",
+        "basis": "condition",
+        "verdict": "affected",
+        "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True",
+        "risk_id": "phpmyadmin:php:vuln",
+        "level": "medium",
+        "score": 4,
+        "breakdown": [
+          {
+            "factor": "基礎分：漏洞",
+            "points": 3,
+            "reason": "CVSS 9.8"
+          },
+          {
+            "factor": "已遭實際利用",
+            "points": 2,
+            "reason": "KEV 或官方確認"
+          },
+          {
+            "factor": "資料敏感",
+            "points": 1,
+            "reason": "order、pii"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-php2shell-2026-10、live-php2shell-check-point-esxi-wiper-2026-11"
+          },
+          {
+            "factor": "補償措施",
+            "points": -3,
+            "reason": "network.json 顯示只允許 corp-vpn 連入（本次快照證據）"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-17T05:28:31Z"
+      }
+    ],
+    "4_unaffected_and_check": {
+      "not_affected": [
+        {
+          "asset_id": "report-svc",
+          "our_state": "php 8.4.27（fpm-fcgi）",
+          "reason": "8.4.27 不在受影響範圍（已是修補版本或不同分支）"
+        }
+      ],
+      "need_check": [],
+      "notes": []
+    },
+    "5_solutions": [
+      {
+        "risk_id": "marketing-site:php:vuln",
+        "temporary": "先限制外人連到行銷官網並加強監看，同時評估是否暫時關掉",
+        "permanent": "將 marketing-site 升級到仍受支援且已修補的版本，完成回歸測試後上線",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "WAF 限制異常請求、關閉不必要的功能",
+            "cost": "需驗證不影響現有功能",
+            "timing": "今天"
+          },
+          {
+            "name": "下架",
+            "action": "暫停 marketing-site，改導向其他服務",
+            "cost": "相關流量中斷",
+            "timing": "今天"
+          },
+          {
+            "name": "修補",
+            "action": "升級到受支援的修補版本",
+            "cost": "需回歸測試",
+            "timing": "7 天內"
+          }
+        ],
+        "suggested_owner": "security-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template",
+        "plain_title": "行銷官網的軟體原廠已不再修補，有可被入侵的漏洞",
+        "if_ignored": "漏洞不會再有官方修補，外人可能藉此控制行銷官網或竄改內容。",
+        "plain_source": "template"
+      },
+      {
+        "risk_id": "phpmyadmin:php:vuln",
+        "temporary": "先確認資料庫網頁管理工具有哪些地方外人連得到，能關的先關，並盡快安排更新",
+        "permanent": "將 phpmyadmin 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "168 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "dba-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template",
+        "plain_title": "資料庫網頁管理工具有已經被用來攻擊的漏洞，可能造成訂單資料、會員個資外洩",
+        "if_ignored": "外人可能利用這個漏洞入侵資料庫網頁管理工具，一路碰到訂單資料、會員個資；這個漏洞已經有人在用。",
+        "plain_source": "template"
+      }
+    ],
+    "6_notice": {
+      "needed": false,
+      "draft": null,
+      "draft_extra": "通知草稿：告知品牌商同業遭鏈式攻擊、資料被抹除，我們已發現行銷官網有相同漏洞並安排處理，目前尚無證據顯示資料遭影響；並提醒留意可疑的詐騙訊息。",
+      "draft_extra_source": "live"
+    },
+    "7_status": {
+      "status": "open",
+      "label": "待處理"
+    }
+  },
+  "orchestrator_results": [
+    {
+      "stage": "dispatch",
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "target_type": "event",
+      "target_id": "live-php2shell-check-point-esxi-wiper-2026-11",
+      "text": "php 8.1.27：php 8.1.27 經程式比對有 27 筆確定漏洞（最高 CVSS 9.8，CVE-2024-11236），另 3 筆需確認、不計入結論。資料標示修補版本為 8.2.35，屬跨次版本升級，建議另行確認 8.1 分支的修補版本。與事件攻擊鏈的關聯僅止於 CVE-2026-109618、CVE-2026-109619 同列 CISA KEV 已遭利用，現有證據無法證明此主機參與攻擊 Check Point 閘道或 ESXi。；php 8.3.20：php 8.3.20 經程式比對有 28 筆確定漏洞（最高 CVSS 9.8，CVE-2025-14179），另 3 筆需確認、不計入結論；修補版本為 8.3.36，同分支更新即可。與事件攻擊鏈的關聯僅止於 CVE-2026-109618、CVE-2026-109619 同列 CISA KEV，現有證據不足以確認此服務被用於攻擊鏈任一階段。",
+      "source": "live"
+    },
+    {
+      "stage": "dispatch",
+      "agent": "a2",
+      "subagent": "runtime-analyst",
+      "target_type": "event",
+      "target_id": "live-php2shell-check-point-esxi-wiper-2026-11",
+      "text": "依證據，marketing-site 執行的 PHP 8.1.27 已於 2025-12-31 停止支援，以今日 2026-11-17 計已停止支援約 10.5 個月，不再提供官方安全更新；是否已有修補屬漏洞本身的屬性，證據未說明。攻擊鏈（Check Point 閘道 PHP2Shell → ESXi 抹除）的證據未顯示 marketing-site 參與其中，利用條件需確認，不能推定為受影響或安全。建議評估升級至仍受支援的 PHP 版本並重新檢視網站暴露面。",
+      "source": "live"
+    },
+    {
+      "stage": "review",
+      "agent": "a5",
+      "subagent": "brand-notice-writer",
+      "target_type": "event",
+      "target_id": "live-php2shell-check-point-esxi-wiper-2026-11",
+      "text": "通知草稿：告知品牌商同業遭鏈式攻擊、資料被抹除，我們已發現行銷官網有相同漏洞並安排處理，目前尚無證據顯示資料遭影響；並提醒留意可疑的詐騙訊息。",
+      "source": "live"
+    }
+  ],
+  "update_of": {
+    "id": "evt-php2shell-2026-10",
+    "title": "PHP2Shell：PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619）",
+    "status": "open"
+  }
+}

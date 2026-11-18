@@ -6059,5 +6059,100 @@
       "task": "notice-extra:kev-cve-2026-109619",
       "scope": "advisory"
     }
+  },
+  "9e08b81fa02f3aaa8671c3f0865df3c8b2bc60862e42ac5e3c3229b8cd6d2cf9": {
+    "output": [
+      {
+        "id": "gitlab:C-SECRET-IN-GIT",
+        "explanation": "類型為 GitLab 相關憑證，位於 config/db.yml 第 4 行，環境未確認（依規則名稱屬正式環境金鑰，但檔案區段未能確認）。權限範圍未確認，風險等級高，建議立即撤銷或輪替並自 Git 歷史移除，同時確認其他環境是否共用。",
+        "confidence": "low"
+      },
+      {
+        "id": "brand-app:C-SECRET-IN-GIT",
+        "explanation": "位於 services/brand-app/src/config.ts 第 3 行，類型與環境未確認（依規則名稱屬正式環境金鑰）。權限範圍未確認，風險等級高，建議立即輪替、從 Git 歷史清除，並確認應用端改用安全的金鑰管理方式。",
+        "confidence": "low"
+      },
+      {
+        "id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "explanation": "類型為第三方郵件服務 API 金鑰，已 464 天未輪替且無 IP 白名單，違反 90 天輪替與 IP 白名單規則。環境與權限範圍未確認，風險等級高，建議立即輪替、設定 IP 白名單，並提供撤銷與輪替的證據。",
+        "confidence": "high"
+      },
+      {
+        "id": "order-db-test-cred:test-secret-in-git",
+        "explanation": "類型為資料庫連線憑證，位於 config/db.yml 第 7 行，依規則標示為測試環境。測試環境金鑰仍不應進入 Git，風險等級中，建議輪替測試憑證、改用環境變數或金鑰管理服務，並清除 Git 歷史中的紀錄。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "secret-analyst",
+      "task": "secret-analyst#0",
+      "scope": "daily"
+    }
+  },
+  "5afcadfab82319c235388850f5a72b3a082f2c24fe189b93af4cc78643f09ad1": {
+    "output": [
+      {
+        "id": "marketing-site:php:vuln",
+        "explanation": "php 8.1.27 經程式比對有 27 筆確定漏洞（最高 CVSS 9.8，CVE-2024-11236），另 3 筆需確認、不計入結論。資料標示修補版本為 8.2.35，屬跨次版本升級，建議另行確認 8.1 分支的修補版本。與事件攻擊鏈的關聯僅止於 CVE-2026-109618、CVE-2026-109619 同列 CISA KEV 已遭利用，現有證據無法證明此主機參與攻擊 Check Point 閘道或 ESXi。",
+        "confidence": "low"
+      },
+      {
+        "id": "phpmyadmin:php:vuln",
+        "explanation": "php 8.3.20 經程式比對有 28 筆確定漏洞（最高 CVSS 9.8，CVE-2025-14179），另 3 筆需確認、不計入結論；修補版本為 8.3.36，同分支更新即可。與事件攻擊鏈的關聯僅止於 CVE-2026-109618、CVE-2026-109619 同列 CISA KEV，現有證據不足以確認此服務被用於攻擊鏈任一階段。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "event:live-php2shell-check-point-esxi-wiper-2026-11:dependency-analyst",
+      "scope": "daily"
+    }
+  },
+  "99f3056f3d77674535ec368205dacd6547939c0623b6f95371ae480198a00a79": {
+    "output": [
+      {
+        "id": "marketing-site:php:eol",
+        "explanation": "依證據，marketing-site 執行的 PHP 8.1.27 已於 2025-12-31 停止支援，以今日 2026-11-17 計已停止支援約 10.5 個月，不再提供官方安全更新；是否已有修補屬漏洞本身的屬性，證據未說明。攻擊鏈（Check Point 閘道 PHP2Shell → ESXi 抹除）的證據未顯示 marketing-site 參與其中，利用條件需確認，不能推定為受影響或安全。建議評估升級至仍受支援的 PHP 版本並重新檢視網站暴露面。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "runtime-analyst",
+      "task": "event:live-php2shell-check-point-esxi-wiper-2026-11:runtime-analyst",
+      "scope": "daily"
+    }
+  },
+  "424f53a74f897a03daf1e3eeafdcca9ce138443df002a9d1b6d9e95b9d5752fa": {
+    "output": [
+      {
+        "id": "marketing-site:php:vuln",
+        "explanation": "拆解為：基礎漏洞 3 分（CVSS 9.8）、已遭實際利用 2 分（KEV 或官方確認）、對外暴露 2 分（可從 internet 連到）、同業事件命中 1 分（evt-php2shell-2026-10、live-php2shell-check-point-esxi-wiper-2026-11）、已停止支援 1 分（無修補可用）。圖譜查詢顯示此資產不在本次資產範圍，無法確認品牌數、安裝數與資料欄位，業務影響也無法依資產資料評估。攻擊路徑為 null，未推測。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "marketing-site:php:vuln",
+      "scope": "daily"
+    }
+  },
+  "569586acac57a5ac1536f89debb3449281d5dfe07afed8c1440bc342177fb205": {
+    "output": [
+      {
+        "id": "phpmyadmin:php:vuln",
+        "explanation": "圖譜查詢 phpmyadmin:php:vuln 時回報「不在本次資產範圍」，無法直接取得該 ID 的脈絡。改查近似資產 phpmyadmin（含 php 8.3.20，fpm-fcgi）：資料類別為 order、pii，連往 order-db-prod（5432 埠），僅允許 corp-vpn 經 443 連入，非網際網路暴露、非 crown jewel，攻擊路徑查詢結果為空（與任務中 attack_path 為 null 一致）。品牌數與安裝數圖譜未提供，無法說明；另請確認此近似對應是否正確。breakdown 說明：基礎分漏洞 3 分對應 CVSS 9.8；已遭實際利用 2 分依任務資料為 KEV 或官方確認；資料敏感 1 分對應 order、pii；同業事件命中 1 分對應 evt-php2shell-2026-10 與 live-php2shell-check-point-esxi-wiper-2026-11；補償措施 -3 分對應 corp-vpn 限制連入（vpn-only）。分數與等級以程式結果為準。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "dispatch:live-php2shell-check-point-esxi-wiper-2026-11:phpmyadmin:php:vuln",
+      "scope": "daily"
+    }
   }
 }

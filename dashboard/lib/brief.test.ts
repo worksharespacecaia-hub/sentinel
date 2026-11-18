@@ -264,8 +264,15 @@ function legacyKeys(text: string, facts: Record<FactKey, Fact>): (FactKey | null
   return out;
 }
 
-// 唯一允許的差異：舊規則連到「數值相同但指標錯誤」的項目、新規則改為 null。有的話逐筆列在這裡（目前沒有）
-const ALLOWED_DIFFS: { file: string; text: string; old: (FactKey | null)[]; new: (FactKey | null)[] }[] = [];
+// 唯一允許的差異：舊規則連到「數值相同但指標錯誤」的項目，新規則改為 null 或正確的指標。逐筆列在這裡。
+// v0.14.1 情境報告改用白話範本後：「其中 N 件的問題我們也有」的「我們也有」不在舊關鍵字表，舊規則退回同值的第一項
+// （early-signal 的 7 同時是低風險數），新規則依新關鍵字表連到 affected（與我們有關的事件數），是正確的。
+const OUR_TOO = (n: number) => `今天看了 ${n} 件外面發生的資安事件，其中 ${n} 件的問題我們也有。`;
+const ALLOWED_DIFFS: { file: string; text: string; old: (FactKey | null)[]; new: (FactKey | null)[] }[] = [
+  { file: "scenarios/early-signal/report.json", text: OUR_TOO(7), old: ["checked", "low"], new: ["checked", "affected"] },
+  { file: "scenarios/peer-incident/report.json", text: OUR_TOO(8), old: ["checked", "checked"], new: ["checked", "affected"] },
+  { file: "scenarios/php2shell/report.json", text: OUR_TOO(8), old: ["checked", "checked"], new: ["checked", "affected"] },
+];
 
 test("已發布報告（daily 與各情境）的摘要與決策：新舊規則逐筆比對結果相同，不多出警告", () => {
   const data = new URL("../public/data/", import.meta.url);
