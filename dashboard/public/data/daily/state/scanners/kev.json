@@ -1,9 +1,16 @@
 {
   "tool": "kev",
-  "tool_version": "2026.11.13",
-  "database_revision": "2026-11-13T20:24:18.3008Z",
-  "count": 1781,
+  "tool_version": "2026.11.17",
+  "database_revision": "2026-11-17T17:53:15.5664Z",
+  "count": 1782,
   "cves": {
+    "CVE-2026-115731": {
+      "added": "2026-11-17",
+      "vendor": "Perforce",
+      "product": "Puppet Enterprise",
+      "name": "Perforce Puppet Enterprise Deserialization of Untrusted Data Vulnerability",
+      "ransomware": false
+    },
     "CVE-2026-114713": {
       "added": "2026-11-13",
       "vendor": "UnrealIRCd",

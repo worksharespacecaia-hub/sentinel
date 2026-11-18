@@ -108,48 +108,48 @@
     "demo": false
   },
   {
-    "id": "live-cyberbiz-bvi-order-db-2026-11",
+    "id": "live-optimizely-supply-chain-2026-11",
     "kind": "live",
-    "title": "永邑（BVI臺灣）委外電商服務商順立智慧（Cyberbiz）發生資安事件，訂單資料庫遭未授權存取",
+    "title": "Optimizely 供應鏈攻擊：178 個組織網站被植入惡意 JavaScript，含臺灣匯豐官網",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
     "demo": false
   },
   {
-    "id": "live-ai-agent-attacks-tw-ecommerce-2026-11",
+    "id": "live-ai-agent-ecommerce-attacks-tw-2026-11",
     "kind": "live",
-    "title": "AI代理網攻（ARTEX）波及臺灣十餘家企業與網路平臺，逾百萬份個資受影響",
+    "title": "AI 代理工具網攻波及臺灣電商與各行業，逾百萬份個資受影響",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
     "demo": false
   },
   {
-    "id": "live-daouoffice-korea-finance-2026-11",
+    "id": "live-arara-mail-service-breach-2026-11",
     "kind": "live",
-    "title": "韓國企業協作平臺DaouOffice遭零時差漏洞攻擊與共用帳號暴力破解，至少3家金融業者受駭",
+    "title": "日本郵件發送服務 Arara 遭駭，波及約 380 家企業客戶，大阪市確認逾 107 萬筆信箱外洩",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
     "demo": false
   },
   {
-    "id": "live-metam-cs-outsourcer-2026-11",
+    "id": "live-nodejs-http2-cves-2026-11",
     "kind": "live",
-    "title": "韓國客服委外業者MetaM遭駭，加密貨幣交易所Coinone與二手交易平臺Bunjang受波及",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "need_check",
-    "demo": false
-  },
-  {
-    "id": "live-php2shell-check-point-esxi-wiper-2026-11",
-    "kind": "live",
-    "title": "Check Point 閘道遭 PHP2Shell 鏈式攻擊，VMware ESXi 主機資料被抹除",
-    "affected_count": 2,
+    "title": "Node.js 修補 16 個漏洞，含可致伺服器當機與洩漏連線資料的 HTTP/2 漏洞",
+    "affected_count": 3,
     "max_level": "high",
     "status": "open",
+    "demo": false
+  },
+  {
+    "id": "live-openjdk-java4shell-cve-2026-114938",
+    "kind": "live",
+    "title": "OpenJDK 重大漏洞 Java4Shell（CVE-2026-114938）細節公布",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "not_affected",
     "demo": false
   }
 ]

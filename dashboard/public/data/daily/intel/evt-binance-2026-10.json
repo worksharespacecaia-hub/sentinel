@@ -132,7 +132,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "程式比對出 2 項受影響：工程部門筆電（乙）持有正式部署憑證為高風險（7 分），AI 程式助理可繞過審核直接部署為中風險（4 分）；建議撤銷憑證並讓正式部署只走自動部署流程。",
+  "summary": "程式比對出 2 項受影響：員工電腦 laptop-eng-07 持有正式部署授權，位於攻擊鏈上，為高風險（7 分）；AI 程式助理可繞過審核直接部署，為中風險（4 分）。",
   "blocks": {
     "1_summary": {
       "title": "幣安 63.4 億美元駭案：假面試惡意程式入侵開發者電腦，取得容器部署憑證後攻陷錢包簽章服務",
@@ -182,7 +182,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "程式比對出 2 項受影響：工程部門筆電（乙）持有正式部署憑證為高風險（7 分），AI 程式助理可繞過審核直接部署為中風險（4 分）；建議撤銷憑證並讓正式部署只走自動部署流程。",
+      "summary": "程式比對出 2 項受影響：員工電腦 laptop-eng-07 持有正式部署授權，位於攻擊鏈上，為高風險（7 分）；AI 程式助理可繞過審核直接部署，為中風險（4 分）。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -225,7 +225,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-17T05:28:31Z"
+        "observed_at": "2026-11-18T04:54:32Z"
       },
       {
         "asset_id": "ai-code-assistant",
@@ -255,7 +255,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-17T05:28:31Z"
+        "observed_at": "2026-11-18T04:54:32Z"
       }
     ],
     "4_unaffected_and_check": {

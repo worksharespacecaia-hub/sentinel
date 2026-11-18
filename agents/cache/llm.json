@@ -6154,5 +6154,105 @@
       "task": "dispatch:live-php2shell-check-point-esxi-wiper-2026-11:phpmyadmin:php:vuln",
       "scope": "daily"
     }
+  },
+  "ed93909301b02562da756fecda1d98ff9ac2e9e88dffa8a6a96de672f0bd0adc": {
+    "output": [
+      {
+        "id": "gitlab:C-SECRET-IN-GIT",
+        "explanation": "類型為疑似資料庫連線設定（位於 config/db.yml:4），依標題屬正式環境金鑰並已進入 Git；權限範圍不明，風險高。建議立即撤銷或輪替該金鑰，清除 Git 歷史並確認是否遭存取，刪除檔案本身不構成修復。",
+        "confidence": "low"
+      },
+      {
+        "id": "brand-app:C-SECRET-IN-GIT",
+        "explanation": "類型與權限範圍不明，位於 services/brand-app/src/config.ts:3，依標題屬正式環境金鑰並已進入 Git，風險高。建議立即撤銷或輪替，改由機密管理服務注入，並清除 Git 歷史與檢視存取紀錄。",
+        "confidence": "low"
+      },
+      {
+        "id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "explanation": "屬第三方郵件服務 API 金鑰，已 465 天未輪替且未設定 IP 白名單，違反 90 天輪替與白名單規範，環境不明，風險高。建議立即輪替、設定 IP 白名單，並檢視服務商的使用紀錄是否有異常。",
+        "confidence": "high"
+      },
+      {
+        "id": "order-db-test-cred:test-secret-in-git",
+        "explanation": "屬測試環境資料庫憑證，位於 config/db.yml:7 並已進入 Git，環境為測試，權限範圍不明，風險中等。即使為測試環境仍應撤銷或輪替並移出 Git 歷史，且需確認測試資料庫未與正式環境共用帳密。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "secret-analyst",
+      "task": "secret-analyst#0",
+      "scope": "daily"
+    }
+  },
+  "187aef6dfc8157288b46743841509c9ae32afc4fb55f05ab07e2e0096a710544": {
+    "output": [
+      {
+        "id": "internal-tool:node:vuln",
+        "explanation": "node 22.11.0 經本地比對確認有 17 個已知漏洞（最高 CVSS 9.8，CVE-2026-111497 已列入 CISA KEV 且遭實際利用），其中含可致伺服器當機與洩漏連線資料的 HTTP/2 漏洞。修補版本無法確定，建議人工查證 Node.js 官方公告後升級至已修補的 22.x 版本，並人工確認 1 項待釐清的候選漏洞。",
+        "confidence": "low"
+      },
+      {
+        "id": "member-api:node:vuln",
+        "explanation": "node 22.11.0 經本地比對確認有 17 個已知漏洞（最高 CVSS 9.8，CVE-2026-111497 已列入 CISA KEV 且遭實際利用），其中含可致伺服器當機與洩漏連線資料的 HTTP/2 漏洞。修補版本無法確定，建議人工查證 Node.js 官方公告後升級至已修補的 22.x 版本，並人工確認 1 項待釐清的候選漏洞。",
+        "confidence": "low"
+      },
+      {
+        "id": "storefront:node:vuln",
+        "explanation": "node 22.11.0 經本地比對確認有 17 個已知漏洞（最高 CVSS 9.8，CVE-2026-111497 已列入 CISA KEV 且遭實際利用），其中含可致伺服器當機與洩漏連線資料的 HTTP/2 漏洞。修補版本無法確定，建議人工查證 Node.js 官方公告後升級至已修補的 22.x 版本，並人工確認 1 項待釐清的候選漏洞。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "event:live-nodejs-http2-cves-2026-11:dependency-analyst",
+      "scope": "daily"
+    }
+  },
+  "9aa87c82a981a8860bd89729c1a70b7f0d073747821363cc1bf539de45170430": {
+    "output": [
+      {
+        "id": "storefront:node:vuln",
+        "explanation": "此資產為 node 22.11.0，NVD 登錄 17 個已知漏洞，最高 CVSS 9.8（CVE-2026-111497）。依程式拆解，基礎分來自漏洞本身（3 分，CVSS 9.8），另有已遭實際利用（2 分）、可從 internet 連到（2 分）、涉及 order 與 pii 資料（1 分）、屬平台層並影響所有品牌（1 分），以及同業事件命中 live-nodejs-http2-cves-2026-11（1 分）。圖譜查詢未回傳此資產的品牌數與安裝數，因此無法確認實際影響品牌數與安裝數，僅能依拆解描述業務影響：平台層漏洞可能波及所有品牌的訂單與個資處理。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "storefront:node:vuln",
+      "scope": "daily"
+    }
+  },
+  "95cd26790a1a97b5f5fb9664dc39ac4265d87064d05e83672883f542abc0784a": {
+    "output": [
+      {
+        "id": "member-api:node:vuln",
+        "explanation": "此資產為 node 22.11.0，NVD 記錄 17 個已知漏洞，最高 CVSS 9.8（CVE-2026-111497），基礎分 3 分來自漏洞嚴重度。另有 2 分因漏洞已遭實際利用（KEV 或官方確認），1 分因資料含個資（pii），1 分因屬平台層、影響所有品牌，1 分因同業事件 live-nodejs-http2-cves-2026-11 命中。圖譜查詢顯示此資產不在本次資產範圍，因此無法補充影響品牌數、安裝數、具體資料欄位與業務衝擊的細節，這些項目於輸入資料中皆未提供。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "member-api:node:vuln",
+      "scope": "daily"
+    }
+  },
+  "31c652c538d7529c741b913a0ae0c3bae06414699558169beb132b21250a7d0f": {
+    "output": [
+      {
+        "id": "internal-tool:node:vuln",
+        "explanation": "此資產的分數拆解包含：基礎漏洞 3 分（CVSS 9.8）、已遭實際利用 2 分（KEV 或官方確認）、對外暴露 2 分（可從 internet 連到）、同業事件命中 1 分（evt-91app-2026-10、live-nodejs-http2-cves-2026-11）。提供的資料未包含影響品牌數、安裝數、資料欄位或業務影響，因此無法說明這些面向；圖譜查詢也因資產不在本次範圍而失敗。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "internal-tool:node:vuln",
+      "scope": "daily"
+    }
   }
 }

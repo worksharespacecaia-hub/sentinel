@@ -1,0 +1,559 @@
+{
+  "event": {
+    "id": "live-ai-agent-ecommerce-attacks-tw-2026-11",
+    "kind": "live",
+    "title": "AI 代理工具網攻波及臺灣電商與各行業，逾百萬份個資受影響",
+    "date": "2026-11-16",
+    "industry": "電商",
+    "attack_chain": [
+      "境外駭客利用 AI 代理工具，主要為中國開源自動化滲透測試工具 ARTEX",
+      "繞過前端介面直接呼叫後端 API",
+      "利用已知漏洞及遭竊憑證入侵",
+      "取得姓名、電話、電子郵件與訂單明細等個資"
+    ],
+    "attck": [
+      "T1190",
+      "T1078"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180566",
+        "title": "【資安日報】11月17日，國家級駭客組織SilentAir鎖定臺灣等十多個國家的手機用戶，濫用電信訊號攔截簡訊與通話",
+        "quote": "攻擊者主要利用中國開源自動化滲透測試工具ARTEX，繞過前端介面直接呼叫後端API，並利用已知漏洞及遭竊憑證入侵。",
+        "published": "2026-11-16",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-18T04:54:32Z",
+        "content_hash": "sha256:7a2eb9544d0a9a0ab5c6a05ac602b3f67b3078a6464c038f5adadd4797bc0fda",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "後端 API 需獨立驗證身分與授權，並設呼叫頻率及流量限制",
+        "reason": "來源指出攻擊者繞過前端直接呼叫後端 API，資安署並建議 API 實施頻率與流量限制、監控資料庫異常存取，現有控制項沒有涵蓋。"
+      },
+      {
+        "title": "閒置系統需下架，帳號異動後強制登出並更換密碼",
+        "reason": "來源提到資安院建議企業下架閒置系統、強制登出並更換密碼，因攻擊利用已知漏洞與遭竊憑證。"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-ai-agent-ecommerce-attacks-tw-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：後端 API 需獨立驗證身分與授權，並設呼叫頻率及流量限制",
+        "建議新增控制項：閒置系統需下架，帳號異動後強制登出並更換密碼"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "db-exposed",
+          "source": "rule",
+          "inferred": true,
+          "target": "database",
+          "hypothesis": "資料庫或資料庫管理工具可以從外部或其他環境直接連線",
+          "why": "資料庫遭大量讀取的事件，常見原因是資料庫或管理工具允許的連線範圍過寬",
+          "check": "確認存放個資與訂單的資料庫及資料庫管理工具，只允許必要的來源連線",
+          "how": "查防火牆與安全群組規則、資料庫的允許來源設定，以及資料庫管理工具是否對外",
+          "plain": "資料庫或管理工具可能可以被直接連上",
+          "basis": "事件標題提到「個資」",
+          "systems": [
+            {
+              "asset_id": "firebase-brand-app-storage",
+              "label": "App 雲端檔案儲存區"
+            },
+            {
+              "asset_id": "member-db-prod",
+              "label": "正式會員資料庫"
+            },
+            {
+              "asset_id": "order-db-prod",
+              "label": "正式訂單資料庫"
+            },
+            {
+              "asset_id": "order-exports-bucket",
+              "label": "訂單匯出檔案儲存區"
+            },
+            {
+              "asset_id": "phpmyadmin",
+              "label": "資料庫網頁管理工具"
+            }
+          ],
+          "controls": [
+            {
+              "control_id": "C-INTERNAL-TOOL-EXPOSED",
+              "title": "內部工具不得對外開放",
+              "status": "fail",
+              "status_label": "不符合"
+            },
+            {
+              "control_id": "C-NET-SEGMENT",
+              "title": "非正式環境不得連線正式資料庫",
+              "status": "fail",
+              "status_label": "不符合"
+            },
+            {
+              "control_id": "C-CLOUD-STORAGE-PUBLIC",
+              "title": "雲端儲存空間不得公開讀取",
+              "status": "fail",
+              "status_label": "不符合"
+            }
+          ]
+        },
+        {
+          "id": "server-unpatched",
+          "source": "rule",
+          "inferred": true,
+          "target": "server",
+          "hypothesis": "對外系統有未修補的漏洞被利用",
+          "why": "對外系統的已知漏洞是常見的入侵入口",
+          "check": "列出對外系統與元件版本，對照近期安全公告並排定修補",
+          "how": "查弱點掃描報告、元件版本清單與修補紀錄",
+          "plain": "對外系統可能有沒修補的漏洞",
+          "basis": "攻擊過程第 3 步提到「漏洞」；ATT&CK T1190",
+          "systems": [
+            {
+              "asset_id": "api-gateway",
+              "label": "API 閘道"
+            },
+            {
+              "asset_id": "internal-tool",
+              "label": "內部營運工具"
+            },
+            {
+              "asset_id": "marketing-site",
+              "label": "行銷官網"
+            },
+            {
+              "asset_id": "nas-office-01",
+              "label": "辦公室 NAS"
+            },
+            {
+              "asset_id": "storefront",
+              "label": "商店網站"
+            }
+          ],
+          "controls": []
+        },
+        {
+          "id": "endpoint-token",
+          "source": "rule",
+          "inferred": true,
+          "target": "endpoint",
+          "hypothesis": "員工電腦中毒，電腦上存的登入權杖或金鑰被拿走",
+          "why": "員工電腦上常存有部署或雲端權杖，中毒後會一起外流",
+          "check": "確認員工電腦上沒有長期有效的部署或雲端權杖，並檢查端點防護告警",
+          "how": "查端點管理平台的告警、電腦上的權杖清單與權杖有效期限",
+          "plain": "員工電腦上的登入權杖可能被偷走",
+          "basis": "ATT&CK T1078",
+          "systems": [
+            {
+              "asset_id": "fileserver-01",
+              "label": "辦公室檔案伺服器"
+            },
+            {
+              "asset_id": "laptop-eng-03",
+              "label": "工程部門筆電（甲）"
+            },
+            {
+              "asset_id": "laptop-eng-07",
+              "label": "工程部門筆電（乙）"
+            },
+            {
+              "asset_id": "laptop-ops-02",
+              "label": "維運部門筆電"
+            },
+            {
+              "asset_id": "nas-office-01",
+              "label": "辦公室 NAS"
+            }
+          ],
+          "controls": [
+            {
+              "control_id": "C-DEV-DEVICE-TOKEN",
+              "title": "員工電腦不得持有正式部署權杖",
+              "status": "fail",
+              "status_label": "不符合"
+            }
+          ]
+        },
+        {
+          "id": "db-cred-leak",
+          "source": "rule",
+          "inferred": true,
+          "target": "database",
+          "hypothesis": "資料庫帳密或連線字串外洩（放在程式碼、設定檔或員工電腦上）",
+          "why": "拿到資料庫帳密就能不靠漏洞直接讀取資料",
+          "check": "確認資料庫帳密沒有放在程式碼或設定檔中，疑似外洩時立即輪替",
+          "how": "查程式碼倉庫的金鑰掃描結果、設定檔，以及部署用的機密管理設定",
+          "plain": "資料庫的帳號密碼可能外流被拿來登入",
+          "basis": "事件標題提到「個資」",
+          "systems": [
+            {
+              "asset_id": "order-db-prod-cred",
+              "label": "正式訂單資料庫帳密"
+            },
+            {
+              "asset_id": "order-db-test-cred",
+              "label": "測試訂單資料庫帳密"
+            }
+          ],
+          "controls": [
+            {
+              "control_id": "C-SECRET-IN-GIT",
+              "title": "Git 中不得有正式環境金鑰",
+              "status": "fail",
+              "status_label": "不符合"
+            },
+            {
+              "control_id": "C-DEV-DEVICE-TOKEN",
+              "title": "員工電腦不得持有正式部署權杖",
+              "status": "fail",
+              "status_label": "不符合"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "程式無法自動判定：事件沒有可比對的產品或控制項，需要人工確認。可先檢查資料庫或管理工具是否可被直接連上、對外系統是否有未修補漏洞，以及員工電腦上的登入授權與資料庫帳密是否可能外流。",
+  "blocks": {
+    "1_summary": {
+      "title": "AI 代理工具網攻波及臺灣電商與各行業，逾百萬份個資受影響",
+      "date": "2026-11-16",
+      "industry": "電商",
+      "attack_chain": [
+        "境外駭客利用 AI 代理工具，主要為中國開源自動化滲透測試工具 ARTEX",
+        "繞過前端介面直接呼叫後端 API",
+        "利用已知漏洞及遭竊憑證入侵",
+        "取得姓名、電話、電子郵件與訂單明細等個資"
+      ],
+      "attck": [
+        "T1190",
+        "T1078"
+      ],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180566",
+          "title": "【資安日報】11月17日，國家級駭客組織SilentAir鎖定臺灣等十多個國家的手機用戶，濫用電信訊號攔截簡訊與通話",
+          "quote": "攻擊者主要利用中國開源自動化滲透測試工具ARTEX，繞過前端介面直接呼叫後端API，並利用已知漏洞及遭竊憑證入侵。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-18T04:54:32Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "程式無法自動判定：事件沒有可比對的產品或控制項，需要人工確認。可先檢查資料庫或管理工具是否可被直接連上、對外系統是否有未修補漏洞，以及員工電腦上的登入授權與資料庫帳密是否可能外流。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：後端 API 需獨立驗證身分與授權，並設呼叫頻率及流量限制",
+            "建議新增控制項：閒置系統需下架，帳號異動後強制登出並更換密碼"
+          ],
+          "observed_at": "2026-11-18T04:54:32Z",
+          "suggestions": [
+            {
+              "id": "db-exposed",
+              "source": "rule",
+              "inferred": true,
+              "target": "database",
+              "hypothesis": "資料庫或資料庫管理工具可以從外部或其他環境直接連線",
+              "why": "資料庫遭大量讀取的事件，常見原因是資料庫或管理工具允許的連線範圍過寬",
+              "check": "確認存放個資與訂單的資料庫及資料庫管理工具，只允許必要的來源連線",
+              "how": "查防火牆與安全群組規則、資料庫的允許來源設定，以及資料庫管理工具是否對外",
+              "plain": "資料庫或管理工具可能可以被直接連上",
+              "basis": "事件標題提到「個資」",
+              "systems": [
+                {
+                  "asset_id": "firebase-brand-app-storage",
+                  "label": "App 雲端檔案儲存區"
+                },
+                {
+                  "asset_id": "member-db-prod",
+                  "label": "正式會員資料庫"
+                },
+                {
+                  "asset_id": "order-db-prod",
+                  "label": "正式訂單資料庫"
+                },
+                {
+                  "asset_id": "order-exports-bucket",
+                  "label": "訂單匯出檔案儲存區"
+                },
+                {
+                  "asset_id": "phpmyadmin",
+                  "label": "資料庫網頁管理工具"
+                }
+              ],
+              "controls": [
+                {
+                  "control_id": "C-INTERNAL-TOOL-EXPOSED",
+                  "title": "內部工具不得對外開放",
+                  "status": "fail",
+                  "status_label": "不符合"
+                },
+                {
+                  "control_id": "C-NET-SEGMENT",
+                  "title": "非正式環境不得連線正式資料庫",
+                  "status": "fail",
+                  "status_label": "不符合"
+                },
+                {
+                  "control_id": "C-CLOUD-STORAGE-PUBLIC",
+                  "title": "雲端儲存空間不得公開讀取",
+                  "status": "fail",
+                  "status_label": "不符合"
+                }
+              ]
+            },
+            {
+              "id": "server-unpatched",
+              "source": "rule",
+              "inferred": true,
+              "target": "server",
+              "hypothesis": "對外系統有未修補的漏洞被利用",
+              "why": "對外系統的已知漏洞是常見的入侵入口",
+              "check": "列出對外系統與元件版本，對照近期安全公告並排定修補",
+              "how": "查弱點掃描報告、元件版本清單與修補紀錄",
+              "plain": "對外系統可能有沒修補的漏洞",
+              "basis": "攻擊過程第 3 步提到「漏洞」；ATT&CK T1190",
+              "systems": [
+                {
+                  "asset_id": "api-gateway",
+                  "label": "API 閘道"
+                },
+                {
+                  "asset_id": "internal-tool",
+                  "label": "內部營運工具"
+                },
+                {
+                  "asset_id": "marketing-site",
+                  "label": "行銷官網"
+                },
+                {
+                  "asset_id": "nas-office-01",
+                  "label": "辦公室 NAS"
+                },
+                {
+                  "asset_id": "storefront",
+                  "label": "商店網站"
+                }
+              ],
+              "controls": []
+            },
+            {
+              "id": "endpoint-token",
+              "source": "rule",
+              "inferred": true,
+              "target": "endpoint",
+              "hypothesis": "員工電腦中毒，電腦上存的登入權杖或金鑰被拿走",
+              "why": "員工電腦上常存有部署或雲端權杖，中毒後會一起外流",
+              "check": "確認員工電腦上沒有長期有效的部署或雲端權杖，並檢查端點防護告警",
+              "how": "查端點管理平台的告警、電腦上的權杖清單與權杖有效期限",
+              "plain": "員工電腦上的登入權杖可能被偷走",
+              "basis": "ATT&CK T1078",
+              "systems": [
+                {
+                  "asset_id": "fileserver-01",
+                  "label": "辦公室檔案伺服器"
+                },
+                {
+                  "asset_id": "laptop-eng-03",
+                  "label": "工程部門筆電（甲）"
+                },
+                {
+                  "asset_id": "laptop-eng-07",
+                  "label": "工程部門筆電（乙）"
+                },
+                {
+                  "asset_id": "laptop-ops-02",
+                  "label": "維運部門筆電"
+                },
+                {
+                  "asset_id": "nas-office-01",
+                  "label": "辦公室 NAS"
+                }
+              ],
+              "controls": [
+                {
+                  "control_id": "C-DEV-DEVICE-TOKEN",
+                  "title": "員工電腦不得持有正式部署權杖",
+                  "status": "fail",
+                  "status_label": "不符合"
+                }
+              ]
+            },
+            {
+              "id": "db-cred-leak",
+              "source": "rule",
+              "inferred": true,
+              "target": "database",
+              "hypothesis": "資料庫帳密或連線字串外洩（放在程式碼、設定檔或員工電腦上）",
+              "why": "拿到資料庫帳密就能不靠漏洞直接讀取資料",
+              "check": "確認資料庫帳密沒有放在程式碼或設定檔中，疑似外洩時立即輪替",
+              "how": "查程式碼倉庫的金鑰掃描結果、設定檔，以及部署用的機密管理設定",
+              "plain": "資料庫的帳號密碼可能外流被拿來登入",
+              "basis": "事件標題提到「個資」",
+              "systems": [
+                {
+                  "asset_id": "order-db-prod-cred",
+                  "label": "正式訂單資料庫帳密"
+                },
+                {
+                  "asset_id": "order-db-test-cred",
+                  "label": "測試訂單資料庫帳密"
+                }
+              ],
+              "controls": [
+                {
+                  "control_id": "C-SECRET-IN-GIT",
+                  "title": "Git 中不得有正式環境金鑰",
+                  "status": "fail",
+                  "status_label": "不符合"
+                },
+                {
+                  "control_id": "C-DEV-DEVICE-TOKEN",
+                  "title": "員工電腦不得持有正式部署權杖",
+                  "status": "fail",
+                  "status_label": "不符合"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    },
+    "8_extra_checks": [
+      {
+        "control_id": "C-CLOUD-STORAGE-PUBLIC",
+        "title": "雲端儲存空間不得公開讀取",
+        "status": "fail",
+        "assets": [
+          {
+            "asset_id": "firebase-brand-app-storage",
+            "evidence": [
+              "firebase-config.json: /user-uploads/{allPaths=**} read if true",
+              "external-scan.json: storage.shopsaas-demo.example 可匿名列出內容"
+            ]
+          },
+          {
+            "asset_id": "order-exports-bucket",
+            "evidence": [
+              "external-scan.json: shopsaas-demo-order-exports.s3.example 可匿名列出內容",
+              "infra/terraform/main.tf: aws_s3_bucket_acl acl = \"public-read\""
+            ]
+          }
+        ],
+        "check_reason": "雲端儲存空間可公開讀取",
+        "suggested_reason": "事件手法涉及繞過前端直接取得資料，相關系統含雲端儲存區與訂單匯出儲存區，需確認未公開讀取。",
+        "status_label": "不符合"
+      },
+      {
+        "control_id": "C-NET-SEGMENT",
+        "title": "非正式環境不得連線正式資料庫",
+        "status": "fail",
+        "assets": [
+          {
+            "asset_id": "order-db-prod",
+            "evidence": [
+              "network.json: order-db-test（test）→ order-db-prod:5432"
+            ]
+          }
+        ],
+        "check_reason": "非正式環境可直連正式資料庫",
+        "suggested_reason": "事件利用遭竊憑證入侵，相關系統含測試與正式資料庫憑證，需確認非正式環境無法連到正式資料庫。",
+        "status_label": "不符合"
+      },
+      {
+        "control_id": "C-DEV-DEVICE-TOKEN",
+        "title": "員工電腦不得持有正式部署權杖",
+        "status": "fail",
+        "assets": [
+          {
+            "asset_id": "laptop-eng-07",
+            "evidence": [
+              "mdm.json: laptop-eng-07 有 ~/.config/pipeline/token",
+              "secrets.json: deploy-token-eng07 → deploy-pipeline"
+            ]
+          }
+        ],
+        "check_reason": "員工電腦持有正式部署權杖",
+        "suggested_reason": "破口推測提到員工電腦的登入權杖可能被偷走，相關系統含多台員工筆電。",
+        "status_label": "不符合"
+      }
+    ]
+  },
+  "orchestrator_results": [
+    {
+      "stage": "review",
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "target_type": "event",
+      "target_id": "live-ai-agent-ecommerce-attacks-tw-2026-11",
+      "text": "程式無法自動判定：事件沒有可比對的產品或控制項，需要人工確認。可先檢查資料庫或管理工具是否可被直接連上、對外系統是否有未修補漏洞，以及員工電腦上的登入授權與資料庫帳密是否可能外流。",
+      "source": "live"
+    }
+  ]
+}

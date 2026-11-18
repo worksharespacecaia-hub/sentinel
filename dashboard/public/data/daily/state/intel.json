@@ -1542,128 +1542,101 @@
       "generated_at": "2026-11-10T17:04:44Z"
     },
     {
-      "id": "live-cyberbiz-bvi-order-db-2026-11",
+      "id": "live-optimizely-supply-chain-2026-11",
       "kind": "live",
       "is_update_of": null,
-      "title": "永邑（BVI臺灣）委外電商服務商順立智慧（Cyberbiz）發生資安事件，訂單資料庫遭未授權存取",
+      "title": "Optimizely 供應鏈攻擊：178 個組織網站被植入惡意 JavaScript，含臺灣匯豐官網",
       "date": "2026-11-16",
-      "industry": "電商",
+      "industry": "SaaS",
       "attack_chain": [
-        "委外電商服務商順立智慧的部分資料庫遭未經授權的異常存取，包含線上商店訂單相關資料",
-        "BVI臺灣接獲服務商通知後啟動資安事件應變及處理流程",
-        "BVI臺灣發布公告並以電子郵件通知會員及消費者提高防詐騙警覺"
-      ],
-      "attck": [
-        "T1199"
-      ],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://www.ithome.com.tw/news/180550",
-          "title": "貿易百貨公司永邑委外電商服務商發生資安事件，訂單資料庫遭未授權存取",
-          "quote": "貿易百貨公司永邑委外電商服務商發生資安事件，訂單資料庫遭未授權存取",
-          "published": "2026-11-17",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-17T05:28:31Z",
-          "content_hash": "sha256:fb0fd007d6c1c307ac1fe3e0471548458d5a5d5cfa44fdbee718716edcb4fb94",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [
-        {
-          "title": "委外電商平臺的訂單資料庫須有異常存取偵測與事件通報時限",
-          "reason": "來源指出訂單資料庫在委外服務商端遭未授權存取，品牌端是接獲通知後才得知；現有控制項沒有涵蓋委外服務商資料存取監控與通報時限。"
-        }
-      ],
-      "demo": false,
-      "facts": [],
-      "summary": "永邑公告其臺灣分公司線上商店平臺的委外服務商順立智慧（Cyberbiz）發生資安事件，部分資料庫遭未經授權的異常存取，包含線上商店訂單相關資料。BVI臺灣已啟動應變並以公告與電子郵件通知會員提高防詐警覺。",
-      "fixture_note": null,
-      "possible_entry_points": [
-        {
-          "text": "委外電商/寄信等第三方服務商可能是我們資料的破口",
-          "check": "盤點使用的委外電商、寄信等第三方服務，確認是否使用 Cyberbiz；查各服務商能存取的訂單欄位、帳號權限，並向服務商確認有無異常存取通知",
-          "systems": [
-            "storefront",
-            "mail-service",
-            "order-db-prod"
-          ],
-          "basis": "攻擊過程第 1 步：事件發生在委外服務商端的資料庫，而非品牌端系統"
-        }
-      ],
-      "brand": null
-    },
-    {
-      "id": "live-ai-agent-attacks-tw-ecommerce-2026-11",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "AI代理網攻（ARTEX）波及臺灣十餘家企業與網路平臺，逾百萬份個資受影響",
-      "date": "2026-11-16",
-      "industry": "電商",
-      "attack_chain": [
-        "攻擊者使用開源AI自動化滲透測試工具ARTEX",
-        "AI攻擊程式跳過前端畫面，直接呼叫後端API",
-        "攻擊者鎖定後端API與憑證漏洞",
-        "部分攻擊者利用香港等地的海外跳板掩飾身分與位置",
-        "訂單與聯絡資料流入黑市，衍生冒名詐騙風險"
+        "未經授權者利用 Optimizely Experimentation 產品的漏洞，在部分客戶專案中加入惡意 JavaScript",
+        "惡意程式碼寫入客戶專案的 projectJS 欄位，檔案仍由合法的 cdn.optimizely.com 提供",
+        "訪客瀏覽受影響網站時，瀏覽器載入並執行含惡意程式的 Optimizely 程式片段",
+        "將網頁、剪貼簿與網路請求中的加密貨幣錢包地址替換成攻擊者控制的地址",
+        "監看表單與網路請求，竊取卡號、有效期限與 CVV，並嘗試傳送至攻擊者的 /card.php",
+        "取得未設 HttpOnly 的 Cookie 與頁面截圖，傳送至攻擊者控制的伺服器",
+        "若訪客使用舊版 iPhone 或 iPad，依作業系統版本載入 Coruna 與 DarkSword iOS 漏洞利用工具包"
       ],
       "attck": [
         "T1190",
-        "T1199",
-        "T1090"
+        "T1195",
+        "T1059.007",
+        "T1565.002",
+        "T1115",
+        "T1056",
+        "T1539",
+        "T1113",
+        "T1041",
+        "T1189"
       ],
       "cves": [],
       "products": [],
       "revision": "1",
       "controls": [],
-      "confidence": "provisional",
+      "confidence": "confirmed",
       "sources": [
         {
-          "url": "https://www.ithome.com.tw/news/180535",
-          "title": "AI代理網攻波及臺灣十餘家企業，逾百萬份個資受影響",
-          "quote": "目前臺灣已有十餘家企業及網路平臺通報受害，受影響個資累計超過100萬份。",
-          "published": "2026-11-16",
+          "url": "https://www.ithome.com.tw/news/180588",
+          "title": "Optimizely供應鏈攻擊波及BBC、GitLab、IKEA等178個組織網站，匯豐臺灣也名列其中",
+          "quote": "此外，匯豐銀行在多個國家的網站也列入受影響名單，其中包括臺灣匯豐銀行官網（www.hsbc.com.tw）。",
+          "published": "2026-11-18",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-17T05:28:31Z",
-          "content_hash": "sha256:650096cd9256d6e6515f63ef5a4dae643ece393cf1431ad772eab35e7956c40d",
+          "verified_at": "2026-11-18T04:54:32Z",
+          "content_hash": "sha256:dd484541ea27ca9529342bbc89b313e17aa23ce5f1a7488ed65176389520c7d6",
+          "verification_basis": "live"
+        },
+        {
+          "url": "https://cyberq.tw/2026/11/18/optimizely-supply-chain-attack-taiwan/",
+          "title": "Optimizely 供應鏈攻擊波及 178 家機構：匯豐台灣列名，惡意腳本鎖定加密貨幣與 iPhone",
+          "quote": "信用卡側錄 檢查卡號、有效期限與安全碼，取得符合條件的組合後，嘗試傳送至攻擊者的 /card.php 。",
+          "published": "2026-11-18",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-18T04:54:32Z",
+          "content_hash": "sha256:29b00ecbec3b793bf3a08c2ea238a4421d32a05cd3a79d82855900a66a9fc137",
+          "verification_basis": "live"
+        },
+        {
+          "url": "https://infosecu.technews.tw/2026/11/18/popular-websites-compromised-in-bid-to-steal-crypto-target-iphone-users/",
+          "title": "Zoom 等 178 網站遭惡意程式波及，第三方軟體成資安隱憂",
+          "quote": "這起事件影響全球 178 個機構網站，部分企業已停用相關第三方程式碼。",
+          "published": "2026-11-18",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-18T04:54:32Z",
+          "content_hash": "sha256:014287b49037e4ba16d8ecdb30405085d055faf5b92fff74dd31dc7184eaadca",
           "verification_basis": "live"
         }
       ],
       "proposed_controls": [
         {
-          "title": "後端API須獨立驗證身分與授權，不得僅依賴前端控管",
-          "reason": "來源指出攻擊特徵是繞過前端直接攻擊後端API與憑證漏洞；現有控制項沒有涵蓋後端API授權驗證與異常呼叫偵測。"
+          "title": "網站載入的第三方 JavaScript 需有清單、完整性檢查與內容安全政策限制",
+          "reason": "來源指出網站自己的程式庫沒被修改，惡意程式卻從可信任的第三方網域送進訪客瀏覽器，現有控制項沒有涵蓋第三方腳本。"
         }
       ],
       "demo": false,
       "facts": [],
-      "summary": "數發部指出境外駭客自7月起使用AI代理工具攻擊，近期擴大到網路商店與電商平臺，臺灣已有十餘家企業及網路平臺通報受害，個資逾100萬份。尚未發現信用卡等付款資訊外洩，但訂單與聯絡資料流入黑市。",
+      "summary": "網站實驗服務 Optimizely 的 Experimentation 產品遭人利用漏洞，在部分客戶專案的 projectJS 欄位植入惡意 JavaScript。研究員檢查 1,611 個程式片段，188 個遭植入，涉及 178 個組織。惡意程式會替換加密貨幣錢包地址、竊取信用卡資料，並對舊版 iOS 裝置載入漏洞利用工具包；實際被竊資料數量無法確認。",
       "fixture_note": null,
       "possible_entry_points": [],
       "brand": null
     },
     {
-      "id": "live-daouoffice-korea-finance-2026-11",
+      "id": "live-ai-agent-ecommerce-attacks-tw-2026-11",
       "kind": "live",
       "is_update_of": null,
-      "title": "韓國企業協作平臺DaouOffice遭零時差漏洞攻擊與共用帳號暴力破解，至少3家金融業者受駭",
+      "title": "AI 代理工具網攻波及臺灣電商與各行業，逾百萬份個資受影響",
       "date": "2026-11-16",
-      "industry": "SaaS",
+      "industry": "電商",
       "attack_chain": [
-        "攻擊者利用DaouOffice存取控制不足漏洞，在修補程式發布前攻擊Bithumb與漢陽證券",
-        "另一起事件中，攻擊者從海外IP位址對協作平臺登入介面自動大量嘗試密碼",
-        "猜中部分企業共用帳號的密碼並登入",
-        "嘗試存取管理員功能、查詢其他使用者資料及重設密碼均遭阻擋"
+        "境外駭客利用 AI 代理工具，主要為中國開源自動化滲透測試工具 ARTEX",
+        "繞過前端介面直接呼叫後端 API",
+        "利用已知漏洞及遭竊憑證入侵",
+        "取得姓名、電話、電子郵件與訂單明細等個資"
       ],
       "attck": [
         "T1190",
-        "T1110.001",
         "T1078"
       ],
       "cves": [],
@@ -1673,43 +1646,49 @@
       "confidence": "provisional",
       "sources": [
         {
-          "url": "https://www.ithome.com.tw/news/180522",
-          "title": "韓國企業協作平臺DaouOffice傳遭零時差漏洞攻擊，客戶共用帳號又遭暴力破解，至少3家金融業者受駭",
-          "quote": "韓國企業協作平臺DaouOffice傳遭零時差漏洞攻擊，客戶共用帳號又遭暴力破解，至少3家金融業者受駭",
+          "url": "https://www.ithome.com.tw/news/180566",
+          "title": "【資安日報】11月17日，國家級駭客組織SilentAir鎖定臺灣等十多個國家的手機用戶，濫用電信訊號攔截簡訊與通話",
+          "quote": "攻擊者主要利用中國開源自動化滲透測試工具ARTEX，繞過前端介面直接呼叫後端API，並利用已知漏洞及遭竊憑證入侵。",
           "published": "2026-11-16",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-17T05:28:31Z",
-          "content_hash": "sha256:ba9189a2b58b6e8161c69607220e49090b0bcf4da04042045101019a2df6c32b",
+          "verified_at": "2026-11-18T04:54:32Z",
+          "content_hash": "sha256:7a2eb9544d0a9a0ab5c6a05ac602b3f67b3078a6464c038f5adadd4797bc0fda",
           "verification_basis": "live"
         }
       ],
       "proposed_controls": [
         {
-          "title": "協作與郵件平臺禁用共用帳號，並啟用MFA與暴力破解鎖定",
-          "reason": "來源指出Flybit事件是攻擊者從海外IP自動猜中共用帳號密碼後登入；現有控制項沒有涵蓋帳號強度、MFA與登入嘗試限制。"
+          "title": "後端 API 需獨立驗證身分與授權，並設呼叫頻率及流量限制",
+          "reason": "來源指出攻擊者繞過前端直接呼叫後端 API，資安署並建議 API 實施頻率與流量限制、監控資料庫異常存取，現有控制項沒有涵蓋。"
+        },
+        {
+          "title": "閒置系統需下架，帳號異動後強制登出並更換密碼",
+          "reason": "來源提到資安院建議企業下架閒置系統、強制登出並更換密碼，因攻擊利用已知漏洞與遭竊憑證。"
         }
       ],
       "demo": false,
       "facts": [],
-      "summary": "DaouOffice 3.6.8.5及更早版本的存取控制不足漏洞遭利用，波及Bithumb與漢陽證券；另一起Flybit事件則是攻擊者從海外IP大量嘗試密碼，猜中部分企業共用帳號密碼。3家業者均傳出客戶或員工個資外洩。",
+      "summary": "數位發展部指出，境外駭客自今年 7 月起利用 AI 代理工具發動網攻，近期擴及臺灣電商，十餘家企業通報受害，逾 100 萬份個資受影響，含姓名、電話、電子郵件與訂單明細。目前尚未發現信用卡等付款資訊外洩。",
       "fixture_note": null,
       "possible_entry_points": [],
       "brand": null
     },
     {
-      "id": "live-metam-cs-outsourcer-2026-11",
+      "id": "live-arara-mail-service-breach-2026-11",
       "kind": "live",
       "is_update_of": null,
-      "title": "韓國客服委外業者MetaM遭駭，加密貨幣交易所Coinone與二手交易平臺Bunjang受波及",
-      "date": "2026-11-16",
-      "industry": "電商",
+      "title": "日本郵件發送服務 Arara 遭駭，波及約 380 家企業客戶，大阪市確認逾 107 萬筆信箱外洩",
+      "date": "2026-11-18",
+      "industry": "SaaS",
       "attack_chain": [
-        "MetaM部分內部伺服器遭外部人士未經授權存取，11月12日前已有異常存取及查詢活動",
-        "客戶客服系統中的電話號碼、客服對話紀錄等資料遭非法存取",
-        "MetaM封鎖攻擊IP、隔離伺服器、更換管理員帳號密碼並通報KISA"
+        "郵件發送服務業者 Arara 遭駭（來源未說明初始入侵手法）",
+        "約 8,133 萬筆電子郵件地址已外洩或可能外流，最多波及約 380 家企業客戶",
+        "攻擊者利用遭入侵的郵件服務，寄出最多約 713 萬封冒充信用卡公司的可疑郵件",
+        "大阪市委外商 TKC 因使用該服務，1,078,713 筆電子郵件地址外洩"
       ],
       "attck": [
+        "T1566",
         "T1199"
       ],
       "cves": [],
@@ -1719,111 +1698,65 @@
       "confidence": "provisional",
       "sources": [
         {
-          "url": "https://www.ithome.com.tw/news/180545",
-          "title": "韓國客服委外業者MetaM遭駭，加密貨幣交易所Coinone受波及",
-          "quote": "韓國客服委外業者MetaM遭駭，加密貨幣交易所Coinone受波及",
-          "published": "2026-11-16",
+          "url": "https://www.ithome.com.tw/news/180555",
+          "title": "Arara郵件服務遭駭，日本大阪市確認逾107萬筆電子郵件地址外洩",
+          "quote": "攻擊者還利用遭入侵的郵件服務，寄送最多約713萬封冒充信用卡公司的可疑郵件。",
+          "published": "2026-11-18",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-17T05:28:31Z",
-          "content_hash": "sha256:5fc2e10e056886596c70acc9bb9edaa294969329e5e4ec7c472e9fc28db8e3bc",
+          "verified_at": "2026-11-18T04:54:32Z",
+          "content_hash": "sha256:ca1b964d579a453c5db6b4357a46cd4cd8433df8e0fb479274cf07d874c8e379",
           "verification_basis": "live"
         }
       ],
-      "proposed_controls": [
-        {
-          "title": "委外客服系統須限縮留存敏感個資並遮罩帳號等欄位",
-          "reason": "來源指出客服紀錄含銀行帳號、身分證號碼，通話錄音與逐字稿也可能含銀行帳號；現有控制項沒有涵蓋委外客服資料最小化。"
-        }
-      ],
+      "proposed_controls": [],
       "demo": false,
       "facts": [],
-      "summary": "MetaM於11月12日發現客服服務異常，查出部分內部伺服器遭外部人士未經授權存取，涉及電話號碼與客服對話紀錄。Coinone確認受影響，二手交易平臺Bunjang也公告其委外客服系統遭非法存取，入侵途徑仍在調查。",
+      "summary": "Arara 公布的調查結果指出，約 8,133 萬筆電子郵件地址已外洩或可能外流，最多波及約 380 家企業客戶，包括零售商 BIC Camera。攻擊者還利用遭入侵的郵件服務寄出最多約 713 萬封冒充信用卡公司的可疑郵件。大阪市委外商 TKC 使用該服務，1,078,713 筆電子郵件地址外洩。",
       "fixture_note": null,
-      "possible_entry_points": [],
+      "possible_entry_points": [
+        {
+          "text": "寄信服務供應商若同樣遭駭，客戶信箱與寄信額度可能被濫用",
+          "check": "向採購或負責團隊確認寄信服務供應商是否為 Arara；若是，檢查寄信紀錄有無異常大量或冒名郵件，並評估輪替寄信服務金鑰",
+          "systems": [
+            "mail-service",
+            "mail-api-key"
+          ],
+          "basis": "攻擊過程第 1、3 步：郵件服務業者遭駭，且被用來寄出冒充信用卡公司的郵件，來源未交代入侵手法"
+        }
+      ],
       "brand": null
     },
     {
-      "id": "live-php2shell-check-point-esxi-wiper-2026-11",
+      "id": "live-nodejs-http2-cves-2026-11",
       "kind": "live",
-      "is_update_of": "evt-php2shell-2026-10",
-      "title": "Check Point 閘道遭 PHP2Shell 鏈式攻擊，VMware ESXi 主機資料被抹除",
-      "date": "2026-11-15",
+      "is_update_of": null,
+      "title": "Node.js 修補 16 個漏洞，含可致伺服器當機與洩漏連線資料的 HTTP/2 漏洞",
+      "date": "2026-11-11",
       "industry": "其他",
-      "attack_chain": [
-        "Check Point 安全閘道遭 PHP2Shell 攻擊",
-        "攻擊者把多個漏洞串成鏈，從邊界設備一路打進虛擬化底層",
-        "在 VMware ESXi 主機上部署抹除型惡意程式"
-      ],
+      "attack_chain": [],
       "attck": [
         "T1190",
-        "T1068",
-        "T1485"
+        "T1499",
+        "T1005"
       ],
       "cves": [
-        "CVE-2026-109618",
-        "CVE-2026-109619",
-        "CVE-2026-123039"
+        "CVE-2026-123863",
+        "CVE-2026-123864",
+        "CVE-2026-123866"
       ],
       "products": [
         {
-          "name": "php",
-          "ecosystem": "php",
+          "name": "node",
+          "ecosystem": "generic",
           "affected": [
             {
-              "introduced": "8.2.0",
-              "fixed": "8.2.35"
-            },
-            {
-              "introduced": "8.3.0",
-              "fixed": "8.3.36"
-            },
-            {
-              "introduced": "8.4.0",
-              "fixed": "8.4.27"
-            },
-            {
-              "introduced": "8.5.0",
-              "fixed": "8.5.12"
-            },
-            {
-              "introduced": "8.1.0",
-              "fixed": null
-            },
-            {
-              "introduced": "8.0.0",
-              "fixed": null
-            },
-            {
-              "introduced": "7.4.0",
-              "fixed": null
+              "introduced": null,
+              "fixed": "22.23.5"
             }
           ],
-          "conditions": [
-            {
-              "key": "serves_web_requests",
-              "equals": true,
-              "source_ref": 0
-            }
-          ],
-          "unknown_below": "7.4.0",
-          "aggravating_conditions": [
-            {
-              "key": "session.upload_progress.enabled",
-              "equals": "On",
-              "source_ref": 0,
-              "applies_to": "CVE-2026-109619"
-            }
-          ],
-          "cvss": 9.2,
-          "known_exploited": true,
-          "impact": "remote_code_execution",
-          "confirmed": true,
-          "source_refs": [
-            0,
-            1,
-            2
-          ]
+          "cvss": 8.2,
+          "impact": "denial_of_service"
         }
       ],
       "revision": "1",
@@ -1831,30 +1764,93 @@
       "confidence": "provisional",
       "sources": [
         {
-          "url": "https://cyberq.tw/2026/11/15/check-point-gateway-was-compromised/",
-          "title": "Check Point 閘道遭 PHP2Shell 鏈式攻擊，VMware ESXi 主機資料被抹除",
-          "quote": "Check Point 已在官方公告 sk1000362 證實提權漏洞 CVE-2026-123039 遭到實際利用，受害客戶約「二十多家」。",
-          "published": "2026-11-15",
+          "url": "https://www.ithome.com.tw/news/180608",
+          "title": "Node.js修補16個漏洞，包括可能導致伺服器當機與洩漏連線資料的HTTP/2漏洞",
+          "quote": "Node.js已釋出修補完成的22.23.5、24.22.3及26.13.1版，建議用戶依使用的分支版本儘速更新。",
+          "published": "2026-11-18",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-17T05:28:31Z",
-          "content_hash": "sha256:908d680f45afa73065b3f6c346a9fd5f5c911652c89bf137bbb1f228e43c7f57",
+          "verified_at": "2026-11-18T04:54:32Z",
+          "content_hash": "sha256:65ed033ff55d447150f42f67e9f86a4e7be6779f08ca862fa3989f31111d1fd1",
           "verification_basis": "live"
         }
       ],
-      "proposed_controls": [
-        {
-          "title": "邊界安全設備須於時限內套用修補並汰換已停止支援版本",
-          "reason": "來源指出 CVE-2026-123039 已遭實際利用，且 R81.10 與 R81 已結束支援、不會有修補；現有控制項沒有涵蓋邊界設備修補與 EOL 管理。"
-        }
-      ],
+      "proposed_controls": [],
       "demo": false,
       "facts": [],
-      "summary": "Check Point 安全閘道遭 PHP2Shell 攻擊後，攻擊者在 VMware ESXi 主機上部署抹除型惡意程式。Check Point 證實提權漏洞 CVE-2026-123039 遭實際利用，受害客戶約二十多家；來源指出 PHP2Shell 是上游 PHP 缺陷，凡在網頁入口或管理介面內嵌 PHP 的產品都可能受波及。",
+      "summary": "Node.js 於 11 月 11 日發布更新，涵蓋 26.x、24.x 與 22.x，共修補 16 個漏洞，其中 7 個為高風險。CVE-2026-123863 可讓未驗證攻擊者使伺服器當機，CVE-2026-123866 可能洩漏其他連線的回應緩衝區，CVE-2026-123864 可能讀取其他連線的記憶體資料。修補版本為 22.23.5、24.22.3、26.13.1。",
       "fixture_note": null,
       "possible_entry_points": [],
-      "brand": null,
-      "inherited_from": "evt-php2shell-2026-10"
+      "brand": null
+    },
+    {
+      "id": "live-openjdk-java4shell-cve-2026-114938",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "OpenJDK 重大漏洞 Java4Shell（CVE-2026-114938）細節公布",
+      "date": "2026-11-17",
+      "industry": "其他",
+      "attack_chain": [
+        "攻擊者傳入特製的 Base64 輸入資料",
+        "造成 JVM Base64 解碼器堆積記憶體越界寫入",
+        "洩漏記憶體中的敏感資訊，或達成遠端程式碼執行（研究人員稱，部分結論尚未獲證實）"
+      ],
+      "attck": [
+        "T1190",
+        "T1203",
+        "T1499"
+      ],
+      "cves": [
+        "CVE-2026-114938"
+      ],
+      "products": [
+        {
+          "name": "openjdk",
+          "ecosystem": "generic",
+          "affected": [
+            {
+              "introduced": "17.0.6",
+              "fixed": null
+            }
+          ],
+          "cvss": 9.2,
+          "impact": "remote_code_execution"
+        }
+      ],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180601",
+          "title": "研究人員公布OpenJDK重大漏洞Java4Shell細節",
+          "quote": "Calif.io借助AI的力量於1個小時發現，再花費2個小時找出第一個漏洞利用鏈，總Token費用不到200美元，該公司將漏洞命名為Java4Shell。",
+          "published": "2026-11-18",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-18T04:54:32Z",
+          "content_hash": "sha256:bc1f85fc85219260b49aa41def58fc5fbd3d7faea8aadd2c6764a341d92a8911",
+          "verification_basis": "live"
+        },
+        {
+          "url": "https://thehackernews.com/2026/11/oracle-to-patch-11-java-flaws-today-as.html",
+          "title": "Oracle to Patch 11 Java Flaws Today as Critical OpenJDK RCE (CVE-2026-114938) Report Emerges",
+          "quote": "The separate OpenJDK vulnerability, tracked as CVE-2026-114938 , has reportedly been assigned a CVSS 4.0 score of 9.2 and affects OpenJDK 17.0.6 and later.",
+          "published": "2026-11-17",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-18T04:54:32Z",
+          "content_hash": "sha256:6e1dc50e3468b47d8f10bbc1214e2c94d3c802fdffcecc12529e83b889a1e84f",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [],
+      "summary": "OpenJDK 的 Base64 解碼器存在記憶體損毀漏洞 CVE-2026-114938，通報者 Calif.io 稱可造成堆積記憶體越界寫入，進而洩漏資訊甚至遠端程式碼執行，CVSS v4.0 為 9.2，影響 17.0.6 以上。The Hacker News 指出細節當時仍未確認，也無官方公告列出修補版本；其他分析認為較可能結果是 JVM 當機。",
+      "fixture_note": null,
+      "possible_entry_points": [],
+      "brand": null
     }
   ],
   "verification": {
@@ -1929,31 +1925,31 @@
       "max_level": null,
       "note": "程式取自 CISA KEV 與 NVD API"
     },
-    "live-cyberbiz-bvi-order-db-2026-11": {
+    "live-optimizely-supply-chain-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-ai-agent-attacks-tw-ecommerce-2026-11": {
+    "live-ai-agent-ecommerce-attacks-tw-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-daouoffice-korea-finance-2026-11": {
+    "live-arara-mail-service-breach-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-metam-cs-outsourcer-2026-11": {
+    "live-nodejs-http2-cves-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-php2shell-check-point-esxi-wiper-2026-11": {
+    "live-openjdk-java4shell-cve-2026-114938": {
       "status": "ok",
       "issues": [],
       "max_level": null,
