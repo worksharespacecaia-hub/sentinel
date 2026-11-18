@@ -19,15 +19,12 @@
     "10 個未處理的高風險"
   ],
   "ceo_summary": [
-    "今天是紅燈：10 個高風險、18 個中風險。",
-    "最需要處理的是：Git 中不得有正式環境金鑰：brand-app、App 內的 @demo-vendor/push-sdk 受影響、雲端儲存空間不得公開讀取：firebase-brand-app-storage。",
-    "今天檢查 5 件外部資安事件，其中 3 件與我們有關。"
+    "今天是紅燈：有 10 個高風險、18 個中風險的問題還沒處理。",
+    "最急的是 1 個問題可以被駭客串起來一路闖進去，最後可能拿到會員個資。",
+    "今天看了 5 件外面發生的資安事件，其中 3 件的問題我們也有。"
   ],
   "decisions": [
-    "internal-tool 要納管還是除役",
-    "marketing-site 要納管還是除役",
-    "nas-office-01 要納管還是除役",
-    "saas-quicksite-builder 要納管還是除役"
+    "這 4 個沒登記的系統（內部營運工具、行銷官網、辦公室 NAS、QuickSite Builder），要正式列管（指定負責人、定期更新），還是確認沒人用後關掉？——不決定的話：負責人沒確認前，更新與監控可能沒人做，出事時也可能沒人發現。"
   ],
   "counts": {
     "high": 10,
@@ -114,7 +111,7 @@
       "deadline_hours": 24,
       "solution": {
         "risk_id": "brand-app:C-SECRET-IN-GIT",
-        "temporary": "撤銷並輪替 app-api-key，確認撤銷後舊值無法使用",
+        "temporary": "馬上把這組密碼或金鑰作廢換新，並檢查最近有沒有被別人用過",
         "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
         "options": [
           {
@@ -126,7 +123,10 @@
         ],
         "suggested_owner": "mobile-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "品牌 App 的密碼或金鑰保管不當，可能造成會員個資外洩",
+        "if_ignored": "拿到這組密碼或金鑰的人，可能直接登入相關系統，讀走會員個資；不換掉，這個破口就一直在。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -177,7 +177,7 @@
       "deadline_hours": 24,
       "solution": {
         "risk_id": "brand-app:@demo-vendor/push-sdk:vuln",
-        "temporary": "確認 brand-app 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "temporary": "先確認品牌 App 有哪些地方外人連得到，並安排更新",
         "permanent": "將 brand-app 的受影響元件升級到修補版本",
         "options": [
           {
@@ -195,7 +195,10 @@
         ],
         "suggested_owner": "mobile-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "品牌 App 有已知漏洞，可能造成會員個資外洩",
+        "if_ignored": "外人可能利用這個漏洞讓品牌 App 停擺或被入侵，進一步碰到會員個資。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -246,7 +249,7 @@
       "deadline_hours": 24,
       "solution": {
         "risk_id": "firebase-brand-app-storage:C-CLOUD-STORAGE-PUBLIC",
-        "temporary": "關閉 firebase-brand-app-storage 的公開讀取，檢查存取紀錄是否已被下載",
+        "temporary": "先把 App 雲端檔案儲存區改成不公開，並檢查有沒有被下載過",
         "permanent": "儲存空間預設私有，以簽章網址分享；加入設定漂移檢查",
         "options": [
           {
@@ -258,7 +261,10 @@
         ],
         "suggested_owner": "mobile-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "App 雲端檔案儲存區設成任何人都能下載",
+        "if_ignored": "只要知道網址，任何人都能下載裡面的檔案；如果有個資外洩，可能要通報主管機關並通知受影響的人。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -309,7 +315,7 @@
       "deadline_hours": 24,
       "solution": {
         "risk_id": "order-exports-bucket:C-CLOUD-STORAGE-PUBLIC",
-        "temporary": "關閉 order-exports-bucket 的公開讀取，檢查存取紀錄是否已被下載",
+        "temporary": "先把訂單匯出檔案儲存區改成不公開，並檢查有沒有被下載過",
         "permanent": "儲存空間預設私有，以簽章網址分享；加入設定漂移檢查",
         "options": [
           {
@@ -321,7 +327,10 @@
         ],
         "suggested_owner": "data-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "訂單匯出檔案儲存區設成任何人都能下載",
+        "if_ignored": "只要知道網址，任何人都能下載裡面的檔案；如果有個資外洩，可能要通報主管機關並通知受影響的人。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -370,7 +379,7 @@
       "deadline_hours": 24,
       "solution": {
         "risk_id": "storefront:next:vuln",
-        "temporary": "確認 storefront 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "temporary": "先確認商店網站有哪些地方外人連得到，並安排更新",
         "permanent": "將 storefront 的受影響元件升級到修補版本",
         "options": [
           {
@@ -388,7 +397,10 @@
         ],
         "suggested_owner": "web-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "商店網站有已知漏洞，可能造成訂單資料、會員個資外洩",
+        "if_ignored": "外人可能利用這個漏洞讓商店網站停擺或被入侵，進一步碰到訂單資料、會員個資。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -437,7 +449,7 @@
       "deadline_hours": 24,
       "solution": {
         "risk_id": "storefront:postcss:vuln",
-        "temporary": "確認 storefront 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "temporary": "先確認商店網站有哪些地方外人連得到，並安排更新",
         "permanent": "將 storefront 的受影響元件升級到修補版本",
         "options": [
           {
@@ -455,7 +467,10 @@
         ],
         "suggested_owner": "web-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "商店網站有已知漏洞，可能造成訂單資料、會員個資外洩",
+        "if_ignored": "外人可能利用這個漏洞讓商店網站停擺或被入侵，進一步碰到訂單資料、會員個資。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -494,7 +509,7 @@
       "deadline_hours": 24,
       "solution": {
         "risk_id": "internal-tool:shadow_it",
-        "temporary": "確認 internal-tool 的負責人與用途，必要時先關閉對外存取",
+        "temporary": "先找出內部營運工具的負責人與用途，沒人用的話先停止對外開放",
         "permanent": "納入清冊，指定負責人，改走 CI/CD 與修補流程，或正式除役",
         "options": [
           {
@@ -512,7 +527,10 @@
         ],
         "suggested_owner": "devops-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "內部營運工具沒有登記，負責人尚未確認",
+        "if_ignored": "負責人沒確認前，更新與監控可能沒人做，漏洞會一直留著；出事時也可能沒人發現。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -551,7 +569,7 @@
       "deadline_hours": 24,
       "solution": {
         "risk_id": "marketing-site:shadow_it",
-        "temporary": "確認 marketing-site 的負責人與用途，必要時先關閉對外存取",
+        "temporary": "先找出行銷官網的負責人與用途，沒人用的話先停止對外開放",
         "permanent": "納入清冊，指定負責人，改走 CI/CD 與修補流程，或正式除役",
         "options": [
           {
@@ -569,7 +587,10 @@
         ],
         "suggested_owner": "security-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "行銷官網沒有登記，負責人尚未確認",
+        "if_ignored": "負責人沒確認前，更新與監控可能沒人做，漏洞會一直留著；出事時也可能沒人發現。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -608,7 +629,7 @@
       "deadline_hours": 24,
       "solution": {
         "risk_id": "nas-office-01:shadow_it",
-        "temporary": "確認 nas-office-01 的負責人與用途，必要時先關閉對外存取",
+        "temporary": "先找出辦公室 NAS 的負責人與用途，沒人用的話先停止對外開放",
         "permanent": "納入清冊，指定負責人，改走 CI/CD 與修補流程，或正式除役",
         "options": [
           {
@@ -626,7 +647,10 @@
         ],
         "suggested_owner": "it-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "辦公室 NAS 沒有登記，負責人尚未確認",
+        "if_ignored": "負責人沒確認前，更新與監控可能沒人做，漏洞會一直留著；出事時也可能沒人發現。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -660,7 +684,7 @@
       "deadline_hours": 24,
       "solution": {
         "risk_id": "saas-quicksite-builder:shadow_it",
-        "temporary": "確認 saas-quicksite-builder 的負責人與用途，必要時先關閉對外存取",
+        "temporary": "先找出 QuickSite Builder 的負責人與用途，沒人用的話先停止對外開放",
         "permanent": "納入清冊，指定負責人，改走 CI/CD 與修補流程，或正式除役",
         "options": [
           {
@@ -678,7 +702,10 @@
         ],
         "suggested_owner": "it-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "QuickSite Builder 沒有登記，負責人尚未確認",
+        "if_ignored": "負責人沒確認前，更新與監控可能沒人做，漏洞會一直留著；出事時也可能沒人發現。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -727,7 +754,7 @@
       "deadline_hours": 168,
       "solution": {
         "risk_id": "api-gateway:GET /internal/v1/members/export:shadow_api",
-        "temporary": "確認 api-gateway 的狀況並限制存取",
+        "temporary": "先確認 API 閘道的狀況並限制誰能使用",
         "permanent": "依控制項要求修正，並在下次掃描確認",
         "options": [
           {
@@ -739,7 +766,10 @@
         ],
         "suggested_owner": "platform-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "API 閘道有安全設定問題",
+        "if_ignored": "問題會一直存在，增加被入侵的機會。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -788,7 +818,7 @@
       "deadline_hours": 168,
       "solution": {
         "risk_id": "brand-app:android-debuggable",
-        "temporary": "伺服器端先限制舊版 App 可呼叫的 API",
+        "temporary": "先在伺服器端限制舊版 App 能用的功能",
         "permanent": "修正 App 設定後發版，提高最低支援版本並強制更新",
         "options": [
           {
@@ -800,7 +830,10 @@
         ],
         "suggested_owner": "mobile-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "品牌 App 的設定有安全問題",
+        "if_ignored": "外人可能利用 App 的設定問題取得會員資料或冒用 App。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -848,7 +881,7 @@
       "deadline_hours": 168,
       "solution": {
         "risk_id": "laptop-eng-07:C-DEV-DEVICE-TOKEN",
-        "temporary": "撤銷並輪替 deploy-token-eng07，確認撤銷後舊值無法使用",
+        "temporary": "馬上把這個權限作廢，改用短期有效的權限",
         "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
         "options": [
           {
@@ -860,7 +893,10 @@
         ],
         "suggested_owner": "eng-07",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "工程部門筆電（乙）存著能直接改正式系統的權限",
+        "if_ignored": "這台電腦一旦中毒或遺失，對方就可能改動正式網站或 App。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -909,7 +945,7 @@
       "deadline_hours": 168,
       "solution": {
         "risk_id": "brand-app:android-cleartext",
-        "temporary": "伺服器端先限制舊版 App 可呼叫的 API",
+        "temporary": "先在伺服器端限制舊版 App 能用的功能",
         "permanent": "修正 App 設定後發版，提高最低支援版本並強制更新",
         "options": [
           {
@@ -921,7 +957,10 @@
         ],
         "suggested_owner": "mobile-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "品牌 App 的設定有安全問題",
+        "if_ignored": "外人可能利用 App 的設定問題取得會員資料或冒用 App。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -970,7 +1009,7 @@
       "deadline_hours": 168,
       "solution": {
         "risk_id": "brand-app:android-exported-component",
-        "temporary": "伺服器端先限制舊版 App 可呼叫的 API",
+        "temporary": "先在伺服器端限制舊版 App 能用的功能",
         "permanent": "修正 App 設定後發版，提高最低支援版本並強制更新",
         "options": [
           {
@@ -982,7 +1021,10 @@
         ],
         "suggested_owner": "mobile-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "品牌 App 的設定有安全問題",
+        "if_ignored": "外人可能利用 App 的設定問題取得會員資料或冒用 App。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -1031,7 +1073,7 @@
       "deadline_hours": 168,
       "solution": {
         "risk_id": "brand-app:target-sdk-outdated",
-        "temporary": "伺服器端先限制舊版 App 可呼叫的 API",
+        "temporary": "先在伺服器端限制舊版 App 能用的功能",
         "permanent": "修正 App 設定後發版，提高最低支援版本並強制更新",
         "options": [
           {
@@ -1043,7 +1085,10 @@
         ],
         "suggested_owner": "mobile-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "品牌 App 的設定有安全問題",
+        "if_ignored": "外人可能利用 App 的設定問題取得會員資料或冒用 App。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -1087,7 +1132,7 @@
       "deadline_hours": 168,
       "solution": {
         "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
-        "temporary": "撤銷並輪替 mail-api-key，確認撤銷後舊值無法使用",
+        "temporary": "馬上把這組密碼或金鑰作廢換新，並檢查最近有沒有被別人用過",
         "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
         "options": [
           {
@@ -1099,7 +1144,10 @@
         ],
         "suggested_owner": "security-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "寄信服務金鑰的密碼或金鑰保管不當",
+        "if_ignored": "拿到這組密碼或金鑰的人，可能直接登入相關系統；不換掉，這個破口就一直在。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -1143,7 +1191,7 @@
       "deadline_hours": 168,
       "solution": {
         "risk_id": "member-api:lodash:vuln",
-        "temporary": "確認 member-api 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "temporary": "先確認會員服務 API 有哪些地方外人連得到，並安排更新",
         "permanent": "將 member-api 的受影響元件升級到修補版本",
         "options": [
           {
@@ -1161,7 +1209,10 @@
         ],
         "suggested_owner": "member-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "會員服務 API 有已知漏洞，可能造成會員個資外洩",
+        "if_ignored": "外人可能利用這個漏洞讓會員服務 API 停擺或被入侵，進一步碰到會員個資。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -1214,7 +1265,10 @@
         ],
         "suggested_owner": "security-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "有人冒用品牌上架假 App",
+        "if_ignored": "會員可能下載到假 App，被騙走帳號或個資，品牌信譽受損。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -1258,7 +1312,7 @@
       "deadline_hours": 168,
       "solution": {
         "risk_id": "gitlab:C-SECRET-IN-GIT",
-        "temporary": "撤銷並輪替 order-db-prod-cred，確認撤銷後舊值無法使用",
+        "temporary": "馬上把這組密碼或金鑰作廢換新，並檢查最近有沒有被別人用過",
         "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
         "options": [
           {
@@ -1270,7 +1324,10 @@
         ],
         "suggested_owner": "devops-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "內部程式碼管理平台的密碼或金鑰保管不當，可能造成原始碼外洩",
+        "if_ignored": "拿到這組密碼或金鑰的人，可能直接登入相關系統，讀走原始碼；不換掉，這個破口就一直在。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -1309,7 +1366,7 @@
       "deadline_hours": 168,
       "solution": {
         "risk_id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
-        "temporary": "立即關閉 internal-tool 的對外入口，改為只允許 VPN 連入",
+        "temporary": "先讓內部營運工具只有公司內部連得到",
         "permanent": "內部工具一律放在內網並經 SSO，納入清冊與修補流程",
         "options": [
           {
@@ -1321,7 +1378,10 @@
         ],
         "suggested_owner": "devops-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "只給員工用的內部營運工具，外人也連得到",
+        "if_ignored": "任何人都能從網路找到它的登入頁，外人可能藉此進到公司內部。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -1360,7 +1420,7 @@
       "deadline_hours": 168,
       "solution": {
         "risk_id": "marketing-site:php:eol",
-        "temporary": "確認 marketing-site 的狀況並限制存取",
+        "temporary": "先確認行銷官網的狀況並限制誰能使用",
         "permanent": "依控制項要求修正，並在下次掃描確認",
         "options": [
           {
@@ -1372,7 +1432,10 @@
         ],
         "suggested_owner": "security-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "行銷官網有安全設定問題",
+        "if_ignored": "問題會一直存在，增加被入侵的機會。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -1416,7 +1479,7 @@
       "deadline_hours": 168,
       "solution": {
         "risk_id": "member-api:body-parser:vuln",
-        "temporary": "確認 member-api 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "temporary": "先確認會員服務 API 有哪些地方外人連得到，並安排更新",
         "permanent": "將 member-api 的受影響元件升級到修補版本",
         "options": [
           {
@@ -1434,7 +1497,10 @@
         ],
         "suggested_owner": "member-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "會員服務 API 有已知漏洞，可能造成會員個資外洩",
+        "if_ignored": "外人可能利用這個漏洞讓會員服務 API 停擺或被入侵，進一步碰到會員個資。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -1478,7 +1544,7 @@
       "deadline_hours": 168,
       "solution": {
         "risk_id": "member-api:path-to-regexp:vuln",
-        "temporary": "確認 member-api 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "temporary": "先確認會員服務 API 有哪些地方外人連得到，並安排更新",
         "permanent": "將 member-api 的受影響元件升級到修補版本",
         "options": [
           {
@@ -1496,7 +1562,10 @@
         ],
         "suggested_owner": "member-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "會員服務 API 有已知漏洞，可能造成會員個資外洩",
+        "if_ignored": "外人可能利用這個漏洞讓會員服務 API 停擺或被入侵，進一步碰到會員個資。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -1540,7 +1609,7 @@
       "deadline_hours": 168,
       "solution": {
         "risk_id": "member-api:qs:vuln",
-        "temporary": "確認 member-api 的暴露範圍，先以 WAF 或存取限制降低風險",
+        "temporary": "先確認會員服務 API 有哪些地方外人連得到，並安排更新",
         "permanent": "將 member-api 的受影響元件升級到修補版本",
         "options": [
           {
@@ -1558,7 +1627,10 @@
         ],
         "suggested_owner": "member-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "會員服務 API 有已知漏洞，可能造成會員個資外洩",
+        "if_ignored": "外人可能利用這個漏洞讓會員服務 API 停擺或被入侵，進一步碰到會員個資。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -1597,7 +1669,7 @@
       "deadline_hours": 168,
       "solution": {
         "risk_id": "nas-office-01:C-BACKUP-ISOLATION",
-        "temporary": "建立一份離線或不同帳號的備份",
+        "temporary": "先另外做一份分開保存的備份",
         "permanent": "備份與來源隔離（不同帳號或離線），每 90 天做一次還原測試",
         "options": [
           {
@@ -1609,7 +1681,10 @@
         ],
         "suggested_owner": "it-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "辦公室 NAS 的備份沒有分開保存",
+        "if_ignored": "遇到勒索軟體時，備份可能跟著一起被加密，資料救不回來。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -1648,7 +1723,7 @@
       "deadline_hours": 168,
       "solution": {
         "risk_id": "nas-office-01:C-INTERNAL-TOOL-EXPOSED",
-        "temporary": "立即關閉 nas-office-01 的對外入口，改為只允許 VPN 連入",
+        "temporary": "先讓辦公室 NAS 只有公司內部連得到",
         "permanent": "內部工具一律放在內網並經 SSO，納入清冊與修補流程",
         "options": [
           {
@@ -1660,7 +1735,10 @@
         ],
         "suggested_owner": "it-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "只給員工用的辦公室 NAS，外人也連得到",
+        "if_ignored": "任何人都能從網路找到它的登入頁，外人可能藉此進到公司內部。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -1704,7 +1782,7 @@
       "deadline_hours": 168,
       "solution": {
         "risk_id": "order-db-prod:C-NET-SEGMENT",
-        "temporary": "封鎖非正式環境到正式資料庫的連線",
+        "temporary": "先擋住測試與辦公室網路連到正式資料庫",
         "permanent": "正式與測試環境分開網段與帳號，正式資料庫只接受核准的服務連線",
         "options": [
           {
@@ -1716,7 +1794,10 @@
         ],
         "suggested_owner": "dba-team",
         "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
-        "source": "template"
+        "source": "template",
+        "plain_title": "測試或辦公室網路可以直接連到正式資料庫",
+        "if_ignored": "這些網路裡的電腦一旦被入侵，外人就可能直接碰到正式資料。",
+        "plain_source": "template"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
@@ -2034,7 +2115,8 @@
       "affected_count": 0,
       "max_level": null,
       "status": "need_check",
-      "demo": true
+      "demo": true,
+      "brand": null
     },
     {
       "id": "demo-clone-app-fraud",
@@ -2043,7 +2125,8 @@
       "affected_count": 1,
       "max_level": "medium",
       "status": "open",
-      "demo": true
+      "demo": true,
+      "brand": null
     },
     {
       "id": "demo-erp-rce",
@@ -2052,7 +2135,8 @@
       "affected_count": 0,
       "max_level": null,
       "status": "not_affected",
-      "demo": true
+      "demo": true,
+      "brand": null
     },
     {
       "id": "demo-firebase-public",
@@ -2061,7 +2145,8 @@
       "affected_count": 2,
       "max_level": "high",
       "status": "open",
-      "demo": true
+      "demo": true,
+      "brand": null
     },
     {
       "id": "demo-push-sdk-rce",
@@ -2070,7 +2155,8 @@
       "affected_count": 1,
       "max_level": "high",
       "status": "open",
-      "demo": true
+      "demo": true,
+      "brand": null
     }
   ],
   "proposed_controls": [],
@@ -2511,5 +2597,37 @@
     "old_version_share": 0.35,
     "note": "安裝數為逐品牌、逐版本加總；沒有跨平台去重依據，不代表不重複使用者"
   },
-  "execution_mode": "replay"
+  "execution_mode": "replay",
+  "asset_labels": {
+    "ai-code-assistant": "AI 程式碼助理",
+    "api-gateway": "API 閘道",
+    "app-api-key": "App 內嵌的 API 金鑰",
+    "brand-app": "品牌 App",
+    "cache-redis": "網站快取",
+    "clone:app.bloomrewards.example": "仿冒品牌 App",
+    "deploy-pipeline": "自動部署流程",
+    "deploy-token-eng07": "工程師個人部署權杖",
+    "fileserver-01": "辦公室檔案伺服器",
+    "firebase-brand-app-storage": "App 雲端檔案儲存區",
+    "gitlab": "內部程式碼管理平台",
+    "internal-tool": "內部營運工具",
+    "internet": "網際網路",
+    "laptop-eng-03": "工程部門筆電（甲）",
+    "laptop-eng-07": "工程部門筆電（乙）",
+    "laptop-ops-02": "維運部門筆電",
+    "mail-api-key": "寄信服務金鑰",
+    "marketing-site": "行銷官網",
+    "member-api": "會員服務 API",
+    "member-db-prod": "正式會員資料庫",
+    "nas-office-01": "辦公室 NAS",
+    "order-db-prod": "正式訂單資料庫",
+    "order-db-test": "測試訂單資料庫",
+    "order-exports-bucket": "訂單匯出檔案儲存區",
+    "payment-service": "金流服務",
+    "phpmyadmin": "資料庫網頁管理工具",
+    "push-key-fcm-apns": "App 推播服務金鑰",
+    "report-svc": "報表服務",
+    "saas-quicksite-builder": "QuickSite Builder",
+    "storefront": "商店網站"
+  }
 }
