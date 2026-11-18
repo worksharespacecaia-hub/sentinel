@@ -12,7 +12,7 @@
       ]
     }
   ],
-  "dispatched": false,
+  "dispatched": true,
   "items": [
     {
       "advisory_id": "adv-opsbuilder-2026-001",
@@ -175,7 +175,7 @@
     {
       "advisory_id": "kev-cve-2024-10441",
       "revision": "2026-11-18T21:17:43.400",
-      "status": "queued",
+      "status": "pending",
       "verdict": "affected",
       "asset_ids": [
         "nas-office-01"
@@ -184,7 +184,8 @@
       "reason": "命中 nas-office-01",
       "matched_component": [
         "synology-dsm"
-      ]
+      ],
+      "error": null
     }
   ],
   "graph_fresh": true,
