@@ -12,7 +12,7 @@
       ]
     }
   ],
-  "dispatched": true,
+  "dispatched": false,
   "items": [
     {
       "advisory_id": "adv-opsbuilder-2026-001",
