@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-17T22:53:39Z",
+  "checked_at": "2026-11-18T04:24:08Z",
   "advisories_checked": 6,
   "hits": [],
   "dispatched": false,
@@ -593,7 +593,7 @@
       "revision": "2026-11-16T16:17:46.967"
     },
     "CVE-2026-110447": {
-      "checked_at": "2026-11-16T22:04:48Z",
+      "checked_at": "2026-11-18T04:24:08Z",
       "mapped": false,
       "revision": null
     },
@@ -762,7 +762,7 @@
     "status": "ok",
     "new": [],
     "updated": [],
-    "remaining": 1,
+    "remaining": 0,
     "errors": []
   }
 }
