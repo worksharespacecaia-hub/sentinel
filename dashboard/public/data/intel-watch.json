@@ -1,7 +1,17 @@
 {
-  "checked_at": "2026-11-18T14:00:30Z",
-  "advisories_checked": 6,
-  "hits": [],
+  "checked_at": "2026-11-18T21:58:19Z",
+  "advisories_checked": 7,
+  "hits": [
+    {
+      "advisory_id": "kev-cve-2024-10441",
+      "asset_ids": [
+        "nas-office-01"
+      ],
+      "matched_component": [
+        "synology-dsm"
+      ]
+    }
+  ],
   "dispatched": false,
   "items": [
     {
@@ -161,10 +171,79 @@
         "php"
       ],
       "error": null
+    },
+    {
+      "advisory_id": "kev-cve-2024-10441",
+      "revision": "2026-11-18T21:17:43.400",
+      "status": "queued",
+      "verdict": "affected",
+      "asset_ids": [
+        "nas-office-01"
+      ],
+      "input_hash": "b5deda320067092fedc7204d572708d24e290f13dca8b7710b3831af753652f1",
+      "reason": "命中 nas-office-01",
+      "matched_component": [
+        "synology-dsm"
+      ]
     }
   ],
   "graph_fresh": true,
   "auto_advisories": [
+    {
+      "id": "kev-cve-2024-10441",
+      "kind": "advisory",
+      "generated_by": "kev-nvd",
+      "revision": "2026-11-18T21:17:43.400",
+      "title": "CISA KEV：Synology DiskStation Manager (DSM) Improper Encoding or Escaping of Output Vulnerability（CVE-2024-10441）",
+      "date": "2026-11-18",
+      "industry": null,
+      "summary": "Improper encoding or escaping of output vulnerability in the system plugin daemon in Synology BeeStation OS (BSM) before 1.1-65374 and Synology DiskStation Manager (DSM) before 7.2-64570-4, 7.2.1-69057-6 and 7.2.2-72806-1 allows remote attackers to execute arbitrary code via unspecified vectors.",
+      "attack_chain": [],
+      "attck": [],
+      "cves": [
+        "CVE-2024-10441"
+      ],
+      "controls": [],
+      "confidence": "confirmed",
+      "products": [
+        {
+          "name": "synology-dsm",
+          "ecosystem": "synology-dsm",
+          "affected": [
+            {
+              "start_including": "7.2",
+              "end_excluding": "7.2-64570-4"
+            },
+            {
+              "start_including": "7.2.1-69057",
+              "end_excluding": "7.2.1-69057-6"
+            },
+            {
+              "start_including": "7.2.2",
+              "end_excluding": "7.2.2-72806-1"
+            }
+          ],
+          "cvss": 9.8,
+          "known_exploited": true,
+          "impact": "other"
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search=CVE-2024-10441",
+          "title": "CISA Known Exploited Vulnerabilities：CVE-2024-10441",
+          "quote": null,
+          "published": "2026-11-18"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-10441",
+          "title": "NVD：CVE-2024-10441",
+          "quote": null,
+          "published": "2025-03-19"
+        }
+      ],
+      "generated_at": "2026-11-18T21:58:19Z"
+    },
     {
       "id": "kev-cve-2026-109618",
       "kind": "advisory",
@@ -537,6 +616,11 @@
     }
   ],
   "kev_checked": {
+    "CVE-2024-10441": {
+      "checked_at": "2026-11-18T21:58:19Z",
+      "mapped": true,
+      "revision": "2026-11-18T21:17:43.400"
+    },
     "CVE-2024-27834": {
       "checked_at": "2026-11-17T22:53:39Z",
       "mapped": false,
@@ -628,7 +712,7 @@
       "revision": null
     },
     "CVE-2026-114713": {
-      "checked_at": "2026-11-17T14:26:46Z",
+      "checked_at": "2026-11-18T21:58:19Z",
       "mapped": false,
       "revision": null
     },
@@ -658,7 +742,7 @@
       "revision": "2026-11-04T12:52:38.683"
     },
     "CVE-2026-123039": {
-      "checked_at": "2026-11-17T14:26:46Z",
+      "checked_at": "2026-11-18T21:58:19Z",
       "mapped": false,
       "revision": null
     },
@@ -697,6 +781,11 @@
       "mapped": false,
       "revision": null
     },
+    "CVE-2026-40217": {
+      "checked_at": "2026-11-18T21:58:19Z",
+      "mapped": false,
+      "revision": null
+    },
     "CVE-2026-41709": {
       "checked_at": "2026-11-17T22:53:39Z",
       "mapped": false,
@@ -719,6 +808,16 @@
     },
     "CVE-2026-76519": {
       "checked_at": "2026-11-13T08:00:00Z",
+      "mapped": false,
+      "revision": null
+    },
+    "CVE-2026-90436": {
+      "checked_at": "2026-11-18T21:58:19Z",
+      "mapped": false,
+      "revision": null
+    },
+    "CVE-2026-90817": {
+      "checked_at": "2026-11-18T21:58:19Z",
       "mapped": false,
       "revision": null
     },
@@ -754,13 +853,15 @@
     }
   },
   "kev_catalog": {
-    "version": "2026.11.17",
-    "released": "2026-11-17T17:53:15.5664Z",
-    "count": 1782
+    "version": "2026.11.18",
+    "released": "2026-11-18T19:17:41.0354Z",
+    "count": 1786
   },
   "auto_status": {
     "status": "ok",
-    "new": [],
+    "new": [
+      "kev-cve-2024-10441"
+    ],
     "updated": [],
     "remaining": 0,
     "errors": []
