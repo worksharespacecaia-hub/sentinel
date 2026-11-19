@@ -1,39 +1,7 @@
 {
-  "checked_at": "2026-11-19T03:30:16Z",
+  "checked_at": "2026-11-19T13:11:26Z",
   "advisories_checked": 7,
-  "hits": [
-    {
-      "advisory_id": "kev-cve-2026-109618",
-      "asset_ids": [
-        "marketing-site",
-        "phpmyadmin"
-      ],
-      "matched_component": [
-        "php"
-      ]
-    },
-    {
-      "advisory_id": "kev-cve-2026-109619",
-      "asset_ids": [
-        "marketing-site",
-        "phpmyadmin"
-      ],
-      "matched_component": [
-        "php"
-      ]
-    },
-    {
-      "advisory_id": "kev-cve-2026-111497",
-      "asset_ids": [
-        "internal-tool",
-        "member-api",
-        "storefront"
-      ],
-      "matched_component": [
-        "node"
-      ]
-    }
-  ],
+  "hits": [],
   "dispatched": false,
   "items": [
     {
@@ -747,7 +715,7 @@
       "revision": "2026-11-18T19:17:26.517"
     },
     "CVE-2026-110447": {
-      "checked_at": "2026-11-18T04:24:08Z",
+      "checked_at": "2026-11-19T13:11:26Z",
       "mapped": false,
       "revision": null
     },
@@ -925,11 +893,7 @@
   "auto_status": {
     "status": "ok",
     "new": [],
-    "updated": [
-      "kev-cve-2026-111497",
-      "kev-cve-2026-109618",
-      "kev-cve-2026-109619"
-    ],
+    "updated": [],
     "remaining": 0,
     "errors": []
   }
