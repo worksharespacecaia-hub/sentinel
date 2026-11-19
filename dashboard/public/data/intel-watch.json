@@ -182,7 +182,7 @@
     {
       "advisory_id": "kev-cve-2026-109619",
       "revision": "2026-11-16T16:17:46.967",
-      "status": "pending",
+      "status": "done",
       "verdict": "affected",
       "asset_ids": [
         "marketing-site",
@@ -193,7 +193,8 @@
       "matched_component": [
         "php"
       ],
-      "error": null
+      "error": null,
+      "run_id": "44452161773"
     },
     {
       "advisory_id": "kev-cve-2024-10441",
