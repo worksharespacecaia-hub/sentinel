@@ -1,0 +1,227 @@
+{
+  "event": {
+    "id": "live-evt-plaid-karte-2026-11",
+    "kind": "live",
+    "title": "日本行銷平台 PLAID KARTE 遭駭，JINS、DHC、思夢樂等零售與消費品牌會員個資外洩",
+    "date": "2026-11-13",
+    "industry": "零售/電商（行銷 SaaS 供應鏈）",
+    "attack_chain": [
+      "攻擊者於 11 月 13 日凌晨利用 PLAID 伺服器漏洞入侵（漏洞種類來源未說明）",
+      "竊取系統及資料庫連線的認證資訊，存取資料庫並將資料外傳",
+      "利用竊得的認證資訊接管 PLAID 帳號並登入管理介面",
+      "下游企業陸續公告會員個資外洩或可能外洩"
+    ],
+    "attck": [
+      "T1190",
+      "T1552",
+      "T1078",
+      "T1213"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [
+      "C-THIRD-PARTY-KEY-ROTATION"
+    ],
+    "confidence": "confirmed",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180640",
+        "title": "JINS、三菱UFJ銀行等數十家日本企業陸續發布資安事件公告，皆因第三方行銷科技業者PLAID旗下KARTE平臺遭駭",
+        "quote": "JINS指出，最多約1,829萬個會員帳號可能受到影響，實際外洩範圍仍在調查。",
+        "published": "2026-11-19",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-19T04:47:04Z",
+        "content_hash": "sha256:dc8fe0d953516080e7b7d45c454d478514a2b517289f97deda2f8b3da20c8f37",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://infosecu.technews.tw/2026/11/19/japanese-dhc-data-breach-19-11-million-jins-shimamura-affected/",
+        "title": "日本 DHC 爆 1,911 萬筆個資外洩，JINS、思夢樂也遭殃",
+        "quote": "這項服務13日遭到駭客入侵，營運商PLAID於16日公布消息後，使用該平台的企業也接連傳出個資外洩。",
+        "published": "2026-11-19",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-19T04:47:04Z",
+        "content_hash": "sha256:d6228a4cbbcf2362936ccd9ee0659edf6597fc396353a6431105e7f595ec312d",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "1 項受影響，最高風險為中。mail-api-key：secrets.json: mail-api-key：466 天未輪替、無 IP 白名單。",
+  "affected_count": 1,
+  "max_level": "medium",
+  "impacts": [
+    {
+      "event_id": "live-evt-plaid-karte-2026-11",
+      "asset_id": "mail-api-key",
+      "basis": "control",
+      "our_state": "secrets.json: mail-api-key：466 天未輪替、無 IP 白名單",
+      "verdict": "affected",
+      "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+      "reason": "不符合 C-THIRD-PARTY-KEY-ROTATION（第三方服務金鑰 90 天內輪替且有 IP 白名單）"
+    }
+  ],
+  "solutions": [
+    {
+      "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+      "temporary": "馬上把這組密碼或金鑰作廢換新，並檢查最近有沒有被別人用過",
+      "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "撤銷並輪替金鑰",
+          "cost": "使用該金鑰的服務需同步更新",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "security-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template",
+      "plain_title": "寄信服務金鑰的密碼或金鑰保管不當",
+      "if_ignored": "拿到這組密碼或金鑰的人，可能直接登入相關系統；不換掉，這個破口就一直在。",
+      "plain_source": "template"
+    }
+  ],
+  "notice": {
+    "needed": false,
+    "draft": null
+  },
+  "status": "open",
+  "evaluated_asset_ids": [
+    "mail-api-key"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "寄信服務金鑰（mail-api-key）466 天未輪替且無 IP 白名單，與此事件相符，程式判定為中風險（6 分）；建議換發金鑰並加上白名單。",
+  "blocks": {
+    "1_summary": {
+      "title": "日本行銷平台 PLAID KARTE 遭駭，JINS、DHC、思夢樂等零售與消費品牌會員個資外洩",
+      "date": "2026-11-13",
+      "industry": "零售/電商（行銷 SaaS 供應鏈）",
+      "attack_chain": [
+        "攻擊者於 11 月 13 日凌晨利用 PLAID 伺服器漏洞入侵（漏洞種類來源未說明）",
+        "竊取系統及資料庫連線的認證資訊，存取資料庫並將資料外傳",
+        "利用竊得的認證資訊接管 PLAID 帳號並登入管理介面",
+        "下游企業陸續公告會員個資外洩或可能外洩"
+      ],
+      "attck": [
+        "T1190",
+        "T1552",
+        "T1078",
+        "T1213"
+      ],
+      "cves": [],
+      "confidence": "已確認",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180640",
+          "title": "JINS、三菱UFJ銀行等數十家日本企業陸續發布資安事件公告，皆因第三方行銷科技業者PLAID旗下KARTE平臺遭駭",
+          "quote": "JINS指出，最多約1,829萬個會員帳號可能受到影響，實際外洩範圍仍在調查。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-19T04:47:04Z"
+        },
+        {
+          "url": "https://infosecu.technews.tw/2026/11/19/japanese-dhc-data-breach-19-11-million-jins-shimamura-affected/",
+          "title": "日本 DHC 爆 1,911 萬筆個資外洩，JINS、思夢樂也遭殃",
+          "quote": "這項服務13日遭到駭客入侵，營運商PLAID於16日公布消息後，使用該平台的企業也接連傳出個資外洩。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-19T04:47:04Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "寄信服務金鑰（mail-api-key）466 天未輪替且無 IP 白名單，與此事件相符，程式判定為中風險（6 分）；建議換發金鑰並加上白名單。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "1 項受影響，最高風險為中。mail-api-key：secrets.json: mail-api-key：466 天未輪替、無 IP 白名單。",
+      "affected_count": 1,
+      "max_level": "medium"
+    },
+    "3_affected": [
+      {
+        "asset_id": "mail-api-key",
+        "our_state": "secrets.json: mail-api-key：466 天未輪替、無 IP 白名單",
+        "basis": "control",
+        "verdict": "affected",
+        "reason": "不符合 C-THIRD-PARTY-KEY-ROTATION（第三方服務金鑰 90 天內輪替且有 IP 白名單）",
+        "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "level": "medium",
+        "score": 6,
+        "breakdown": [
+          {
+            "factor": "基礎分：控制項不符",
+            "points": 2,
+            "reason": "controls.yaml base_points"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "第三方金鑰無 IP 白名單，外部任何來源都可使用"
+          },
+          {
+            "factor": "資料敏感",
+            "points": 1,
+            "reason": "order、pii"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-1shop-2026-10、live-evt-91app-artex-2026-11、live-evt-arara-mail-2026-11、live-evt-plaid-karte-2026-11"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-19T04:47:04Z"
+      }
+    ],
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": []
+    },
+    "5_solutions": [
+      {
+        "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "temporary": "馬上把這組密碼或金鑰作廢換新，並檢查最近有沒有被別人用過",
+        "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "撤銷並輪替金鑰",
+            "cost": "使用該金鑰的服務需同步更新",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "security-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template",
+        "plain_title": "寄信服務金鑰的密碼或金鑰保管不當",
+        "if_ignored": "拿到這組密碼或金鑰的人，可能直接登入相關系統；不換掉，這個破口就一直在。",
+        "plain_source": "template"
+      }
+    ],
+    "6_notice": {
+      "needed": false,
+      "draft": null
+    },
+    "7_status": {
+      "status": "open",
+      "label": "待處理"
+    }
+  },
+  "orchestrator_results": []
+}

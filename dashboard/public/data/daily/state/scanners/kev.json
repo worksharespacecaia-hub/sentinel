@@ -1,9 +1,37 @@
 {
   "tool": "kev",
-  "tool_version": "2026.11.17",
-  "database_revision": "2026-11-17T17:53:15.5664Z",
-  "count": 1782,
+  "tool_version": "2026.11.18",
+  "database_revision": "2026-11-18T19:17:41.0354Z",
+  "count": 1786,
   "cves": {
+    "CVE-2024-10441": {
+      "added": "2026-11-18",
+      "vendor": "Synology",
+      "product": "DiskStation Manager (DSM)",
+      "name": "Synology DiskStation Manager (DSM) Improper Encoding or Escaping of Output Vulnerability",
+      "ransomware": false
+    },
+    "CVE-2026-40217": {
+      "added": "2026-11-18",
+      "vendor": "BerriAI",
+      "product": "LiteLLM",
+      "name": "BerriAI LiteLLM Unprotected Alternate Channel Vulnerability",
+      "ransomware": false
+    },
+    "CVE-2026-90817": {
+      "added": "2026-11-18",
+      "vendor": "Vanderbilt University",
+      "product": "Research Electronic Data Capture (REDCap)",
+      "name": "Vanderbilt University Research Electronic Data Capture (REDCap) Code Injection Vulnerability",
+      "ransomware": false
+    },
+    "CVE-2026-90436": {
+      "added": "2026-11-18",
+      "vendor": "Apache",
+      "product": "Axis",
+      "name": "Apache Axis Unsafe Reflection Vulnerability",
+      "ransomware": false
+    },
     "CVE-2026-115731": {
       "added": "2026-11-17",
       "vendor": "Perforce",

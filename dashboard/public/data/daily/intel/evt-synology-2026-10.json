@@ -191,7 +191,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "辦公室 NAS 版本受影響且管理頁對外開放，為高風險（8 分）；另有備份未與來源隔離、管理頁對外兩項控制項不符，各為中風險（5 分）。",
+  "summary": "辦公室 NAS 有 3 項相符：DSM 漏洞且管理頁對外（高風險，8 分），以及備份未與設備隔離且從未做過還原測試、管理頁對外開放（各中風險，5 分）；建議收起管理頁、更新韌體並隔離備份。",
   "blocks": {
     "1_summary": {
       "title": "Synology NAS 遭 C3RB3R 勒索軟體加密：DSM 登入頁對外暴露，常駐連接的備份碟一併被加密",
@@ -232,7 +232,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "辦公室 NAS 版本受影響且管理頁對外開放，為高風險（8 分）；另有備份未與來源隔離、管理頁對外兩項控制項不符，各為中風險（5 分）。",
+      "summary": "辦公室 NAS 有 3 項相符：DSM 漏洞且管理頁對外（高風險，8 分），以及備份未與設備隔離且從未做過還原測試、管理頁對外開放（各中風險，5 分）；建議收起管理頁、更新韌體並隔離備份。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -270,12 +270,12 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、evt-synology-2026-10"
+            "reason": "evt-91app-2026-10、evt-synology-2026-10、live-evt-91app-artex-2026-11"
           }
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-18T04:54:32Z"
+        "observed_at": "2026-11-19T04:47:04Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -305,7 +305,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-18T04:54:32Z"
+        "observed_at": "2026-11-19T04:47:04Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -330,12 +330,12 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、evt-synology-2026-10"
+            "reason": "evt-91app-2026-10、evt-synology-2026-10、live-evt-91app-artex-2026-11"
           }
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-18T04:54:32Z"
+        "observed_at": "2026-11-19T04:47:04Z"
       }
     ],
     "4_unaffected_and_check": {

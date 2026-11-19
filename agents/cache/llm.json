@@ -9433,5 +9433,240 @@
       "task": "notice:kev-cve-2026-111497",
       "scope": "advisory"
     }
+  },
+  "8fa8f7a08a05ffd57c9d96cf4da55065a3e1201dd4709a1e0336570b23fe287f": {
+    "output": [
+      {
+        "id": "gitlab:C-BACKUP-ISOLATION",
+        "explanation": "gitlab 的備份已超過 90 天未做還原測試（距上次測試 91 天），無法確認備份在需要時可用。建議儘速排定並執行還原測試，並記錄結果與時間，之後至少每 90 天重複一次。",
+        "confidence": "high"
+      },
+      {
+        "id": "nas-office-01:C-BACKUP-ISOLATION",
+        "explanation": "nas-office-01 的備份與來源設備未隔離（USB 裝置仍掛載於該 NAS），勒索軟體或入侵一旦波及 NAS，備份也可能被加密或刪除，且從未做過還原測試，備份可用性未知。建議將備份媒體改為離線或與來源設備隔離存放（例如拔除或改用不同網段與權限的備份目標），並立即執行一次完整還原測試。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "backup-analyst",
+      "task": "backup-analyst#0",
+      "scope": "daily"
+    }
+  },
+  "aeaef808158ca6c1e97fdade59995017ae4904eff241cdbf1814da9e2d425a2b": {
+    "output": [
+      {
+        "id": "nas-office-01:synology-dsm:vuln",
+        "explanation": "synology-dsm 7.2.1-69057 Update 5 存在 5 個已知漏洞（最高 CVSS 9.8），其中 CVE-2024-10441 已列入 CISA KEV，代表已遭實際利用，影響含遠端存取與權限提升風險。修補版本為 7.2.1-69057-7，建議盡快升級至此版本或更新。",
+        "confidence": "high"
+      },
+      {
+        "id": "marketing-site:wordpress:vuln",
+        "explanation": "wordpress 6.4.3 存在 3 個已確定漏洞與 1 個需確認項目（最高 CVSS 8.1），CVE-2026-119977 與 CVE-2026-87902 已列入 CISA KEV，屬已遭實際利用。修補版本無法確定，因部分漏洞缺乏明確修補版本或範圍，建議先確認官方安全公告並升級至最新穩定版，同時檢查網站是否已遭入侵。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "dependency-analyst#2",
+      "scope": "daily"
+    }
+  },
+  "2c31802b303f41e27b4c4b6dbccc86155c5bb2cd0d95d755629c003a7f48c99a": {
+    "output": [
+      {
+        "id": "gitlab:C-SECRET-IN-GIT",
+        "explanation": "位於 config/db.yml:4 的正式環境金鑰已存在 Git 中，推測為資料庫連線類憑證，屬正式環境。權限範圍無法從現有證據確認，風險高。需要撤銷或輪替的證據，單純刪除檔案不算修復。",
+        "confidence": "high"
+      },
+      {
+        "id": "brand-app:C-SECRET-IN-GIT",
+        "explanation": "services/brand-app/src/config.ts:3 的正式環境金鑰已存在 Git 中，類型與權限範圍無法從證據確認。風險高，需提供撤銷或輪替紀錄，並檢查 Git 歷史是否仍保留該值。",
+        "confidence": "high"
+      },
+      {
+        "id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "explanation": "此為第三方郵件服務 API 金鑰，已 466 天未輪替且未設定 IP 白名單，違反 90 天輪替規定。環境別證據不足標為 unknown，但長期未輪替加上無來源限制，風險高。",
+        "confidence": "high"
+      },
+      {
+        "id": "order-db-test-cred:test-secret-in-git",
+        "explanation": "config/db.yml:7 的測試環境資料庫憑證已存在 Git 中，屬測試環境。風險中等，需確認未與正式環境共用，且仍需提供撤銷或輪替證據，不能只靠刪除檔案處理。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "secret-analyst",
+      "task": "secret-analyst#0",
+      "scope": "daily"
+    }
+  },
+  "337a2ef36d8140e53e7e231dfb4176ea2d65e42fccf8a73a349fdf569709f8a2": {
+    "output": [
+      {
+        "id": "api-gateway:nginx:vuln",
+        "explanation": "nginx 1.27.2 命中 17 個 NVD 已知漏洞（最高 CVSS 9.2，CVE-2026-42055）；事件 CVE-2026-123007 的範圍（1.9.5 至 1.30.7 之前）涵蓋 1.27.2，啟用 HTTP/2 時可能遭未認證遠端攻擊並以 worker 權限執行程式碼。修補版本程式結果為無法確定；事件範圍顯示 1.30.7 為該漏洞首個修補版本，但 1.27.x 分支是否有回補版本未確認。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "event:live-evt-nginx-cve-2026-123007:dependency-analyst",
+      "scope": "daily"
+    }
+  },
+  "2e136cc0f9a52f3353da51e65340252c6c5fb56e31af33d5f37ae1c0ecc3297c": {
+    "output": [
+      {
+        "id": "nas-office-01:synology-dsm:vuln",
+        "explanation": "依 NVD 比對，synology-dsm 7.2.1-69057 Update 5 存在 5 個已知漏洞，最高 CVSS 為 9.8（CVE-2024-10441）。事件資料指出該 CVE 已列入 CISA KEV，即已遭實際利用，攻擊鏈描述為遠端攻擊者透過未指明途徑攻擊系統外掛常駐程式並執行任意程式碼。修補版本為 7.2.1-69057-7。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "event:live-evt-synology-cve-2024-10441:dependency-analyst",
+      "scope": "daily"
+    }
+  },
+  "d3b8804a38cf7d0d2d55ad1dea1c2680ab3605fd3e7fe897ce961bec801a5104": {
+    "output": [
+      {
+        "id": "api-gateway:nginx:vuln",
+        "explanation": "此資產為平台層 API 閘道（api-gateway，prod，對外可連線），部署 nginx 1.27.2，依分數拆解含 CVSS 9.2 漏洞（3 分）、對外暴露（2 分）、pii 資料（1 分）、影響所有品牌的平台層範圍（1 分）與同業事件命中（1 分）。圖譜未提供確切品牌數與安裝數，業務影響以閘道可達 member-api 與 member-db-prod（含 5432 連線）的 pii 資料路徑為主要風險面，屬於 Demo 資料推估，需人工確認。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "api-gateway:nginx:vuln",
+      "scope": "daily"
+    }
+  },
+  "bf58c3ea103af935cdd4fbcae1b09f6211079c1e96e7078a0bd922e7b9b25838": {
+    "output": [
+      {
+        "id": "nas-office-01:synology-dsm:vuln",
+        "explanation": "影響品牌數與安裝數在任務資料與圖譜中皆無資料，無法評估。圖譜顯示影響資產為 nas-office-01（辦公室 NAS，未登錄、owner 為空、標記為 shadow_it），資料欄位為空、非 crown jewel，且目前無攻擊路徑。分數拆解依序為：漏洞 CVSS 9.8（3 分）、已遭實際利用（2 分）、對外暴露經 internet 5001 埠連入（2 分，圖譜已確認）、同業事件命中 3 筆（1 分）。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "nas-office-01:synology-dsm:vuln",
+      "scope": "daily"
+    }
+  },
+  "c0182be7c988ef880ac11038600bcca78a4222b120ad4da428879eea601278c7": {
+    "output": [
+      {
+        "id": "storefront:node:vuln",
+        "explanation": "依分數拆解，主要原因為 node 22.11.0 含 CVSS 9.8 漏洞（+3），且已遭實際利用或官方確認（+2）；對外暴露（經 443 可由 internet 連入，+2）、資料含 order 與 pii（+1）、平台層影響所有品牌（+1），以及同業事件命中 live-evt-node-http2-2026-11（+1）。任務資料與圖譜皆未提供品牌數與安裝數，故無法量化，這兩項影響需另行確認。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "storefront:node:vuln",
+      "scope": "daily"
+    }
+  },
+  "07ecc072127b4455a2ab13f1223ade3f29b09ccf9b40d1852ff70d0f12d521f0": {
+    "output": [
+      {
+        "id": "internal-tool:opsbuilder:vuln",
+        "explanation": "依圖譜，受影響資產為 prod 環境的 internal-tool（opsbuilder 1.88，未登錄、無負責人、非 CI 部署，由工程師手動啟動），可由 internet 經 443 連入。攻擊路徑為 internet → internal-tool → GitLab 唯讀 Token → GitLab → 訂單資料庫憑證 → order-db-prod，故可能外洩訂單資料庫存取權；圖譜未提供品牌數、安裝數與資料欄位（data_classes 為空），這些影響無法確認。分數依 breakdown：漏洞 3、已利用 2、對外暴露 2、同業事件 1、完整攻擊鏈 3，合計以程式結果為準。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "internal-tool:opsbuilder:vuln",
+      "scope": "daily"
+    }
+  },
+  "90e01502f6600642e8a23cafee669515131b1cda3646339d903382330a31d01a": {
+    "output": [
+      {
+        "id": "brand-app:C-SECRET-IN-GIT",
+        "explanation": "分數拆解為基礎 2 分、對外暴露 2 分、資料敏感 1 分、平台層影響範圍 1 分、同業事件 1 分、完整攻擊鏈 3 分，合計以程式結果為準。圖譜確認 brand-app 為對internet開放的 prod 行動 App（平台層、資料類別 pii），且攻擊路徑為 internet → brand-app → app-api-key → api-gateway → member-db-prod，此金鑰位於路徑上的必要一步。影響品牌數與安裝數任務資料與圖譜均未提供，無法量化。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "brand-app:C-SECRET-IN-GIT",
+      "scope": "daily"
+    }
+  },
+  "fa75ecdf533eb990a3038f68fd56ae5bf2fb83853306b2ac310d61cabf7ee303": {
+    "output": [
+      {
+        "id": "gitlab:C-SECRET-IN-GIT",
+        "explanation": "影響品牌數與安裝數：任務資料與圖譜皆未提供數字，無法確認（假設未知）。資料欄位：任務資料列為 order、pii，但圖譜 gitlab 資產的 data_classes 只有 source_code，兩者不一致，需人工確認。業務影響：攻擊鏈經 gitlab 讀取的金鑰可取得正式訂單資料庫憑證並存取 order-db-prod。breakdown 中「平台層影響所有品牌」與圖譜 platform_layer=false 不一致，分數仍以程式結果為準。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "gitlab:C-SECRET-IN-GIT",
+      "scope": "daily"
+    }
+  },
+  "f691466bdb2485e4c183aa685fc7ebf24370c984c22875751c9bf86ca9125e44": {
+    "output": [
+      {
+        "id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+        "explanation": "本資產為未登記、以手動 docker run 啟動的內部工具（負責人空缺，屬 shadow IT），且可從 internet 經 443 連入。圖譜顯示它儲存 GitLab 唯讀 Token 並可連到 prod 訂單資料庫（5432），攻擊路徑為 internet → internal-tool → GitLab Token → GitLab → 訂單 DB 認證 → order-db-prod，因此它是路徑的必要入口。分數依 breakdown：控制項不符 2 分、對外暴露 2 分、同業事件命中 1 分、位於完整攻擊鏈 3 分。圖譜未提供品牌數、安裝數與資料欄位（data_classes 為空），因此無法量化影響品牌數與安裝數，業務影響僅能依 prod 訂單 DB 的連線關係推估。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+      "scope": "daily"
+    }
+  },
+  "33210e0ba8c9622cb32ec20f65157d55f47bcdc67f08db3c6e0fc75fe17c806f": {
+    "output": [
+      {
+        "id": "internal-tool:node:vuln",
+        "explanation": "分數拆解為漏洞本身 3 分（CVSS 9.8）、已遭實際利用 2 分（KEV 或官方確認）、對外可連線 2 分，以及同業事件命中 1 分，合計 8 分；任務資料與圖譜皆未提供影響品牌數、安裝數或資料欄位，業務影響僅能依對外暴露與遭利用狀態推論。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "internal-tool:node:vuln",
+      "scope": "daily"
+    }
+  },
+  "e802a3242b956eb02135d897313cc07f19b1a459d407509994e59070442c7c92": {
+    "output": [
+      {
+        "id": "member-api:node:vuln",
+        "explanation": "依分數拆解：漏洞項（CVSS 9.8）3 分、已遭實際利用（KEV 或官方確認）2 分、資料敏感（pii）1 分、平台層影響範圍 1 分、同業事件命中（live-evt-node-http2-2026-11）1 分。圖譜顯示 member-api 為 prod 服務，有 pii 資料，位於平台層，未對外網際網路開放，入站來自 api-gateway，出站連至 member-db-prod（5432）與 mail-service（443）。任務資料與圖譜皆未提供影響品牌數與安裝數，因此無法量化這兩項，業務影響僅能依上述資料定性說明。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "member-api:node:vuln",
+      "scope": "daily"
+    }
   }
 }

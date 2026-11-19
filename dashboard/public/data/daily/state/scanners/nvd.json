@@ -1,7 +1,7 @@
 {
   "tool": "nvd",
   "tool_version": "NVD CVE API 2.0",
-  "database_revision": "2026-11-18T04:55:17Z",
+  "database_revision": "2026-11-19T04:48:04Z",
   "api_key": false,
   "results": [
     {
@@ -9587,7 +9587,7 @@
         {
           "id": "CVE-2026-111497",
           "published": "2026-10-22T14:17:37.190",
-          "last_modified": "2026-11-10T20:25:59.130",
+          "last_modified": "2026-11-18T19:17:27.513",
           "status": "Analyzed",
           "kev_added": "2026-10-27",
           "cvss": 9.8,
@@ -11445,7 +11445,7 @@
         {
           "id": "CVE-2026-109618",
           "published": "2026-10-21T14:17:09.357",
-          "last_modified": "2026-11-16T16:54:58.603",
+          "last_modified": "2026-11-18T19:17:25.813",
           "status": "Analyzed",
           "kev_added": "2026-10-26",
           "cvss": 9.8,
@@ -11492,7 +11492,7 @@
         {
           "id": "CVE-2026-109619",
           "published": "2026-10-21T14:17:09.823",
-          "last_modified": "2026-11-16T16:17:46.967",
+          "last_modified": "2026-11-18T19:17:26.517",
           "status": "Analyzed",
           "kev_added": "2026-10-26",
           "cvss": 9.2,
@@ -12037,7 +12037,7 @@
         {
           "id": "CVE-2026-109618",
           "published": "2026-10-21T14:17:09.357",
-          "last_modified": "2026-11-16T16:54:58.603",
+          "last_modified": "2026-11-18T19:17:25.813",
           "status": "Analyzed",
           "kev_added": "2026-10-26",
           "cvss": 9.8,
@@ -12084,7 +12084,7 @@
         {
           "id": "CVE-2026-109619",
           "published": "2026-10-21T14:17:09.823",
-          "last_modified": "2026-11-16T16:17:46.967",
+          "last_modified": "2026-11-18T19:17:26.517",
           "status": "Analyzed",
           "kev_added": "2026-10-26",
           "cvss": 9.2,
@@ -16215,9 +16215,9 @@
         {
           "id": "CVE-2024-10441",
           "published": "2025-03-19T02:15:27.120",
-          "last_modified": "2026-06-17T06:55:39.970",
-          "status": "Analyzed",
-          "kev_added": null,
+          "last_modified": "2026-11-18T21:17:43.400",
+          "status": "Modified",
+          "kev_added": "2026-11-18",
           "cvss": 9.8,
           "summary": "Improper encoding or escaping of output vulnerability in the system plugin daemon in Synology BeeStation OS (BSM) before 1.1-65374 and Synology DiskStation Manager (DSM) before 7.2-64570-4, 7.2.1-6905",
           "configurations": [

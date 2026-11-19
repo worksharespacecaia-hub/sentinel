@@ -1087,6 +1087,78 @@
       "demo_fixture": true
     },
     {
+      "id": "kev-cve-2024-10441",
+      "kind": "advisory",
+      "is_update_of": null,
+      "title": "CISA KEV：Synology DiskStation Manager (DSM) Improper Encoding or Escaping of Output Vulnerability（CVE-2024-10441）",
+      "date": "2026-11-18",
+      "industry": null,
+      "attack_chain": [],
+      "attck": [],
+      "cves": [
+        "CVE-2024-10441"
+      ],
+      "products": [
+        {
+          "name": "synology-dsm",
+          "ecosystem": "synology-dsm",
+          "affected": [
+            {
+              "start_including": "7.2",
+              "end_excluding": "7.2-64570-4"
+            },
+            {
+              "start_including": "7.2.1-69057",
+              "end_excluding": "7.2.1-69057-6"
+            },
+            {
+              "start_including": "7.2.2",
+              "end_excluding": "7.2.2-72806-1"
+            }
+          ],
+          "cvss": 9.8,
+          "known_exploited": true,
+          "impact": "other"
+        }
+      ],
+      "revision": "2026-11-18T21:17:43.400",
+      "controls": [],
+      "confidence": "confirmed",
+      "sources": [
+        {
+          "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search=CVE-2024-10441",
+          "title": "CISA Known Exploited Vulnerabilities：CVE-2024-10441",
+          "quote": null,
+          "published": "2026-11-18",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-18T21:58:19Z",
+          "content_hash": null,
+          "verification_basis": "official_api"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-10441",
+          "title": "NVD：CVE-2024-10441",
+          "quote": null,
+          "published": "2025-03-19",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-18T21:58:19Z",
+          "content_hash": null,
+          "verification_basis": "official_api"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [],
+      "summary": "Improper encoding or escaping of output vulnerability in the system plugin daemon in Synology BeeStation OS (BSM) before 1.1-65374 and Synology DiskStation Manager (DSM) before 7.2-64570-4, 7.2.1-69057-6 and 7.2.2-72806-1 allows remote attackers to execute arbitrary code via unspecified vectors.",
+      "fixture_note": null,
+      "possible_entry_points": [],
+      "brand": null,
+      "generated_by": "kev-nvd",
+      "generated_at": "2026-11-18T21:58:19Z"
+    },
+    {
       "id": "kev-cve-2026-109618",
       "kind": "advisory",
       "is_update_of": null,
@@ -1125,7 +1197,7 @@
           "impact": "other"
         }
       ],
-      "revision": "2026-11-16T16:54:58.603",
+      "revision": "2026-11-18T19:17:25.813",
       "controls": [],
       "confidence": "confirmed",
       "sources": [
@@ -1136,7 +1208,7 @@
           "published": "2026-10-26",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-16T22:04:48Z",
+          "verified_at": "2026-11-19T03:30:16Z",
           "content_hash": null,
           "verification_basis": "official_api"
         },
@@ -1147,7 +1219,7 @@
           "published": "2026-10-21",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-16T22:04:48Z",
+          "verified_at": "2026-11-19T03:30:16Z",
           "content_hash": null,
           "verification_basis": "official_api"
         }
@@ -1160,7 +1232,7 @@
       "possible_entry_points": [],
       "brand": null,
       "generated_by": "kev-nvd",
-      "generated_at": "2026-11-16T22:04:48Z"
+      "generated_at": "2026-11-19T03:30:16Z"
     },
     {
       "id": "kev-cve-2026-109619",
@@ -1201,7 +1273,7 @@
           "impact": "other"
         }
       ],
-      "revision": "2026-11-16T16:17:46.967",
+      "revision": "2026-11-18T19:17:26.517",
       "controls": [],
       "confidence": "confirmed",
       "sources": [
@@ -1212,7 +1284,7 @@
           "published": "2026-10-26",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-16T22:04:48Z",
+          "verified_at": "2026-11-19T03:30:16Z",
           "content_hash": null,
           "verification_basis": "official_api"
         },
@@ -1223,7 +1295,7 @@
           "published": "2026-10-21",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-16T22:04:48Z",
+          "verified_at": "2026-11-19T03:30:16Z",
           "content_hash": null,
           "verification_basis": "official_api"
         }
@@ -1236,7 +1308,7 @@
       "possible_entry_points": [],
       "brand": null,
       "generated_by": "kev-nvd",
-      "generated_at": "2026-11-16T22:04:48Z"
+      "generated_at": "2026-11-19T03:30:16Z"
     },
     {
       "id": "kev-cve-2026-111497",
@@ -1272,7 +1344,7 @@
           "impact": "other"
         }
       ],
-      "revision": "2026-11-10T20:25:59.130",
+      "revision": "2026-11-18T19:17:27.513",
       "controls": [],
       "confidence": "confirmed",
       "sources": [
@@ -1283,7 +1355,7 @@
           "published": "2026-10-27",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-11T18:42:51Z",
+          "verified_at": "2026-11-19T03:30:16Z",
           "content_hash": null,
           "verification_basis": "official_api"
         },
@@ -1294,7 +1366,7 @@
           "published": "2026-10-22",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-11T18:42:51Z",
+          "verified_at": "2026-11-19T03:30:16Z",
           "content_hash": null,
           "verification_basis": "official_api"
         }
@@ -1307,7 +1379,7 @@
       "possible_entry_points": [],
       "brand": null,
       "generated_by": "kev-nvd",
-      "generated_at": "2026-11-11T18:42:51Z"
+      "generated_at": "2026-11-19T03:30:16Z"
     },
     {
       "id": "kev-cve-2026-119977",
@@ -1542,32 +1614,188 @@
       "generated_at": "2026-11-10T17:04:44Z"
     },
     {
-      "id": "live-optimizely-supply-chain-2026-11",
+      "id": "live-evt-plaid-karte-2026-11",
       "kind": "live",
       "is_update_of": null,
-      "title": "Optimizely 供應鏈攻擊：178 個組織網站被植入惡意 JavaScript，含臺灣匯豐官網",
-      "date": "2026-11-16",
-      "industry": "SaaS",
+      "title": "日本行銷平台 PLAID KARTE 遭駭，JINS、DHC、思夢樂等零售與消費品牌會員個資外洩",
+      "date": "2026-11-13",
+      "industry": "零售/電商（行銷 SaaS 供應鏈）",
       "attack_chain": [
-        "未經授權者利用 Optimizely Experimentation 產品的漏洞，在部分客戶專案中加入惡意 JavaScript",
-        "惡意程式碼寫入客戶專案的 projectJS 欄位，檔案仍由合法的 cdn.optimizely.com 提供",
-        "訪客瀏覽受影響網站時，瀏覽器載入並執行含惡意程式的 Optimizely 程式片段",
-        "將網頁、剪貼簿與網路請求中的加密貨幣錢包地址替換成攻擊者控制的地址",
-        "監看表單與網路請求，竊取卡號、有效期限與 CVV，並嘗試傳送至攻擊者的 /card.php",
-        "取得未設 HttpOnly 的 Cookie 與頁面截圖，傳送至攻擊者控制的伺服器",
-        "若訪客使用舊版 iPhone 或 iPad，依作業系統版本載入 Coruna 與 DarkSword iOS 漏洞利用工具包"
+        "攻擊者於 11 月 13 日凌晨利用 PLAID 伺服器漏洞入侵（漏洞種類來源未說明）",
+        "竊取系統及資料庫連線的認證資訊，存取資料庫並將資料外傳",
+        "利用竊得的認證資訊接管 PLAID 帳號並登入管理介面",
+        "下游企業陸續公告會員個資外洩或可能外洩"
       ],
       "attck": [
         "T1190",
+        "T1552",
+        "T1078",
+        "T1213"
+      ],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [
+        "C-THIRD-PARTY-KEY-ROTATION"
+      ],
+      "confidence": "confirmed",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180640",
+          "title": "JINS、三菱UFJ銀行等數十家日本企業陸續發布資安事件公告，皆因第三方行銷科技業者PLAID旗下KARTE平臺遭駭",
+          "quote": "JINS指出，最多約1,829萬個會員帳號可能受到影響，實際外洩範圍仍在調查。",
+          "published": "2026-11-19",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-19T04:47:04Z",
+          "content_hash": "sha256:dc8fe0d953516080e7b7d45c454d478514a2b517289f97deda2f8b3da20c8f37",
+          "verification_basis": "live"
+        },
+        {
+          "url": "https://infosecu.technews.tw/2026/11/19/japanese-dhc-data-breach-19-11-million-jins-shimamura-affected/",
+          "title": "日本 DHC 爆 1,911 萬筆個資外洩，JINS、思夢樂也遭殃",
+          "quote": "這項服務13日遭到駭客入侵，營運商PLAID於16日公布消息後，使用該平台的企業也接連傳出個資外洩。",
+          "published": "2026-11-19",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-19T04:47:04Z",
+          "content_hash": "sha256:d6228a4cbbcf2362936ccd9ee0659edf6597fc396353a6431105e7f595ec312d",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [],
+      "summary": "PLAID 旗下 KARTE 平台於 11 月 13 日遭第三方未經授權存取，攻擊者利用伺服器漏洞竊取系統與資料庫連線認證資訊。外洩資料包含 KARTE 帳號電子郵件、企業連結外部服務用的 Secret Key 與 Access Token，以及部分企業匯入的會員資料。JINS 最多約 1,829 萬個會員帳號可能受影響；台灣 JINS 公告台灣會員資料獨立管理、不受影響。",
+      "fixture_note": null,
+      "possible_entry_points": [],
+      "brand": null
+    },
+    {
+      "id": "live-evt-yongxin-pharma-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "永信藥品委外電商平台服務商發生資安事件，部分會員個資疑似外洩",
+      "date": "2026-11-17",
+      "industry": "電商（委外電商平台）",
+      "attack_chain": [
+        "會員反映個資疑似外洩，永信藥品購物網站通報",
+        "初步了解與委外電商平臺服務商的系統有關（手法來源未說明）"
+      ],
+      "attck": [],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180619",
+          "title": "永信藥品委外電商服務商發生資安事件，部分會員個資疑似外洩",
+          "quote": "對於事件的影響範圍，永信藥品目前確認影響範圍僅限於線上購物網站的部分會員資料，尚未發現公司核心營運系統、交易系統或財務系統遭到入侵的情形。",
+          "published": "2026-11-17",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-19T04:47:04Z",
+          "content_hash": "sha256:4a7e4d822aa8aa50292764dda2a11918b1094b8b03ef13aa06f4e9bd1627e6d1",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [
+        {
+          "title": "委外電商平台的資安事件通報時限與會員資料範圍確認",
+          "reason": "來源指出事件與委外電商平臺服務商的系統有關、原因與範圍仍在調查，現有控制項沒有涵蓋委外服務商事件的通報時限與資料範圍確認。"
+        }
+      ],
+      "demo": false,
+      "facts": [],
+      "summary": "永信國際於 11 月 17 日發布重大訊息，旗下永信藥品購物網站接獲會員反映個資疑似外洩，事件與委外電商平臺服務商的系統有關。目前確認範圍僅限線上購物網站的部分會員資料，確切原因與影響範圍仍在調查。",
+      "fixture_note": null,
+      "possible_entry_points": [
+        {
+          "text": "委外電商平台服務商的系統遭入侵",
+          "check": "確認我們是否有委外電商或會員平台；盤點服務商持有的會員資料、對外金鑰與管理帳號，並向服務商索取事件通報與存取紀錄",
+          "systems": [
+            "storefront",
+            "member-api"
+          ],
+          "basis": "新聞指事件與委外電商平臺服務商的系統有關，未說明手法"
+        }
+      ],
+      "brand": null
+    },
+    {
+      "id": "live-evt-tatung-etungo-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "大同購物網站 e同購遭自動化攻擊入侵，疑似個資外洩",
+      "date": "2026-11-17",
+      "industry": "電商",
+      "attack_chain": [
+        "e同購遭自動化攻擊入侵（具體手法來源未說明）",
+        "疑似有個人資料外洩，公司啟動應變機制並關閉受影響的網站系統"
+      ],
+      "attck": [],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180615",
+          "title": "大同購物網站e同購遭自動化攻擊入侵，疑似個資外洩",
+          "quote": "目前事件發生原因，以及可能涉及的個人資料與影響範圍，仍在調查釐清中，初步評估對公司財務及業務尚無重大影響。",
+          "published": "2026-11-17",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-19T04:47:04Z",
+          "content_hash": "sha256:56b0831b4fdd48c7adb6f96e1f820569e27b824d0e86ad7f7f7fcfdc2491b89c",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [
+        {
+          "title": "對外購物與會員網站須有自動化流量偵測與速率限制",
+          "reason": "來源指出購物網站遭自動化攻擊入侵且疑似個資外洩，現有控制項沒有涵蓋對外登入與 API 的速率限制及自動化流量偵測。"
+        }
+      ],
+      "demo": false,
+      "facts": [],
+      "summary": "大同子公司大同綜合訊電發現購物網站「e同購」遭自動化攻擊入侵，疑似有個資外洩，已關閉受影響的網站系統。來源指出該站由大同綜合訊電自行建置與維運，原因與影響範圍仍在調查。",
+      "fixture_note": null,
+      "possible_entry_points": [
+        {
+          "text": "自建對外購物網站的登入或會員查詢遭自動化批次攻擊",
+          "check": "檢視商店網站與 API 閘道的登入失敗、異常請求量與來源 IP 紀錄；確認有速率限制與 bot 偵測，會員資料查詢無法被批次列舉",
+          "systems": [
+            "storefront",
+            "api-gateway"
+          ],
+          "basis": "新聞指購物網站遭自動化攻擊入侵，且為自行建置與維運，原因仍在調查"
+        }
+      ],
+      "brand": null
+    },
+    {
+      "id": "live-evt-optimizely-optimjack-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "Optimizely 供應鏈攻擊（OPTIMJACK）波及 178 個組織，匯豐台灣列名",
+      "date": "2026-11-16",
+      "industry": "SaaS（網站實驗與個人化平台）/ 電商支付",
+      "attack_chain": [
+        "攻擊者利用 Optimizely Web Experimentation 漏洞，在客戶專案植入惡意 JavaScript",
+        "將載入惡意程式的指令寫入客戶專案的 projectJS 欄位",
+        "惡意檔案仍由合法的 cdn.optimizely.com 提供，訪客瀏覽器載入並執行",
+        "替換錢包地址、側錄卡號與 Cookie、投遞 iOS 漏洞利用工具包"
+      ],
+      "attck": [
         "T1195",
         "T1059.007",
-        "T1565.002",
-        "T1115",
+        "T1189",
         "T1056",
-        "T1539",
-        "T1113",
-        "T1041",
-        "T1189"
+        "T1565"
       ],
       "cves": [],
       "products": [],
@@ -1576,119 +1804,160 @@
       "confidence": "confirmed",
       "sources": [
         {
-          "url": "https://www.ithome.com.tw/news/180588",
-          "title": "Optimizely供應鏈攻擊波及BBC、GitLab、IKEA等178個組織網站，匯豐臺灣也名列其中",
-          "quote": "此外，匯豐銀行在多個國家的網站也列入受影響名單，其中包括臺灣匯豐銀行官網（www.hsbc.com.tw）。",
-          "published": "2026-11-18",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-18T04:54:32Z",
-          "content_hash": "sha256:dd484541ea27ca9529342bbc89b313e17aa23ce5f1a7488ed65176389520c7d6",
-          "verification_basis": "live"
-        },
-        {
           "url": "https://cyberq.tw/2026/11/18/optimizely-supply-chain-attack-taiwan/",
           "title": "Optimizely 供應鏈攻擊波及 178 家機構：匯豐台灣列名，惡意腳本鎖定加密貨幣與 iPhone",
-          "quote": "信用卡側錄 檢查卡號、有效期限與安全碼，取得符合條件的組合後，嘗試傳送至攻擊者的 /card.php 。",
+          "quote": "這起被研究人員稱為 OPTIMJACK 的攻擊，也與台灣有關：Report URI 公布的清單明確列出 HSBC Taiwan，以及 www.hsbc.com.tw 。",
           "published": "2026-11-18",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-18T04:54:32Z",
+          "verified_at": "2026-11-19T04:47:04Z",
           "content_hash": "sha256:29b00ecbec3b793bf3a08c2ea238a4421d32a05cd3a79d82855900a66a9fc137",
           "verification_basis": "live"
         },
         {
-          "url": "https://infosecu.technews.tw/2026/11/18/popular-websites-compromised-in-bid-to-steal-crypto-target-iphone-users/",
-          "title": "Zoom 等 178 網站遭惡意程式波及，第三方軟體成資安隱憂",
-          "quote": "這起事件影響全球 178 個機構網站，部分企業已停用相關第三方程式碼。",
-          "published": "2026-11-18",
+          "url": "https://www.ithome.com.tw/news/180612",
+          "title": "【資安日報】11月18日，Optimizely供應鏈攻擊波及BBC、GitLab、IKEA等178個組織網站，匯豐臺灣也名列其中",
+          "quote": "Optimizely表示已修補漏洞、移除惡意程式碼，並強化受影響帳號的安全防護。",
+          "published": "2026-11-17",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-18T04:54:32Z",
-          "content_hash": "sha256:014287b49037e4ba16d8ecdb30405085d055faf5b92fff74dd31dc7184eaadca",
+          "verified_at": "2026-11-19T04:47:04Z",
+          "content_hash": "sha256:439b5f8d77cc45563bcd3569e32348637f528039510632cf7c11a4af6fc2c4cc",
           "verification_basis": "live"
         }
       ],
       "proposed_controls": [
         {
-          "title": "網站載入的第三方 JavaScript 需有清單、完整性檢查與內容安全政策限制",
-          "reason": "來源指出網站自己的程式庫沒被修改，惡意程式卻從可信任的第三方網域送進訪客瀏覽器，現有控制項沒有涵蓋第三方腳本。"
+          "title": "第三方託管的前端腳本須盤點來源並監控內容變更",
+          "reason": "來源指出企業自己的網站程式庫沒有被修改，惡意程式卻從可信任的第三方網域載入，現有控制項沒有涵蓋第三方前端腳本的盤點與變更偵測。"
         }
       ],
       "demo": false,
       "facts": [],
-      "summary": "網站實驗服務 Optimizely 的 Experimentation 產品遭人利用漏洞，在部分客戶專案的 projectJS 欄位植入惡意 JavaScript。研究員檢查 1,611 個程式片段，188 個遭植入，涉及 178 個組織。惡意程式會替換加密貨幣錢包地址、竊取信用卡資料，並對舊版 iOS 裝置載入漏洞利用工具包；實際被竊資料數量無法確認。",
+      "summary": "Optimizely Web Experimentation 的客戶專案 JavaScript 被植入惡意程式，可替換加密貨幣錢包地址、側錄信用卡資料與 Cookie，並載入 iOS 漏洞利用工具包。研究人員發現 188 份遭植入的檔案，涉及 178 個組織，包括 HSBC Taiwan。Optimizely 表示已修補漏洞、移除惡意程式碼。",
       "fixture_note": null,
       "possible_entry_points": [],
       "brand": null
     },
     {
-      "id": "live-ai-agent-ecommerce-attacks-tw-2026-11",
+      "id": "live-evt-91app-artex-2026-11",
+      "kind": "live",
+      "is_update_of": "evt-91app-2026-10",
+      "title": "FBI 示警 ARTEX AI 攻擊框架遭濫用，電商 SaaS 91APP 最大可能影響 1,329 家品牌",
+      "date": "2026-11-13",
+      "industry": "電商 SaaS",
+      "attack_chain": [
+        "攻擊者以 ARTEX 對目標自動執行系統掃描、漏洞分析與後續操作",
+        "91APP 自 10 月起遭 ARTEX 攻擊（具體入侵手法來源未說明）"
+      ],
+      "attck": [],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [
+        "C-INTERNAL-TOOL-EXPOSED",
+        "C-SECRET-IN-GIT",
+        "C-NET-SEGMENT",
+        "C-THIRD-PARTY-KEY-ROTATION"
+      ],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://infosecu.technews.tw/2026/11/19/artex-is-criminals-new-favorite-point-and-shoot-ai-hacking-tool/",
+          "title": "FBI 示警 AI 滲透測試工具 ARTEX 遭駭客濫用，最快不到 3 小時取得企業高階權限",
+          "quote": "台灣也受到波及，電商SaaS平台供應商91APP自今年10月起遭ARTEX攻擊，最大可能影響1,329家品牌、約480萬名消費者。",
+          "published": "2026-11-19",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-19T04:47:04Z",
+          "content_hash": "sha256:76fb16b816c560c4f039297fb2475be734028f8516c774f51b65d3feb199e073",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [],
+      "summary": "FBI 於 11 月 13 日示警開源 AI 滲透測試框架 ARTEX 被犯罪集團與國家級駭客用於入侵，部分行動從鎖定目標到取得高階權限不到 3 小時。報導指電商 SaaS 供應商 91APP 自 10 月起遭 ARTEX 攻擊，最大可能影響 1,329 家品牌、約 480 萬名消費者。FBI 呼籲保護對外應用程式、限制雲端管理介面存取，並對敏感 API 設定速率限制。",
+      "fixture_note": null,
+      "possible_entry_points": [
+        {
+          "text": "對外應用程式或敏感 API 缺少速率限制與管理介面存取限制",
+          "check": "檢視商店網站與 API 閘道的檔案上傳功能、敏感 API 請求量與來源 IP 異常，以及雲端管理介面的存取來源；同時確認是否使用 91APP 或其整合並向其確認是否在受影響名單",
+          "systems": [
+            "storefront",
+            "api-gateway"
+          ],
+          "basis": "FBI 呼籲保護對外應用程式、限制雲端管理介面存取、對敏感 API 設定速率限制"
+        }
+      ],
+      "brand": null,
+      "inherited_from": "evt-91app-2026-10"
+    },
+    {
+      "id": "live-evt-arara-mail-2026-11",
       "kind": "live",
       "is_update_of": null,
-      "title": "AI 代理工具網攻波及臺灣電商與各行業，逾百萬份個資受影響",
-      "date": "2026-11-16",
-      "industry": "電商",
+      "title": "日本郵件服務業者 Arara 遭駭，BIC Camera、摩斯漢堡等客戶信箱外洩",
+      "date": "2026-11-18",
+      "industry": "SaaS（郵件發送服務）/ 零售",
       "attack_chain": [
-        "境外駭客利用 AI 代理工具，主要為中國開源自動化滲透測試工具 ARTEX",
-        "繞過前端介面直接呼叫後端 API",
-        "利用已知漏洞及遭竊憑證入侵",
-        "取得姓名、電話、電子郵件與訂單明細等個資"
+        "Arara 郵件發送服務遭駭（入侵手法來源未說明）",
+        "電子郵件地址外洩或可能遭存取",
+        "攻擊者利用遭入侵的郵件服務寄送冒充信用卡公司的可疑郵件"
       ],
       "attck": [
-        "T1190",
-        "T1078"
+        "T1566"
       ],
       "cves": [],
       "products": [],
       "revision": "1",
-      "controls": [],
+      "controls": [
+        "C-THIRD-PARTY-KEY-ROTATION"
+      ],
       "confidence": "provisional",
       "sources": [
         {
-          "url": "https://www.ithome.com.tw/news/180566",
-          "title": "【資安日報】11月17日，國家級駭客組織SilentAir鎖定臺灣等十多個國家的手機用戶，濫用電信訊號攔截簡訊與通話",
-          "quote": "攻擊者主要利用中國開源自動化滲透測試工具ARTEX，繞過前端介面直接呼叫後端API，並利用已知漏洞及遭竊憑證入侵。",
-          "published": "2026-11-16",
+          "url": "https://www.ithome.com.tw/news/180612",
+          "title": "【資安日報】11月18日，Optimizely供應鏈攻擊波及BBC、GitLab、IKEA等178個組織網站，匯豐臺灣也名列其中",
+          "quote": "Arara調查指出，這起事件可能影響最多380家企業客戶，約8,133萬筆電子郵件地址已外洩或可能遭到存取，受害者包括出版社小學館、電器零售商BIC Camera及摩斯漢堡。",
+          "published": "2026-11-17",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-18T04:54:32Z",
-          "content_hash": "sha256:7a2eb9544d0a9a0ab5c6a05ac602b3f67b3078a6464c038f5adadd4797bc0fda",
+          "verified_at": "2026-11-19T04:47:04Z",
+          "content_hash": "sha256:439b5f8d77cc45563bcd3569e32348637f528039510632cf7c11a4af6fc2c4cc",
           "verification_basis": "live"
         }
       ],
-      "proposed_controls": [
-        {
-          "title": "後端 API 需獨立驗證身分與授權，並設呼叫頻率及流量限制",
-          "reason": "來源指出攻擊者繞過前端直接呼叫後端 API，資安署並建議 API 實施頻率與流量限制、監控資料庫異常存取，現有控制項沒有涵蓋。"
-        },
-        {
-          "title": "閒置系統需下架，帳號異動後強制登出並更換密碼",
-          "reason": "來源提到資安院建議企業下架閒置系統、強制登出並更換密碼，因攻擊利用已知漏洞與遭竊憑證。"
-        }
-      ],
+      "proposed_controls": [],
       "demo": false,
       "facts": [],
-      "summary": "數位發展部指出，境外駭客自今年 7 月起利用 AI 代理工具發動網攻，近期擴及臺灣電商，十餘家企業通報受害，逾 100 萬份個資受影響，含姓名、電話、電子郵件與訂單明細。目前尚未發現信用卡等付款資訊外洩。",
+      "summary": "Arara 調查指出最多可能影響 380 家企業客戶，約 8,133 萬筆電子郵件地址已外洩或可能遭存取，受害者包括電器零售商 BIC Camera 與摩斯漢堡。攻擊者還利用遭入侵的郵件服務寄送最多約 713 萬封冒充信用卡公司的可疑郵件。大阪市因委外服務商 TKC 使用 Arara，確認 1,078,713 筆信箱外洩。",
       "fixture_note": null,
-      "possible_entry_points": [],
+      "possible_entry_points": [
+        {
+          "text": "郵件發送服務商被入侵，寄信金鑰或收件人名單外洩",
+          "check": "確認寄信服務的實際供應商是否為 Arara 或其下游；檢視寄信服務金鑰的輪替與來源 IP 限制，以及寄信量與收件人清單的異常紀錄",
+          "systems": [
+            "mail-service",
+            "mail-api-key"
+          ],
+          "basis": "新聞指遭入侵的郵件服務被用來寄出約 713 萬封冒充信用卡公司的郵件，未說明入侵手法"
+        }
+      ],
       "brand": null
     },
     {
-      "id": "live-arara-mail-service-breach-2026-11",
+      "id": "live-evt-n0n-visa-apac-2026-11",
       "kind": "live",
       "is_update_of": null,
-      "title": "日本郵件發送服務 Arara 遭駭，波及約 380 家企業客戶，大阪市確認逾 107 萬筆信箱外洩",
-      "date": "2026-11-18",
-      "industry": "SaaS",
+      "title": "N0n 勒索組織宣稱取得 Visa 亞太行銷資料，Visa 稱出於亞太第三方供應商",
+      "date": "2026-11-16",
+      "industry": "支付 / 零售",
       "attack_chain": [
-        "郵件發送服務業者 Arara 遭駭（來源未說明初始入侵手法）",
-        "約 8,133 萬筆電子郵件地址已外洩或可能外流，最多波及約 380 家企業客戶",
-        "攻擊者利用遭入侵的郵件服務，寄出最多約 713 萬封冒充信用卡公司的可疑郵件",
-        "大阪市委外商 TKC 因使用該服務，1,078,713 筆電子郵件地址外洩"
+        "N0n 將 59 家企業列入暗網受害者名單並設定 48 小時談判期限",
+        "Visa 稱事件出於亞太地區一家第三方合作供應商（入侵手法來源未說明）"
       ],
       "attck": [
-        "T1566",
         "T1199"
       ],
       "cves": [],
@@ -1698,52 +1967,125 @@
       "confidence": "provisional",
       "sources": [
         {
-          "url": "https://www.ithome.com.tw/news/180555",
-          "title": "Arara郵件服務遭駭，日本大阪市確認逾107萬筆電子郵件地址外洩",
-          "quote": "攻擊者還利用遭入侵的郵件服務，寄送最多約713萬封冒充信用卡公司的可疑郵件。",
+          "url": "https://www.ithome.com.tw/news/180643",
+          "title": "N0n勒索軟體組織宣稱取得Visa、摩根大通等59家公司資料",
+          "quote": "Visa表示，事件出於亞太地區一家第三方合作供應商。",
+          "published": "2026-11-19",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-19T04:47:04Z",
+          "content_hash": "sha256:6ed9903bce3245408fb021f07b54993e860c524c5b5a1d40f7c58ea362b81e42",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [
+        {
+          "title": "第三方行銷與客戶資料供應商須盤點資料保有量並約定事件通報",
+          "reason": "來源中 Visa 與 Eli Lilly 均稱事件源自第三方供應商，外洩內容含大量行銷活動紀錄，現有控制項沒有涵蓋供應商持有客戶資料的盤點與通報要求。"
+        }
+      ],
+      "demo": false,
+      "facts": [],
+      "summary": "N0n 於 11 月 16 日將 59 家企業列入受害者名單，宣稱取得 Visa 亞太地區超過 150 萬次行銷活動互動紀錄，並威脅 48 小時內未談判將公開。Visa 證實得知此事，表示事件出於亞太地區一家第三方合作供應商，Visa 本身系統未受影響，未說明供應商類型。資料取得內容為駭客宣稱。",
+      "fixture_note": null,
+      "possible_entry_points": [
+        {
+          "text": "第三方行銷或郵件供應商持有大量客戶資料而遭入侵",
+          "check": "盤點交給行銷、郵件等供應商的客戶資料欄位與保存期限，確認供應商存取金鑰的管理與事件通報條款",
+          "systems": [
+            "mail-service"
+          ],
+          "basis": "新聞指 Visa 稱事件出於第三方供應商，外洩內容含大量行銷活動紀錄"
+        }
+      ],
+      "brand": null
+    },
+    {
+      "id": "live-evt-nginx-cve-2026-123007",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "NGINX HTTP/2 漏洞 CVE-2026-123007（nginx2root）可讓未認證攻擊者遠端執行程式碼",
+      "date": "2026-11-18",
+      "industry": "通用軟體",
+      "attack_chain": [
+        "對啟用 HTTP/2 的 nginx 發送惡意流量，觸發流量控制視窗整數溢位",
+        "攻擊 nginx worker 記憶體，以 worker 權限執行程式碼"
+      ],
+      "attck": [
+        "T1190"
+      ],
+      "cves": [
+        "CVE-2026-123007"
+      ],
+      "products": [
+        {
+          "name": "nginx",
+          "ecosystem": "generic",
+          "affected": [
+            {
+              "introduced": "1.9.5",
+              "fixed": "1.30.7"
+            },
+            {
+              "introduced": "1.31.0",
+              "fixed": "1.31.9"
+            }
+          ],
+          "cvss": 9.2,
+          "impact": "remote_code_execution"
+        }
+      ],
+      "revision": "1",
+      "controls": [],
+      "confidence": "confirmed",
+      "sources": [
+        {
+          "url": "https://thehackernews.com/2026/11/10-year-old-nginx-http2-flaw-lets.html",
+          "title": "10-Year-Old NGINX HTTP/2 Flaw Lets Unauthenticated Attackers Execute Code on Servers",
+          "quote": "Fixed versions 1.31.9 and 1.30.7 came out today.",
           "published": "2026-11-18",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-18T04:54:32Z",
-          "content_hash": "sha256:ca1b964d579a453c5db6b4357a46cd4cd8433df8e0fb479274cf07d874c8e379",
+          "verified_at": "2026-11-19T04:47:04Z",
+          "content_hash": "sha256:d4b6378e58c4e5aa9571103f8ec4ba95ca92a15a02390a0b671014c7b441f133",
+          "verification_basis": "live"
+        },
+        {
+          "url": "https://cyberq.tw/2026/11/19/nginx2root-cve-2026-123007-hands-on/",
+          "title": "實測 NGINX2Root：CVSS 9.2 分 nginx 漏洞影響上千萬台主機，從升級修補到重啟驗證",
+          "quote": "nginx 官方於 2026 年 11 月 18 日同時發布 mainline 1.31.9 與 stable 1.30.7 ，一次修補 10 個 CVE。",
+          "published": "2026-11-18",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-19T04:47:04Z",
+          "content_hash": "sha256:85a7e535a78a7c975600d5f8dbac16a1a6bf45f2af7f7c6a56d9dd1205f74372",
           "verification_basis": "live"
         }
       ],
       "proposed_controls": [],
       "demo": false,
       "facts": [],
-      "summary": "Arara 公布的調查結果指出，約 8,133 萬筆電子郵件地址已外洩或可能外流，最多波及約 380 家企業客戶，包括零售商 BIC Camera。攻擊者還利用遭入侵的郵件服務寄出最多約 713 萬封冒充信用卡公司的可疑郵件。大阪市委外商 TKC 使用該服務，1,078,713 筆電子郵件地址外洩。",
+      "summary": "NGINX 於 11 月 18 日發布 1.31.9 與 1.30.7，修補含 CVE-2026-123007 在內的 10 個 CVE。此漏洞為 HTTP/2 流量控制視窗的整數溢位，未經認證的遠端攻擊者可執行 worker 權限的程式碼。來源指出尚無遭利用回報，CISA KEV 未收錄，但已有公開 PoC。",
       "fixture_note": null,
-      "possible_entry_points": [
-        {
-          "text": "寄信服務供應商若同樣遭駭，客戶信箱與寄信額度可能被濫用",
-          "check": "向採購或負責團隊確認寄信服務供應商是否為 Arara；若是，檢查寄信紀錄有無異常大量或冒名郵件，並評估輪替寄信服務金鑰",
-          "systems": [
-            "mail-service",
-            "mail-api-key"
-          ],
-          "basis": "攻擊過程第 1、3 步：郵件服務業者遭駭，且被用來寄出冒充信用卡公司的郵件，來源未交代入侵手法"
-        }
-      ],
+      "possible_entry_points": [],
       "brand": null
     },
     {
-      "id": "live-nodejs-http2-cves-2026-11",
+      "id": "live-evt-node-http2-2026-11",
       "kind": "live",
       "is_update_of": null,
-      "title": "Node.js 修補 16 個漏洞，含可致伺服器當機與洩漏連線資料的 HTTP/2 漏洞",
+      "title": "Node.js 修補 16 個漏洞，含 HTTP/2 當機與連線資料洩漏",
       "date": "2026-11-11",
-      "industry": "其他",
-      "attack_chain": [],
-      "attck": [
-        "T1190",
-        "T1499",
-        "T1005"
+      "industry": "通用軟體",
+      "attack_chain": [
+        "對 Node.js HTTP/2 伺服器發送惡意請求觸發當機",
+        "利用緩衝區或記憶體處理缺陷讀取其他連線的資料"
       ],
+      "attck": [],
       "cves": [
         "CVE-2026-123863",
-        "CVE-2026-123864",
-        "CVE-2026-123866"
+        "CVE-2026-123866",
+        "CVE-2026-123864"
       ],
       "products": [
         {
@@ -1770,36 +2112,31 @@
           "published": "2026-11-18",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-18T04:54:32Z",
-          "content_hash": "sha256:65ed033ff55d447150f42f67e9f86a4e7be6779f08ca862fa3989f31111d1fd1",
+          "verified_at": "2026-11-19T04:47:04Z",
+          "content_hash": "sha256:5145825e1b6b6fed37cad8007741f983851bd972fde88e707c5c54f53ea702ab",
           "verification_basis": "live"
         }
       ],
       "proposed_controls": [],
       "demo": false,
       "facts": [],
-      "summary": "Node.js 於 11 月 11 日發布更新，涵蓋 26.x、24.x 與 22.x，共修補 16 個漏洞，其中 7 個為高風險。CVE-2026-123863 可讓未驗證攻擊者使伺服器當機，CVE-2026-123866 可能洩漏其他連線的回應緩衝區，CVE-2026-123864 可能讀取其他連線的記憶體資料。修補版本為 22.23.5、24.22.3、26.13.1。",
+      "summary": "Node.js 於 11 月 11 日發布更新，涵蓋 26.x、24.x 與 22.x，共修補 16 個漏洞、其中 7 個高風險。CVE-2026-123863（CVSS 8.2）可讓未驗證攻擊者觸發伺服器當機，CVE-2026-123866（7.5）可能洩漏其他連線的回應緩衝區，CVE-2026-123864（8.1）可能讀取其他連線的記憶體資料含 TLS 私鑰。22.x 修補版為 22.23.5。",
       "fixture_note": null,
       "possible_entry_points": [],
       "brand": null
     },
     {
-      "id": "live-openjdk-java4shell-cve-2026-114938",
+      "id": "live-evt-openjdk-cve-2026-114938",
       "kind": "live",
       "is_update_of": null,
-      "title": "OpenJDK 重大漏洞 Java4Shell（CVE-2026-114938）細節公布",
+      "title": "OpenJDK CVE-2026-114938（Java4Shell）傳出重大漏洞，細節尚未證實",
       "date": "2026-11-17",
-      "industry": "其他",
+      "industry": "通用軟體",
       "attack_chain": [
-        "攻擊者傳入特製的 Base64 輸入資料",
-        "造成 JVM Base64 解碼器堆積記憶體越界寫入",
-        "洩漏記憶體中的敏感資訊，或達成遠端程式碼執行（研究人員稱，部分結論尚未獲證實）"
+        "據報漏洞位於 Java 的 Base64 解碼器（尚未證實）",
+        "可能結果為 JVM 當機，是否可遠端執行程式碼仍未確認"
       ],
-      "attck": [
-        "T1190",
-        "T1203",
-        "T1499"
-      ],
+      "attck": [],
       "cves": [
         "CVE-2026-114938"
       ],
@@ -1822,32 +2159,68 @@
       "confidence": "provisional",
       "sources": [
         {
-          "url": "https://www.ithome.com.tw/news/180601",
-          "title": "研究人員公布OpenJDK重大漏洞Java4Shell細節",
-          "quote": "Calif.io借助AI的力量於1個小時發現，再花費2個小時找出第一個漏洞利用鏈，總Token費用不到200美元，該公司將漏洞命名為Java4Shell。",
-          "published": "2026-11-18",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-18T04:54:32Z",
-          "content_hash": "sha256:bc1f85fc85219260b49aa41def58fc5fbd3d7faea8aadd2c6764a341d92a8911",
-          "verification_basis": "live"
-        },
-        {
           "url": "https://thehackernews.com/2026/11/oracle-to-patch-11-java-flaws-today-as.html",
           "title": "Oracle to Patch 11 Java Flaws Today as Critical OpenJDK RCE (CVE-2026-114938) Report Emerges",
           "quote": "The separate OpenJDK vulnerability, tracked as CVE-2026-114938 , has reportedly been assigned a CVSS 4.0 score of 9.2 and affects OpenJDK 17.0.6 and later.",
           "published": "2026-11-17",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-18T04:54:32Z",
-          "content_hash": "sha256:6e1dc50e3468b47d8f10bbc1214e2c94d3c802fdffcecc12529e83b889a1e84f",
+          "verified_at": "2026-11-19T04:47:04Z",
+          "content_hash": "sha256:f9031fe5318d5f11bca73d5a17f1643894bc39f7b7f0f90ac43f968a50eabe23",
           "verification_basis": "live"
         }
       ],
       "proposed_controls": [],
       "demo": false,
       "facts": [],
-      "summary": "OpenJDK 的 Base64 解碼器存在記憶體損毀漏洞 CVE-2026-114938，通報者 Calif.io 稱可造成堆積記憶體越界寫入，進而洩漏資訊甚至遠端程式碼執行，CVSS v4.0 為 9.2，影響 17.0.6 以上。The Hacker News 指出細節當時仍未確認，也無官方公告列出修補版本；其他分析認為較可能結果是 JVM 當機。",
+      "summary": "Calif 稱發現並通報 OpenJDK 漏洞 CVE-2026-114938（Java4Shell），據稱 CVSS 4.0 為 9.2、影響 OpenJDK 17.0.6 及之後版本。來源指出這些細節尚未確認，CVE 紀錄仍為保留狀態，沒有官方公告說明受影響元件、版本範圍或修補。獨立分析指向 Java Base64 解碼器，較可能造成 JVM 當機而非程式碼執行。",
+      "fixture_note": null,
+      "possible_entry_points": [],
+      "brand": null
+    },
+    {
+      "id": "live-evt-synology-cve-2024-10441",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "CISA KEV 新增已遭利用漏洞：Synology DSM CVE-2024-10441",
+      "date": "2026-11-18",
+      "industry": "通用軟體",
+      "attack_chain": [
+        "遠端攻擊者透過未指明的途徑攻擊系統外掛常駐程式",
+        "執行任意程式碼"
+      ],
+      "attck": [],
+      "cves": [
+        "CVE-2024-10441"
+      ],
+      "products": [
+        {
+          "name": "synology-dsm",
+          "ecosystem": "synology-dsm",
+          "affected": [],
+          "impact": "remote_code_execution"
+        }
+      ],
+      "revision": "1",
+      "controls": [],
+      "confidence": "confirmed",
+      "sources": [
+        {
+          "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search=CVE-2024-10441",
+          "title": "CISA KEV 新增已遭利用漏洞：Synology DiskStation Manager (DSM) CVE-2024-10441",
+          "quote": "Synology DSM contains an improper encoding or escaping of output vulnerability in the system plugin daemon in Synology BeeStation OS (BSM) that could allow a remote attacker to execute arbitrary code via unspecified vectors.",
+          "published": "2026-11-18",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-19T04:47:04Z",
+          "content_hash": "sha256:91f83a033d01230a2bece9bb536c49a8be8a2d807464c049d43fad62714fcfc5",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [],
+      "summary": "CISA 將 Synology DiskStation Manager (DSM) 的輸出編碼不當漏洞 CVE-2024-10441 列入已遭利用漏洞目錄。來源描述遠端攻擊者可能透過未指明的途徑執行任意程式碼，要求依廠商指示套用緩解措施。來源未提供版本範圍。",
       "fixture_note": null,
       "possible_entry_points": [],
       "brand": null
@@ -1895,6 +2268,12 @@
       "issues": [],
       "max_level": null
     },
+    "kev-cve-2024-10441": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": "程式取自 CISA KEV 與 NVD API"
+    },
     "kev-cve-2026-109618": {
       "status": "ok",
       "issues": [],
@@ -1925,31 +2304,67 @@
       "max_level": null,
       "note": "程式取自 CISA KEV 與 NVD API"
     },
-    "live-optimizely-supply-chain-2026-11": {
+    "live-evt-plaid-karte-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-ai-agent-ecommerce-attacks-tw-2026-11": {
+    "live-evt-yongxin-pharma-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-arara-mail-service-breach-2026-11": {
+    "live-evt-tatung-etungo-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-nodejs-http2-cves-2026-11": {
+    "live-evt-optimizely-optimjack-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-openjdk-java4shell-cve-2026-114938": {
+    "live-evt-91app-artex-2026-11": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "live-evt-arara-mail-2026-11": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "live-evt-n0n-visa-apac-2026-11": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "live-evt-nginx-cve-2026-123007": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "live-evt-node-http2-2026-11": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "live-evt-openjdk-cve-2026-114938": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "live-evt-synology-cve-2024-10441": {
       "status": "ok",
       "issues": [],
       "max_level": null,

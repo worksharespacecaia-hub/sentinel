@@ -1,0 +1,627 @@
+{
+  "event": {
+    "id": "live-evt-91app-artex-2026-11",
+    "kind": "live",
+    "title": "FBI 示警 ARTEX AI 攻擊框架遭濫用，電商 SaaS 91APP 最大可能影響 1,329 家品牌",
+    "date": "2026-11-13",
+    "industry": "電商 SaaS",
+    "attack_chain": [
+      "攻擊者以 ARTEX 對目標自動執行系統掃描、漏洞分析與後續操作",
+      "91APP 自 10 月起遭 ARTEX 攻擊（具體入侵手法來源未說明）"
+    ],
+    "attck": [],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [
+      "C-INTERNAL-TOOL-EXPOSED",
+      "C-SECRET-IN-GIT",
+      "C-NET-SEGMENT",
+      "C-THIRD-PARTY-KEY-ROTATION"
+    ],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://infosecu.technews.tw/2026/11/19/artex-is-criminals-new-favorite-point-and-shoot-ai-hacking-tool/",
+        "title": "FBI 示警 AI 滲透測試工具 ARTEX 遭駭客濫用，最快不到 3 小時取得企業高階權限",
+        "quote": "台灣也受到波及，電商SaaS平台供應商91APP自今年10月起遭ARTEX攻擊，最大可能影響1,329家品牌、約480萬名消費者。",
+        "published": "2026-11-19",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-19T04:47:04Z",
+        "content_hash": "sha256:76fb16b816c560c4f039297fb2475be734028f8516c774f51b65d3feb199e073",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": "evt-91app-2026-10",
+    "proposed_controls": []
+  },
+  "conclusion": "6 項受影響，最高風險為高。internal-tool：network.json: internet → internal-tool:443。",
+  "affected_count": 6,
+  "max_level": "high",
+  "impacts": [
+    {
+      "event_id": "live-evt-91app-artex-2026-11",
+      "asset_id": "internal-tool",
+      "basis": "control",
+      "our_state": "network.json: internet → internal-tool:443",
+      "verdict": "affected",
+      "risk_id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+      "reason": "不符合 C-INTERNAL-TOOL-EXPOSED（內部工具不得對外開放）"
+    },
+    {
+      "event_id": "live-evt-91app-artex-2026-11",
+      "asset_id": "nas-office-01",
+      "basis": "control",
+      "our_state": "network.json: internet → nas-office-01:5001",
+      "verdict": "affected",
+      "risk_id": "nas-office-01:C-INTERNAL-TOOL-EXPOSED",
+      "reason": "不符合 C-INTERNAL-TOOL-EXPOSED（內部工具不得對外開放）"
+    },
+    {
+      "event_id": "live-evt-91app-artex-2026-11",
+      "asset_id": "gitlab",
+      "basis": "control",
+      "our_state": "config/db.yml:4",
+      "verdict": "affected",
+      "risk_id": "gitlab:C-SECRET-IN-GIT",
+      "reason": "不符合 C-SECRET-IN-GIT（Git 中不得有正式環境金鑰）"
+    },
+    {
+      "event_id": "live-evt-91app-artex-2026-11",
+      "asset_id": "brand-app",
+      "basis": "control",
+      "our_state": "services/brand-app/src/config.ts:3",
+      "verdict": "affected",
+      "risk_id": "brand-app:C-SECRET-IN-GIT",
+      "reason": "不符合 C-SECRET-IN-GIT（Git 中不得有正式環境金鑰）"
+    },
+    {
+      "event_id": "live-evt-91app-artex-2026-11",
+      "asset_id": "order-db-prod",
+      "basis": "control",
+      "our_state": "network.json: order-db-test（test）→ order-db-prod:5432",
+      "verdict": "affected",
+      "risk_id": "order-db-prod:C-NET-SEGMENT",
+      "reason": "不符合 C-NET-SEGMENT（非正式環境不得連線正式資料庫）"
+    },
+    {
+      "event_id": "live-evt-91app-artex-2026-11",
+      "asset_id": "mail-api-key",
+      "basis": "control",
+      "our_state": "secrets.json: mail-api-key：466 天未輪替、無 IP 白名單",
+      "verdict": "affected",
+      "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+      "reason": "不符合 C-THIRD-PARTY-KEY-ROTATION（第三方服務金鑰 90 天內輪替且有 IP 白名單）"
+    }
+  ],
+  "solutions": [
+    {
+      "risk_id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+      "temporary": "先確認內部營運工具的狀況並限制誰能使用",
+      "permanent": "依控制項要求修正，並在下次掃描確認",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "依控制項修正",
+          "cost": "依項目而定",
+          "timing": "24 小時內"
+        }
+      ],
+      "suggested_owner": "devops-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template",
+      "plain_title": "內部營運工具有安全設定問題",
+      "if_ignored": "問題會一直存在，增加被入侵的機會。",
+      "plain_source": "template"
+    },
+    {
+      "risk_id": "nas-office-01:C-INTERNAL-TOOL-EXPOSED",
+      "temporary": "先確認辦公室 NAS 的狀況並限制誰能使用",
+      "permanent": "依控制項要求修正，並在下次掃描確認",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "依控制項修正",
+          "cost": "依項目而定",
+          "timing": "168 小時內"
+        }
+      ],
+      "suggested_owner": "it-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template",
+      "plain_title": "辦公室 NAS 有安全設定問題",
+      "if_ignored": "問題會一直存在，增加被入侵的機會。",
+      "plain_source": "template"
+    },
+    {
+      "risk_id": "gitlab:C-SECRET-IN-GIT",
+      "temporary": "馬上把這組密碼或金鑰作廢換新，並檢查最近有沒有被別人用過",
+      "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "撤銷並輪替金鑰",
+          "cost": "使用該金鑰的服務需同步更新",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "devops-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template",
+      "plain_title": "內部程式碼管理平台的密碼或金鑰保管不當，可能造成訂單資料、會員個資外洩",
+      "if_ignored": "拿到這組密碼或金鑰的人，可能直接登入相關系統，讀走訂單資料、會員個資；不換掉，這個破口就一直在。",
+      "plain_source": "template"
+    },
+    {
+      "risk_id": "brand-app:C-SECRET-IN-GIT",
+      "temporary": "馬上把這組密碼或金鑰作廢換新，並檢查最近有沒有被別人用過",
+      "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "撤銷並輪替金鑰",
+          "cost": "使用該金鑰的服務需同步更新",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "mobile-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template",
+      "plain_title": "品牌 App 的密碼或金鑰保管不當，可能造成會員個資外洩",
+      "if_ignored": "拿到這組密碼或金鑰的人，可能直接登入相關系統，讀走會員個資；不換掉，這個破口就一直在。",
+      "plain_source": "template"
+    },
+    {
+      "risk_id": "order-db-prod:C-NET-SEGMENT",
+      "temporary": "先確認正式訂單資料庫的狀況並限制誰能使用",
+      "permanent": "依控制項要求修正，並在下次掃描確認",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "依控制項修正",
+          "cost": "依項目而定",
+          "timing": "168 小時內"
+        }
+      ],
+      "suggested_owner": "dba-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template",
+      "plain_title": "正式訂單資料庫有安全設定問題",
+      "if_ignored": "問題會一直存在，增加被入侵的機會。",
+      "plain_source": "template"
+    },
+    {
+      "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+      "temporary": "馬上把這組密碼或金鑰作廢換新，並檢查最近有沒有被別人用過",
+      "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "撤銷並輪替金鑰",
+          "cost": "使用該金鑰的服務需同步更新",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "security-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template",
+      "plain_title": "寄信服務金鑰的密碼或金鑰保管不當",
+      "if_ignored": "拿到這組密碼或金鑰的人，可能直接登入相關系統；不換掉，這個破口就一直在。",
+      "plain_source": "template"
+    }
+  ],
+  "notice": {
+    "needed": true,
+    "draft": "致各品牌商：我們發現與「FBI 示警 ARTEX AI 攻擊框架遭濫用，電商 SaaS 91APP 最大可能影響 1,329 家品牌」相關的風險，正在處理中。請提醒會員：官方不會以電話或簡訊要求轉帳或提供驗證碼，也請只從官方商店下載品牌 App。有疑問請聯繫平台客服。（自動範本，發送前請人工確認）"
+  },
+  "status": "open",
+  "evaluated_asset_ids": [
+    "brand-app",
+    "gitlab",
+    "internal-tool",
+    "mail-api-key",
+    "nas-office-01",
+    "order-db-prod"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "此事件有 6 項與我們相符，最高為高風險：內部營運工具對外開放（8 分）、內部程式碼管理平台與品牌 App 的金鑰留在程式碼（分別 8、10 分）；另 3 項為中風險（辦公室 NAS 5 分、測試環境連正式資料庫 5 分、寄信金鑰 6 分）。",
+  "blocks": {
+    "1_summary": {
+      "title": "FBI 示警 ARTEX AI 攻擊框架遭濫用，電商 SaaS 91APP 最大可能影響 1,329 家品牌",
+      "date": "2026-11-13",
+      "industry": "電商 SaaS",
+      "attack_chain": [
+        "攻擊者以 ARTEX 對目標自動執行系統掃描、漏洞分析與後續操作",
+        "91APP 自 10 月起遭 ARTEX 攻擊（具體入侵手法來源未說明）"
+      ],
+      "attck": [],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://infosecu.technews.tw/2026/11/19/artex-is-criminals-new-favorite-point-and-shoot-ai-hacking-tool/",
+          "title": "FBI 示警 AI 滲透測試工具 ARTEX 遭駭客濫用，最快不到 3 小時取得企業高階權限",
+          "quote": "台灣也受到波及，電商SaaS平台供應商91APP自今年10月起遭ARTEX攻擊，最大可能影響1,329家品牌、約480萬名消費者。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-19T04:47:04Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "此事件有 6 項與我們相符，最高為高風險：內部營運工具對外開放（8 分）、內部程式碼管理平台與品牌 App 的金鑰留在程式碼（分別 8、10 分）；另 3 項為中風險（辦公室 NAS 5 分、測試環境連正式資料庫 5 分、寄信金鑰 6 分）。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "6 項受影響，最高風險為高。internal-tool：network.json: internet → internal-tool:443。",
+      "affected_count": 6,
+      "max_level": "high"
+    },
+    "3_affected": [
+      {
+        "asset_id": "internal-tool",
+        "our_state": "network.json: internet → internal-tool:443",
+        "basis": "control",
+        "verdict": "affected",
+        "reason": "不符合 C-INTERNAL-TOOL-EXPOSED（內部工具不得對外開放）",
+        "risk_id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+        "level": "high",
+        "score": 8,
+        "breakdown": [
+          {
+            "factor": "基礎分：控制項不符",
+            "points": 2,
+            "reason": "controls.yaml base_points"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "可從 internet 連到"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-91app-2026-10、live-evt-91app-artex-2026-11"
+          },
+          {
+            "factor": "位於完整攻擊鏈",
+            "points": 3,
+            "reason": "攻擊路徑前提的必要一步"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-19T04:47:04Z"
+      },
+      {
+        "asset_id": "nas-office-01",
+        "our_state": "network.json: internet → nas-office-01:5001",
+        "basis": "control",
+        "verdict": "affected",
+        "reason": "不符合 C-INTERNAL-TOOL-EXPOSED（內部工具不得對外開放）",
+        "risk_id": "nas-office-01:C-INTERNAL-TOOL-EXPOSED",
+        "level": "medium",
+        "score": 5,
+        "breakdown": [
+          {
+            "factor": "基礎分：控制項不符",
+            "points": 2,
+            "reason": "controls.yaml base_points"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "可從 internet 連到"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-91app-2026-10、evt-synology-2026-10、live-evt-91app-artex-2026-11"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-19T04:47:04Z"
+      },
+      {
+        "asset_id": "gitlab",
+        "our_state": "config/db.yml:4",
+        "basis": "control",
+        "verdict": "affected",
+        "reason": "不符合 C-SECRET-IN-GIT（Git 中不得有正式環境金鑰）",
+        "risk_id": "gitlab:C-SECRET-IN-GIT",
+        "level": "high",
+        "score": 8,
+        "breakdown": [
+          {
+            "factor": "基礎分：控制項不符",
+            "points": 2,
+            "reason": "controls.yaml base_points"
+          },
+          {
+            "factor": "資料敏感",
+            "points": 1,
+            "reason": "order、pii"
+          },
+          {
+            "factor": "影響範圍",
+            "points": 1,
+            "reason": "平台層，影響所有品牌"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-91app-2026-10、live-evt-91app-artex-2026-11"
+          },
+          {
+            "factor": "位於完整攻擊鏈",
+            "points": 3,
+            "reason": "攻擊路徑前提的必要一步"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-19T04:47:04Z"
+      },
+      {
+        "asset_id": "brand-app",
+        "our_state": "services/brand-app/src/config.ts:3",
+        "basis": "control",
+        "verdict": "affected",
+        "reason": "不符合 C-SECRET-IN-GIT（Git 中不得有正式環境金鑰）",
+        "risk_id": "brand-app:C-SECRET-IN-GIT",
+        "level": "high",
+        "score": 10,
+        "breakdown": [
+          {
+            "factor": "基礎分：控制項不符",
+            "points": 2,
+            "reason": "controls.yaml base_points"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "商店上架的 App"
+          },
+          {
+            "factor": "資料敏感",
+            "points": 1,
+            "reason": "pii"
+          },
+          {
+            "factor": "影響範圍",
+            "points": 1,
+            "reason": "平台層，影響所有品牌"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-91app-2026-10、live-evt-91app-artex-2026-11"
+          },
+          {
+            "factor": "位於完整攻擊鏈",
+            "points": 3,
+            "reason": "攻擊路徑前提的必要一步"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-19T04:47:04Z"
+      },
+      {
+        "asset_id": "order-db-prod",
+        "our_state": "network.json: order-db-test（test）→ order-db-prod:5432",
+        "basis": "control",
+        "verdict": "affected",
+        "reason": "不符合 C-NET-SEGMENT（非正式環境不得連線正式資料庫）",
+        "risk_id": "order-db-prod:C-NET-SEGMENT",
+        "level": "medium",
+        "score": 5,
+        "breakdown": [
+          {
+            "factor": "基礎分：控制項不符",
+            "points": 2,
+            "reason": "controls.yaml base_points"
+          },
+          {
+            "factor": "資料敏感",
+            "points": 1,
+            "reason": "order、pii"
+          },
+          {
+            "factor": "影響範圍",
+            "points": 1,
+            "reason": "平台層，影響所有品牌"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-91app-2026-10、live-evt-91app-artex-2026-11"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-19T04:47:04Z"
+      },
+      {
+        "asset_id": "mail-api-key",
+        "our_state": "secrets.json: mail-api-key：466 天未輪替、無 IP 白名單",
+        "basis": "control",
+        "verdict": "affected",
+        "reason": "不符合 C-THIRD-PARTY-KEY-ROTATION（第三方服務金鑰 90 天內輪替且有 IP 白名單）",
+        "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "level": "medium",
+        "score": 6,
+        "breakdown": [
+          {
+            "factor": "基礎分：控制項不符",
+            "points": 2,
+            "reason": "controls.yaml base_points"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "第三方金鑰無 IP 白名單，外部任何來源都可使用"
+          },
+          {
+            "factor": "資料敏感",
+            "points": 1,
+            "reason": "order、pii"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-1shop-2026-10、live-evt-91app-artex-2026-11、live-evt-arara-mail-2026-11、live-evt-plaid-karte-2026-11"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-19T04:47:04Z"
+      }
+    ],
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": []
+    },
+    "5_solutions": [
+      {
+        "risk_id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+        "temporary": "先確認內部營運工具的狀況並限制誰能使用",
+        "permanent": "依控制項要求修正，並在下次掃描確認",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "依控制項修正",
+            "cost": "依項目而定",
+            "timing": "24 小時內"
+          }
+        ],
+        "suggested_owner": "devops-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template",
+        "plain_title": "內部營運工具有安全設定問題",
+        "if_ignored": "問題會一直存在，增加被入侵的機會。",
+        "plain_source": "template"
+      },
+      {
+        "risk_id": "nas-office-01:C-INTERNAL-TOOL-EXPOSED",
+        "temporary": "先確認辦公室 NAS 的狀況並限制誰能使用",
+        "permanent": "依控制項要求修正，並在下次掃描確認",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "依控制項修正",
+            "cost": "依項目而定",
+            "timing": "168 小時內"
+          }
+        ],
+        "suggested_owner": "it-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template",
+        "plain_title": "辦公室 NAS 有安全設定問題",
+        "if_ignored": "問題會一直存在，增加被入侵的機會。",
+        "plain_source": "template"
+      },
+      {
+        "risk_id": "gitlab:C-SECRET-IN-GIT",
+        "temporary": "馬上把這組密碼或金鑰作廢換新，並檢查最近有沒有被別人用過",
+        "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "撤銷並輪替金鑰",
+            "cost": "使用該金鑰的服務需同步更新",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "devops-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template",
+        "plain_title": "內部程式碼管理平台的密碼或金鑰保管不當，可能造成訂單資料、會員個資外洩",
+        "if_ignored": "拿到這組密碼或金鑰的人，可能直接登入相關系統，讀走訂單資料、會員個資；不換掉，這個破口就一直在。",
+        "plain_source": "template"
+      },
+      {
+        "risk_id": "brand-app:C-SECRET-IN-GIT",
+        "temporary": "馬上把這組密碼或金鑰作廢換新，並檢查最近有沒有被別人用過",
+        "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "撤銷並輪替金鑰",
+            "cost": "使用該金鑰的服務需同步更新",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "mobile-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template",
+        "plain_title": "品牌 App 的密碼或金鑰保管不當，可能造成會員個資外洩",
+        "if_ignored": "拿到這組密碼或金鑰的人，可能直接登入相關系統，讀走會員個資；不換掉，這個破口就一直在。",
+        "plain_source": "template"
+      },
+      {
+        "risk_id": "order-db-prod:C-NET-SEGMENT",
+        "temporary": "先確認正式訂單資料庫的狀況並限制誰能使用",
+        "permanent": "依控制項要求修正，並在下次掃描確認",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "依控制項修正",
+            "cost": "依項目而定",
+            "timing": "168 小時內"
+          }
+        ],
+        "suggested_owner": "dba-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template",
+        "plain_title": "正式訂單資料庫有安全設定問題",
+        "if_ignored": "問題會一直存在，增加被入侵的機會。",
+        "plain_source": "template"
+      },
+      {
+        "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "temporary": "馬上把這組密碼或金鑰作廢換新，並檢查最近有沒有被別人用過",
+        "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "撤銷並輪替金鑰",
+            "cost": "使用該金鑰的服務需同步更新",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "security-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template",
+        "plain_title": "寄信服務金鑰的密碼或金鑰保管不當",
+        "if_ignored": "拿到這組密碼或金鑰的人，可能直接登入相關系統；不換掉，這個破口就一直在。",
+        "plain_source": "template"
+      }
+    ],
+    "6_notice": {
+      "needed": true,
+      "draft": "致各品牌商：我們發現與「FBI 示警 ARTEX AI 攻擊框架遭濫用，電商 SaaS 91APP 最大可能影響 1,329 家品牌」相關的風險，正在處理中。請提醒會員：官方不會以電話或簡訊要求轉帳或提供驗證碼，也請只從官方商店下載品牌 App。有疑問請聯繫平台客服。（自動範本，發送前請人工確認）"
+    },
+    "7_status": {
+      "status": "open",
+      "label": "待處理"
+    }
+  },
+  "orchestrator_results": [],
+  "update_of": {
+    "id": "evt-91app-2026-10",
+    "title": "91APP 訂單資料庫遭入侵：未更新的內部工具 Appsmith 成破口，自內部 GitLab 取得資料庫金鑰",
+    "status": "open"
+  }
+}
