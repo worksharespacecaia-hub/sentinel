@@ -8680,5 +8680,758 @@
       "task": "notice-extra:kev-cve-2026-109619",
       "scope": "advisory"
     }
+  },
+  "53e24c524a63ac2755cfaece22531c435e687f8f6b9e7079a1f40a16b2a722fb": {
+    "output": {
+      "extra_controls": [],
+      "extra_tasks": [
+        {
+          "agent": "a2",
+          "subagent": "dependency-analyst",
+          "event_id": "kev-cve-2026-111497",
+          "reason": "事件為 Brotli 漏洞，候選項目含 node 22.11.0 相關元件，可依事件解讀相同產品的套件漏洞，補充受影響範圍的判讀。"
+        },
+        {
+          "agent": "a4",
+          "subagent": "impact-analyst",
+          "event_id": "kev-cve-2026-111497",
+          "reason": "事件對應的 member-api:node:vuln 為額外風險，且影響會員服務與商店網站，需說明此事件與相關風險的影響關係。"
+        }
+      ],
+      "priorities": [
+        {
+          "agent": "a4",
+          "risk_id": "brand-app:C-SECRET-IN-GIT",
+          "reason": "品牌 App 的 Git 中疑似含正式環境金鑰，外洩後可直接影響正式服務，建議優先完成影響說明。"
+        },
+        {
+          "agent": "a4",
+          "risk_id": "gitlab:C-SECRET-IN-GIT",
+          "reason": "內部程式碼管理平台含正式環境金鑰，影響範圍可能跨多個系統，建議優先評估。"
+        },
+        {
+          "agent": "a4",
+          "risk_id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+          "reason": "內部營運工具對外開放，屬直接暴露面，且同一資產還有多項漏洞，建議優先處理。"
+        }
+      ]
+    },
+    "meta": {
+      "agent": "orchestrator-dispatch",
+      "subagent": "planner",
+      "task": "dispatch",
+      "scope": "advisory"
+    }
+  },
+  "eb0da63888e45ebf8e0aee40d8c986d6d97745957c5c698fe16ff7d1e8f6d066": {
+    "output": [
+      {
+        "id": "internal-tool:node:vuln",
+        "explanation": "node 22.11.0 依 NVD 比對有 17 個確定漏洞、1 個需確認，最高 CVSS 9.8，其中 CVE-2026-111497 已列入 CISA KEV 且遭實際利用。修補版本無法確定，因部分漏洞沒有修補版本或範圍不明；攻擊鏈輸入為空，未推測。",
+        "confidence": "high"
+      },
+      {
+        "id": "member-api:node:vuln",
+        "explanation": "node 22.11.0 依 NVD 比對有 17 個確定漏洞、1 個需確認，最高 CVSS 9.8，其中 CVE-2026-111497 已列入 CISA KEV 且遭實際利用。修補版本無法確定，因部分漏洞沒有修補版本或範圍不明；攻擊鏈輸入為空，未推測。",
+        "confidence": "high"
+      },
+      {
+        "id": "storefront:node:vuln",
+        "explanation": "node 22.11.0 依 NVD 比對有 17 個確定漏洞、1 個需確認，最高 CVSS 9.8，其中 CVE-2026-111497 已列入 CISA KEV 且遭實際利用。修補版本無法確定，因部分漏洞沒有修補版本或範圍不明；攻擊鏈輸入為空，未推測。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "event:kev-cve-2026-111497:dependency-analyst",
+      "scope": "advisory"
+    }
+  },
+  "35e412500609ec6d3493a735d573524e171d91918a22563029a39a9b3d107538": {
+    "output": [
+      {
+        "id": "member-api:node:vuln",
+        "explanation": "圖譜查無此資產（get_asset_context 回報「不在本次資產範圍」，元件名稱查詢 node 22.11.0 亦無結果），因此無法確認影響品牌數、安裝數、資料欄位與業務影響。依程式拆解，基礎分來自 CVSS 9.8 的漏洞（3 分）、KEV 或官方確認的實際利用（2 分）、個資相關資料（1 分）與平台層影響所有品牌（1 分）；分數與等級以程式結果為準，建議先確認此資產是否已納入本次評估範圍後再補查。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "dispatch:kev-cve-2026-111497:member-api:node:vuln",
+      "scope": "advisory"
+    }
+  },
+  "bafc55d4477e256d0880243b7af030288351700af8f17cd6867361784a40999b": {
+    "output": {
+      "extra_tasks": [],
+      "priorities": [
+        {
+          "agent": "a5",
+          "risk_id": "gitlab:C-SECRET-IN-GIT",
+          "reason": "內部程式碼管理平台有金鑰外洩風險，代碼庫可能被取得，應優先確認暴露範圍並評估後續處理。"
+        },
+        {
+          "agent": "a5",
+          "risk_id": "brand-app:C-SECRET-IN-GIT",
+          "reason": "品牌 App 有金鑰外洩風險，客戶端程式可能被逆向取得，應儘速確認並處理。"
+        },
+        {
+          "agent": "a5",
+          "risk_id": "firebase-brand-app-storage:C-CLOUD-STORAGE-PUBLIC",
+          "reason": "App 雲端檔案儲存區設定缺失可能造成公開存取，外洩影響面大，宜盡快收斂存取權限。"
+        },
+        {
+          "agent": "a5",
+          "risk_id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+          "reason": "內部營運工具存在設定缺失且同時有多項套件漏洞，應儘早限縮暴露面。"
+        },
+        {
+          "agent": "a5",
+          "risk_id": "laptop-eng-07:C-DEV-DEVICE-TOKEN",
+          "reason": "工程筆電權杖暴露可能被用於橫向存取，應確認風險範圍並視情況撤銷相關權杖。"
+        }
+      ],
+      "summary": "本次必要任務六項 Job 皆已成功完成，派工與優先順序調整亦已完成。需確認、金鑰輪替與通知草稿候選清單皆為空，因此不新增後續任務。建議工程團隊優先處理金鑰外洩、雲端儲存公開存取與內部工具暴露面等高風險項目，確認撤換與權限收斂後，再逐步處理套件漏洞。本摘要僅提供建議，不改變任何程式評估的版本、分數、結論與燈號。"
+    },
+    "meta": {
+      "agent": "orchestrator-review",
+      "subagent": "reviewer",
+      "task": "review",
+      "scope": "advisory"
+    }
+  },
+  "751f5ca909c3cf4dabc7dd0942cb827a81f9cf1998713345db6c95777a989595": {
+    "output": [
+      {
+        "risk_id": "gitlab:C-SECRET-IN-GIT",
+        "temporary": "今天先把程式碼管理平台裡的正式訂單資料庫密碼全部換新，確認舊密碼已失效，並檢查近期程式碼紀錄是否有密碼外洩的痕跡。",
+        "permanent": "撤銷並更換所有寫在程式碼中的正式環境密碼，改存放於集中的秘密管理服務；清除程式碼歷史中的密碼紀錄；加入提交前掃描阻擋正式密碼，並定期輪替。",
+        "options": [
+          {
+            "name": "立即換新並撤銷舊密碼",
+            "action": "更換正式訂單資料庫密碼，撤銷舊值，確認依賴的服務已改用新密碼",
+            "cost": "低",
+            "timing": "24 小時內"
+          },
+          {
+            "name": "清除程式碼歷史並加入掃描",
+            "action": "清理歷史紀錄中的密碼，於程式碼庫加入提交前掃描與審核規則",
+            "cost": "中",
+            "timing": "1 週內"
+          },
+          {
+            "name": "暫時限制資料庫連線來源",
+            "action": "只允許已知的應用服務連入正式訂單資料庫，其餘來源阻擋",
+            "cost": "中；可能造成部分部署或報表中斷",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "平台工程團隊與資安團隊，資料庫負責人協同",
+        "verify": "舊密碼已失效；程式碼庫掃描不再命中；資料庫存取紀錄只剩預期來源。",
+        "plain_title": "內部程式碼管理平台裡存有正式訂單資料庫的密碼，可能造成訂單與會員資料外洩",
+        "if_ignored": "外人若能從網路經由內部營運工具進入內部程式碼管理平台，就能拿到正式訂單資料庫的密碼，把訂單與會員個資整批帶走。同業 91APP 就是這樣被入侵。"
+      },
+      {
+        "risk_id": "brand-app:C-SECRET-IN-GIT",
+        "temporary": "今天先更換品牌 App 內嵌的系統密碼，並限制它只能呼叫必要的功能；同時評估舊版 App 是否需要限縮或強制更新。",
+        "permanent": "App 不再內嵌正式環境密碼，改由伺服器端發放短效憑證；密碼集中於秘密管理服務；發版前加入自動掃描。依行動 SDK 劇本：先在伺服器端降低風險，再發布新版並提高最低支援版本，依安裝數分批處理。",
+        "options": [
+          {
+            "name": "伺服器端先撤銷並換新密碼",
+            "action": "更換 App 使用的密碼，舊版 App 的相關功能先限縮範圍",
+            "cost": "中；舊版 App 部分功能可能受影響",
+            "timing": "24 小時內"
+          },
+          {
+            "name": "發布新版 App 並分批強制更新",
+            "action": "新版移除內嵌密碼，提高最低支援版本，依安裝數分批推動更新",
+            "cost": "中",
+            "timing": "1 至 2 週"
+          },
+          {
+            "name": "暫時下架 App",
+            "action": "從商店下架品牌 App，直到新版發布",
+            "cost": "高；會員無法使用 App，影響營運",
+            "timing": "僅在無法限縮舊版功能時採用，立即生效"
+          }
+        ],
+        "suggested_owner": "行動 App 團隊與後端 API 團隊，資安確認",
+        "verify": "舊密碼已失效；新版 App 的安裝檔掃描不再命中；舊版安裝數逐步下降。",
+        "plain_title": "品牌 App 的系統密碼寫在程式裡，可能造成會員個資外洩",
+        "if_ignored": "拿到 App 安裝檔的人，就能取出內嵌的系統密碼，經由 API 閘道讀取正式會員資料庫的個資。同業 91APP 也曾因資料庫密碼外流而被入侵，密碼不換，破口就一直在。"
+      },
+      {
+        "risk_id": "firebase-brand-app-storage:C-CLOUD-STORAGE-PUBLIC",
+        "temporary": "今天先把雲端檔案儲存區改為不公開，只允許 App 與後端服務存取；並檢查近期下載紀錄，判斷是否已有外人讀取。",
+        "permanent": "儲存區採最小權限設定，預設不公開；App 改用有時效的簽章連結讀取檔案；定期掃描公開設定並保留存取紀錄。",
+        "options": [
+          {
+            "name": "立即關閉公開讀取並檢查存取紀錄",
+            "action": "取消匿名讀取權限，檢視存取紀錄是否有異常來源",
+            "cost": "低",
+            "timing": "今天"
+          },
+          {
+            "name": "敏感檔案搬移並改用簽章連結",
+            "action": "將會員與訂單相關檔案移至權限較嚴的儲存區，App 改以時效連結取得",
+            "cost": "中",
+            "timing": "1 週內"
+          },
+          {
+            "name": "暫時停用依賴此儲存區的功能",
+            "action": "若關閉公開後 App 的檔案功能失效，先暫停該功能",
+            "cost": "中；App 部分功能暫停",
+            "timing": "僅在關閉公開後功能失效時採用"
+          }
+        ],
+        "suggested_owner": "雲端平台團隊與資料保護負責人",
+        "verify": "外部匿名請求無法讀取儲存區內容；存取紀錄無異常來源；公開設定掃描不再顯示公開。",
+        "plain_title": "App 雲端檔案儲存區設為任何人都能讀取，可能造成會員與訂單資料外洩",
+        "if_ignored": "只要知道儲存區的網址，任何人都能下載裡面的檔案，包括會員個資與訂單資料。外洩後需要通報、通知會員，也可能要負個資法責任。"
+      },
+      {
+        "risk_id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+        "temporary": "今天先把內部營運工具改為只允許公司內網連線，外部網路一律擋下，並檢查近期的外部存取紀錄。",
+        "permanent": "內部工具只允許內網或 VPN 存取，納入資產清冊並指定負責人，建立定期更新流程。",
+        "options": [
+          {
+            "name": "立即限制為內網或 VPN 存取",
+            "action": "關閉對外網路的直接連線，只允許內網或 VPN 連入",
+            "cost": "低；遠端員工需改用 VPN",
+            "timing": "今天"
+          },
+          {
+            "name": "改由零信任存取閘道並加入多因素驗證",
+            "action": "以身分驗證閘道取代直接開放，連線需經多因素驗證",
+            "cost": "中",
+            "timing": "2 週內"
+          },
+          {
+            "name": "暫時下架工具",
+            "action": "將工具離線，營運人員改用人工或替代流程",
+            "cost": "高；營運作業受影響",
+            "timing": "若限制連線後仍無法確認安全，立即採用"
+          }
+        ],
+        "suggested_owner": "內部 IT 營運團隊與資安團隊",
+        "verify": "外部暴露面檢查不再看到該工具；清冊顯示有負責人；存取紀錄只剩內網或 VPN 來源。",
+        "plain_title": "內部營運工具對外網開放，外人可直接連到，可能造成訂單與會員資料外洩",
+        "if_ignored": "外人可以直接從網路連到內部營運工具，再一路取得內部程式碼平台的權限，進而拿到正式訂單資料庫的密碼，把訂單與會員個資整批帶走。同業 91APP 就是從這個工具被入侵。"
+      },
+      {
+        "risk_id": "laptop-eng-07:C-DEV-DEVICE-TOKEN",
+        "temporary": "今天先撤銷工程部門筆電（乙）上的正式部署憑證，將這台電腦隔離並保留紀錄，由負責人確認是否有異常活動。",
+        "permanent": "正式部署憑證不放在個人電腦，改由自動部署流程發放短效憑證；加強開發者電腦的端點防護，並定期清查持有的憑證。",
+        "options": [
+          {
+            "name": "立即撤銷憑證並隔離電腦",
+            "action": "撤銷該憑證，隔離電腦並保存證據，由事件負責人確認",
+            "cost": "低",
+            "timing": "今天"
+          },
+          {
+            "name": "改用短效憑證並全面清查",
+            "action": "由自動部署流程發放短效憑證，清查所有工程師電腦上的正式憑證",
+            "cost": "中",
+            "timing": "2 週內"
+          },
+          {
+            "name": "暫停個人正式部署權限",
+            "action": "該工程師暫不具正式部署權限，改由他人或流程代為部署",
+            "cost": "低至中；部署速度變慢",
+            "timing": "立即"
+          }
+        ],
+        "suggested_owner": "資安事件負責人與工程部門主管，IT 端點團隊協同",
+        "verify": "裝置清冊不再有正式部署憑證；憑證清單顯示已撤銷；隔離電腦的異常活動停止且證據保存完成。",
+        "plain_title": "工程部門筆電（乙）存有正式部署用的通行憑證，可能讓外人直接改動正式系統",
+        "if_ignored": "這台筆電一旦遭入侵，外人就能借用上面的正式部署憑證，經由自動部署流程改動正式系統。同業幣安就是從開發者電腦被入侵，部署憑證遭取得後而受害。"
+      },
+      {
+        "risk_id": "internal-tool:opsbuilder:vuln",
+        "temporary": "今天先限制內部營運工具只能公司內部連線，外部網路一律擋下，停用不必要的帳號，並檢查是否已有異常登入。",
+        "permanent": "將內部工具升級到 1.90 以後的已修補版本，重設所有帳號的登入憑證，納入資產清冊並建立定期更新流程。",
+        "options": [
+          {
+            "name": "升級到已修補版本（修補）",
+            "action": "升級到 1.90 以後版本，升級前先備份設定與資料",
+            "cost": "中；需測試與短暫停機",
+            "timing": "72 小時內"
+          },
+          {
+            "name": "限制內網存取並加強登入驗證（緩解）",
+            "action": "限制連線來源，加入多因素驗證，升級前降低被冒用的機會",
+            "cost": "低",
+            "timing": "今天；仍有殘餘風險，不能取代修補"
+          },
+          {
+            "name": "暫時下架工具（下架）",
+            "action": "工具離線，營運人員改用人工作業",
+            "cost": "高；營運作業受影響",
+            "timing": "若無法在限期內修補，立即採用"
+          }
+        ],
+        "suggested_owner": "內部營運工具負責人與應用開發團隊，資安確認",
+        "verify": "工具版本已達修補範圍；外部連線測試失敗；異常登入紀錄停止；清冊有負責人。",
+        "plain_title": "內部營運工具有帳號可被冒用的漏洞，已有人利用，可能造成訂單與會員資料外洩",
+        "if_ignored": "外人可以從網路冒用帳號登入內部營運工具，再一路拿到內部程式碼平台的權限，進而取得正式訂單資料庫的密碼，把訂單與會員個資整批帶走。同業 91APP 就是這樣被入侵，這個漏洞已有人利用。"
+      },
+      {
+        "risk_id": "marketing-site:php:vuln",
+        "temporary": "今天先限制外部連到網站後台與程式進入點，並由 CEO 決定是否暫時下架行銷官網。",
+        "permanent": "將網站遷移至仍受支援的核心版本，遷移前於隔離環境測試；若無法遷移，停用動態功能、改為靜態頁面並移除不必要的程式。",
+        "options": [
+          {
+            "name": "遷移到受支援版本（修補）",
+            "action": "將網站遷移到仍受支援的核心版本並完成測試",
+            "cost": "中至高；需開發與測試",
+            "timing": "約數週，需工程評估確認"
+          },
+          {
+            "name": "加強前置防護並停用動態功能（緩解）",
+            "action": "設定前置防護阻擋可疑請求，停用不必要的動態功能與後台入口",
+            "cost": "低至中",
+            "timing": "24 小時內；仍有殘餘風險"
+          },
+          {
+            "name": "暫時下架網站（下架）",
+            "action": "網站離線或改為靜態頁面，直到遷移完成",
+            "cost": "中；行銷活動與官網查詢中斷",
+            "timing": "立即，由 CEO 決定"
+          }
+        ],
+        "suggested_owner": "行銷網站負責人與網站工程團隊，CEO 決策",
+        "verify": "網站核心版本已在受支援範圍；外部掃描不再命中；若下架，確認網站不可被外部存取。",
+        "plain_title": "行銷官網有已停止支援且遭利用的漏洞，可能被外人遠端控制",
+        "if_ignored": "外人可以從網路直接對行銷官網發動攻擊，可能取得網站控制權並改寫內容。這類漏洞已被官方列為實際遭利用，目前沒有官方修補版本。"
+      },
+      {
+        "risk_id": "storefront:node:vuln",
+        "temporary": "今天先確認商店網站的對外入口是否有額外防護，並檢查近期是否有異常連線與資料讀取紀錄。",
+        "permanent": "將網站執行環境升級到官方已修補的版本，把基礎執行環境納入定期更新清單，上線前以測試環境驗證。",
+        "options": [
+          {
+            "name": "升級到已修補版本（修補）",
+            "action": "升級執行環境到已修補版本並完成測試",
+            "cost": "中",
+            "timing": "72 小時內（已遭實際利用，建議優先）"
+          },
+          {
+            "name": "加強前置防護與監控（緩解）",
+            "action": "設定前置防護限制異常流量，加強監控與告警",
+            "cost": "低",
+            "timing": "今天；仍有殘餘風險"
+          },
+          {
+            "name": "暫時下架或停止線上購買（下架）",
+            "action": "商店暫停線上購買或改為瀏覽頁",
+            "cost": "高；線上購買中斷",
+            "timing": "若無法在限期內修補，立即採用"
+          }
+        ],
+        "suggested_owner": "商店網站工程團隊",
+        "verify": "執行環境版本已在修補範圍；下次比對為不受影響；異常連線紀錄停止。",
+        "plain_title": "商店網站有已遭實際利用的漏洞，可能造成訂單與會員資料外洩",
+        "if_ignored": "外人可以從網路對商店網站發動攻擊，網站一旦被控制，訂單與會員個資就可能被讀走。這個漏洞已被官方列為實際遭利用，不處理會持續暴露。"
+      },
+      {
+        "risk_id": "internal-tool:node:vuln",
+        "temporary": "今天先限制內部營運工具只能公司內網連線，外部一律擋下，並檢查近期是否有異常登入。",
+        "permanent": "將工具執行環境升級到已修補版本，工具納入清冊與定期更新流程，並限制連線範圍。",
+        "options": [
+          {
+            "name": "升級到已修補版本（修補）",
+            "action": "升級執行環境到已修補版本並完成測試",
+            "cost": "中",
+            "timing": "72 小時內（已遭實際利用，建議優先）"
+          },
+          {
+            "name": "限制為內網連線（緩解）",
+            "action": "關閉對外直接連線，只允許內網或 VPN 連入",
+            "cost": "低；遠端員工需改用 VPN",
+            "timing": "今天；仍有殘餘風險"
+          },
+          {
+            "name": "暫時下架工具（下架）",
+            "action": "工具離線，營運人員改用人工作業",
+            "cost": "高；營運作業受影響",
+            "timing": "若無法在限期內修補，立即採用"
+          }
+        ],
+        "suggested_owner": "內部 IT 營運團隊與應用開發團隊",
+        "verify": "版本已在修補範圍；外部連線測試失敗；清冊有負責人。",
+        "plain_title": "內部營運工具有已遭實際利用的漏洞，且可從網路連到，可能造成訂單與會員資料外洩",
+        "if_ignored": "外人可以從網路直接攻擊內部營運工具，工具一旦被控制，就可能進一步接觸訂單與會員資料。同業 91APP 的破口也是未更新的內部工具。"
+      },
+      {
+        "risk_id": "nas-office-01:synology-dsm:vuln",
+        "temporary": "今天先把辦公室 NAS 的管理頁從網路上關掉，只允許公司內網連入，並確認最近一次備份可以還原。",
+        "permanent": "管理介面不對外開放，更新系統到已修補版本；備份改為與設備隔離（不常駐連接），每 90 天做一次還原測試。依 NAS 勒索風險劇本執行。",
+        "options": [
+          {
+            "name": "更新到已修補版本（修補）",
+            "action": "更新系統到已修補版本，更新前先完整備份",
+            "cost": "低至中",
+            "timing": "72 小時內（已遭實際利用，建議優先）"
+          },
+          {
+            "name": "管理頁只允許內網（緩解）",
+            "action": "關閉管理頁的對外連線，停用對外的遠端連線方式",
+            "cost": "低",
+            "timing": "今天；仍有殘餘風險"
+          },
+          {
+            "name": "暫時將 NAS 離線（下架）",
+            "action": "NAS 與網路斷開，檔案改用其他存放方式",
+            "cost": "中；檔案存取受影響",
+            "timing": "若無法確認安全，立即採用"
+          }
+        ],
+        "suggested_owner": "IT 基礎設施團隊",
+        "verify": "外部檢查不再看到管理頁；版本已更新；備份紀錄顯示與設備隔離，且 90 天內有還原測試。",
+        "plain_title": "辦公室 NAS 有已遭實際利用的漏洞且管理頁對外開放，可能被勒索軟體加密",
+        "if_ignored": "同類 NAS 已有遭勒索軟體加密的案例。辦公室 NAS 一旦被加密，檔案要付贖金才拿得回來，連在上面的備份碟也可能一起被加密。"
+      },
+      {
+        "risk_id": "storefront:next:vuln",
+        "temporary": "今天先確認商店網站需要登入的頁面，是否都在伺服器端再次檢查權限，並檢查近期是否有異常存取紀錄。",
+        "permanent": "將網站框架升級到已修補版本；授權檢查改為在每個受保護的伺服器端路由內重複驗證，不只依賴前端或單一入口。",
+        "options": [
+          {
+            "name": "升級到已修補版本（修補）",
+            "action": "升級框架到已修補版本並完成測試",
+            "cost": "中",
+            "timing": "1 週內"
+          },
+          {
+            "name": "在入口加上額外權限驗證（緩解）",
+            "action": "在受保護頁面的入口加上伺服器端權限檢查",
+            "cost": "低",
+            "timing": "今天；仍有殘餘風險"
+          },
+          {
+            "name": "暫停需登入的頁面或整個商店（下架）",
+            "action": "暫停會員中心與訂單查詢，或暫停整個商店",
+            "cost": "高；會員與線上購買受影響",
+            "timing": "若無法在限期內修補，立即採用"
+          }
+        ],
+        "suggested_owner": "商店網站工程團隊",
+        "verify": "框架版本已在修補範圍；未登入直接存取受保護頁面會被拒絕；下次比對不再命中。",
+        "plain_title": "商店網站有授權檢查可被繞過的漏洞，可能讓外人看到訂單與會員資料",
+        "if_ignored": "外人可以繞過網站的登入與權限檢查，直接進入需要登入才能看的頁面，訂單與會員個資可能因此被讀取。這類問題已有公開案例，目前未確認是否已被利用。"
+      },
+      {
+        "risk_id": "api-gateway:nginx:vuln",
+        "temporary": "今天先確認 API 閘道的對外連線與異常流量紀錄，並限制不必要的外部連入來源。",
+        "permanent": "將 API 閘道升級到已修補版本並定期更新；閘道設定變更加入審核流程。",
+        "options": [
+          {
+            "name": "升級到已修補版本（修補）",
+            "action": "升級閘道到已修補版本，升級前於測試環境驗證",
+            "cost": "中",
+            "timing": "1 週內（風險等級高）"
+          },
+          {
+            "name": "限制連入來源並加強監控（緩解）",
+            "action": "限制不必要的外部來源，加強異常流量監控與告警",
+            "cost": "低",
+            "timing": "24 小時內；仍有殘餘風險"
+          },
+          {
+            "name": "暫時下架閘道（下架）",
+            "action": "閘道停用，App 與網站請求無法經此轉送",
+            "cost": "高；App 與網站大範圍中斷",
+            "timing": "僅在證實遭入侵時採用"
+          }
+        ],
+        "suggested_owner": "基礎設施團隊與 API 團隊",
+        "verify": "閘道版本已在修補範圍；下次比對不再命中；異常流量紀錄無異常。",
+        "plain_title": "API 閘道有高風險漏洞且可從網路連到，可能造成會員個資外洩",
+        "if_ignored": "外人可以從網路直接攻擊 API 閘道，閘道是 App 與後端服務的入口，被控制後可能讀取會員個資。目前沒有已確認遭利用的紀錄，但風險等級高，需盡快修補。"
+      }
+    ],
+    "meta": {
+      "agent": "a5",
+      "subagent": "remediation-advisor",
+      "task": "remediation",
+      "scope": "advisory"
+    }
+  },
+  "524bbf948845d02844811cf5bc068a9f57dd5321d3ec7b69f13fdad8c85bd25f": {
+    "output": [
+      {
+        "id": "brand-app:C-SECRET-IN-GIT",
+        "explanation": "建議先將 Git 歷史中曾出現的正式環境金鑰視為已外洩並撤銷，再以新金鑰透過密鑰管理服務注入部署設定。影響 brand-app 正式部署與依賴該金鑰的服務，切換時需安排維護時段並確認相依服務已同步更新。",
+        "confidence": "low"
+      },
+      {
+        "id": "gitlab:C-SECRET-IN-GIT",
+        "explanation": "建議撤銷並輪替 Git 中曾出現的正式環境金鑰，並改用 GitLab CI/CD 受保護變數或外部密鑰管理服務提供。影響 CI/CD 管線與使用該金鑰的部署流程，需先盤點所有引用此金鑰的專案與 runner。",
+        "confidence": "low"
+      },
+      {
+        "id": "laptop-eng-07:C-DEV-DEVICE-TOKEN",
+        "explanation": "建議撤銷 laptop-eng-07 上持有的正式部署權杖，改由 CI 管線或具時效與稽核紀錄的短期身分取得部署權限。影響該員工本機執行的部署作業，需確認沒有其他流程仍依賴此權杖。",
+        "confidence": "high"
+      },
+      {
+        "id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "explanation": "建議依 90 天輪替規範立即輪替 mail-api-key，並設定 IP 白名單限制來源，新金鑰上線後撤銷舊金鑰。影響所有使用該金鑰寄信的應用程式，需先確認白名單涵蓋的實際出口 IP 以免服務中斷。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a5",
+      "subagent": "key-rotation-advisor",
+      "task": "key-rotation",
+      "scope": "advisory"
+    }
+  },
+  "20777c5485fb98b8fa0f661c497ec91482cad903c56dd95b22ebd4294482e425": {
+    "output": {
+      "ceo_summary": [
+        "今天是紅燈：有 20 個高風險、22 個中風險、11 個低風險的問題還沒處理。",
+        "最急的是 5 個問題可能被駭客一路串連闖進來，最後碰到訂單資料、會員個資，甚至影響自動部署的核心流程；另有行銷官網的軟體原廠已不再修補，漏洞會一直開著。",
+        "今天看了 13 件外面發生的資安事件，其中 12 件的問題我們也有。"
+      ],
+      "decisions": [
+        "是否先把行銷官網暫時關掉？——不決定的話：行銷官網的軟體原廠已不再修補，漏洞會一直開著，外人可能藉此入侵或竄改內容。",
+        "是否將內部營運工具、行銷官網、辦公室 NAS、QuickSite Builder 這 4 個沒登記的系統正式列管（指定負責人、定期更新）？——不決定的話：負責人沒確認前，更新與監控可能沒人做，出事時也可能沒人發現；若確認已無人使用，則改為關閉。"
+      ]
+    },
+    "meta": {
+      "agent": "a5",
+      "subagent": "ceo-briefer",
+      "task": "ceo",
+      "scope": "advisory"
+    }
+  },
+  "4f068a038df2dc61edef1abe5cb35936c010a8a109f53a9f631321a3439f3cbe": {
+    "output": [
+      {
+        "id": "intel:evt-1shop-2026-10",
+        "explanation": "同業事件 1shop 疑似 Mailgun API 金鑰遭取得，本系統比對結果為 1 項受影響（mail-api-key，中等風險，分數 6），因未於 90 天內輪替且無 IP 白名單而不符合 C-THIRD-PARTY-KEY-ROTATION。建議立即輪替 mail-api-key、加上 IP 白名單，並通知該金鑰負責人處理。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "task": "intel:evt-1shop-2026-10",
+      "scope": "advisory"
+    }
+  },
+  "78dff83140825d0df7ec7a6fea213e18ab7670376f2562e3ff3f6d5d1877f7b9": {
+    "output": [
+      {
+        "id": "intel:evt-91app-2026-10",
+        "explanation": "來源事件為 91APP 訂單資料庫遭入侵，未更新的內部工具 Appsmith 成為破口，並自內部 GitLab 取得資料庫金鑰。本次比對結果為 5 項受影響、最高風險為高；建議優先處理 internal-tool 對外開放 443 埠（high）與 gitlab、brand-app 的 Git 內正式環境金鑰（high，建議輪替並移出版本庫），另應檢視 order-db-test 連線至 order-db-prod:5432 的網段隔離（medium）。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "task": "intel:evt-91app-2026-10",
+      "scope": "advisory"
+    }
+  },
+  "ec2873f93493b2f1ccd291c2aee1b8c086241838512ea4c0e2428127f470e52a": {
+    "output": [
+      {
+        "id": "intel:evt-binance-2026-10",
+        "explanation": "來源事件為幣安 63.4 億美元駭案，攻擊者以假面試惡意程式入侵開發者電腦，取得容器部署憑證後攻陷錢包簽章服務。本次比對 2 項受影響：laptop-eng-07 不符 C-DEV-DEVICE-TOKEN（員工電腦持有正式部署權杖，風險等級高，分數 7）；ai-code-assistant 不符 C-NON-CI-DEPLOY（可直接觸發 deploy-pipeline 繞過審核，風險等級中，分數 4）。建議優先撤銷 laptop-eng-07 上的部署權杖，並確認 ai-code-assistant 的部署權限只能經由 Pipeline 使用。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "task": "intel:evt-binance-2026-10",
+      "scope": "advisory"
+    }
+  },
+  "6e3240dbf1ffe136cb1626584c51058bcfe7dfc08787210f24c1c2617744af24": {
+    "output": [
+      {
+        "id": "intel:evt-nextjs-cve-2025-29927",
+        "explanation": "storefront 的 next 14.1.0 對外提供服務，且 middleware_auth 已啟用、為 self-hosted 部署，落在 Next.js Middleware 授權繞過（CVE-2025-29927）受影響範圍，判定為受影響，風險等級高（8 分）。建議優先將 Next.js 升級至官方已修補版本，並驗證 middleware 授權檢查是否生效。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "task": "intel:evt-nextjs-cve-2025-29927",
+      "scope": "advisory"
+    }
+  },
+  "19f71b8f6414daa17b266b2dd36496397fc4cd9d12a26a091d1fd449b66d2724": {
+    "output": [
+      {
+        "id": "intel:evt-php2shell-2026-10",
+        "explanation": "PHP2Shell 為 PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619），本次比對判定 2 項資產受影響、最高風險為高。marketing-site（php 8.1.27，對外，session.upload_progress.enabled=On，已停止支援且無修補）為高風險，建議優先停用 session.upload_progress、限制對外暴露，並規劃汰換或升級 PHP；phpmyadmin（php 8.3.20）為中風險，網路快照顯示僅允許 corp-vpn 連入，建議維持該限制並儘速升級至修補版本。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "task": "intel:evt-php2shell-2026-10",
+      "scope": "advisory"
+    }
+  },
+  "2a106b07ae20df55dd30c2702e6472dbe9ba90589dabcc88b8f5dfd6fc83908f": {
+    "output": [
+      {
+        "id": "intel:evt-synology-2026-10",
+        "explanation": "Synology NAS 遭 C3RB3R 勒索軟體加密，DSM 登入頁對外暴露且常駐連接的備份碟一併被加密。本次比對 3 項受影響，最高風險為高，影響 nas-office-01（synology-dsm 7.2.1-69057 Update 5，對外）；建議評估將 DSM 管理介面移出對外暴露、並將備份與來源設備隔離且進行還原測試。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "task": "intel:evt-synology-2026-10",
+      "scope": "advisory"
+    }
+  },
+  "d55a2173d1aef889af77f6b32351ed8da4e4104354e69fe9dff05d2cfa33dae1": {
+    "output": [
+      {
+        "id": "intel:adv-opsbuilder-2026-001",
+        "explanation": "示範公告（虛構產品）指出 OpsBuilder 1.90 以前版本存在帳號接管漏洞。本系統中 internal-tool 執行 opsbuilder 1.88 且對外可連線，比對結果為受影響、風險等級高（11 分），建議評估升級至受影響範圍之外的版本。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "task": "intel:adv-opsbuilder-2026-001",
+      "scope": "advisory"
+    }
+  },
+  "63797c6b81876ec2d64b3b51badd3fc3139fe1a6d32114f1265da2b24e1992d0": {
+    "output": [
+      {
+        "id": "intel:kev-cve-2024-10441",
+        "explanation": "CISA KEV 將 Synology DSM 的 CVE-2024-10441（Improper Encoding or Escaping of Output）列為已遭實際利用。程式比對結果：nas-office-01 運行 synology-dsm 7.2.1-69057 Update 5 且對外，版本落在受影響範圍，風險等級為高（分數 8）。建議優先確認該 DSM 版本是否已套用對應修補、評估對外暴露面的限制，並檢視同業事件紀錄（evt-91app-2026-10、evt-synology-2026-10）以釐清是否有異常跡象。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "task": "intel:kev-cve-2024-10441",
+      "scope": "advisory"
+    }
+  },
+  "0bdd72e4ac0b3f30b320501faec61494ef595b301a958d00d3257fc2f7c35654": {
+    "output": [
+      {
+        "id": "intel:kev-cve-2026-109618",
+        "explanation": "CISA KEV 收錄 PHP Memory Corruption 漏洞 CVE-2026-109618，本次比對 2 項受影響：marketing-site（php 8.1.27，apache2handler，對外，風險等級高，分數 9）與 phpmyadmin（php 8.3.20，fpm-fcgi，風險等級中，分數 4，因網路僅允許 corp-vpn 連入而有補償）。建議優先確認 marketing-site 的 PHP 版本並評估升級或修補，並持續確認 phpmyadmin 的網路限制是否有效。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "task": "intel:kev-cve-2026-109618",
+      "scope": "advisory"
+    }
+  },
+  "452e6400624c908fc8f1d52fe54deb878e10a200e142a7a1957ca0882527f416": {
+    "output": [
+      {
+        "id": "intel:kev-cve-2026-109619",
+        "explanation": "CISA KEV 收錄 PHP 漏洞 CVE-2026-109619，比對結果為 2 項受影響、最高風險為高。marketing-site（php 8.1.27、apache2handler、對外，風險 high、9 分）來源標示已停止支援且無修補可用，建議優先限縮對外暴露、評估遷移至受支援版本，並通知負責人；phpmyadmin（php 8.3.20、fpm-fcgi，風險 medium、4 分）目前有 network.json 顯示僅 corp-vpn 可連入的補償措施，建議持續確認該限制並規劃升級至官方修補版本（來源未提供修補版本號，需另行查證）。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "task": "intel:kev-cve-2026-109619",
+      "scope": "advisory"
+    }
+  },
+  "1e70026ceb435059cc9317f87830cc0827f7a5e505f51623cd4df7f8bfb7350f": {
+    "output": [
+      {
+        "id": "intel:kev-cve-2026-111497",
+        "explanation": "CISA KEV 將 Google Brotli Unchecked Return Value Vulnerability（CVE-2026-111497）列為已遭利用，程式比對顯示 3 項資產受影響（storefront、member-api、internal-tool），最高風險等級為高。storefront 的 node 22.11.0 位於對外環境，建議優先確認並依程式分數排序處理，升級 Node 版本至受影響範圍之外（具體修補版本以官方公告為準，本報告未提供）。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "task": "intel:kev-cve-2026-111497",
+      "scope": "advisory"
+    }
+  },
+  "570e0fb42bc4c47e2f39bac6e85b39a39dbca82111ecb755599d2fb1af1ea4d1": {
+    "output": [
+      {
+        "id": "intel:kev-cve-2026-119977",
+        "explanation": "CISA KEV 收錄 WordPress Core 的 TOCTOU 競爭條件漏洞（CVE-2026-119977）。程式判定 marketing-site（wordpress 6.4.3，對外）版本落在受影響範圍，風險等級為中（6 分）；建議依官方公告確認修補版本並評估升級。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "task": "intel:kev-cve-2026-119977",
+      "scope": "advisory"
+    }
+  },
+  "6b5630b12b02ef567646f9673329c27666340fae0cc793cdd92b0d960ad99c27": {
+    "output": [
+      {
+        "id": "notice:evt-91app-2026-10",
+        "explanation": "【通知草稿】我們注意到 91APP 訂單資料庫發生未授權存取事件，目前調查中，相關細節仍在確認。平台正在進行安全檢查與修補，並評估受影響範圍，確認後會再通知您。【防詐提醒】官方不會要求您轉帳、提供驗證碼或密碼，請只從官方商店下載 App，若收到可疑訊息請勿點擊連結並直接向官方客服查證。（發送前需人工確認事件細節與受影響範圍。）",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a5",
+      "subagent": "brand-notice-writer",
+      "task": "notice:evt-91app-2026-10",
+      "scope": "advisory"
+    }
+  },
+  "e029b003255b274002cdd79dba170d575929ccce633400cdd5eaf915573b00fe": {
+    "output": [
+      {
+        "id": "notice:evt-nextjs-cve-2025-29927",
+        "explanation": "【品牌商通知草稿】我們收到 Next.js 中介層（Middleware）授權繞過漏洞（CVE-2025-29927）的安全通報，該漏洞可能使部分請求繞過權限檢查。平台正在確認受影響的服務範圍並進行修補與驗證，目前細節仍在確認中，發送前需人工核對。【防詐提醒】官方不會要求您轉帳或提供驗證碼，請僅從官方商店下載 App，若收到可疑來電或訊息請勿提供個人資料並以官方管道查證。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a5",
+      "subagent": "brand-notice-writer",
+      "task": "notice:evt-nextjs-cve-2025-29927",
+      "scope": "advisory"
+    }
+  },
+  "5ee725b383219297c988b90e0eb9b27c15df5654ed0612e5b06b2cb41c7b3564": {
+    "output": [
+      {
+        "id": "notice:kev-cve-2026-111497",
+        "explanation": "【品牌商通知草稿】我們關注到 Google Brotli 壓縮函式庫出現未檢查回傳值的漏洞（CVE-2026-111497），該漏洞已列入 CISA 已知遭利用漏洞目錄（KEV）。目前受影響的範圍與平台的具體處置進度尚待確認，發布前請由人工核實。我們正評估相關系統並視需要更新元件，若有進一步影響將另行通知。【防詐提醒】官方不會以電話、簡訊或訊息要求您轉帳、提供驗證碼或密碼；請僅透過官方商店下載 App，若收到可疑連結請勿點擊並向官方客服查證。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a5",
+      "subagent": "brand-notice-writer",
+      "task": "notice:kev-cve-2026-111497",
+      "scope": "advisory"
+    }
   }
 }
