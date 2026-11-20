@@ -1,28 +1,7 @@
 {
-  "checked_at": "2026-11-20T12:55:27Z",
+  "checked_at": "2026-11-20T21:07:11Z",
   "advisories_checked": 7,
-  "hits": [
-    {
-      "advisory_id": "kev-cve-2026-109618",
-      "asset_ids": [
-        "marketing-site",
-        "phpmyadmin"
-      ],
-      "matched_component": [
-        "php"
-      ]
-    },
-    {
-      "advisory_id": "kev-cve-2026-109619",
-      "asset_ids": [
-        "marketing-site",
-        "phpmyadmin"
-      ],
-      "matched_component": [
-        "php"
-      ]
-    }
-  ],
+  "hits": [],
   "dispatched": false,
   "items": [
     {
@@ -740,6 +719,11 @@
       "mapped": false,
       "revision": null
     },
+    "CVE-2025-42884": {
+      "checked_at": "2026-11-20T21:07:11Z",
+      "mapped": false,
+      "revision": null
+    },
     "CVE-2025-61624": {
       "checked_at": "2026-11-15T22:50:04Z",
       "mapped": false,
@@ -771,7 +755,7 @@
       "revision": "2026-11-20T12:18:19.730"
     },
     "CVE-2026-110447": {
-      "checked_at": "2026-11-19T13:11:26Z",
+      "checked_at": "2026-11-20T21:07:11Z",
       "mapped": false,
       "revision": null
     },
@@ -850,6 +834,11 @@
       "mapped": false,
       "revision": null
     },
+    "CVE-2026-123890": {
+      "checked_at": "2026-11-20T21:07:11Z",
+      "mapped": false,
+      "revision": null
+    },
     "CVE-2026-124194": {
       "checked_at": "2026-11-20T12:55:27Z",
       "mapped": false,
@@ -857,6 +846,11 @@
     },
     "CVE-2026-125350": {
       "checked_at": "2026-11-20T12:55:27Z",
+      "mapped": false,
+      "revision": null
+    },
+    "CVE-2026-129448": {
+      "checked_at": "2026-11-20T21:07:11Z",
       "mapped": false,
       "revision": null
     },
@@ -900,6 +894,11 @@
       "mapped": false,
       "revision": null
     },
+    "CVE-2026-76466": {
+      "checked_at": "2026-11-20T21:07:11Z",
+      "mapped": false,
+      "revision": null
+    },
     "CVE-2026-90436": {
       "checked_at": "2026-11-20T03:18:16Z",
       "mapped": false,
@@ -937,17 +936,14 @@
     }
   },
   "kev_catalog": {
-    "version": "2026.11.18",
-    "released": "2026-11-18T19:17:41.0354Z",
-    "count": 1786
+    "version": "2026.11.20",
+    "released": "2026-11-20T17:48:39.1516Z",
+    "count": 1790
   },
   "auto_status": {
     "status": "ok",
     "new": [],
-    "updated": [
-      "kev-cve-2026-109618",
-      "kev-cve-2026-109619"
-    ],
+    "updated": [],
     "remaining": 0,
     "errors": []
   }
