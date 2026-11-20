@@ -1,7 +1,17 @@
 {
-  "checked_at": "2026-11-19T21:37:18Z",
+  "checked_at": "2026-11-20T03:18:16Z",
   "advisories_checked": 7,
-  "hits": [],
+  "hits": [
+    {
+      "advisory_id": "kev-cve-2024-10441",
+      "asset_ids": [
+        "nas-office-01"
+      ],
+      "matched_component": [
+        "synology-dsm"
+      ]
+    }
+  ],
   "dispatched": false,
   "items": [
     {
@@ -228,6 +238,20 @@
         "node"
       ],
       "error": null
+    },
+    {
+      "advisory_id": "kev-cve-2024-10441",
+      "revision": "2026-11-19T17:17:51.900",
+      "status": "queued",
+      "verdict": "affected",
+      "asset_ids": [
+        "nas-office-01"
+      ],
+      "input_hash": "ccec4cf4d36688e6c691ea7e5ed37531a46e2e1c8ef949b6bf9efe2363511c4b",
+      "reason": "命中 nas-office-01",
+      "matched_component": [
+        "synology-dsm"
+      ]
     }
   ],
   "graph_fresh": true,
@@ -236,7 +260,7 @@
       "id": "kev-cve-2024-10441",
       "kind": "advisory",
       "generated_by": "kev-nvd",
-      "revision": "2026-11-18T21:17:43.400",
+      "revision": "2026-11-19T17:17:51.900",
       "title": "CISA KEV：Synology DiskStation Manager (DSM) Improper Encoding or Escaping of Output Vulnerability（CVE-2024-10441）",
       "date": "2026-11-18",
       "industry": null,
@@ -285,7 +309,7 @@
           "published": "2025-03-19"
         }
       ],
-      "generated_at": "2026-11-18T21:58:19Z"
+      "generated_at": "2026-11-20T03:18:16Z"
     },
     {
       "id": "kev-cve-2026-109618",
@@ -660,9 +684,9 @@
   ],
   "kev_checked": {
     "CVE-2024-10441": {
-      "checked_at": "2026-11-18T21:58:19Z",
+      "checked_at": "2026-11-20T03:18:16Z",
       "mapped": true,
-      "revision": "2026-11-18T21:17:43.400"
+      "revision": "2026-11-19T17:17:51.900"
     },
     "CVE-2024-27834": {
       "checked_at": "2026-11-19T03:30:16Z",
@@ -750,7 +774,7 @@
       "revision": null
     },
     "CVE-2026-114713": {
-      "checked_at": "2026-11-18T21:58:19Z",
+      "checked_at": "2026-11-20T03:18:16Z",
       "mapped": false,
       "revision": null
     },
@@ -780,7 +804,7 @@
       "revision": "2026-11-04T12:52:38.683"
     },
     "CVE-2026-123039": {
-      "checked_at": "2026-11-18T21:58:19Z",
+      "checked_at": "2026-11-20T03:18:16Z",
       "mapped": false,
       "revision": null
     },
@@ -820,7 +844,7 @@
       "revision": null
     },
     "CVE-2026-40217": {
-      "checked_at": "2026-11-18T21:58:19Z",
+      "checked_at": "2026-11-20T03:18:16Z",
       "mapped": false,
       "revision": null
     },
@@ -850,12 +874,12 @@
       "revision": null
     },
     "CVE-2026-90436": {
-      "checked_at": "2026-11-18T21:58:19Z",
+      "checked_at": "2026-11-20T03:18:16Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-90817": {
-      "checked_at": "2026-11-18T21:58:19Z",
+      "checked_at": "2026-11-20T03:18:16Z",
       "mapped": false,
       "revision": null
     },
@@ -893,7 +917,9 @@
   "auto_status": {
     "status": "ok",
     "new": [],
-    "updated": [],
+    "updated": [
+      "kev-cve-2024-10441"
+    ],
     "remaining": 0,
     "errors": []
   }
