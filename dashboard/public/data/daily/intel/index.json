@@ -117,99 +117,81 @@
     "demo": false
   },
   {
-    "id": "live-evt-plaid-karte-2026-11",
+    "id": "live-fubon-mo-shop-plus-2026-11",
     "kind": "live",
-    "title": "日本行銷平台 PLAID KARTE 遭駭，JINS、DHC、思夢樂等零售與消費品牌會員個資外洩",
-    "affected_count": 1,
-    "max_level": "medium",
-    "status": "open",
-    "demo": false
-  },
-  {
-    "id": "live-evt-yongxin-pharma-2026-11",
-    "kind": "live",
-    "title": "永信藥品委外電商平台服務商發生資安事件，部分會員個資疑似外洩",
+    "title": "富邦媒 mo店+ 出貨資料遭未經授權存取",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
     "demo": false
   },
   {
-    "id": "live-evt-tatung-etungo-2026-11",
+    "id": "live-plaid-karte-dhc-2026-11",
     "kind": "live",
-    "title": "大同購物網站 e同購遭自動化攻擊入侵，疑似個資外洩",
+    "title": "日本 DHC 因第三方行銷分析平臺 KARTE 被駭，外洩 1,911 萬筆用戶個資",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
     "demo": false
   },
   {
-    "id": "live-evt-optimizely-optimjack-2026-11",
+    "id": "live-n0n-visa-apac-vendor-2026-11",
     "kind": "live",
-    "title": "Optimizely 供應鏈攻擊（OPTIMJACK）波及 178 個組織，匯豐台灣列名",
+    "title": "N0n 勒索組織宣稱取得 Visa 等 59 家公司資料，Visa 證實亞太第三方供應商發生事件",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
     "demo": false
   },
   {
-    "id": "live-evt-91app-artex-2026-11",
+    "id": "live-php-security-release-2026-11-19",
     "kind": "live",
-    "title": "FBI 示警 ARTEX AI 攻擊框架遭濫用，電商 SaaS 91APP 最大可能影響 1,329 家品牌",
-    "affected_count": 6,
-    "max_level": "high",
-    "status": "open",
-    "demo": false
-  },
-  {
-    "id": "live-evt-arara-mail-2026-11",
-    "kind": "live",
-    "title": "日本郵件服務業者 Arara 遭駭，BIC Camera、摩斯漢堡等客戶信箱外洩",
-    "affected_count": 1,
-    "max_level": "medium",
-    "status": "open",
-    "demo": false
-  },
-  {
-    "id": "live-evt-n0n-visa-apac-2026-11",
-    "kind": "live",
-    "title": "N0n 勒索組織宣稱取得 Visa 亞太行銷資料，Visa 稱出於亞太第三方供應商",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "need_check",
-    "demo": false
-  },
-  {
-    "id": "live-evt-nginx-cve-2026-123007",
-    "kind": "live",
-    "title": "NGINX HTTP/2 漏洞 CVE-2026-123007（nginx2root）可讓未認證攻擊者遠端執行程式碼",
-    "affected_count": 1,
-    "max_level": "high",
-    "status": "open",
-    "demo": false
-  },
-  {
-    "id": "live-evt-node-http2-2026-11",
-    "kind": "live",
-    "title": "Node.js 修補 16 個漏洞，含 HTTP/2 當機與連線資料洩漏",
+    "title": "PHP 發布 8.5.13、8.4.28、8.3.37、8.2.36，修補 7 個 Critical 漏洞",
     "affected_count": 3,
     "max_level": "high",
     "status": "open",
     "demo": false
   },
   {
-    "id": "live-evt-openjdk-cve-2026-114938",
+    "id": "live-nginx2root-2026-11",
     "kind": "live",
-    "title": "OpenJDK CVE-2026-114938（Java4Shell）傳出重大漏洞，細節尚未證實",
+    "title": "nginx2root：nginx 1.31.9 與 1.30.7 修補 10 個漏洞，5 個可遠端執行程式碼",
+    "affected_count": 1,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "live-kev-synology-dsm-cve-2024-10441",
+    "kind": "live",
+    "title": "CISA KEV 新增 Synology DSM CVE-2024-10441 已遭利用漏洞",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
+    "demo": false
+  },
+  {
+    "id": "live-openjdk-java4shell-cve-2026-114938",
+    "kind": "live",
+    "title": "OpenJDK Java4Shell CVE-2026-114938 通報，細節尚未證實",
     "affected_count": 0,
     "max_level": null,
     "status": "not_affected",
     "demo": false
   },
   {
-    "id": "live-evt-synology-cve-2024-10441",
+    "id": "live-postgresql-cve-2026-116331",
     "kind": "live",
-    "title": "CISA KEV 新增已遭利用漏洞：Synology DSM CVE-2024-10441",
+    "title": "PostgreSQL CVE-2026-116331：可建立物件的帳號可在資料庫主機執行程式碼",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
+    "demo": false
+  },
+  {
+    "id": "live-gootloader-wordpress-2026-11",
+    "kind": "live",
+    "title": "FBI 警告 Gootloader 已入侵逾千個 WordPress 網站，相關勒索贖金逾 2,800 萬美元",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",

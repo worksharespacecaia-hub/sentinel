@@ -1,0 +1,600 @@
+{
+  "event": {
+    "id": "live-php-security-release-2026-11-19",
+    "kind": "live",
+    "title": "PHP 發布 8.5.13、8.4.28、8.3.37、8.2.36，修補 7 個 Critical 漏洞",
+    "date": "2026-11-19",
+    "industry": "SaaS",
+    "attack_chain": [
+      "10/21 修補 PHP2Shell（CVE-2026-109618、CVE-2026-109619）",
+      "11/19 發布 17 個公告，7 個 Critical 都需特定條件同時成立",
+      "CVE-2026-126714（phpAfterShell）：預設檔案型 session handler 在寫入被中斷時可回傳攻擊者指定物件，搭配 gadget chain 可執行程式碼",
+      "可用 session.upload_progress.enabled=0 作為緩解"
+    ],
+    "attck": [
+      "T1190"
+    ],
+    "cves": [
+      "CVE-2026-109618",
+      "CVE-2026-109619",
+      "CVE-2026-115560",
+      "CVE-2026-126714",
+      "CVE-2026-129289",
+      "CVE-2026-129496",
+      "CVE-2026-129481",
+      "CVE-2026-129474",
+      "CVE-2026-129182",
+      "CVE-2026-129291"
+    ],
+    "products": [
+      {
+        "name": "php",
+        "ecosystem": "php",
+        "affected": [
+          {
+            "introduced": "8.2.0",
+            "fixed": "8.2.35"
+          },
+          {
+            "introduced": "8.3.0",
+            "fixed": "8.3.36"
+          },
+          {
+            "introduced": "8.4.0",
+            "fixed": "8.4.27"
+          },
+          {
+            "introduced": "8.5.0",
+            "fixed": "8.5.12"
+          },
+          {
+            "introduced": "8.1.0",
+            "fixed": null
+          },
+          {
+            "introduced": "8.0.0",
+            "fixed": null
+          },
+          {
+            "introduced": "7.4.0",
+            "fixed": null
+          },
+          {
+            "introduced": "8.2.0",
+            "fixed": "8.2.36"
+          },
+          {
+            "introduced": "8.3.0",
+            "fixed": "8.3.37"
+          },
+          {
+            "introduced": "8.4.0",
+            "fixed": "8.4.28"
+          },
+          {
+            "introduced": "8.5.0",
+            "fixed": "8.5.13"
+          }
+        ],
+        "conditions": [
+          {
+            "key": "serves_web_requests",
+            "equals": true,
+            "source_ref": 0
+          }
+        ],
+        "unknown_below": "7.4.0",
+        "aggravating_conditions": [
+          {
+            "key": "session.upload_progress.enabled",
+            "equals": "On",
+            "source_ref": 0,
+            "applies_to": "CVE-2026-109619"
+          }
+        ],
+        "cvss": 9.2,
+        "known_exploited": true,
+        "impact": "remote_code_execution",
+        "confirmed": true,
+        "source_refs": [
+          0,
+          1,
+          2
+        ]
+      }
+    ],
+    "revision": "1",
+    "controls": [],
+    "confidence": "confirmed",
+    "sources": [
+      {
+        "url": "https://www.securityweek.com/php-patches-seven-critical-rce-vulnerabilities/",
+        "title": "PHP Patches Seven Critical RCE Vulnerabilities",
+        "quote": "PHP on Thursday rolled out a fresh set of security patches as part of its four-week update schedule, including fixes for seven critical-severity remote code execution (RCE) vulnerabilities.",
+        "published": "2026-11-19",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-20T04:38:26Z",
+        "content_hash": "sha256:fdfdc6bf9cd12ae9429a3a3ab701e0eeacc777fe294b212bed672f3dfc1d59d4",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://thehackernews.com/2026/11/php-fixes-7-critical-flaws-including.html",
+        "title": "PHP Fixes 7 Critical Flaws, Including Bugs That Could Allow Remote Code Execution",
+        "quote": "PHP Fixes 7 Critical Flaws, Including Bugs That Could Allow Remote Code Execution",
+        "published": "2026-11-19",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-20T04:38:26Z",
+        "content_hash": "sha256:0827eaeaee65bc00dfe4ec997d69f7d82874b47bc222bfd67af9a6062c475a54",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://cyberq.tw/2026/11/19/php-security-release-2026-11-19-hands-on/",
+        "title": "實測 PHP 8.5.13、8.4.28、8.3.37、8.2.36 資安更新：7 項 Critical 的觸發條件與主機升級驗證",
+        "quote": "PHP 官方於 2026 年 11 月 19 日（台灣時間當晚 10 點左右）同時發布 8.5.13、8.4.28、8.3.37、8.2.36 四個資安版本，同一時間也推出 PHP 8.6.0 正式版。",
+        "published": "2026-11-19",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-20T04:38:26Z",
+        "content_hash": "sha256:75bfb05c394953353278aeddc67b85df56d2ba3232b6ef732ba1e28d839d061a",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": "evt-php2shell-2026-10",
+    "proposed_controls": []
+  },
+  "conclusion": "3 項受影響，最高風險為高。marketing-site：php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On。",
+  "affected_count": 3,
+  "max_level": "high",
+  "impacts": [
+    {
+      "event_id": "live-php-security-release-2026-11-19",
+      "asset_id": "marketing-site",
+      "basis": "condition",
+      "our_state": "php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On",
+      "verdict": "affected",
+      "risk_id": "marketing-site:php:vuln",
+      "to_verify": [],
+      "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True；停止支援且無修補"
+    },
+    {
+      "event_id": "live-php-security-release-2026-11-19",
+      "asset_id": "report-svc",
+      "basis": "condition",
+      "our_state": "php 8.4.27（fpm-fcgi），session.upload_progress.enabled=On",
+      "verdict": "affected",
+      "risk_id": "report-svc:php:vuln",
+      "to_verify": [],
+      "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True"
+    },
+    {
+      "event_id": "live-php-security-release-2026-11-19",
+      "asset_id": "phpmyadmin",
+      "basis": "condition",
+      "our_state": "php 8.3.20（fpm-fcgi），session.upload_progress.enabled=On",
+      "verdict": "affected",
+      "risk_id": "phpmyadmin:php:vuln",
+      "to_verify": [],
+      "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True"
+    }
+  ],
+  "solutions": [
+    {
+      "risk_id": "marketing-site:php:vuln",
+      "temporary": "先限制外人連到行銷官網並加強監看，同時評估是否暫時關掉",
+      "permanent": "將 marketing-site 升級到仍受支援且已修補的版本，完成回歸測試後上線",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "WAF 限制異常請求、關閉不必要的功能",
+          "cost": "需驗證不影響現有功能",
+          "timing": "今天"
+        },
+        {
+          "name": "下架",
+          "action": "暫停 marketing-site，改導向其他服務",
+          "cost": "相關流量中斷",
+          "timing": "今天"
+        },
+        {
+          "name": "修補",
+          "action": "升級到受支援的修補版本",
+          "cost": "需回歸測試",
+          "timing": "7 天內"
+        }
+      ],
+      "suggested_owner": "security-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template",
+      "plain_title": "行銷官網的軟體原廠已不再修補，有可被入侵的漏洞",
+      "if_ignored": "漏洞不會再有官方修補，外人可能藉此控制行銷官網或竄改內容。",
+      "plain_source": "template"
+    },
+    {
+      "risk_id": "report-svc:php:vuln",
+      "temporary": "先確認報表服務有哪些地方外人連得到，能關的先關，並盡快安排更新",
+      "permanent": "將 report-svc 的受影響元件升級到修補版本",
+      "options": [
+        {
+          "name": "修補",
+          "action": "升級到修補版本",
+          "cost": "需回歸測試",
+          "timing": "168 小時內"
+        },
+        {
+          "name": "緩解",
+          "action": "限制來源、關閉受影響功能",
+          "cost": "部分功能受限",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "data-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template",
+      "plain_title": "需要確認：報表服務有已經被用來攻擊的漏洞，可能造成訂單資料外洩",
+      "if_ignored": "如果確認屬實，外人可能利用這個漏洞入侵報表服務，一路碰到訂單資料；這個漏洞已經有人在用。",
+      "plain_source": "template"
+    },
+    {
+      "risk_id": "phpmyadmin:php:vuln",
+      "temporary": "先確認資料庫網頁管理工具有哪些地方外人連得到，能關的先關，並盡快安排更新",
+      "permanent": "將 phpmyadmin 的受影響元件升級到修補版本",
+      "options": [
+        {
+          "name": "修補",
+          "action": "升級到修補版本",
+          "cost": "需回歸測試",
+          "timing": "168 小時內"
+        },
+        {
+          "name": "緩解",
+          "action": "限制來源、關閉受影響功能",
+          "cost": "部分功能受限",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "dba-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template",
+      "plain_title": "資料庫網頁管理工具有已經被用來攻擊的漏洞，可能造成訂單資料、會員個資外洩",
+      "if_ignored": "外人可能利用這個漏洞入侵資料庫網頁管理工具，一路碰到訂單資料、會員個資；這個漏洞已經有人在用。",
+      "plain_source": "template"
+    }
+  ],
+  "notice": {
+    "needed": false,
+    "draft": null,
+    "draft_extra": "建議通知品牌商：PHP 發布修補重大漏洞的更新，我們的行銷官網使用的版本已不再受原廠支援，正在評估升級；目前沒有資料顯示已有外洩。",
+    "draft_extra_source": "live"
+  },
+  "status": "open",
+  "evaluated_asset_ids": [
+    "marketing-site",
+    "phpmyadmin",
+    "report-svc"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "行銷官網的 PHP 8.1.27 已停止支援且無修補，為高風險（9 分）；報表服務（5 分）與 phpmyadmin（4 分）為中風險。",
+  "blocks": {
+    "1_summary": {
+      "title": "PHP 發布 8.5.13、8.4.28、8.3.37、8.2.36，修補 7 個 Critical 漏洞",
+      "date": "2026-11-19",
+      "industry": "SaaS",
+      "attack_chain": [
+        "10/21 修補 PHP2Shell（CVE-2026-109618、CVE-2026-109619）",
+        "11/19 發布 17 個公告，7 個 Critical 都需特定條件同時成立",
+        "CVE-2026-126714（phpAfterShell）：預設檔案型 session handler 在寫入被中斷時可回傳攻擊者指定物件，搭配 gadget chain 可執行程式碼",
+        "可用 session.upload_progress.enabled=0 作為緩解"
+      ],
+      "attck": [
+        "T1190"
+      ],
+      "cves": [
+        "CVE-2026-109618",
+        "CVE-2026-109619",
+        "CVE-2026-115560",
+        "CVE-2026-126714",
+        "CVE-2026-129289",
+        "CVE-2026-129496",
+        "CVE-2026-129481",
+        "CVE-2026-129474",
+        "CVE-2026-129182",
+        "CVE-2026-129291"
+      ],
+      "confidence": "已確認",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.securityweek.com/php-patches-seven-critical-rce-vulnerabilities/",
+          "title": "PHP Patches Seven Critical RCE Vulnerabilities",
+          "quote": "PHP on Thursday rolled out a fresh set of security patches as part of its four-week update schedule, including fixes for seven critical-severity remote code execution (RCE) vulnerabilities.",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-20T04:38:26Z"
+        },
+        {
+          "url": "https://thehackernews.com/2026/11/php-fixes-7-critical-flaws-including.html",
+          "title": "PHP Fixes 7 Critical Flaws, Including Bugs That Could Allow Remote Code Execution",
+          "quote": "PHP Fixes 7 Critical Flaws, Including Bugs That Could Allow Remote Code Execution",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-20T04:38:26Z"
+        },
+        {
+          "url": "https://cyberq.tw/2026/11/19/php-security-release-2026-11-19-hands-on/",
+          "title": "實測 PHP 8.5.13、8.4.28、8.3.37、8.2.36 資安更新：7 項 Critical 的觸發條件與主機升級驗證",
+          "quote": "PHP 官方於 2026 年 11 月 19 日（台灣時間當晚 10 點左右）同時發布 8.5.13、8.4.28、8.3.37、8.2.36 四個資安版本，同一時間也推出 PHP 8.6.0 正式版。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-20T04:38:26Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "行銷官網的 PHP 8.1.27 已停止支援且無修補，為高風險（9 分）；報表服務（5 分）與 phpmyadmin（4 分）為中風險。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "3 項受影響，最高風險為高。marketing-site：php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On。",
+      "affected_count": 3,
+      "max_level": "high"
+    },
+    "3_affected": [
+      {
+        "asset_id": "marketing-site",
+        "our_state": "php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On",
+        "basis": "condition",
+        "verdict": "affected",
+        "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True；停止支援且無修補",
+        "risk_id": "marketing-site:php:vuln",
+        "level": "high",
+        "score": 9,
+        "breakdown": [
+          {
+            "factor": "基礎分：漏洞",
+            "points": 3,
+            "reason": "CVSS 9.8"
+          },
+          {
+            "factor": "已遭實際利用",
+            "points": 2,
+            "reason": "KEV 或官方確認"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "可從 internet 連到"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-php2shell-2026-10、live-php-security-release-2026-11-19"
+          },
+          {
+            "factor": "已停止支援",
+            "points": 1,
+            "reason": "無修補可用"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-20T04:38:26Z"
+      },
+      {
+        "asset_id": "report-svc",
+        "our_state": "php 8.4.27（fpm-fcgi），session.upload_progress.enabled=On",
+        "basis": "condition",
+        "verdict": "affected",
+        "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True",
+        "risk_id": "report-svc:php:vuln",
+        "level": "medium",
+        "score": 5,
+        "breakdown": [
+          {
+            "factor": "基礎分：漏洞",
+            "points": 1,
+            "reason": "CVSS 5.0"
+          },
+          {
+            "factor": "已遭實際利用",
+            "points": 2,
+            "reason": "KEV 或官方確認"
+          },
+          {
+            "factor": "資料敏感",
+            "points": 1,
+            "reason": "order"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "live-php-security-release-2026-11-19"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-20T04:38:26Z"
+      },
+      {
+        "asset_id": "phpmyadmin",
+        "our_state": "php 8.3.20（fpm-fcgi），session.upload_progress.enabled=On",
+        "basis": "condition",
+        "verdict": "affected",
+        "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True",
+        "risk_id": "phpmyadmin:php:vuln",
+        "level": "medium",
+        "score": 4,
+        "breakdown": [
+          {
+            "factor": "基礎分：漏洞",
+            "points": 3,
+            "reason": "CVSS 9.8"
+          },
+          {
+            "factor": "已遭實際利用",
+            "points": 2,
+            "reason": "KEV 或官方確認"
+          },
+          {
+            "factor": "資料敏感",
+            "points": 1,
+            "reason": "order、pii"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-php2shell-2026-10、live-php-security-release-2026-11-19"
+          },
+          {
+            "factor": "補償措施",
+            "points": -3,
+            "reason": "network.json 顯示只允許 corp-vpn 連入（本次快照證據）"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-20T04:38:26Z"
+      }
+    ],
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": []
+    },
+    "5_solutions": [
+      {
+        "risk_id": "marketing-site:php:vuln",
+        "temporary": "先限制外人連到行銷官網並加強監看，同時評估是否暫時關掉",
+        "permanent": "將 marketing-site 升級到仍受支援且已修補的版本，完成回歸測試後上線",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "WAF 限制異常請求、關閉不必要的功能",
+            "cost": "需驗證不影響現有功能",
+            "timing": "今天"
+          },
+          {
+            "name": "下架",
+            "action": "暫停 marketing-site，改導向其他服務",
+            "cost": "相關流量中斷",
+            "timing": "今天"
+          },
+          {
+            "name": "修補",
+            "action": "升級到受支援的修補版本",
+            "cost": "需回歸測試",
+            "timing": "7 天內"
+          }
+        ],
+        "suggested_owner": "security-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template",
+        "plain_title": "行銷官網的軟體原廠已不再修補，有可被入侵的漏洞",
+        "if_ignored": "漏洞不會再有官方修補，外人可能藉此控制行銷官網或竄改內容。",
+        "plain_source": "template"
+      },
+      {
+        "risk_id": "report-svc:php:vuln",
+        "temporary": "先確認報表服務有哪些地方外人連得到，能關的先關，並盡快安排更新",
+        "permanent": "將 report-svc 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "168 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "data-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template",
+        "plain_title": "需要確認：報表服務有已經被用來攻擊的漏洞，可能造成訂單資料外洩",
+        "if_ignored": "如果確認屬實，外人可能利用這個漏洞入侵報表服務，一路碰到訂單資料；這個漏洞已經有人在用。",
+        "plain_source": "template"
+      },
+      {
+        "risk_id": "phpmyadmin:php:vuln",
+        "temporary": "先確認資料庫網頁管理工具有哪些地方外人連得到，能關的先關，並盡快安排更新",
+        "permanent": "將 phpmyadmin 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "168 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "dba-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template",
+        "plain_title": "資料庫網頁管理工具有已經被用來攻擊的漏洞，可能造成訂單資料、會員個資外洩",
+        "if_ignored": "外人可能利用這個漏洞入侵資料庫網頁管理工具，一路碰到訂單資料、會員個資；這個漏洞已經有人在用。",
+        "plain_source": "template"
+      }
+    ],
+    "6_notice": {
+      "needed": false,
+      "draft": null,
+      "draft_extra": "建議通知品牌商：PHP 發布修補重大漏洞的更新，我們的行銷官網使用的版本已不再受原廠支援，正在評估升級；目前沒有資料顯示已有外洩。",
+      "draft_extra_source": "live"
+    },
+    "7_status": {
+      "status": "open",
+      "label": "待處理"
+    }
+  },
+  "orchestrator_results": [
+    {
+      "stage": "dispatch",
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "target_type": "event",
+      "target_id": "live-php-security-release-2026-11-19",
+      "text": "php 8.1.27：php 8.1.27 依 NVD 本地比對有 27 個確定漏洞（最高 CVSS 9.8，CVE-2024-11236），修補版本為 8.2.35，且 CVE-2026-109618、CVE-2026-109619 已列入 CISA KEV 遭實際利用。建議優先升級，並確認 3 個需確認漏洞與 8.2.35 是否符合現行分支政策。；php 8.3.20：php 8.3.20 依 NVD 本地比對有 28 個確定漏洞（最高 CVSS 9.8，CVE-2025-14179），資料列出的修補版本為 8.3.36，且 CVE-2026-109618、CVE-2026-109619 已列入 CISA KEV。事件公告另有 8.3.37 與 CVE-2026-126714（phpAfterShell），建議升級至 8.3.37 並在確認前暫時設定 session.upload_progress.enabled=0 作為緩解；3 個需確認漏洞仍待確認。；php 8.4.27：php 8.4.27 目前 0 個確定漏洞，僅 1 個需確認的 CVE-2007-3205，因 NVD 版本範圍無法判斷，資料未提供確定修補版本，也未見已遭實際利用的紀錄。建議先確認 CVE-2007-3205 是否適用此執行環境，並評估升級至事件公告的 8.4.28；在確認前結論不完整，需人工複核。",
+      "source": "live"
+    },
+    {
+      "stage": "dispatch",
+      "agent": "a2",
+      "subagent": "runtime-analyst",
+      "target_type": "event",
+      "target_id": "live-php-security-release-2026-11-19",
+      "text": "依 eol.json 記載，PHP 8.1 支援已於 2025-12-31 結束，今日（2026-11-20）為已停止支援狀態，runtime.json 顯示執行版本為 8.1.27，故此環境目前無安全修補。此為支援期限狀態，與是否已修補漏洞分開判斷。本次事件（8.1 未列於 11/19 發布的 8.5.13、8.4.28、8.3.37、8.2.36 修補範圍）顯示 8.1 分支不在本次修補內，需確認 8.1 分支是否有其他途徑取得修補，否則 CVE-2026-126714（phpAfterShell）的利用前提是否成立無法排除。利用條件需確認：是否使用預設檔案型 session handler、session.upload_progress.enabled 是否為 1（預設值）、是否存在可被利用的 gadget chain、寫入是否可被攻擊者中斷。在上述條件未確認前，不應視為安全。建議：優先升級至仍受支援的 PHP 分支（8.2 以上且對應已修補版本），若暫時無法升級，先將 session.upload_progress.enabled 設為 0 作為緩解，並確認 session handler 設定與應用程式 gadget 情況。",
+      "source": "live"
+    },
+    {
+      "stage": "review",
+      "agent": "a5",
+      "subagent": "brand-notice-writer",
+      "target_type": "event",
+      "target_id": "live-php-security-release-2026-11-19",
+      "text": "建議通知品牌商：PHP 發布修補重大漏洞的更新，我們的行銷官網使用的版本已不再受原廠支援，正在評估升級；目前沒有資料顯示已有外洩。",
+      "source": "live"
+    }
+  ],
+  "update_of": {
+    "id": "evt-php2shell-2026-10",
+    "title": "PHP2Shell：PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619）",
+    "status": "open"
+  }
+}

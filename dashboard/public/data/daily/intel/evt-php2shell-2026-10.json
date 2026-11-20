@@ -224,7 +224,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "行銷官網的 PHP 8.1.27 落在受影響範圍、對外且原廠已停止支援無修補，程式判定為高風險（9 分）；phpMyAdmin 因只允許公司 VPN 連入，降為中風險（4 分）。建議行銷官網升級環境或暫時下架。",
+  "summary": "行銷官網的 PHP 8.1.27 對外且條件成立，並已停止支援、無修補，程式判定為高風險（9 分）；phpmyadmin 因只允許公司 VPN 連入，降為中風險（4 分）。",
   "blocks": {
     "1_summary": {
       "title": "PHP2Shell：PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619）",
@@ -276,7 +276,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "行銷官網的 PHP 8.1.27 落在受影響範圍、對外且原廠已停止支援無修補，程式判定為高風險（9 分）；phpMyAdmin 因只允許公司 VPN 連入，降為中風險（4 分）。建議行銷官網升級環境或暫時下架。",
+      "summary": "行銷官網的 PHP 8.1.27 對外且條件成立，並已停止支援、無修補，程式判定為高風險（9 分）；phpmyadmin 因只允許公司 VPN 連入，降為中風險（4 分）。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -314,7 +314,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-php2shell-2026-10"
+            "reason": "evt-php2shell-2026-10、live-php-security-release-2026-11-19"
           },
           {
             "factor": "已停止支援",
@@ -324,7 +324,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-19T04:47:04Z"
+        "observed_at": "2026-11-20T04:38:26Z"
       },
       {
         "asset_id": "phpmyadmin",
@@ -354,7 +354,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-php2shell-2026-10"
+            "reason": "evt-php2shell-2026-10、live-php-security-release-2026-11-19"
           },
           {
             "factor": "補償措施",
@@ -364,7 +364,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-19T04:47:04Z"
+        "observed_at": "2026-11-20T04:38:26Z"
       }
     ],
     "4_unaffected_and_check": {
@@ -445,5 +445,15 @@
       "label": "待處理"
     }
   },
-  "orchestrator_results": []
+  "orchestrator_results": [],
+  "updates": [
+    {
+      "id": "live-php-security-release-2026-11-19",
+      "title": "PHP 發布 8.5.13、8.4.28、8.3.37、8.2.36，修補 7 個 Critical 漏洞",
+      "date": "2026-11-19",
+      "status": "open",
+      "conclusion": "3 項受影響，最高風險為高。marketing-site：php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On。",
+      "confidence": "confirmed"
+    }
+  ]
 }

@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "run_id": "44460635163",
+  "run_id": "44675731205",
   "job": "scanners-kev",
   "scope": "scanner",
   "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
-  "observed_at": "2026-11-19T04:47:57Z",
-  "valid_until": "2026-11-20T04:47:57Z",
+  "observed_at": "2026-11-20T04:39:10Z",
+  "valid_until": "2026-11-21T04:39:10Z",
   "tool_version": {
     "kev": "2026.11.18"
   },
