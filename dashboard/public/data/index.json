@@ -47,11 +47,11 @@
       "execution_mode": "replay"
     },
     "kev-cve-2024-10441": {
-      "run_id": "44407011641",
-      "generated_at": "2026-11-18T21:59:15Z",
+      "run_id": "44666872557",
+      "generated_at": "2026-11-20T03:19:15Z",
       "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
       "completeness": "complete",
-      "path": "advisories/kev-cve-2024-10441/44407011641",
+      "path": "advisories/kev-cve-2024-10441/44666872557",
       "light": "red",
       "execution_mode": "live"
     }
@@ -112,6 +112,6 @@
     "light": "red",
     "execution_mode": "live"
   },
-  "updated_at": "2026-11-19T04:47:04Z",
+  "updated_at": "2026-11-20T03:19:15Z",
   "failures": {}
 }
