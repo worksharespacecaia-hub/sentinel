@@ -1,0 +1,176 @@
+{
+  "paths": [
+    {
+      "id": "path:internet→brand-app→app-api-key→api-gateway→member-db-prod",
+      "start": "internet",
+      "target": "member-db-prod",
+      "nodes": [
+        "internet",
+        "brand-app",
+        "app-api-key",
+        "api-gateway",
+        "member-db-prod"
+      ],
+      "assumption": null,
+      "steps": [
+        {
+          "from": "internet",
+          "to": "brand-app",
+          "kind": "download",
+          "finding_ids": [],
+          "evidence": [
+            "network.json"
+          ]
+        },
+        {
+          "from": "brand-app",
+          "to": "app-api-key",
+          "kind": "read_secret",
+          "finding_ids": [
+            "brand-app:C-SECRET-IN-GIT"
+          ],
+          "evidence": [
+            "secrets.json:app-api-key.stored_in"
+          ]
+        },
+        {
+          "from": "app-api-key",
+          "to": "api-gateway",
+          "kind": "authorize",
+          "finding_ids": [
+            "brand-app:C-SECRET-IN-GIT"
+          ],
+          "evidence": [
+            "secrets.json:app-api-key.grants"
+          ]
+        },
+        {
+          "from": "api-gateway",
+          "to": "member-db-prod",
+          "kind": "api_data_access",
+          "finding_ids": [],
+          "evidence": [
+            "api-inventory.json:/admin/v1/members"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "path:internet→internal-tool→gitlab-read-token-internal-tool→gitlab→order-db-prod-cred→order-db-prod",
+      "start": "internet",
+      "target": "order-db-prod",
+      "nodes": [
+        "internet",
+        "internal-tool",
+        "gitlab-read-token-internal-tool",
+        "gitlab",
+        "order-db-prod-cred",
+        "order-db-prod"
+      ],
+      "assumption": null,
+      "steps": [
+        {
+          "from": "internet",
+          "to": "internal-tool",
+          "kind": "exploit",
+          "finding_ids": [
+            "internal-tool:opsbuilder:vuln",
+            "internal-tool:C-INTERNAL-TOOL-EXPOSED"
+          ],
+          "evidence": [
+            "network.json",
+            "adv-opsbuilder-2026-001：[{'introduced': '0', 'fixed': '1.90'}]"
+          ]
+        },
+        {
+          "from": "internal-tool",
+          "to": "gitlab-read-token-internal-tool",
+          "kind": "read_secret",
+          "finding_ids": [],
+          "evidence": [
+            "secrets.json:gitlab-read-token-internal-tool.stored_in"
+          ]
+        },
+        {
+          "from": "gitlab-read-token-internal-tool",
+          "to": "gitlab",
+          "kind": "authorize",
+          "finding_ids": [],
+          "evidence": [
+            "secrets.json:gitlab-read-token-internal-tool.grants"
+          ]
+        },
+        {
+          "from": "gitlab",
+          "to": "order-db-prod-cred",
+          "kind": "read_secret",
+          "finding_ids": [
+            "gitlab:C-SECRET-IN-GIT"
+          ],
+          "evidence": [
+            "secrets.json:order-db-prod-cred.stored_in"
+          ]
+        },
+        {
+          "from": "order-db-prod-cred",
+          "to": "order-db-prod",
+          "kind": "authorize",
+          "finding_ids": [
+            "gitlab:C-SECRET-IN-GIT"
+          ],
+          "evidence": [
+            "secrets.json:order-db-prod-cred.grants"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "path:laptop-eng-07→deploy-token-eng07→deploy-pipeline",
+      "start": "laptop-eng-07",
+      "target": "deploy-pipeline",
+      "nodes": [
+        "laptop-eng-07",
+        "deploy-token-eng07",
+        "deploy-pipeline"
+      ],
+      "assumption": "假設 laptop-eng-07 已遭入侵（情境分析）",
+      "steps": [
+        {
+          "from": "laptop-eng-07",
+          "to": "deploy-token-eng07",
+          "kind": "read_secret",
+          "finding_ids": [
+            "laptop-eng-07:C-DEV-DEVICE-TOKEN"
+          ],
+          "evidence": [
+            "secrets.json:deploy-token-eng07.stored_in"
+          ]
+        },
+        {
+          "from": "deploy-token-eng07",
+          "to": "deploy-pipeline",
+          "kind": "authorize",
+          "finding_ids": [
+            "laptop-eng-07:C-DEV-DEVICE-TOKEN"
+          ],
+          "evidence": [
+            "secrets.json:deploy-token-eng07.grants"
+          ]
+        }
+      ]
+    }
+  ],
+  "chain_finding_ids": [
+    "brand-app:C-SECRET-IN-GIT",
+    "gitlab:C-SECRET-IN-GIT",
+    "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+    "internal-tool:opsbuilder:vuln",
+    "laptop-eng-07:C-DEV-DEVICE-TOKEN"
+  ],
+  "pending": [],
+  "starts": [
+    "internet",
+    "fileserver-01",
+    "laptop-eng-07"
+  ]
+}
