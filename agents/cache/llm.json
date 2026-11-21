@@ -12505,5 +12505,225 @@
       "task": "notice-extra:kev-cve-2026-109619",
       "scope": "advisory"
     }
+  },
+  "bec349b9fe85853e1b666074a540268c57a77159a76f9a8eebe0b358078b0a4a": {
+    "output": [
+      {
+        "id": "gitlab:C-BACKUP-ISOLATION",
+        "explanation": "未符合控制項：距上次還原測試已 93 天，超過 90 天的期限，風險是備份可能無法在事故時成功還原。建議排定近期還原測試並留存紀錄；另需確認備份與來源是否隔離，因證據未提供此項。",
+        "confidence": "high"
+      },
+      {
+        "id": "nas-office-01:C-BACKUP-ISOLATION",
+        "explanation": "未符合控制項：備份裝置（USB）仍掛載於來源 NAS，且從未做過還原測試，勒索軟體或硬體故障可能同時波及來源與備份。建議將備份移至與來源隔離的離線或異地媒體，並儘速完成一次還原測試與紀錄。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "backup-analyst",
+      "task": "backup-analyst#0",
+      "scope": "daily"
+    }
+  },
+  "853273dc0feec07c253e98ebc4310cd672644d5a1add51d03401220da98b4979": {
+    "output": [
+      {
+        "id": "api-gateway:nginx:vuln",
+        "explanation": "nginx 1.27.2 存在 31 個已確認漏洞，最高 CVSS 9.8（CVE-2026-97205），可能造成遠端攻擊風險；目前無法確定修補版本，建議確認官方安全公告後評估升級至可修補版本，並優先限制對外暴露面。",
+        "confidence": "low"
+      },
+      {
+        "id": "internal-tool:node:vuln",
+        "explanation": "node 22.11.0 有 17 個已確認漏洞與 1 個待確認項，最高 CVSS 9.8，其中 CVE-2026-111497 已列入 CISA KEV 且有實際利用紀錄；修補版本無法確定，建議優先評估升級 Node.js 版本並檢視內部工具的存取範圍。",
+        "confidence": "low"
+      },
+      {
+        "id": "member-api:node:vuln",
+        "explanation": "node 22.11.0 有 17 個已確認漏洞與 1 個待確認項，其中 CVE-2026-111497（CVSS 最高 9.8）已列入 CISA KEV 且有實際利用紀錄，會員 API 若對外提供服務風險較高；修補版本無法確定，建議優先升級並加強存取監控。",
+        "confidence": "low"
+      },
+      {
+        "id": "storefront:node:vuln",
+        "explanation": "node 22.11.0 有 17 個已確認漏洞與 1 個待確認項，其中 CVE-2026-111497 已列入 CISA KEV 且有實際利用紀錄，前台服務屬對外系統風險較高；修補版本無法確定，建議優先評估升級並檢查相關依賴。",
+        "confidence": "low"
+      },
+      {
+        "id": "payment-service:openjdk:vuln",
+        "explanation": "openjdk 21.0.4 有 1 個已確認漏洞（CVE-2026-114938，CVSS 最高 8.1），可能影響付款服務的機密性或完整性；修補版本無法確定，建議確認該漏洞的影響範圍並評估升級至較新的 OpenJDK 21 更新版本。",
+        "confidence": "low"
+      },
+      {
+        "id": "marketing-site:php:vuln",
+        "explanation": "php 8.1.27 有 27 個已確認漏洞與 3 個待確認項，最高 CVSS 9.8（CVE-2024-11236），其中 CVE-2026-109618 與 CVE-2026-109619 已列入 CISA KEV 且有實際利用紀錄；資料中的修補版本為 8.2.35，建議優先規劃升級並檢查網站是否已遭入侵。",
+        "confidence": "high"
+      },
+      {
+        "id": "phpmyadmin:php:vuln",
+        "explanation": "php 8.3.20 有 28 個已確認漏洞與 3 個待確認項，最高 CVSS 9.8（CVE-2025-14179），其中 CVE-2026-109618 與 CVE-2026-109619 已列入 CISA KEV 且有實際利用紀錄；資料中的修補版本為 8.3.36，建議優先升級，並限制 phpMyAdmin 的對外存取。",
+        "confidence": "high"
+      },
+      {
+        "id": "report-svc:php:vuln",
+        "explanation": "php 8.4.27 目前僅有 1 個待確認漏洞（CVE-2007-3205），因 NVD 版本範圍無法判斷，尚未確定是否受影響；修補版本無法確定，建議確認實際執行環境與發行版補丁狀態後再決定是否處置。",
+        "confidence": "low"
+      },
+      {
+        "id": "phpmyadmin:phpmyadmin:vuln",
+        "explanation": "phpmyadmin 5.2.1 有 7 個已確認漏洞，最高 CVSS 8.8（CVE-2026-119426），可能造成資料庫管理介面的未授權操作風險；修補版本無法確定，建議升級至官方最新版本並限制管理介面僅允許內部網路存取。",
+        "confidence": "low"
+      },
+      {
+        "id": "member-db-prod:postgresql:vuln",
+        "explanation": "postgresql 15.6 有 44 個已確認漏洞，最高 CVSS 8.8（CVE-2024-10979），可能影響會員生產資料庫的機密性與完整性；資料中的修補版本為 15.19，建議規劃維護窗口升級，並先確認連線權限與備份狀態。",
+        "confidence": "high"
+      },
+      {
+        "id": "order-db-prod:postgresql:vuln",
+        "explanation": "postgresql 15.6 有 44 個已確認漏洞，最高 CVSS 8.8（CVE-2024-10979），可能影響訂單生產資料庫的機密性與完整性；資料中的修補版本為 15.19，建議規劃維護窗口升級，並檢查資料庫存取權限。",
+        "confidence": "high"
+      },
+      {
+        "id": "order-db-test:postgresql:vuln",
+        "explanation": "postgresql 15.6 測試環境有 44 個已確認漏洞，最高 CVSS 8.8（CVE-2024-10979）；資料中的修補版本為 15.19，建議與正式環境同步規劃升級，並確認測試資料未包含真實個資。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "dependency-analyst#1",
+      "scope": "daily"
+    }
+  },
+  "8ee54cdb4ee54782286ab76c410024e80d810c3ccdb843104f12eda4549f8d9a": {
+    "output": [
+      {
+        "id": "cache-redis:redis:vuln",
+        "explanation": "redis 7.0.15 有 11 個已知漏洞，最高 CVSS 9.9（CVE-2025-49844），可能造成遠端程式碼執行或服務中斷，目前資料未列出實際利用紀錄。修補版本為 8.6.3，建議評估升級並限制 Redis 的網路存取範圍。",
+        "confidence": "high"
+      },
+      {
+        "id": "nas-office-01:synology-dsm:vuln",
+        "explanation": "synology-dsm 7.2.1-69057 Update 5 有 5 個已知漏洞，最高 CVSS 9.8（CVE-2024-10441），其中 CVE-2024-10441 已列入 CISA KEV，代表已遭實際利用。修補版本為 7.2.1-69057-7，建議優先安排升級，並檢查系統是否有異常登入或未授權變更紀錄。",
+        "confidence": "high"
+      },
+      {
+        "id": "marketing-site:wordpress:vuln",
+        "explanation": "wordpress 6.4.3 有 3 個已知漏洞，最高 CVSS 8.1（CVE-2026-119977），其中 CVE-2026-119977 與 CVE-2026-87902 已列入 CISA KEV，代表已遭實際利用，另有 1 筆需進一步確認。資料無法確定修補版本，建議先確認官方可用的最新安全版本，並評估暫時停用高風險外掛或限制後台存取。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "dependency-analyst#2",
+      "scope": "daily"
+    }
+  },
+  "7a3f42f9b9dc58630947e37dd2af318e8986149eb4d3e998e51108344f743ded": {
+    "output": [
+      {
+        "id": "gitlab:C-SECRET-IN-GIT",
+        "explanation": "類型依證據無法確認，位於 config/db.yml:4，標題判定為正式環境金鑰，Git 中不應存放。建議立即輪替該金鑰、確認權限範圍與存取紀錄，並自 Git 歷史移除（移除檔案本身不等於修復）。",
+        "confidence": "low"
+      },
+      {
+        "id": "brand-app:C-SECRET-IN-GIT",
+        "explanation": "類型依證據無法確認，位於 services/brand-app/src/config.ts:3，標題判定為正式環境金鑰，且存在於原始碼中。建議立即輪替、檢查是否已被外部存取，並改由環境變數或金鑰管理服務注入，同時清除 Git 歷史。",
+        "confidence": "low"
+      },
+      {
+        "id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "explanation": "第三方郵件 API 金鑰，位於 secrets.json，已 468 天未輪替且無 IP 白名單，違反 90 天輪替與白名單規範，風險高。建議立即輪替、設定 IP 白名單、檢查寄送紀錄是否異常，並將金鑰改由安全儲存管理。",
+        "confidence": "high"
+      },
+      {
+        "id": "order-db-test-cred:test-secret-in-git",
+        "explanation": "測試環境資料庫憑證，位於 config/db.yml:7，與正式環境金鑰放在同一檔案中。建議輪替該測試憑證、確認未與正式環境共用，並自 Git 歷史移除；若未來有共用可能，需提升為高風險處理。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "secret-analyst",
+      "task": "secret-analyst#0",
+      "scope": "daily"
+    }
+  },
+  "a44f45685e34e9507a5b69afb30e328435dc7d1a3dda5e37c1ad15c064fdf342": {
+    "output": [
+      {
+        "id": "nas-office-01:synology-dsm:vuln",
+        "explanation": "【證據】版本 7.2.1-69057 Update 5 經本地比對確認受 5 個已知漏洞影響（NVD，最高 CVSS 9.8），其中 CVE-2024-10441 已列入 CISA KEV 且遭實際利用，修補版本為 7.2.1-69057-7，建議立即升級。【推論】事件 CVE-2026-120382（CVSS 9.8，未驗證身分的遠端 OAuth API 參數注入，可讀寫任意檔案或造成阻斷服務）是否影響此版本，證據中並未確認，需由廠商公告與版本範圍再行驗證。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "event:live-synology-dsm-oauth-2026-11:dependency-analyst",
+      "scope": "daily"
+    }
+  },
+  "0979796e11372a2ba7b3e014b2314191feef60aab9a9816da39754db9723764a": {
+    "output": [
+      {
+        "id": "api-gateway:nginx:vuln",
+        "explanation": "依程式證據，nginx 1.27.2 落在 nginx2root 受影響範圍（1.9.5 至 1.30.7 之前），本地比對確認 31 個已知漏洞（最高 CVSS 9.8）。修補版本無法確定，建議評估升級至 1.30.7 以上（1.31.x 分支則至 1.31.9 以上）；HTTP/2 是否啟用與 ASLR 狀態屬推論，需現場確認後再評定利用風險。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "event:live-nginx-http2-nginx2root-2026-11:dependency-analyst",
+      "scope": "daily"
+    }
+  },
+  "5afa9eb983188a0a7cf31e9e1596e0acd4e533c5f474b01c331e4106b9a03ba5": {
+    "output": [
+      {
+        "id": "nas-office-01:synology-dsm:vuln",
+        "explanation": "【證據】本地比對確認 synology-dsm 7.2.1-69057 Update 5 屬於受影響版本（5 筆確定），修補版本為 7.2.1-69057-7，CVE-2024-10441 已列入 CISA KEV（已遭實際利用），最高 CVSS 為 9.8。【推論】攻擊途徑未指明，但若可由遠端執行任意程式碼，應視為高風險，建議儘速升級至 7.2.1-69057-7 或以上版本，並先檢視 NAS 對外暴露與異常登入紀錄。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "event:live-synology-dsm-cve-2024-10441-kev:dependency-analyst",
+      "scope": "daily"
+    }
+  },
+  "f16a9d2fefcdab8c0030b7756a29967c870451ad6878e7776a8534e5c35b8f15": {
+    "output": [
+      {
+        "id": "nas-office-01:synology-dsm:vuln",
+        "explanation": "圖譜查詢回報此資產不在本次資產範圍，無法取得相鄰節點，因此無法評估影響品牌數、安裝數、資料欄位與業務影響。分數拆解依程式輸出為：基礎漏洞 3 分（CVSS 9.8）、已遭實際利用 2 分、對外暴露 2 分（可從 internet 連到）、同業事件命中 1 分。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "nas-office-01:synology-dsm:vuln",
+      "scope": "daily"
+    }
+  },
+  "9ffa8aea02b4689e8653026966b157a10c500be1ff5b178384c560f049bc6a71": {
+    "output": [
+      {
+        "id": "api-gateway:nginx:vuln",
+        "explanation": "分數拆解共 8 點（程式結果）：基礎漏洞 3 點（CVSS 9.8）、對外暴露 2 點（可從 internet 連到）、資料敏感 1 點（含 PII）、影響範圍 1 點（平台層，影響所有品牌）、同業事件命中 1 點。未提供確切影響品牌數與安裝數；鄰近節點查詢因資產不在本次範圍而失敗，相鄰節點與業務影響僅依拆解資料推論。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "api-gateway:nginx:vuln",
+      "scope": "daily"
+    }
   }
 }

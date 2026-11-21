@@ -224,7 +224,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "行銷官網的 PHP 8.1.27 對外且條件成立，並已停止支援、無修補，程式判定為高風險（9 分）；phpmyadmin 因只允許公司 VPN 連入，降為中風險（4 分）。",
+  "summary": "行銷官網 marketing-site 的 php 8.1.27 對外且條件成立，且已停止支援、無修補可用，程式判定為高風險（9 分）；phpmyadmin 因只允許公司連線通道連入，已扣 3 分，為中風險（4 分）。",
   "blocks": {
     "1_summary": {
       "title": "PHP2Shell：PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619）",
@@ -276,7 +276,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "行銷官網的 PHP 8.1.27 對外且條件成立，並已停止支援、無修補，程式判定為高風險（9 分）；phpmyadmin 因只允許公司 VPN 連入，降為中風險（4 分）。",
+      "summary": "行銷官網 marketing-site 的 php 8.1.27 對外且條件成立，且已停止支援、無修補可用，程式判定為高風險（9 分）；phpmyadmin 因只允許公司連線通道連入，已扣 3 分，為中風險（4 分）。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -324,7 +324,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-20T04:38:26Z"
+        "observed_at": "2026-11-21T04:31:48Z"
       },
       {
         "asset_id": "phpmyadmin",
@@ -364,7 +364,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-20T04:38:26Z"
+        "observed_at": "2026-11-21T04:31:48Z"
       }
     ],
     "4_unaffected_and_check": {
@@ -449,7 +449,7 @@
   "updates": [
     {
       "id": "live-php-security-release-2026-11-19",
-      "title": "PHP 發布 8.5.13、8.4.28、8.3.37、8.2.36，修補 7 個 Critical 漏洞",
+      "title": "PHP 11/19 安全更新修補 7 個 Critical RCE 漏洞，含 PHP2Shell 的不完整修補",
       "date": "2026-11-19",
       "status": "open",
       "conclusion": "3 項受影響，最高風險為高。marketing-site：php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On。",

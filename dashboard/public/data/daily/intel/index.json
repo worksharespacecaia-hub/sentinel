@@ -117,63 +117,45 @@
     "demo": false
   },
   {
-    "id": "live-fubon-mo-shop-plus-2026-11",
-    "kind": "live",
-    "title": "富邦媒 mo店+ 出貨資料遭未經授權存取",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "need_check",
-    "demo": false
-  },
-  {
-    "id": "live-plaid-karte-dhc-2026-11",
-    "kind": "live",
-    "title": "日本 DHC 因第三方行銷分析平臺 KARTE 被駭，外洩 1,911 萬筆用戶個資",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "need_check",
-    "demo": false
-  },
-  {
-    "id": "live-n0n-visa-apac-vendor-2026-11",
-    "kind": "live",
-    "title": "N0n 勒索組織宣稱取得 Visa 等 59 家公司資料，Visa 證實亞太第三方供應商發生事件",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "need_check",
-    "demo": false
-  },
-  {
     "id": "live-php-security-release-2026-11-19",
     "kind": "live",
-    "title": "PHP 發布 8.5.13、8.4.28、8.3.37、8.2.36，修補 7 個 Critical 漏洞",
+    "title": "PHP 11/19 安全更新修補 7 個 Critical RCE 漏洞，含 PHP2Shell 的不完整修補",
     "affected_count": 3,
     "max_level": "high",
     "status": "open",
     "demo": false
   },
   {
-    "id": "live-nginx2root-2026-11",
+    "id": "live-nginx-http2-nginx2root-2026-11",
     "kind": "live",
-    "title": "nginx2root：nginx 1.31.9 與 1.30.7 修補 10 個漏洞，5 個可遠端執行程式碼",
+    "title": "NGINX HTTP/2 重大漏洞 nginx2root（CVE-2026-123007、CVE-2026-123633）可遠端執行程式碼",
     "affected_count": 1,
     "max_level": "high",
     "status": "open",
     "demo": false
   },
   {
-    "id": "live-kev-synology-dsm-cve-2024-10441",
+    "id": "live-synology-dsm-oauth-2026-11",
     "kind": "live",
-    "title": "CISA KEV 新增 Synology DSM CVE-2024-10441 已遭利用漏洞",
+    "title": "Synology DSM OAuth API 重大漏洞 CVE-2026-120382（CVSS 9.8），另有 CVE-2026-123007",
+    "affected_count": 1,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "live-synology-dsm-cve-2024-10441-kev",
+    "kind": "live",
+    "title": "CISA 將 Synology DSM CVE-2024-10441 列入已遭利用漏洞（KEV）",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
     "demo": false
   },
   {
-    "id": "live-openjdk-java4shell-cve-2026-114938",
+    "id": "live-java4shell-cve-2026-114938",
     "kind": "live",
-    "title": "OpenJDK Java4Shell CVE-2026-114938 通報，細節尚未證實",
+    "title": "OpenJDK Java4Shell（CVE-2026-114938）Base64 解碼器越界寫入，可能導致 RCE",
     "affected_count": 0,
     "max_level": null,
     "status": "not_affected",
@@ -189,9 +171,27 @@
     "demo": false
   },
   {
-    "id": "live-gootloader-wordpress-2026-11",
+    "id": "live-phoenix-travel-breach-2026-11",
     "kind": "live",
-    "title": "FBI 警告 Gootloader 已入侵逾千個 WordPress 網站，相關勒索贖金逾 2,800 萬美元",
+    "title": "鳳凰旅遊資訊系統遭入侵，部分旅客個資外洩並出現冒名訂單詐騙",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
+    "demo": false
+  },
+  {
+    "id": "live-taiwan-taxi-gbt-breach-2026-11",
+    "kind": "live",
+    "title": "大車隊子公司全球商務科技遭未經授權存取，客戶與會員資料外洩",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
+    "demo": false
+  },
+  {
+    "id": "live-sbc-medical-breach-2026-11",
+    "kind": "live",
+    "title": "SBC Medical Group 日本診所線上平台遭駭，逾 200 萬人資料受影響",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",

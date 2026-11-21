@@ -1,7 +1,7 @@
 {
   "tool": "nvd",
   "tool_version": "NVD CVE API 2.0",
-  "database_revision": "2026-11-20T04:39:13Z",
+  "database_revision": "2026-11-21T04:32:33Z",
   "api_key": false,
   "results": [
     {
@@ -8783,8 +8783,8 @@
         {
           "id": "CVE-2026-113425",
           "published": "2026-11-18T16:17:59.493",
-          "last_modified": "2026-11-19T21:46:28.177",
-          "status": "Analyzed",
+          "last_modified": "2026-11-20T12:18:20.363",
+          "status": "Modified",
           "kev_added": null,
           "cvss": 9.2,
           "summary": "When NGINX Plus or NGINX Open Source is configured as a mail proxy, undisclosed traffic can cause a use-after-free in an nginx worker process. Additionally, attackers can execute code on systems with ",
@@ -8853,8 +8853,8 @@
         {
           "id": "CVE-2026-121810",
           "published": "2026-11-18T16:18:03.763",
-          "last_modified": "2026-11-19T21:56:24.587",
-          "status": "Analyzed",
+          "last_modified": "2026-11-20T12:18:20.573",
+          "status": "Modified",
           "kev_added": null,
           "cvss": 9.2,
           "summary": "Description:\nThis issue affects NGINX Plus and NGINX Open Source configurations that use HTTP/3. A remote, unauthenticated attacker can cause a use-after-free condition in the NGINX worker process, le",
@@ -8888,8 +8888,8 @@
         {
           "id": "CVE-2026-123007",
           "published": "2026-11-18T16:18:04.047",
-          "last_modified": "2026-11-19T21:14:10.153",
-          "status": "Analyzed",
+          "last_modified": "2026-11-20T12:18:20.763",
+          "status": "Modified",
           "kev_added": null,
           "cvss": 9.2,
           "summary": "This issue affects NGINX Plus or NGINX Open Source configurations that use HTTP/2. When NGINX processes undisclosed traffic, the flow control window can exceed the allowed threshold, potentially resul",
@@ -8923,8 +8923,8 @@
         {
           "id": "CVE-2026-123633",
           "published": "2026-11-18T16:18:04.207",
-          "last_modified": "2026-11-19T21:31:10.113",
-          "status": "Analyzed",
+          "last_modified": "2026-11-20T12:18:21.030",
+          "status": "Modified",
           "kev_added": null,
           "cvss": 9.2,
           "summary": "When NGINX Plus or NGINX Open Source is configured to use HTTP/2 for client connections and proxy client requests to a backend, a specially crafted request can result in use-after-free in the worker p",
@@ -8958,8 +8958,8 @@
         {
           "id": "CVE-2026-123634",
           "published": "2026-11-18T16:18:04.353",
-          "last_modified": "2026-11-19T21:41:14.600",
-          "status": "Analyzed",
+          "last_modified": "2026-11-20T12:18:21.263",
+          "status": "Modified",
           "kev_added": null,
           "cvss": 9.2,
           "summary": "This issue occurs when NGINX Plus or NGINX Open Source is configured as a proxy, the proxied server name includes variables, and a Server Side Includes (SSI) or mirror directive sends a subrequest to ",
@@ -10660,10 +10660,58 @@
           "cpe": "cpe:2.3:a:oracle:openjdk:21.0.4:*:*:*:*:*:*:*",
           "status": "ok",
           "truncated": false,
-          "candidates": 0
+          "candidates": 1
         }
       ],
-      "cves": []
+      "cves": [
+        {
+          "id": "CVE-2026-114938",
+          "published": "2026-11-17T22:18:23.777",
+          "last_modified": "2026-11-20T19:18:45.483",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 8.1,
+          "summary": "Vulnerability in the Oracle Java SE, Oracle GraalVM for JDK, Oracle GraalVM Enterprise Edition product of Oracle Java SE (component: Compiler).  Supported versions that are affected are Oracle Java SE",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:oracle:openjdk:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "17.0.6",
+                      "versionEndIncluding": "17.0.21.0.3"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:oracle:openjdk:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "21",
+                      "versionEndIncluding": "21.0.13.0.3"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:oracle:openjdk:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "25",
+                      "versionEndIncluding": "25.0.5.0.3"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:oracle:openjdk:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "27",
+                      "versionEndIncluding": "27.0.1.0.3"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "name": "php",
@@ -11941,7 +11989,7 @@
         {
           "id": "CVE-2026-109618",
           "published": "2026-10-21T14:17:09.357",
-          "last_modified": "2026-11-18T19:17:25.813",
+          "last_modified": "2026-11-20T12:18:18.987",
           "status": "Analyzed",
           "kev_added": "2026-10-26",
           "cvss": 9.8,
@@ -11988,7 +12036,7 @@
         {
           "id": "CVE-2026-109619",
           "published": "2026-10-21T14:17:09.823",
-          "last_modified": "2026-11-18T19:17:26.517",
+          "last_modified": "2026-11-20T12:18:19.730",
           "status": "Analyzed",
           "kev_added": "2026-10-26",
           "cvss": 9.2,
@@ -12533,7 +12581,7 @@
         {
           "id": "CVE-2026-109618",
           "published": "2026-10-21T14:17:09.357",
-          "last_modified": "2026-11-18T19:17:25.813",
+          "last_modified": "2026-11-20T12:18:18.987",
           "status": "Analyzed",
           "kev_added": "2026-10-26",
           "cvss": 9.8,
@@ -12580,7 +12628,7 @@
         {
           "id": "CVE-2026-109619",
           "published": "2026-10-21T14:17:09.823",
-          "last_modified": "2026-11-18T19:17:26.517",
+          "last_modified": "2026-11-20T12:18:19.730",
           "status": "Analyzed",
           "kev_added": "2026-10-26",
           "cvss": 9.2,

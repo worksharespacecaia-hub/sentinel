@@ -1,4 +1,4 @@
-# 工程師報告（daily，2026-11-20T04:38:26Z）
+# 工程師報告（daily，2026-11-21T04:31:48Z）
 
 燈號：red；20 個未處理的高風險
 
@@ -26,7 +26,7 @@
 | high | 2 | 未登記的資產：QuickSite Builder | saas-quicksite-builder | 24h | 對帳：QuickSite Builder 出現在 payments, sso，但不在第三方清冊 |
 | medium | 6 | 影子 API：GET /internal/v1/members/export（7 天 95 次） | api-gateway | 168h | api-inventory.json: Gateway 實際流量中有，但未列在 OpenAPI 規格 |
 | medium | 6 | 正式版 App 開啟 debuggable | brand-app | 168h | AndroidManifest.xml: android:debuggable="true" |
-| medium | 6 | 第三方服務金鑰 90 天內輪替且有 IP 白名單：mail-api-key | mail-api-key | 168h | secrets.json: mail-api-key：467 天未輪替、無 IP 白名單 |
+| medium | 6 | 第三方服務金鑰 90 天內輪替且有 IP 白名單：mail-api-key | mail-api-key | 168h | secrets.json: mail-api-key：468 天未輪替、無 IP 白名單 |
 | medium | 6 | wordpress 6.4.3 有 3 個已知漏洞（NVD，最高 CVSS 8.1，CVE-2026-119977） | marketing-site | 168h | nvd: wordpress@6.4.3 依 CPE 取得候選後，本地重新比對版本（3 確定、1 需確認）；修補版本：無法確定（部分漏洞沒有修補版本或範圍不明） |
 | medium | 5 | App 允許明文傳輸 | brand-app | 168h | AndroidManifest.xml: android:usesCleartextTraffic="true" |
 | medium | 5 | 對外開放且無權限保護的元件 | brand-app | 168h | AndroidManifest.xml: activity .DeepLinkOrderActivity、receiver .PushCommandReceiver |
@@ -46,12 +46,13 @@
 | medium | 4 | path-to-regexp 0.1.7 有 3 個已知漏洞（最高 CVSS 7.5，CVE-2024-45296） | member-api | 168h | trivy: services/member-api path-to-regexp@0.1.7；修補版本：1.9.0, 0.1.10, 8.0.0, 3.3.0, 6.3.0 |
 | medium | 4 | qs 6.11.0 有 4 個已知漏洞（最高 CVSS 7.5，CVE-2025-15284） | member-api | 168h | trivy: services/member-api qs@6.11.0；修補版本：6.14.1 |
 | medium | 4 | postgresql 15.6 有 44 個已知漏洞（NVD，最高 CVSS 8.8，CVE-2024-10979） | member-db-prod | 168h | nvd: postgresql@15.6 依 CPE 取得候選後，本地重新比對版本（44 確定、0 需確認）；修補版本：15.19 |
+| medium | 4 | openjdk 21.0.4 有 1 個已知漏洞（NVD，最高 CVSS 8.1，CVE-2026-114938） | payment-service | 168h | nvd: openjdk@21.0.4 依 CPE 取得候選後，本地重新比對版本（1 確定、0 需確認）；修補版本：無法確定（部分漏洞沒有修補版本或範圍不明） |
 | medium | 4 | php 8.3.20 有 28 個已知漏洞（NVD，最高 CVSS 9.8，CVE-2025-14179） | phpmyadmin | 168h | nvd: php@8.3.20 依 CPE 取得候選後，本地重新比對版本（28 確定、3 需確認）；修補版本：8.3.36 |
 | low | 3 | express 4.18.2 有 2 個已知漏洞（最高 CVSS 6.1，CVE-2024-29041） | member-api | 720h | trivy: services/member-api express@4.18.2；修補版本：4.19.2, 5.0.0-beta.3 |
 | low | 3 | send 0.18.0 有 1 個已知漏洞（最高 CVSS 5.0，CVE-2024-43799） | member-api | 720h | trivy: services/member-api send@0.18.0；修補版本：0.19.0 |
 | low | 3 | serve-static 1.15.0 有 1 個已知漏洞（最高 CVSS 5.0，CVE-2024-43800） | member-api | 720h | trivy: services/member-api serve-static@1.15.0；修補版本：1.16.0, 2.1.0 |
 | low | 2 | 快取服務連線須加密：cache-redis | cache-redis | 720h | runtime.json: cache-redis tls=false |
-| low | 2 | 備份與來源設備隔離，且 90 天內做過還原測試：gitlab | gitlab | 720h | backups.json: gitlab：92 天未做還原測試 |
+| low | 2 | 備份與來源設備隔離，且 90 天內做過還原測試：gitlab | gitlab | 720h | backups.json: gitlab：93 天未做還原測試 |
 | low | 2 | cookie 0.5.0 有 1 個已知漏洞（最高 CVSS 3.7，CVE-2024-47764） | member-api | 720h | trivy: services/member-api cookie@0.5.0；修補版本：0.7.0 |
 | low | 2 | postgresql 15.6 有 44 個已知漏洞（NVD，最高 CVSS 8.8，CVE-2024-10979） | order-db-test | 720h | nvd: postgresql@15.6 依 CPE 取得候選後，本地重新比對版本（44 確定、0 需確認）；修補版本：15.19 |
 | low | 2 | push-key-fcm-apns 存放在共用磁碟，所有辦公室人員可取用 | push-key-fcm-apns | 720h | mobile-keys.json: push-key-fcm-apns stored_in share:fileserver-01/mobile/push-keys；accessible_by all-office-staff |
