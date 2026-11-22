@@ -1,0 +1,226 @@
+{
+  "event": {
+    "id": "live-plaid-karte-third-party-2026-11",
+    "kind": "live",
+    "title": "日本 PLAID 旗下 KARTE 平臺遭入侵，JINS、DHC、三菱UFJ銀行等數十家企業公告個資外洩",
+    "date": "2026-11-20",
+    "industry": "行銷科技 SaaS／零售",
+    "attack_chain": [
+      "KARTE 平臺遭入侵",
+      "下游客戶企業陸續公告個資外洩或可能外洩"
+    ],
+    "attck": [
+      "T1199"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180681",
+        "title": "【資安週報】1116～1120，全球第三方供應商遭駭連環爆；Java4Shell、NGINX2Root等重大漏洞揭露引關注",
+        "quote": "韓國客服委外業者MetaM、企業協作平臺Dooray!與DaouOffice也接連傳出資安事故，已確認影響多家企業客戶。",
+        "published": "2026-11-19",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-22T03:45:43Z",
+        "content_hash": "sha256:52b54e3dd6b16572e562638b8e687a3fbd677876c22b4715f2dd98a717132078",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "第三方行銷／SaaS 服務的資料共享需最小化並可即時停用",
+        "reason": "來源指單一 SaaS 平臺遭入侵即波及數十家客戶企業，現有控制項沒有涵蓋第三方 SaaS 的資料範圍與停用機制"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-plaid-karte-third-party-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：第三方行銷／SaaS 服務的資料共享需最小化並可即時停用"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "ai-1",
+          "source": "ai",
+          "inferred": true,
+          "target": null,
+          "hypothesis": "我們使用的第三方 SaaS 若遭入侵，客戶資料會一併外流",
+          "why": null,
+          "check": "盤點接入第三方行銷、寄信、推播與架站服務的資料欄位與 API 金鑰，確認是否有不必要的個資外送，以及能否快速停用",
+          "how": null,
+          "plain": "我們使用的第三方 SaaS 若遭入侵，客戶資料會一併外流",
+          "basis": "AI 依事件推測：來源指 KARTE 平臺遭入侵後，數十家使用該平臺的企業陸續公告個資外洩",
+          "systems": [
+            {
+              "asset_id": "saas-quicksite-builder",
+              "label": "未登記的架站服務"
+            },
+            {
+              "asset_id": "mail-service",
+              "label": "寄信服務"
+            },
+            {
+              "asset_id": "push-service",
+              "label": "App 推播服務"
+            }
+          ],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "程式無法自動判定，需人工確認：我們使用的第三方 SaaS 若遭入侵，客戶資料可能一併外流，建議盤點使用的第三方服務。",
+  "blocks": {
+    "1_summary": {
+      "title": "日本 PLAID 旗下 KARTE 平臺遭入侵，JINS、DHC、三菱UFJ銀行等數十家企業公告個資外洩",
+      "date": "2026-11-20",
+      "industry": "行銷科技 SaaS／零售",
+      "attack_chain": [
+        "KARTE 平臺遭入侵",
+        "下游客戶企業陸續公告個資外洩或可能外洩"
+      ],
+      "attck": [
+        "T1199"
+      ],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180681",
+          "title": "【資安週報】1116～1120，全球第三方供應商遭駭連環爆；Java4Shell、NGINX2Root等重大漏洞揭露引關注",
+          "quote": "韓國客服委外業者MetaM、企業協作平臺Dooray!與DaouOffice也接連傳出資安事故，已確認影響多家企業客戶。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-22T03:45:43Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "程式無法自動判定，需人工確認：我們使用的第三方 SaaS 若遭入侵，客戶資料可能一併外流，建議盤點使用的第三方服務。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：第三方行銷／SaaS 服務的資料共享需最小化並可即時停用"
+          ],
+          "observed_at": "2026-11-22T03:45:43Z",
+          "suggestions": [
+            {
+              "id": "ai-1",
+              "source": "ai",
+              "inferred": true,
+              "target": null,
+              "hypothesis": "我們使用的第三方 SaaS 若遭入侵，客戶資料會一併外流",
+              "why": null,
+              "check": "盤點接入第三方行銷、寄信、推播與架站服務的資料欄位與 API 金鑰，確認是否有不必要的個資外送，以及能否快速停用",
+              "how": null,
+              "plain": "我們使用的第三方 SaaS 若遭入侵，客戶資料會一併外流",
+              "basis": "AI 依事件推測：來源指 KARTE 平臺遭入侵後，數十家使用該平臺的企業陸續公告個資外洩",
+              "systems": [
+                {
+                  "asset_id": "saas-quicksite-builder",
+                  "label": "未登記的架站服務"
+                },
+                {
+                  "asset_id": "mail-service",
+                  "label": "寄信服務"
+                },
+                {
+                  "asset_id": "push-service",
+                  "label": "App 推播服務"
+                }
+              ],
+              "controls": []
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    },
+    "8_extra_checks": [
+      {
+        "control_id": "C-THIRD-PARTY-KEY-ROTATION",
+        "title": "第三方服務金鑰 90 天內輪替且有 IP 白名單",
+        "status": "fail",
+        "assets": [
+          {
+            "asset_id": "mail-api-key",
+            "evidence": [
+              "secrets.json: mail-api-key：469 天未輪替、無 IP 白名單"
+            ]
+          }
+        ],
+        "check_reason": "第三方金鑰未依規定輪替或無白名單",
+        "suggested_reason": "事件為第三方 SaaS 遭入侵，值得確認我們的第三方服務金鑰是否已定期輪替並限制來源。",
+        "status_label": "不符合"
+      }
+    ]
+  },
+  "orchestrator_results": [
+    {
+      "stage": "review",
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "target_type": "event",
+      "target_id": "live-plaid-karte-third-party-2026-11",
+      "text": "程式無法自動判定，需人工確認：我們使用的第三方 SaaS 若遭入侵，客戶資料可能一併外流，建議盤點使用的第三方服務。",
+      "source": "live"
+    }
+  ]
+}

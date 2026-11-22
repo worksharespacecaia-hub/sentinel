@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "run_id": "44866524353",
+  "run_id": "44982062283",
   "job": "scanners-trivy",
   "scope": "scanner",
   "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
-  "observed_at": "2026-11-21T04:33:02Z",
-  "valid_until": "2026-11-22T04:33:02Z",
+  "observed_at": "2026-11-22T03:46:52Z",
+  "valid_until": "2026-11-23T03:46:52Z",
   "tool_version": {
     "trivy": "0.57.1"
   },
@@ -13,7 +13,7 @@
     "trivy": null
   },
   "files": {
-    "trivy.json": "9d2878906692315e4ce2b27e544a5830e50b552878ab9fc2da77928b420ad015"
+    "trivy.json": "334151e381edbf49ced172700097b30273bc2d340f0184868e8b4d12748d8679"
   },
   "status": "ok"
 }

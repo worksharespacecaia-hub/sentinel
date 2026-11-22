@@ -1,0 +1,10 @@
+{
+  "date": "2026-11-22",
+  "light": "red",
+  "counts": {
+    "high": 19,
+    "medium": 23,
+    "low": 11
+  },
+  "cost": 0.0
+}

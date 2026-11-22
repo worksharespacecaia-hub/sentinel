@@ -117,60 +117,6 @@
     "demo": false
   },
   {
-    "id": "live-php-security-release-2026-11-19",
-    "kind": "live",
-    "title": "PHP 11/19 安全更新修補 7 個 Critical RCE 漏洞，含 PHP2Shell 的不完整修補",
-    "affected_count": 3,
-    "max_level": "high",
-    "status": "open",
-    "demo": false
-  },
-  {
-    "id": "live-nginx-http2-nginx2root-2026-11",
-    "kind": "live",
-    "title": "NGINX HTTP/2 重大漏洞 nginx2root（CVE-2026-123007、CVE-2026-123633）可遠端執行程式碼",
-    "affected_count": 1,
-    "max_level": "high",
-    "status": "open",
-    "demo": false
-  },
-  {
-    "id": "live-synology-dsm-oauth-2026-11",
-    "kind": "live",
-    "title": "Synology DSM OAuth API 重大漏洞 CVE-2026-120382（CVSS 9.8），另有 CVE-2026-123007",
-    "affected_count": 1,
-    "max_level": "high",
-    "status": "open",
-    "demo": false
-  },
-  {
-    "id": "live-synology-dsm-cve-2024-10441-kev",
-    "kind": "live",
-    "title": "CISA 將 Synology DSM CVE-2024-10441 列入已遭利用漏洞（KEV）",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "need_check",
-    "demo": false
-  },
-  {
-    "id": "live-java4shell-cve-2026-114938",
-    "kind": "live",
-    "title": "OpenJDK Java4Shell（CVE-2026-114938）Base64 解碼器越界寫入，可能導致 RCE",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "not_affected",
-    "demo": false
-  },
-  {
-    "id": "live-postgresql-cve-2026-116331",
-    "kind": "live",
-    "title": "PostgreSQL CVE-2026-116331：可建立物件的帳號可在資料庫主機執行程式碼",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "need_check",
-    "demo": false
-  },
-  {
     "id": "live-phoenix-travel-breach-2026-11",
     "kind": "live",
     "title": "鳳凰旅遊資訊系統遭入侵，部分旅客個資外洩並出現冒名訂單詐騙",
@@ -180,18 +126,72 @@
     "demo": false
   },
   {
-    "id": "live-taiwan-taxi-gbt-breach-2026-11",
+    "id": "live-plaid-karte-third-party-2026-11",
     "kind": "live",
-    "title": "大車隊子公司全球商務科技遭未經授權存取，客戶與會員資料外洩",
+    "title": "日本 PLAID 旗下 KARTE 平臺遭入侵，JINS、DHC、三菱UFJ銀行等數十家企業公告個資外洩",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
     "demo": false
   },
   {
-    "id": "live-sbc-medical-breach-2026-11",
+    "id": "live-ai-agent-taiwan-ecommerce-2026-11",
     "kind": "live",
-    "title": "SBC Medical Group 日本診所線上平台遭駭，逾 200 萬人資料受影響",
+    "title": "AI 代理網攻波及臺灣十餘家企業與電商平臺，逾百萬份個資受影響",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
+    "demo": false
+  },
+  {
+    "id": "live-synology-dsm-oauth-cve-2026-120382",
+    "kind": "live",
+    "title": "Synology DSM OAuth API 嚴重漏洞 CVE-2026-120382（CVSS 9.8）",
+    "affected_count": 1,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "live-synology-dsm-kev-cve-2024-10441",
+    "kind": "live",
+    "title": "CISA 將 Synology DSM CVE-2024-10441 列入已遭利用漏洞（KEV）",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
+    "demo": false
+  },
+  {
+    "id": "live-nginx-http2-cve-2026-123633",
+    "kind": "live",
+    "title": "NGINX 修補 2 項 HTTP/2 遠端程式碼執行漏洞（CVE-2026-123633、CVE-2026-123007）",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
+    "demo": false
+  },
+  {
+    "id": "live-php-nov-2026-security-release",
+    "kind": "live",
+    "title": "PHP 11/19 安全更新修補 18 個漏洞，7 個為重大等級",
+    "affected_count": 2,
+    "max_level": "medium",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "live-java4shell-cve-2026-114938",
+    "kind": "live",
+    "title": "OpenJDK Java4Shell（CVE-2026-114938）Base64 解碼器越界寫入",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "not_affected",
+    "demo": false
+  },
+  {
+    "id": "live-postgresql-cve-2026-116331",
+    "kind": "live",
+    "title": "PostgreSQL CVE-2026-116331：可建立物件的帳號可在資料庫主機執行程式碼",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",

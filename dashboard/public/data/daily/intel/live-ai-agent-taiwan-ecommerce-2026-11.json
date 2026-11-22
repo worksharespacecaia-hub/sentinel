@@ -1,0 +1,424 @@
+{
+  "event": {
+    "id": "live-ai-agent-taiwan-ecommerce-2026-11",
+    "kind": "live",
+    "title": "AI 代理網攻波及臺灣十餘家企業與電商平臺，逾百萬份個資受影響",
+    "date": "2026-11-19",
+    "industry": "電商",
+    "attack_chain": [
+      "駭客利用 AI 代理工具加速攻擊，擴大至網路商店與電商平臺",
+      "使用 ARTEX 繞過前端介面",
+      "直接呼叫後端 API 大量讀取資料"
+    ],
+    "attck": [
+      "T1119"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180681",
+        "title": "【資安週報】1116～1120，全球第三方供應商遭駭連環爆；Java4Shell、NGINX2Root等重大漏洞揭露引關注",
+        "quote": "數發部指出，駭客利用AI代理工具加速攻擊，近期擴大至網路商店與電商平臺，資安院也在多起案件發現中國開源工具ARTEX遭濫用，攻擊者可繞過前端介面，直接呼叫後端API大量讀取資料。",
+        "published": "2026-11-19",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-22T03:45:43Z",
+        "content_hash": "sha256:52b54e3dd6b16572e562638b8e687a3fbd677876c22b4715f2dd98a717132078",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "後端 API 需驗證資料擁有者並限制單一來源的大量讀取",
+        "reason": "來源指攻擊者繞過前端直接呼叫後端 API 大量讀取資料，現有控制項沒有涵蓋 API 存取控制與流量限制"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-ai-agent-taiwan-ecommerce-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：後端 API 需驗證資料擁有者並限制單一來源的大量讀取"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "db-exposed",
+          "source": "rule",
+          "inferred": true,
+          "target": "database",
+          "hypothesis": "資料庫或資料庫管理工具可以從外部或其他環境直接連線",
+          "why": "資料庫遭大量讀取的事件，常見原因是資料庫或管理工具允許的連線範圍過寬",
+          "check": "確認存放個資與訂單的資料庫及資料庫管理工具，只允許必要的來源連線",
+          "how": "查防火牆與安全群組規則、資料庫的允許來源設定，以及資料庫管理工具是否對外",
+          "plain": "資料庫或管理工具可能可以被直接連上",
+          "basis": "事件標題提到「個資」",
+          "systems": [
+            {
+              "asset_id": "firebase-brand-app-storage",
+              "label": "App 雲端檔案儲存區"
+            },
+            {
+              "asset_id": "member-db-prod",
+              "label": "正式會員資料庫"
+            },
+            {
+              "asset_id": "order-db-prod",
+              "label": "正式訂單資料庫"
+            },
+            {
+              "asset_id": "order-exports-bucket",
+              "label": "訂單匯出檔案儲存區"
+            },
+            {
+              "asset_id": "phpmyadmin",
+              "label": "資料庫網頁管理工具"
+            }
+          ],
+          "controls": [
+            {
+              "control_id": "C-INTERNAL-TOOL-EXPOSED",
+              "title": "內部工具不得對外開放",
+              "status": "fail",
+              "status_label": "不符合"
+            },
+            {
+              "control_id": "C-NET-SEGMENT",
+              "title": "非正式環境不得連線正式資料庫",
+              "status": "fail",
+              "status_label": "不符合"
+            },
+            {
+              "control_id": "C-CLOUD-STORAGE-PUBLIC",
+              "title": "雲端儲存空間不得公開讀取",
+              "status": "fail",
+              "status_label": "不符合"
+            }
+          ]
+        },
+        {
+          "id": "db-cred-leak",
+          "source": "rule",
+          "inferred": true,
+          "target": "database",
+          "hypothesis": "資料庫帳密或連線字串外洩（放在程式碼、設定檔或員工電腦上）",
+          "why": "拿到資料庫帳密就能不靠漏洞直接讀取資料",
+          "check": "確認資料庫帳密沒有放在程式碼或設定檔中，疑似外洩時立即輪替",
+          "how": "查程式碼倉庫的金鑰掃描結果、設定檔，以及部署用的機密管理設定",
+          "plain": "資料庫的帳號密碼可能外流被拿來登入",
+          "basis": "事件標題提到「個資」",
+          "systems": [
+            {
+              "asset_id": "order-db-prod-cred",
+              "label": "正式訂單資料庫帳密"
+            },
+            {
+              "asset_id": "order-db-test-cred",
+              "label": "測試訂單資料庫帳密"
+            }
+          ],
+          "controls": [
+            {
+              "control_id": "C-SECRET-IN-GIT",
+              "title": "Git 中不得有正式環境金鑰",
+              "status": "fail",
+              "status_label": "不符合"
+            },
+            {
+              "control_id": "C-DEV-DEVICE-TOKEN",
+              "title": "員工電腦不得持有正式部署權杖",
+              "status": "fail",
+              "status_label": "不符合"
+            }
+          ]
+        },
+        {
+          "id": "db-app-vuln",
+          "source": "rule",
+          "inferred": true,
+          "target": "database",
+          "hypothesis": "經由網站或 API 的漏洞（例如注入、越權）大量讀取資料庫內容",
+          "why": "對外網站與 API 是讀取後端資料庫最常見的入口",
+          "check": "檢查對外網站與 API 是否有注入或越權問題，以及是否出現大量讀取",
+          "how": "查網站應用防火牆與 API 存取紀錄中的大量查詢，以及最近一次弱點掃描報告",
+          "plain": "網站或系統介面的漏洞可能被用來大量讀取資料",
+          "basis": "事件標題提到「個資」",
+          "systems": [
+            {
+              "asset_id": "api-gateway",
+              "label": "API 閘道"
+            },
+            {
+              "asset_id": "storefront",
+              "label": "商店網站"
+            }
+          ],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "程式無法自動判定，需人工確認：建議檢查資料庫或管理工具是否能被直接連上、資料庫帳密是否可能外流，以及網站介面是否可能被大量讀取資料。",
+  "blocks": {
+    "1_summary": {
+      "title": "AI 代理網攻波及臺灣十餘家企業與電商平臺，逾百萬份個資受影響",
+      "date": "2026-11-19",
+      "industry": "電商",
+      "attack_chain": [
+        "駭客利用 AI 代理工具加速攻擊，擴大至網路商店與電商平臺",
+        "使用 ARTEX 繞過前端介面",
+        "直接呼叫後端 API 大量讀取資料"
+      ],
+      "attck": [
+        "T1119"
+      ],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180681",
+          "title": "【資安週報】1116～1120，全球第三方供應商遭駭連環爆；Java4Shell、NGINX2Root等重大漏洞揭露引關注",
+          "quote": "數發部指出，駭客利用AI代理工具加速攻擊，近期擴大至網路商店與電商平臺，資安院也在多起案件發現中國開源工具ARTEX遭濫用，攻擊者可繞過前端介面，直接呼叫後端API大量讀取資料。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-22T03:45:43Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "程式無法自動判定，需人工確認：建議檢查資料庫或管理工具是否能被直接連上、資料庫帳密是否可能外流，以及網站介面是否可能被大量讀取資料。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：後端 API 需驗證資料擁有者並限制單一來源的大量讀取"
+          ],
+          "observed_at": "2026-11-22T03:45:43Z",
+          "suggestions": [
+            {
+              "id": "db-exposed",
+              "source": "rule",
+              "inferred": true,
+              "target": "database",
+              "hypothesis": "資料庫或資料庫管理工具可以從外部或其他環境直接連線",
+              "why": "資料庫遭大量讀取的事件，常見原因是資料庫或管理工具允許的連線範圍過寬",
+              "check": "確認存放個資與訂單的資料庫及資料庫管理工具，只允許必要的來源連線",
+              "how": "查防火牆與安全群組規則、資料庫的允許來源設定，以及資料庫管理工具是否對外",
+              "plain": "資料庫或管理工具可能可以被直接連上",
+              "basis": "事件標題提到「個資」",
+              "systems": [
+                {
+                  "asset_id": "firebase-brand-app-storage",
+                  "label": "App 雲端檔案儲存區"
+                },
+                {
+                  "asset_id": "member-db-prod",
+                  "label": "正式會員資料庫"
+                },
+                {
+                  "asset_id": "order-db-prod",
+                  "label": "正式訂單資料庫"
+                },
+                {
+                  "asset_id": "order-exports-bucket",
+                  "label": "訂單匯出檔案儲存區"
+                },
+                {
+                  "asset_id": "phpmyadmin",
+                  "label": "資料庫網頁管理工具"
+                }
+              ],
+              "controls": [
+                {
+                  "control_id": "C-INTERNAL-TOOL-EXPOSED",
+                  "title": "內部工具不得對外開放",
+                  "status": "fail",
+                  "status_label": "不符合"
+                },
+                {
+                  "control_id": "C-NET-SEGMENT",
+                  "title": "非正式環境不得連線正式資料庫",
+                  "status": "fail",
+                  "status_label": "不符合"
+                },
+                {
+                  "control_id": "C-CLOUD-STORAGE-PUBLIC",
+                  "title": "雲端儲存空間不得公開讀取",
+                  "status": "fail",
+                  "status_label": "不符合"
+                }
+              ]
+            },
+            {
+              "id": "db-cred-leak",
+              "source": "rule",
+              "inferred": true,
+              "target": "database",
+              "hypothesis": "資料庫帳密或連線字串外洩（放在程式碼、設定檔或員工電腦上）",
+              "why": "拿到資料庫帳密就能不靠漏洞直接讀取資料",
+              "check": "確認資料庫帳密沒有放在程式碼或設定檔中，疑似外洩時立即輪替",
+              "how": "查程式碼倉庫的金鑰掃描結果、設定檔，以及部署用的機密管理設定",
+              "plain": "資料庫的帳號密碼可能外流被拿來登入",
+              "basis": "事件標題提到「個資」",
+              "systems": [
+                {
+                  "asset_id": "order-db-prod-cred",
+                  "label": "正式訂單資料庫帳密"
+                },
+                {
+                  "asset_id": "order-db-test-cred",
+                  "label": "測試訂單資料庫帳密"
+                }
+              ],
+              "controls": [
+                {
+                  "control_id": "C-SECRET-IN-GIT",
+                  "title": "Git 中不得有正式環境金鑰",
+                  "status": "fail",
+                  "status_label": "不符合"
+                },
+                {
+                  "control_id": "C-DEV-DEVICE-TOKEN",
+                  "title": "員工電腦不得持有正式部署權杖",
+                  "status": "fail",
+                  "status_label": "不符合"
+                }
+              ]
+            },
+            {
+              "id": "db-app-vuln",
+              "source": "rule",
+              "inferred": true,
+              "target": "database",
+              "hypothesis": "經由網站或 API 的漏洞（例如注入、越權）大量讀取資料庫內容",
+              "why": "對外網站與 API 是讀取後端資料庫最常見的入口",
+              "check": "檢查對外網站與 API 是否有注入或越權問題，以及是否出現大量讀取",
+              "how": "查網站應用防火牆與 API 存取紀錄中的大量查詢，以及最近一次弱點掃描報告",
+              "plain": "網站或系統介面的漏洞可能被用來大量讀取資料",
+              "basis": "事件標題提到「個資」",
+              "systems": [
+                {
+                  "asset_id": "api-gateway",
+                  "label": "API 閘道"
+                },
+                {
+                  "asset_id": "storefront",
+                  "label": "商店網站"
+                }
+              ],
+              "controls": []
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    },
+    "8_extra_checks": [
+      {
+        "control_id": "C-CLOUD-STORAGE-PUBLIC",
+        "title": "雲端儲存空間不得公開讀取",
+        "status": "fail",
+        "assets": [
+          {
+            "asset_id": "firebase-brand-app-storage",
+            "evidence": [
+              "firebase-config.json: /user-uploads/{allPaths=**} read if true",
+              "external-scan.json: storage.shopsaas-demo.example 可匿名列出內容"
+            ]
+          },
+          {
+            "asset_id": "order-exports-bucket",
+            "evidence": [
+              "external-scan.json: shopsaas-demo-order-exports.s3.example 可匿名列出內容",
+              "infra/terraform/main.tf: aws_s3_bucket_acl acl = \"public-read\""
+            ]
+          }
+        ],
+        "check_reason": "雲端儲存空間可公開讀取",
+        "suggested_reason": "推測資料庫與檔案儲存區可能被直接連上，應確認雲端儲存空間沒有公開讀取。",
+        "status_label": "不符合"
+      },
+      {
+        "control_id": "C-NET-SEGMENT",
+        "title": "非正式環境不得連線正式資料庫",
+        "status": "fail",
+        "assets": [
+          {
+            "asset_id": "order-db-prod",
+            "evidence": [
+              "network.json: order-db-test（test）→ order-db-prod:5432"
+            ]
+          }
+        ],
+        "check_reason": "非正式環境可直連正式資料庫",
+        "suggested_reason": "攻擊直接呼叫後端取得資料，應確認非正式環境無法連線正式資料庫。",
+        "status_label": "不符合"
+      }
+    ]
+  },
+  "orchestrator_results": [
+    {
+      "stage": "review",
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "target_type": "event",
+      "target_id": "live-ai-agent-taiwan-ecommerce-2026-11",
+      "text": "程式無法自動判定，需人工確認：建議檢查資料庫或管理工具是否能被直接連上、資料庫帳密是否可能外流，以及網站介面是否可能被大量讀取資料。",
+      "source": "live"
+    }
+  ]
+}
