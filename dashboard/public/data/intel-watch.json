@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-21T23:19:01Z",
+  "checked_at": "2026-11-22T06:51:45Z",
   "advisories_checked": 7,
   "hits": [],
   "dispatched": false,
@@ -745,11 +745,6 @@
       "mapped": false,
       "revision": null
     },
-    "CVE-2026-102764": {
-      "checked_at": "2026-11-15T02:41:04Z",
-      "mapped": false,
-      "revision": null
-    },
     "CVE-2026-102895": {
       "checked_at": "2026-11-21T17:58:24Z",
       "mapped": false,
@@ -781,7 +776,7 @@
       "revision": null
     },
     "CVE-2026-111357": {
-      "checked_at": "2026-11-21T02:17:44Z",
+      "checked_at": "2026-11-22T06:51:45Z",
       "mapped": false,
       "revision": null
     },
@@ -796,12 +791,12 @@
       "revision": null
     },
     "CVE-2026-111793": {
-      "checked_at": "2026-11-21T02:17:44Z",
+      "checked_at": "2026-11-22T06:51:45Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-114625": {
-      "checked_at": "2026-11-21T02:17:44Z",
+      "checked_at": "2026-11-22T06:51:45Z",
       "mapped": false,
       "revision": null
     },
@@ -841,7 +836,7 @@
       "revision": null
     },
     "CVE-2026-123158": {
-      "checked_at": "2026-11-21T02:17:44Z",
+      "checked_at": "2026-11-22T06:51:45Z",
       "mapped": false,
       "revision": null
     },
@@ -876,7 +871,7 @@
       "revision": null
     },
     "CVE-2026-20320": {
-      "checked_at": "2026-11-21T02:17:44Z",
+      "checked_at": "2026-11-22T06:51:45Z",
       "mapped": false,
       "revision": null
     },
