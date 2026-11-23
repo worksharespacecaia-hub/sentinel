@@ -1,7 +1,7 @@
 {
   "tool": "nvd",
   "tool_version": "NVD CVE API 2.0",
-  "database_revision": "2026-11-22T03:46:29Z",
+  "database_revision": "2026-11-23T04:24:46Z",
   "api_key": false,
   "results": [
     {
@@ -14,15 +14,2081 @@
       "asset_ids": [
         "marketing-site"
       ],
-      "status": "failed",
+      "status": "ok",
       "queries": [
         {
           "cpe": "cpe:2.3:a:apache:http_server:2.4.57:*:*:*:*:*:*:*",
-          "status": "failed",
-          "reason": "ReadTimeout: The read operation timed out"
+          "status": "ok",
+          "truncated": false,
+          "candidates": 71
         }
       ],
-      "cves": []
+      "cves": [
+        {
+          "id": "CVE-2023-31122",
+          "published": "2023-10-23T07:15:11.103",
+          "last_modified": "2026-06-17T05:56:18.907",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "Out-of-bounds Read vulnerability in mod_macro of Apache HTTP Server.This issue affects Apache HTTP Server: through 2.4.57.",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "2.4.58"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2023-38709",
+          "published": "2024-04-04T20:15:08.047",
+          "last_modified": "2026-06-17T06:10:59.800",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.3,
+          "summary": "Faulty input validation in the core of Apache allows malicious or exploitable backend/content generators to split HTTP responses.\n\nThis issue affects Apache HTTP Server: through 2.4.58.",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "2.4.59"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2023-43622",
+          "published": "2023-10-23T07:15:11.243",
+          "last_modified": "2026-06-17T06:26:05.477",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "An attacker, opening a HTTP/2 connection with an initial window size of 0, was able to block handling of that connection indefinitely in Apache HTTP Server. This could be used to exhaust worker resour",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.55",
+                      "versionEndExcluding": "2.4.58"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2023-45802",
+          "published": "2023-10-23T07:15:11.330",
+          "last_modified": "2026-06-17T06:29:33.053",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 5.9,
+          "summary": "When a HTTP/2 stream was reset (RST frame) by a client, there was a time window were the request's memory resources were not reclaimed immediately. Instead, de-allocation was deferred to connection cl",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.17",
+                      "versionEndExcluding": "2.4.58"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2024-24795",
+          "published": "2024-04-04T20:15:08.663",
+          "last_modified": "2026-06-17T07:14:52.787",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 6.3,
+          "summary": "HTTP Response splitting in multiple modules in Apache HTTP Server allows an attacker that can inject malicious response headers into backend applications to cause an HTTP desynchronization attack.\n\nUs",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.59"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2024-27316",
+          "published": "2024-04-04T20:15:08.720",
+          "last_modified": "2026-06-17T07:19:38.200",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "HTTP/2 incoming headers exceeding the limit are temporarily buffered in nghttp2 in order to generate an informative HTTP 413 response. If a client does not stop sending headers, this leads to memory e",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.17",
+                      "versionEndExcluding": "2.4.59"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2024-36387",
+          "published": "2024-07-01T19:15:03.497",
+          "last_modified": "2026-06-17T07:36:36.973",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 5.4,
+          "summary": "Serving WebSocket protocol upgrades over a HTTP/2 connection could result in a Null Pointer dereference, leading to a crash of the server process, degrading performance.",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.55",
+                      "versionEndIncluding": "2.4.59"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2024-38472",
+          "published": "2024-07-01T19:15:04.563",
+          "last_modified": "2026-11-03T22:17:21.750",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "SSRF in Apache HTTP Server on Windows allows to potentially leak NTLM hashes to a malicious server via SSRF and malicious requests or content \nUsers are recommended to upgrade to version 2.4.60 which ",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.60"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2024-38473",
+          "published": "2024-07-01T19:15:04.657",
+          "last_modified": "2026-06-17T07:40:21.093",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 8.1,
+          "summary": "Encoding problem in mod_proxy in Apache HTTP Server 2.4.59 and earlier allows request URLs with incorrect encoding to be sent to backend services, potentially bypassing authentication via crafted requ",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.60"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2024-38474",
+          "published": "2024-07-01T19:15:04.760",
+          "last_modified": "2026-06-17T07:40:21.237",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 9.8,
+          "summary": "Substitution encoding issue in mod_rewrite in Apache HTTP Server 2.4.59 and earlier allows attacker to execute scripts in\ndirectories permitted by the configuration but not directly reachable by any U",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.60"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2024-38475",
+          "published": "2024-07-01T19:15:04.883",
+          "last_modified": "2026-06-17T07:40:21.380",
+          "status": "Analyzed",
+          "kev_added": "2025-05-01",
+          "cvss": 9.1,
+          "summary": "Improper escaping of output in mod_rewrite in Apache HTTP Server 2.4.59 and earlier allows an attacker to map URLs to filesystem locations that are permitted to be served by the server but are not int",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.60"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2024-38476",
+          "published": "2024-07-01T19:15:04.977",
+          "last_modified": "2026-06-17T07:40:21.557",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 9.8,
+          "summary": "Vulnerability in core of Apache HTTP Server 2.4.59 and earlier are vulnerably to information disclosure, SSRF or local script execution via backend applications whose response headers are malicious or",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.60"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2024-38477",
+          "published": "2024-07-01T19:15:05.083",
+          "last_modified": "2026-06-17T07:40:21.713",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "null pointer dereference in mod_proxy in Apache HTTP Server 2.4.59 and earlier allows an attacker to crash the server via a malicious request.\nUsers are recommended to upgrade to version 2.4.60, which",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.60"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2024-39573",
+          "published": "2024-07-01T19:15:05.760",
+          "last_modified": "2026-06-17T07:42:15.597",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "Potential SSRF in mod_rewrite in Apache HTTP Server 2.4.59 and earlier allows an attacker to cause unsafe RewriteRules to unexpectedly setup URL's to be handled by mod_proxy.\nUsers are recommended to ",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.60"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2024-40898",
+          "published": "2024-07-18T10:15:03.217",
+          "last_modified": "2026-06-17T07:46:49.050",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 9.1,
+          "summary": "SSRF in Apache HTTP Server on Windows with mod_rewrite in server/vhost context, allows to potentially leak NTML hashes to a malicious server via SSRF and malicious requests.\n\nUsers are recommended to ",
+          "configurations": [
+            {
+              "operator": "AND",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "2.4.62"
+                    }
+                  ]
+                },
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:o:microsoft:windows:-:*:*:*:*:*:*:*",
+                      "vulnerable": false
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2024-42516",
+          "published": "2025-07-10T17:15:45.343",
+          "last_modified": "2026-06-17T07:49:35.933",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "HTTP response splitting in the core of Apache HTTP Server allows an attacker who can manipulate the Content-Type response headers of applications hosted or proxied by the server can split the HTTP res",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.64"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2024-43204",
+          "published": "2025-07-10T17:15:45.987",
+          "last_modified": "2026-06-17T07:50:36.103",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "SSRF in Apache HTTP Server with mod_proxy loaded allows an attacker to send outbound proxy requests to a URL controlled by the attacker.  Requires an unlikely configuration where mod_headers is config",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.64"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2024-43394",
+          "published": "2025-07-10T17:15:46.133",
+          "last_modified": "2026-06-17T07:50:57.760",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "Server-Side Request Forgery (SSRF) in Apache HTTP Server on Windows allows to potentially leak NTLM hashes to a malicious server via \nmod_rewrite or apache expressions that pass unvalidated request in",
+          "configurations": [
+            {
+              "operator": "AND",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.64"
+                    }
+                  ]
+                },
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:o:microsoft:windows:-:*:*:*:*:*:*:*",
+                      "vulnerable": false
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2024-47252",
+          "published": "2025-07-10T17:15:46.400",
+          "last_modified": "2026-06-17T07:56:47.053",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "Insufficient escaping of user-supplied data in mod_ssl in Apache HTTP Server 2.4.63 and earlier allows an untrusted SSL/TLS client to insert escape characters into log files in some configurations.\n\nI",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.64"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-23048",
+          "published": "2025-07-10T17:15:46.553",
+          "last_modified": "2026-06-17T08:51:41.460",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 9.1,
+          "summary": "In some mod_ssl configurations on Apache HTTP Server 2.4.35 through to 2.4.63, an access control bypass by trusted clients is possible using TLS 1.3 session resumption.\n\nConfigurations are affected wh",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.35",
+                      "versionEndExcluding": "2.4.64"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-49630",
+          "published": "2025-07-10T17:15:48.050",
+          "last_modified": "2026-06-17T09:31:34.740",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "In certain proxy configurations, a denial of service attack against Apache HTTP Server versions 2.4.26 through to 2.4.63 can be triggered by untrusted clients causing an assertion in mod_proxy_http2.\n",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.26",
+                      "versionEndExcluding": "2.4.64"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-49812",
+          "published": "2025-07-10T17:15:48.193",
+          "last_modified": "2026-06-17T09:31:56.917",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.4,
+          "summary": "In some mod_ssl configurations on Apache HTTP Server versions through to 2.4.63, an HTTP desynchronisation attack allows a man-in-the-middle attacker to hijack an HTTP session via a TLS upgrade.\n\nOnly",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "2.4.64"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-53020",
+          "published": "2025-07-10T17:15:48.337",
+          "last_modified": "2026-06-17T09:37:29.237",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "Late Release of Memory after Effective Lifetime vulnerability in Apache HTTP Server.\n\nThis issue affects Apache HTTP Server: from 2.4.17 up to 2.4.63.\n\nUsers are recommended to upgrade to version 2.4.",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.17",
+                      "versionEndExcluding": "2.4.64"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-55753",
+          "published": "2025-12-05T11:15:51.890",
+          "last_modified": "2026-10-18T15:10:00.097",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "An integer overflow in the case of failed ACME certificate renewal leads, after a number of failures (~30 days in default configurations), to the backoff timer becoming 0. Attempts to renew the certif",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.30",
+                      "versionEndExcluding": "2.4.66"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-58098",
+          "published": "2025-12-05T14:15:49.153",
+          "last_modified": "2026-09-25T23:10:00.463",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 8.3,
+          "summary": "Apache HTTP Server 2.4.65 and earlier with Server Side Includes (SSI) enabled and mod_cgid (but not mod_cgi) passes the shell-escaped query string to #exec cmd=\"...\" directives.\n\nThis issue affects Ap",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "2.4.66"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-59775",
+          "published": "2025-12-05T11:15:52.210",
+          "last_modified": "2026-09-25T23:10:00.463",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "Server-Side Request Forgery (SSRF) vulnerability \n\n in Apache HTTP Server on Windows \n\nwith AllowEncodedSlashes On and MergeSlashes Off  allows to potentially leak NTLM \nhashes to a malicious server v",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.66"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-65082",
+          "published": "2025-12-05T11:15:52.497",
+          "last_modified": "2026-09-25T23:10:00.463",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 6.5,
+          "summary": "Improper Neutralization of Escape, Meta, or Control Sequences vulnerability in Apache HTTP Server through environment variables set via the Apache configuration unexpectedly superseding variables calc",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.66"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2025-66200",
+          "published": "2025-12-05T11:15:52.747",
+          "last_modified": "2026-10-18T14:10:00.110",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 5.4,
+          "summary": "mod_userdir+suexec bypass via AllowOverride FileInfo vulnerability in Apache HTTP Server. Users with access to use the RequestHeader directive in htaccess can cause some CGI scripts to run under an un",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.7",
+                      "versionEndExcluding": "2.4.66"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-119618",
+          "published": "2026-11-11T15:17:15.900",
+          "last_modified": "2026-11-15T01:18:02.837",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 8.1,
+          "summary": "Concurrent Execution using Shared Resource with Improper Synchronization vulnerability in Apache HTTP Server's mod_http2 in assign_headers() can lead to RCE.\n\nThis issue affects Apache HTTP Server: fr",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.55",
+                      "versionEndExcluding": "2.4.71"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-24072",
+          "published": "2026-05-04T13:16:00.297",
+          "last_modified": "2026-10-26T19:10:00.163",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 8.8,
+          "summary": "An escalation of privilege bug in various modules in Apache HTTP 2.4.66 and earlier allows local .htaccess authors to read files with the privileges of the httpd user.\n\nUsers are recommended to upgrad",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "2.4.67"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-28780",
+          "published": "2026-05-05T22:16:00.390",
+          "last_modified": "2026-09-14T13:17:54.970",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 9.8,
+          "summary": "Heap-based Buffer Overflow vulnerability in mod_proxy_ajp of Apache HTTP Server.\nIf mod_proxy_ajp connects to a malicious AJP server this AJP server can send a malicious AJP message back to mod_proxy_",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "2.4.67"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-29167",
+          "published": "2026-06-08T16:16:37.967",
+          "last_modified": "2026-07-23T07:10:00.113",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 9.8,
+          "summary": "Use After Free vulnerability in Apache HTTP Server with mod_ldap in per-directory configuration\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.67.\n\nUsers are recommended to upgrade to ",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.68"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-29168",
+          "published": "2026-05-05T14:16:08.507",
+          "last_modified": "2026-10-26T00:10:00.150",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.3,
+          "summary": "Allocation of Resources Without Limits or Throttling vulnerability in Apache HTTP Server's  mod_md via OCSP response data.\n\nThis issue affects Apache HTTP Server: from 2.4.30 through 2.4.66.\n\nUsers ar",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.30",
+                      "versionEndExcluding": "2.4.67"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-29169",
+          "published": "2026-05-04T15:16:03.720",
+          "last_modified": "2026-10-25T23:10:00.167",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "A NULL pointer dereference in mod_dav_lock in Apache HTTP Server 2.4.66 and earlier may allow an attacker to crash the server with a malicious request.mod_dav_lock is not used internally by mod_dav or",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "2.4.67"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-29170",
+          "published": "2026-06-08T16:16:38.093",
+          "last_modified": "2026-07-23T07:10:00.113",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 6.1,
+          "summary": "A cross-site scripting vulnerability exists in mod_proxy_ftp's HTML directory list generation in Apache HTTP Server 2.4.67 and earlier when listing FTP directory contents either via forward or reverse",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "2.4.68"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-33006",
+          "published": "2026-05-04T15:16:03.977",
+          "last_modified": "2026-10-26T19:10:00.163",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 4.8,
+          "summary": "A timing attack against mod_auth_digest in Apache HTTP Server 2.4.66 allows a bypass of Digest authentication by a remote attacker.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes thi",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "2.4.67"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-33007",
+          "published": "2026-05-04T15:16:04.107",
+          "last_modified": "2026-10-26T19:10:00.163",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 5.3,
+          "summary": "A NULL pointer dereference in the mod_authn_socache in Apache HTTP Server 2.4.66 and earlier allows an unauthenticated remote user to crash a child process in a caching forward proxy configuration.\n\nU",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.67"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-33523",
+          "published": "2026-05-04T15:16:04.227",
+          "last_modified": "2026-10-26T19:10:00.163",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 6.5,
+          "summary": "HTTP response splitting vulnerability in multiple Apache HTTP Server modules with untrusted or compromised backend servers.\n\nThis issue affects Apache HTTP Server: from through 2.4.66.\n\nUsers are reco",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.67"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-33857",
+          "published": "2026-05-04T14:16:33.253",
+          "last_modified": "2026-10-26T19:10:00.163",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 5.3,
+          "summary": "Out-of-bounds Read vulnerability in mod_proxy_ajp of \n\nApache HTTP Server.\n\nThis issue affects Apache HTTP Server: through 2.4.66.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes the ",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "2.4.67"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-34032",
+          "published": "2026-05-04T14:16:33.447",
+          "last_modified": "2026-10-26T19:10:00.163",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 5.3,
+          "summary": "Improper Null Termination, Out-of-bounds Read vulnerability in Apache HTTP Server.\n\nThis issue affects Apache HTTP Server: through 2.4.66.\n\nUsers are recommended to upgrade to version 2.4.67, which fi",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "2.4.67"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-34059",
+          "published": "2026-05-04T13:16:00.940",
+          "last_modified": "2026-10-26T19:10:00.163",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "Buffer Over-read vulnerability in Apache HTTP Server.\n\nThis issue affects Apache HTTP Server: through 2.4.66.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes the issue.",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "2.4.67"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-34355",
+          "published": "2026-06-08T16:16:38.387",
+          "last_modified": "2026-09-14T13:18:18.583",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "A buffer overflow in mod_proxy_html in Apache HTTP Server 2.4.67 and earlier allows an attack by an untrusted backend.\nUsers are recommended to upgrade to version 2.4.68, which fixes this issue.",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.68"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-34356",
+          "published": "2026-06-08T16:16:38.537",
+          "last_modified": "2026-07-23T07:10:00.113",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "Heap-based Buffer Overflow vulnerability in Apache HTTP Server with malicious backend servers and ProxyPassReverseCookie*\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.67.\n\nUsers are ",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.68"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-42356",
+          "published": "2026-10-01T16:17:43.790",
+          "last_modified": "2026-10-06T14:07:21.760",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 3.7,
+          "summary": "Deployment of wrong handler vulnerability in Apache HTTP Server allows the target of some internal redirects from CGI programs to also be treated as CGI and executed. The target must already be in a d",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.69"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-42528",
+          "published": "2026-10-01T16:17:43.927",
+          "last_modified": "2026-10-06T14:07:28.370",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 4.3,
+          "summary": "A memory calculation bug in mod_dav in Apache httpd 2.4.67 and earlier allows an attacker with permission to create WebDAV locks to crash server child processes.\n\nUsers are recommended to upgrade to v",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.69"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-42535",
+          "published": "2026-06-08T16:16:39.127",
+          "last_modified": "2026-07-23T07:10:00.113",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 9.1,
+          "summary": "A path handling issue in mod_dav_fs in Apache 2.4.67 and earlier allows a WebDAV content author to directly manipulate trusted DAV property databases, potentially causing child process crashes.\n\nUsers",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "2.4.68"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-42536",
+          "published": "2026-06-08T16:16:39.263",
+          "last_modified": "2026-09-14T13:18:36.300",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "Heap-based Buffer Overflow vulnerability in Apache HTTP Server with mod_xml2enc, xml2StartParse, and untrusted content\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.67.\n\nUsers are rec",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.68"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-43951",
+          "published": "2026-06-08T16:16:40.087",
+          "last_modified": "2026-07-23T07:10:00.113",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 6.5,
+          "summary": "Out-of-bounds Read vulnerability in Apache HTTP Server with mod_headers and mod_mime and multiple response languages.\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.67.",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndIncluding": "2.4.67"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-44119",
+          "published": "2026-06-08T16:16:40.203",
+          "last_modified": "2026-07-23T07:10:00.113",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 5.5,
+          "summary": "Improper Privilege Management vulnerability in Apache HTTP Server 2.4.67 and earlier allows local .htaccess authors to read files with the privileges of the httpd user.\n\nThis issue affects Apache HTTP",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.68"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-44185",
+          "published": "2026-06-08T16:16:40.327",
+          "last_modified": "2026-09-14T13:18:36.943",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.3,
+          "summary": "Buffer Over-read vulnerability in Apache HTTP Server via outbound OCSP requests to an attacker controlled OCSP server\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.67.\n\nUsers are reco",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.68"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-44186",
+          "published": "2026-06-08T16:16:40.453",
+          "last_modified": "2026-07-23T07:10:00.113",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.3,
+          "summary": "Loop with Unreachable Exit Condition ('Infinite Loop') vulnerability in the mod_proxy_ftp module in Apache HTTP Server with an attacker controlled backend FTP server.\n\nThis issue affects undefined: fr",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.68"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-44631",
+          "published": "2026-06-08T16:16:40.583",
+          "last_modified": "2026-07-23T07:10:00.113",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 9.8,
+          "summary": "Buffer Underwrite vulnerability in Apache HTTP Server on crafted regular expressions in the configuration.\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.67.\n\nUsers are recommended to ",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.68"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-46729",
+          "published": "2026-10-01T16:17:44.293",
+          "last_modified": "2026-10-08T00:47:12.233",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "NULL Pointer Dereference vulnerability in Apache HTTP Servers mod_heartmonitor over unicast listener.\n\n\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.68.",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.69"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-48005",
+          "published": "2026-10-01T17:17:25.480",
+          "last_modified": "2026-10-06T14:07:10.460",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "Missing authentication checks in mod_auth_digest in Apache Software Foundation Apache HTTP Server before 2.4.69 on all platforms allows an unauthenticated remote client to cause a denial of service (f",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.69"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-48913",
+          "published": "2026-06-08T16:16:43.390",
+          "last_modified": "2026-07-23T07:10:00.113",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.3,
+          "summary": "Use After Free vulnerability in Apache HTTP Server module mod_http2 when file handles are already exhausted.\n\nThis issue affects Apache HTTP Server: from 2.4.55 through 2.4.67.",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.55",
+                      "versionEndExcluding": "2.4.68"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-49975",
+          "published": "2026-06-08T16:16:44.223",
+          "last_modified": "2026-08-19T12:18:28.650",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "Memory Allocation with Excessive Size Value vulnerability in Apache HTTP Server's mod_http leads to denial of service via malicious HTTP requests.\n\nThis issue affects Apache HTTP Server: from 2.4.17 t",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.17",
+                      "versionEndExcluding": "2.4.68"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-56153",
+          "published": "2026-10-01T17:17:26.487",
+          "last_modified": "2026-10-02T20:53:53.630",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "Out-of-bounds Write vulnerability in Apache HTTP Server's mod_charset_lite.\n\n\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.68.",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.69"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-56154",
+          "published": "2026-10-01T17:17:26.610",
+          "last_modified": "2026-10-05T13:33:38.377",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 9.8,
+          "summary": "Use After Free vulnerability in Apache HTTP Server's mod_rewrite when using lookahead (%{LA-U:HTTP:...})\n\n\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.68.",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.69"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-56449",
+          "published": "2026-10-01T17:17:26.733",
+          "last_modified": "2026-10-21T08:16:44.203",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "Out-of-bounds Write vulnerability in Apache HTTP Server's mod_proxy_html with crafted HTTP response bodies.\n\n\n\nThis issue affects Apache HTTP Server version 2.4.68.",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.69"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-57941",
+          "published": "2026-10-01T17:17:27.457",
+          "last_modified": "2026-10-05T13:29:16.297",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 9.8,
+          "summary": "Use After Free vulnerability in Apache HTTP Server's mod_http2 via shared session->bbtmp re-entrancy\n\n\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.68.",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.69"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-58415",
+          "published": "2026-10-01T17:17:29.260",
+          "last_modified": "2026-10-05T13:22:10.647",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 5.3,
+          "summary": "Internal state files accessible to external parties in mod_dav_fs in Apache Software Foundation Apache HTTP Server before 2.4.69 on all platforms allows a remote client to read WebDAV dead properties ",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.69"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-59685",
+          "published": "2026-10-01T17:17:29.380",
+          "last_modified": "2026-10-05T13:21:03.353",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "Out-of-bounds Write vulnerability in Apache HTTP Server on Windows while processing paths with 8.3 names that may grow when expanded.\n\n\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.6",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.69"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-59797",
+          "published": "2026-10-01T17:17:29.527",
+          "last_modified": "2026-10-05T13:16:52.940",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 9.8,
+          "summary": "Improper Privilege Management vulnerability in Apache HTTP Server's mod_ssl via SSLRequire and file-related expressions.\n\n\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.68.",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.69"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-63045",
+          "published": "2026-10-01T17:17:29.680",
+          "last_modified": "2026-10-05T13:15:35.283",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "Improper validation of FTP PASV reply address in mod_proxy_ftp in Apache Software Foundation Apache HTTP Server through 2.4.68 on all platforms allows, in forward proxy configurations, an untrusted FT",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.69"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-63292",
+          "published": "2026-10-01T17:17:29.803",
+          "last_modified": "2026-10-05T17:47:01.560",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "Stack-based buffer overflow in mod_vhost_alias in Apache Software Foundation Apache HTTP Server through 2.4.68 on all platforms allows a remote client to cause a denial of service or potentially execu",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.69"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-63686",
+          "published": "2026-10-01T17:17:29.923",
+          "last_modified": "2026-10-05T17:46:24.750",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "A NULL pointer dereference in mod_xml2enc in Apache Software Foundation Apache HTTP Server before 2.4.69 on all platforms allows an untrusted backend server to cause a denial of service via a proxied ",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.69"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-63718",
+          "published": "2026-10-01T17:17:30.040",
+          "last_modified": "2026-10-06T16:46:24.983",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.5,
+          "summary": "Inconsistent Interpretation of HTTP Requests ('HTTP Request/Response Smuggling') response smuggling vulnerability in Apache HTTP Server via mod_proxy_uwsgi and a crafted uwsgi response with Transfer-E",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.30",
+                      "versionEndExcluding": "2.4.69"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-73636",
+          "published": "2026-10-01T17:17:30.873",
+          "last_modified": "2026-10-05T17:45:24.813",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 8.1,
+          "summary": "Authentication bypass by capture-replay in mod_auth_digest in Apache Software Foundation Apache HTTP Server 2.4.x on all platforms allows a man-in-the-middle (MITM) attacker to replay captured digest ",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.69"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-73637",
+          "published": "2026-10-01T17:17:31.000",
+          "last_modified": "2026-10-05T17:39:38.120",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 7.3,
+          "summary": "Use after free in mod_auth_digest in Apache Software Foundation Apache HTTP Server before 2.4.69 on all platforms allows an unauthenticated remote client to cause authentication state corruption via c",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.69"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-79768",
+          "published": "2026-10-01T17:17:31.910",
+          "last_modified": "2026-10-05T17:35:50.293",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 5.3,
+          "summary": "Path equivalence: '/./' (single dot directory) vulnerability in Apache HTTP Server's mod_userdir module when configured with absolute non-wildcard UserDir directive (the 2nd form in https://httpd.apac",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "2.4.0",
+                      "versionEndExcluding": "2.4.69"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-93546",
+          "published": "2026-10-01T17:17:33.313",
+          "last_modified": "2026-10-05T16:05:53.007",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 8.8,
+          "summary": "Integer overflow in mod_dav_fs in Apache HTTP Server through 2.4.68 allows an authenticated WebDAV client with write access to crash worker processes and persistently corrupt a directory's property da",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionEndExcluding": "2.4.69"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "name": "gitlab-ce",

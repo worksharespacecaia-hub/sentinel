@@ -13895,5 +13895,70 @@
       "task": "dispatch:live-php-nov-2026-security-release:report-svc:php:vuln",
       "scope": "daily"
     }
+  },
+  "b31faa6c931524821dd44652391ce5517fa4a785d2e208ade5ed21402c334e71": {
+    "output": [
+      {
+        "id": "gitlab:C-BACKUP-ISOLATION",
+        "explanation": "距離上次還原測試已 95 天，超過 90 天的要求，無法確認備份在需要時可用。建議立即排定還原測試，並將週期納入例行排程與提醒，以在期限內完成驗證。",
+        "confidence": "high"
+      },
+      {
+        "id": "nas-office-01:C-BACKUP-ISOLATION",
+        "explanation": "備份與來源設備未隔離（USB 仍掛載於 nas-office-01），勒索軟體或硬體故障可能同時毀損來源與備份，且從未做過還原測試，備份可用性未經驗證。建議將備份媒體與來源設備實體或邏輯隔離、保留異地或離線副本，並儘速完成首次還原測試。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "backup-analyst",
+      "task": "backup-analyst#0",
+      "scope": "daily"
+    }
+  },
+  "7e526cdee7113af7e49b63a1e78ad10ee103f1146ce2a1ab2966933f14b740c0": {
+    "output": [
+      {
+        "id": "gitlab:C-SECRET-IN-GIT",
+        "explanation": "位於 config/db.yml 第 4 行的金鑰依標題屬正式環境，且存放於 Git 中，任何可存取儲存庫者皆可取得。建議立即撤銷並輪替，從 Git 歷史移除，改由秘密管理服務或環境變數注入。",
+        "confidence": "high"
+      },
+      {
+        "id": "brand-app:C-SECRET-IN-GIT",
+        "explanation": "services/brand-app/src/config.ts 第 3 行的正式環境金鑰被寫入 Git 原始碼。建議立即撤銷並輪替，清除 Git 歷史中的紀錄，並改由執行期環境注入設定。",
+        "confidence": "high"
+      },
+      {
+        "id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "explanation": "第三方郵件 API 金鑰已 470 天未輪替，且未設定 IP 白名單，不符合 90 天輪替與白名單規範，金鑰外洩時影響範圍較大。建議立即輪替，若服務商支援則加上 IP 白名單，並建立定期輪替排程。環境資訊不在資料中，無法確定是否為正式環境。",
+        "confidence": "high"
+      },
+      {
+        "id": "order-db-test-cred:test-secret-in-git",
+        "explanation": "config/db.yml 第 7 行的測試環境資料庫憑證被存入 Git，與同檔第 4 行的正式環境金鑰位於同一檔案。建議從 Git 移除並輪替，確認測試憑證未與正式環境共用或重複使用。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "secret-analyst",
+      "task": "secret-analyst#0",
+      "scope": "daily"
+    }
+  },
+  "604da8bcf606e27f656611156591e7267db3130c68685c34db88e612598a2c7b": {
+    "output": [
+      {
+        "id": "api-gateway:nginx:vuln",
+        "explanation": "nginx 1.27.2 依 NVD 本地比對確認有 31 個受影響的已知漏洞，最高 CVSS 9.8（CVE-2026-97205），可能導致遠端攻擊與伺服器權限取得；修補版本無法確定，需依各 CVE 官方公告逐一確認。事件 live-nginx-http2-rce-2026-11 與此項目沒有直接證據關聯，資料未證明 1.27.2 受該 HTTP/2 漏洞影響，需比對 NGINX 官方公告的受影響版本，並建議先確認實際執行版本後升級至官方明確標示已修補的版本。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "event:live-nginx-http2-rce-2026-11:dependency-analyst",
+      "scope": "daily"
+    }
   }
 }

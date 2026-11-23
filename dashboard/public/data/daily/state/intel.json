@@ -1614,295 +1614,17 @@
       "generated_at": "2026-11-10T17:04:44Z"
     },
     {
-      "id": "live-phoenix-travel-breach-2026-11",
+      "id": "live-nginx-http2-rce-2026-11",
       "kind": "live",
       "is_update_of": null,
-      "title": "鳳凰旅遊資訊系統遭入侵，部分旅客個資外洩並出現冒名訂單詐騙",
-      "date": "2026-11-16",
-      "industry": "旅遊電商",
+      "title": "NGINX 修補 2 項 HTTP/2 嚴重遠端程式碼執行漏洞",
+      "date": "2026-11-21",
+      "industry": "通用（網頁伺服器）",
       "attack_chain": [
-        "11 月 16 日發現資訊系統遭入侵",
-        "部分訂單資料疑似遭未經授權存取",
-        "不法人士冒用公司名義，以訂單錯誤、重複訂單等理由誘騙旅客提供金融資訊"
+        "漏洞源於處理 HTTP/2 通訊協定時發生記憶體管理異常",
+        "攻擊者未經身分驗證即可遠端植入並執行惡意程式，取得伺服器權限"
       ],
       "attck": [],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://www.ithome.com.tw/news/180684",
-          "title": "鳳凰旅遊遭駭、部分旅客個資外洩，已發現冒名訂單詐騙活動",
-          "quote": "值得注意的是，業者也發現不法人士冒用鳳凰旅遊名義，以訂單錯誤、重複訂單等理由誘騙旅客提供金融資訊，呼籲旅客提高警覺。",
-          "published": "2026-11-19",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-22T03:45:43Z",
-          "content_hash": "sha256:3ed74f44ec9f08decd6f477c60b58c4ac742d1fb210c45fd3e9d8c5a88d0c2c4",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [
-        {
-          "title": "訂單資料需有存取控制與異常大量存取監控",
-          "reason": "來源指出部分訂單資料疑似遭未經授權存取並被用於冒名訂單詐騙，現有控制項沒有涵蓋訂單資料的存取監控"
-        }
-      ],
-      "demo": false,
-      "facts": [],
-      "summary": "鳳凰旅遊於 11 月 16 日發現資訊系統遭入侵，部分訂單資料疑似遭未經授權存取，可能涉及姓名、聯絡電話、電子郵件、聯絡地址及行程內容。尚未發現信用卡與護照、身分證字號外洩，並出現冒用公司名義的訂單詐騙。",
-      "fixture_note": null,
-      "possible_entry_points": [
-        {
-          "text": "訂單系統或後台帳號可能被未授權存取",
-          "check": "檢查商店網站與訂單資料庫的後台登入紀錄，查異常 IP、非上班時間登入與大量匯出訂單的紀錄",
-          "systems": [
-            "storefront",
-            "order-db-prod",
-            "order-exports-bucket"
-          ],
-          "basis": "來源指部分訂單資料疑似遭未經授權存取，但未說明入侵手法"
-        }
-      ],
-      "brand": null
-    },
-    {
-      "id": "live-plaid-karte-third-party-2026-11",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "日本 PLAID 旗下 KARTE 平臺遭入侵，JINS、DHC、三菱UFJ銀行等數十家企業公告個資外洩",
-      "date": "2026-11-20",
-      "industry": "行銷科技 SaaS／零售",
-      "attack_chain": [
-        "KARTE 平臺遭入侵",
-        "下游客戶企業陸續公告個資外洩或可能外洩"
-      ],
-      "attck": [
-        "T1199"
-      ],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://www.ithome.com.tw/news/180681",
-          "title": "【資安週報】1116～1120，全球第三方供應商遭駭連環爆；Java4Shell、NGINX2Root等重大漏洞揭露引關注",
-          "quote": "韓國客服委外業者MetaM、企業協作平臺Dooray!與DaouOffice也接連傳出資安事故，已確認影響多家企業客戶。",
-          "published": "2026-11-19",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-22T03:45:43Z",
-          "content_hash": "sha256:52b54e3dd6b16572e562638b8e687a3fbd677876c22b4715f2dd98a717132078",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [
-        {
-          "title": "第三方行銷／SaaS 服務的資料共享需最小化並可即時停用",
-          "reason": "來源指單一 SaaS 平臺遭入侵即波及數十家客戶企業，現有控制項沒有涵蓋第三方 SaaS 的資料範圍與停用機制"
-        }
-      ],
-      "demo": false,
-      "facts": [],
-      "summary": "日本行銷科技業者 PLAID 旗下 KARTE 平臺遭入侵，隨後 JINS、DHC 及三菱UFJ銀行等數十家企業陸續公告個資外洩或可能外洩。同一來源另提到韓國客服委外業者 MetaM、Dooray! 與 DaouOffice 也傳出資安事故。",
-      "fixture_note": null,
-      "possible_entry_points": [
-        {
-          "text": "我們使用的第三方 SaaS 若遭入侵，客戶資料會一併外流",
-          "check": "盤點接入第三方行銷、寄信、推播與架站服務的資料欄位與 API 金鑰，確認是否有不必要的個資外送，以及能否快速停用",
-          "systems": [
-            "saas-quicksite-builder",
-            "mail-service",
-            "push-service"
-          ],
-          "basis": "來源指 KARTE 平臺遭入侵後，數十家使用該平臺的企業陸續公告個資外洩"
-        }
-      ],
-      "brand": null
-    },
-    {
-      "id": "live-ai-agent-taiwan-ecommerce-2026-11",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "AI 代理網攻波及臺灣十餘家企業與電商平臺，逾百萬份個資受影響",
-      "date": "2026-11-19",
-      "industry": "電商",
-      "attack_chain": [
-        "駭客利用 AI 代理工具加速攻擊，擴大至網路商店與電商平臺",
-        "使用 ARTEX 繞過前端介面",
-        "直接呼叫後端 API 大量讀取資料"
-      ],
-      "attck": [
-        "T1119"
-      ],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://www.ithome.com.tw/news/180681",
-          "title": "【資安週報】1116～1120，全球第三方供應商遭駭連環爆；Java4Shell、NGINX2Root等重大漏洞揭露引關注",
-          "quote": "數發部指出，駭客利用AI代理工具加速攻擊，近期擴大至網路商店與電商平臺，資安院也在多起案件發現中國開源工具ARTEX遭濫用，攻擊者可繞過前端介面，直接呼叫後端API大量讀取資料。",
-          "published": "2026-11-19",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-22T03:45:43Z",
-          "content_hash": "sha256:52b54e3dd6b16572e562638b8e687a3fbd677876c22b4715f2dd98a717132078",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [
-        {
-          "title": "後端 API 需驗證資料擁有者並限制單一來源的大量讀取",
-          "reason": "來源指攻擊者繞過前端直接呼叫後端 API 大量讀取資料，現有控制項沒有涵蓋 API 存取控制與流量限制"
-        }
-      ],
-      "demo": false,
-      "facts": [],
-      "summary": "臺灣已有十餘家企業及網路平臺通報受害，逾百萬份個資受影響。資安院在多起案件發現中國開源工具 ARTEX 遭濫用，攻擊者繞過前端介面，直接呼叫後端 API 大量讀取資料。",
-      "fixture_note": null,
-      "possible_entry_points": [],
-      "brand": null
-    },
-    {
-      "id": "live-synology-dsm-oauth-cve-2026-120382",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "Synology DSM OAuth API 嚴重漏洞 CVE-2026-120382（CVSS 9.8）",
-      "date": "2026-11-19",
-      "industry": "NAS／基礎設施",
-      "attack_chain": [
-        "遠端攻擊者透過網路攻擊 OAuth API",
-        "不需帳號與使用者互動",
-        "任意讀寫檔案或發動阻斷服務"
-      ],
-      "attck": [
-        "T1190",
-        "T1499"
-      ],
-      "cves": [
-        "CVE-2026-120382"
-      ],
-      "products": [
-        {
-          "name": "synology-dsm",
-          "ecosystem": "synology-dsm",
-          "affected": [
-            {
-              "introduced": null,
-              "fixed": "7.2.1-69057-14"
-            }
-          ],
-          "cvss": 9.8,
-          "impact": "other"
-        }
-      ],
-      "revision": "1",
-      "controls": [],
-      "confidence": "confirmed",
-      "sources": [
-        {
-          "url": "https://cyberq.tw/2026/11/20/real-world-testing-revealed-a-critical/",
-          "title": "實測 Synology DSM 致命漏洞 CVE-2026-120382：CVSS 9.8、免登入可讀寫檔案，停用 OAuth 與更新修補驗證",
-          "quote": "遠端攻擊者不需要帳號，也不需要使用者互動，就能透過網路讀寫系統上的任意檔案，或發動阻斷服務（DoS）攻擊。",
-          "published": "2026-11-20",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-22T03:45:43Z",
-          "content_hash": "sha256:40450c2062a8dab89b986fcfe32ad68079a18876e9ceb35948e2ba196aab06b5",
-          "verification_basis": "live"
-        },
-        {
-          "url": "https://www.ithome.com.tw/news/180680",
-          "title": "群暉警告NAS存在兩個重大漏洞，預計20日提供部分版本作業系統修補程式",
-          "quote": "群暉警告NAS存在兩個重大漏洞，預計20日提供部分版本作業系統修補程式",
-          "published": "2026-11-19",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-22T03:45:43Z",
-          "content_hash": "sha256:fc51e44699746772349ee8379e8cf4accc412fcf8d20e91b4ba770bb47e5e5ca",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [],
-      "demo": false,
-      "facts": [],
-      "summary": "Synology 於 11 月 19 日發布公告，DSM 與 BeeStation OS 的 OAuth API 存在嚴重漏洞，遠端攻擊者不需帳號即可讀寫任意檔案或發動 DoS。原廠緩解方式是停用 OAuth Service 套件，截至 11 月 20 日未見在野利用。",
-      "fixture_note": null,
-      "possible_entry_points": [],
-      "brand": null
-    },
-    {
-      "id": "live-synology-dsm-kev-cve-2024-10441",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "CISA 將 Synology DSM CVE-2024-10441 列入已遭利用漏洞（KEV）",
-      "date": "2026-11-19",
-      "industry": "NAS／基礎設施",
-      "attack_chain": [
-        "遠端攻擊者透過未指明的向量攻擊 DSM",
-        "執行任意程式碼"
-      ],
-      "attck": [
-        "T1190"
-      ],
-      "cves": [
-        "CVE-2024-10441"
-      ],
-      "products": [
-        {
-          "name": "synology-dsm",
-          "ecosystem": "synology-dsm",
-          "affected": [],
-          "cvss": 9.8,
-          "impact": "remote_code_execution"
-        }
-      ],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://thehackernews.com/2026/11/cisa-warns-of-4-exploited-flaws-linked.html",
-          "title": "CISA Warns of 4 Exploited Flaws Linked to Ransomware, Cryptomining, and LLMjacking Attacks",
-          "quote": "CVE-2024-10441 (CVSS score: 9.8) - An improper encoding or escaping of output vulnerability in Synology DSM that could allow a remote attacker to execute arbitrary code via unspecified vectors.",
-          "published": "2026-11-19",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-22T03:45:43Z",
-          "content_hash": "sha256:f55b209cc112465614f789845448d3486660d385b7ead784efd9dbf96f4950bc",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [],
-      "demo": false,
-      "facts": [],
-      "summary": "CISA 將 Synology DSM 的 CVE-2024-10441（CVSS 9.8）列入 KEV，指有在野利用證據。遠端攻擊者可透過未指明的向量執行任意程式碼，來源未列受影響版本。",
-      "fixture_note": null,
-      "possible_entry_points": [],
-      "brand": null
-    },
-    {
-      "id": "live-nginx-http2-cve-2026-123633",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "NGINX 修補 2 項 HTTP/2 遠端程式碼執行漏洞（CVE-2026-123633、CVE-2026-123007）",
-      "date": "2026-11-21",
-      "industry": "網頁伺服器",
-      "attack_chain": [
-        "HTTP/2 處理時發生記憶體管理異常",
-        "攻擊者未經身分驗證遠端植入並執行惡意程式",
-        "取得伺服器權限"
-      ],
-      "attck": [
-        "T1190"
-      ],
       "cves": [
         "CVE-2026-123633",
         "CVE-2026-123007"
@@ -1923,206 +1645,182 @@
         {
           "url": "https://www.cna.com.tw/news/ait/202611210071.aspx",
           "title": "NGINX釋重大安全更新 資安署籲儘速升級防範入侵",
-          "quote": "網頁伺服器軟體NGINX近日發布重大安全更新，修補2項涉及HTTP/2通訊協定的嚴重遠端程式碼執行漏洞。",
+          "quote": "資安署透過新聞稿指出，此次NGINX修補的漏洞編號分別為CVE-2026-123633及CVE-2026-123007，依據通用漏洞評分系統（CVSS）4.0版，兩項漏洞嚴重度皆達9.2分。",
           "published": "2026-11-21",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-22T03:45:43Z",
-          "content_hash": "sha256:5f638b542770f3ad814218d3ce42c3a27fdd5f3515826ffb5effcb285aaee34c",
+          "verified_at": "2026-11-23T04:24:02Z",
+          "content_hash": "sha256:858ef199950227dfd280a8f73a29bd14f33464196cbec4c1adb317986d445575",
           "verification_basis": "live"
         }
       ],
       "proposed_controls": [],
       "demo": false,
       "facts": [],
-      "summary": "NGINX 修補 2 項涉及 HTTP/2 的嚴重遠端程式碼執行漏洞，CVSS 4.0 皆為 9.2。數發部資安署提醒攻擊者可在未經身分驗證下取得伺服器權限。來源未列受影響版本。",
+      "summary": "NGINX 發布重大安全更新，修補 CVE-2026-123633 與 CVE-2026-123007 兩項涉及 HTTP/2 的遠端程式碼執行漏洞，CVSS 4.0 皆為 9.2。資安署指出攻擊者可在未經身分驗證下利用漏洞取得伺服器權限，呼籲儘速升級。",
       "fixture_note": null,
       "possible_entry_points": [],
       "brand": null
     },
     {
-      "id": "live-php-nov-2026-security-release",
+      "id": "live-kuokuo-fake-order-phishing-2026-11",
       "kind": "live",
       "is_update_of": null,
-      "title": "PHP 11/19 安全更新修補 18 個漏洞，7 個為重大等級",
-      "date": "2026-11-19",
-      "industry": "程式語言",
+      "title": "全國電會員收到含真實個資的假訂單釣魚郵件，來源待查",
+      "date": "2026-11-23",
+      "industry": "零售",
       "attack_chain": [
-        "透過記憶體釋放後再存取、輸入驗證不當、TOCTOU 或 HTTP 請求解析不一致等漏洞",
-        "可能達成遠端程式碼執行或工作階段資料竄改"
+        "會員收到冒用全國電名義寄發的虛假訂單電子郵件",
+        "郵件中的會員姓名、電子郵件及會員卡號與真實資料相符，懷疑遭第三方利用進行釣魚詐騙",
+        "全國電盤點 APP 會員中臺、電商及內部會員管理系統的資料流向，並要求委外廠商協同調查"
       ],
       "attck": [
-        "T1190"
+        "T1566"
       ],
-      "cves": [
-        "CVE-2026-115560",
-        "CVE-2026-126714",
-        "CVE-2026-129289",
-        "CVE-2026-129496",
-        "CVE-2026-129291",
-        "CVE-2026-129182",
-        "CVE-2026-129474",
-        "CVE-2026-129481"
-      ],
-      "products": [
-        {
-          "name": "php",
-          "ecosystem": "php",
-          "affected": [
-            {
-              "introduced": "8.2.0",
-              "fixed": "8.2.36"
-            },
-            {
-              "introduced": "8.3.0",
-              "fixed": "8.3.37"
-            },
-            {
-              "introduced": "8.4.0",
-              "fixed": "8.4.28"
-            },
-            {
-              "introduced": "8.5.0",
-              "fixed": "8.5.13"
-            }
-          ],
-          "cvss": 9.2,
-          "impact": "remote_code_execution"
-        }
-      ],
+      "cves": [],
+      "products": [],
       "revision": "1",
       "controls": [],
       "confidence": "provisional",
       "sources": [
         {
-          "url": "https://thehackernews.com/2026/11/php-fixes-7-critical-flaws-including.html",
-          "title": "PHP Fixes 7 Critical Flaws, Including Bugs That Could Allow Remote Code Execution",
-          "quote": "At a high level, successful exploitation of the defects could pave the way for remote code execution, session corruption, denial-of-service, memory corruption, or local privilege escalation.",
-          "published": "2026-11-19",
+          "url": "https://www.ithome.com.tw/news/180706",
+          "title": "全國電子發布資安重訊，會員收到含真實個資的假訂單釣魚郵件，來源待查",
+          "quote": "經查發現，郵件中的會員姓名、電子郵件及會員卡號等資訊與真實資料相符，懷疑相關資訊遭第三方利用進行釣魚詐騙。",
+          "published": "2026-11-23",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-22T03:45:43Z",
-          "content_hash": "sha256:ed5a94d3322696d6c035015918c66c36ef691aaf0e01051dff0fc7228076bb91",
+          "verified_at": "2026-11-23T04:24:02Z",
+          "content_hash": "sha256:ffdb363590a8be2a8c4b576f870064e7c7759986204e3ade6346b5fe242b019b",
           "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [
+        {
+          "title": "會員資料的大量讀取與委外廠商存取需留存紀錄並監控異常",
+          "reason": "來源指出會員真實個資流入釣魚郵件但外洩途徑未明，需靠存取紀錄追溯；現有控制項未涵蓋會員資料存取監控。"
+        }
+      ],
+      "demo": false,
+      "facts": [],
+      "summary": "全國電於 11 月 19 日發布資安重訊，部分會員收到冒用其名義的虛假訂單郵件，郵件中的會員姓名、電子郵件與會員卡號與真實資料相符。初步調查未涉及帳號密碼、信用卡號或付款資訊，影響範圍與筆數仍待確認。",
+      "fixture_note": null,
+      "possible_entry_points": [
+        {
+          "text": "會員中臺或會員 API 可能被大量撈取資料",
+          "check": "查會員 API 與資料庫的存取紀錄，找異常 IP、大量查詢或匯出；確認 API 有驗證資料擁有者與頻率限制",
+          "systems": [
+            "member-api",
+            "member-db-prod",
+            "api-gateway"
+          ],
+          "basis": "全國電正對 APP 會員中臺、電商及會員管理系統做資料流向盤點與異常存取紀錄分析"
         },
         {
-          "url": "https://thehackernews.com/2026/11/phpaftershell-explained-how-hackers.html",
-          "title": "phpAfterShell Explained: How Hackers Could Turn a PHP Session Flaw Into Code Execution",
-          "quote": "Neither the maintainers nor the company reports any attacks using phpAfterShell.",
-          "published": "2026-11-19",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-22T03:45:43Z",
-          "content_hash": "sha256:c569d392cfe900ad55102155fa37e5374adfda59105fe508b0e2734e6e35b8f1",
-          "verification_basis": "live"
+          "text": "委外廠商或寄信服務端的會員資料可能外流",
+          "check": "盤點哪些委外廠商與寄信服務能取得會員姓名、Email、會員卡號，檢查其帳號權限與近期存取紀錄",
+          "systems": [
+            "mail-service",
+            "member-api"
+          ],
+          "basis": "全國電要求委外廠商協同調查，且外洩的欄位正是郵件寄送會用到的姓名與 Email"
         }
       ],
-      "proposed_controls": [],
-      "demo": false,
-      "facts": [],
-      "summary": "PHP 基金會發布 8.6.0、8.5.13、8.4.28、8.3.37、8.2.36，修補 18 個漏洞，7 個重大（CVSS 4.0 為 9.2）。官方說明重大漏洞需非預設設定或少見部署，phpAfterShell 目前未見攻擊回報。",
-      "fixture_note": null,
-      "possible_entry_points": [],
       "brand": null
     },
     {
-      "id": "live-java4shell-cve-2026-114938",
+      "id": "live-ibiza-liteshop-anomalous-access-2026-11",
       "kind": "live",
       "is_update_of": null,
-      "title": "OpenJDK Java4Shell（CVE-2026-114938）Base64 解碼器越界寫入",
-      "date": "2026-11-20",
-      "industry": "程式語言",
+      "title": "電商服務商伊比薩發現異常資料存取，崇越子公司全越運動影響待查",
+      "date": "2026-11-23",
+      "industry": "電商",
       "attack_chain": [
-        "攻擊者送入尾端帶 = 補位的 Base64 字串",
-        "解碼器越界寫入",
-        "搭配堆積配置技巧可洩漏記憶體或達成遠端程式碼執行"
+        "委外服務商伊比薩發現異常資料存取並通知客戶",
+        "全越運動在電商平臺發布防詐公告並清查受影響消費者與資料範圍"
       ],
-      "attck": [
-        "T1190"
-      ],
-      "cves": [
-        "CVE-2026-114938"
-      ],
-      "products": [
-        {
-          "name": "openjdk",
-          "ecosystem": "generic",
-          "affected": [
-            {
-              "introduced": "17.0.6",
-              "fixed": null
-            }
-          ],
-          "impact": "remote_code_execution"
-        }
-      ],
+      "attck": [],
+      "cves": [],
+      "products": [],
       "revision": "1",
       "controls": [],
       "confidence": "provisional",
       "sources": [
         {
-          "url": "https://cyberq.tw/2026/11/20/java4shell-cve-2026-114938-hands-on/",
-          "title": "實測 Java4Shell（CVE-2026-114938）：65 個字元讓 OpenJDK 越界寫入，哪些 Java 真的會中",
-          "quote": "Java4Shell 只發生在「HotSpot 虛擬機、OpenJDK 17.0.6 以上、處理器支援 AVX-512 VBMI」三者同時成立的環境。",
+          "url": "https://www.ithome.com.tw/news/180703",
+          "title": "崇越發布資安重訊，揭露第三方電商服務商伊比薩發現異常資料存取，子公司全越運動影響待查",
+          "quote": "根據上市公司崇越（5434）11月19日發布的 資安事件重大訊息 ，旗下子公司全越運動事業接獲電商平臺委外服務商伊比薩（IBIZA）通知，該服務商近期發現異常資料存取情況。",
+          "published": "2026-11-23",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-23T04:24:02Z",
+          "content_hash": "sha256:d78d019f8c9920de44f41090dd362e776656fb8cd0a6bc0dc757e9d2440cb67a",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [
+        {
+          "title": "委外電商服務商須有資安事件通報義務並定期盤點其可存取的資料",
+          "reason": "來源顯示事件由委外服務商發現後才通知品牌方，影響範圍待查；現有控制項未涵蓋委外服務商的資料存取與通報要求。"
+        }
+      ],
+      "demo": false,
+      "facts": [],
+      "summary": "崇越於 11 月 19 日發布資安重訊，子公司全越運動接獲電商平臺委外服務商伊比薩通知，該服務商近期發現異常資料存取。是否有消費者資料受影響仍待確認，伊比薩旗下經營 LiteShop 電商平臺，是否波及其他企業客戶尚不清楚。",
+      "fixture_note": null,
+      "possible_entry_points": [
+        {
+          "text": "我們若使用第三方電商或架站服務，其後台可能是破口",
+          "check": "盤點是否有委外電商、倉儲、架站服務（含未登記的 SaaS），確認其可取得的顧客資料與管理員帳號是否啟用多因素驗證",
+          "systems": [
+            "saas-quicksite-builder",
+            "storefront"
+          ],
+          "basis": "事件為第三方電商服務商發現異常資料存取，來源未交代入侵手法"
+        }
+      ],
+      "brand": null
+    },
+    {
+      "id": "live-sbc-medical-japan-breach-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "SBC Medical Group 日本診所客戶資料外洩，影響逾 200 萬人",
+      "date": "2026-11-20",
+      "industry": "醫療服務（日本，線上預約平臺）",
+      "attack_chain": [
+        "駭客存取 SBC Medical Group 管理的線上平臺",
+        "入侵含日本部分診所客戶資訊的資料庫並竊取資料",
+        "另一起獨立事件中，駭客存取第三方預約服務 Tribeau 的管理員帳號"
+      ],
+      "attck": [],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.securityweek.com/sbc-medical-group-data-breach-impacts-over-2-million/",
+          "title": "SBC Medical Group Data Breach Impacts Over 2 Million",
+          "quote": "California-based SBC Medical Group Holdings Incorporated (NASDAQ: SBC) has disclosed a data breach impacting over 2 million individuals in Japan.",
           "published": "2026-11-20",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-22T03:45:43Z",
-          "content_hash": "sha256:8808c0f82722ccd66975c1eab9de00028b5fea96fca5bfc860d4faa5f5c5e4c1",
+          "verified_at": "2026-11-23T04:24:02Z",
+          "content_hash": "sha256:e01ee43063331ebfc4b017355c120970fa1cadb2c1aa08d2d3c0a3a96e8b9d20",
           "verification_basis": "live"
         }
       ],
-      "proposed_controls": [],
-      "demo": false,
-      "facts": [],
-      "summary": "OpenJDK 的 Base64 解碼器在 x86-64 上發生記憶體毀損，只在 HotSpot、OpenJDK 17.0.6 以上、處理器支援 AVX-512 VBMI 三者同時成立時發生。研究團隊示範可洩漏記憶體或達成遠端程式碼執行，來源未列修補版本也未提到在野利用。",
-      "fixture_note": null,
-      "possible_entry_points": [],
-      "brand": null
-    },
-    {
-      "id": "live-postgresql-cve-2026-116331",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "PostgreSQL CVE-2026-116331：可建立物件的帳號可在資料庫主機執行程式碼",
-      "date": "2026-11-19",
-      "industry": "資料庫",
-      "attack_chain": [
-        "低權限帳號在自己的暫存 schema 建立所需物件",
-        "利用型別混淆取得伺服器控制權"
-      ],
-      "attck": [],
-      "cves": [
-        "CVE-2026-116331"
-      ],
-      "products": [
+      "proposed_controls": [
         {
-          "name": "postgresql",
-          "ecosystem": "generic",
-          "affected": [],
-          "impact": "remote_code_execution"
+          "title": "客戶與員工密碼須以雜湊儲存，且資料庫不得集中存放大量個資明細",
+          "reason": "來源指出客戶密碼與 2 萬筆員工帳密紀錄隨資料庫一併遭竊，現有控制項未涵蓋憑證儲存方式。"
         }
       ],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://thehackernews.com/2026/11/researcher-demonstrates-database-rce.html",
-          "title": "Researcher Demonstrates Database RCE Exploits Affecting PostgreSQL, MySQL and Oracle",
-          "quote": "In PostgreSQL, the flaw CVE-2026-116331 allows an account that can create database objects to run code as the operating system user that runs the database.",
-          "published": "2026-11-19",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-22T03:45:43Z",
-          "content_hash": "sha256:8964ebcdcc9f425ed12c636c9d40b0795896bd61043efb42d3e000c280227c3d",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [],
       "demo": false,
       "facts": [],
-      "summary": "研究員公布 PostgreSQL 漏洞 CVE-2026-116331，能建立資料庫物件的帳號可用資料庫的作業系統使用者身分執行程式碼。已於上週修補，來源未列版本，且未見在野利用。",
+      "summary": "SBC Medical Group 向 SEC 申報，駭客存取其管理的線上平臺並取得日本部分診所的客戶資料庫，外洩逾 160 萬人基本資料及預約、諮詢表單內容，另有客戶密碼與 2 萬筆員工帳密紀錄遭竊。公司仍在調查。",
       "fixture_note": null,
       "possible_entry_points": [],
       "brand": null
@@ -2206,61 +1904,25 @@
       "max_level": null,
       "note": "程式取自 CISA KEV 與 NVD API"
     },
-    "live-phoenix-travel-breach-2026-11": {
+    "live-nginx-http2-rce-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-plaid-karte-third-party-2026-11": {
+    "live-kuokuo-fake-order-phishing-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-ai-agent-taiwan-ecommerce-2026-11": {
+    "live-ibiza-liteshop-anomalous-access-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-synology-dsm-oauth-cve-2026-120382": {
-      "status": "ok",
-      "issues": [],
-      "max_level": null,
-      "note": null
-    },
-    "live-synology-dsm-kev-cve-2024-10441": {
-      "status": "ok",
-      "issues": [
-        "官方來源或兩個獨立來源未驗證通過：改為暫定"
-      ],
-      "max_level": null,
-      "note": null
-    },
-    "live-nginx-http2-cve-2026-123633": {
-      "status": "ok",
-      "issues": [
-        "官方來源或兩個獨立來源未驗證通過：改為暫定"
-      ],
-      "max_level": null,
-      "note": null
-    },
-    "live-php-nov-2026-security-release": {
-      "status": "ok",
-      "issues": [
-        "官方來源或兩個獨立來源未驗證通過：改為暫定"
-      ],
-      "max_level": null,
-      "note": null
-    },
-    "live-java4shell-cve-2026-114938": {
-      "status": "ok",
-      "issues": [],
-      "max_level": null,
-      "note": null
-    },
-    "live-postgresql-cve-2026-116331": {
+    "live-sbc-medical-japan-breach-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
