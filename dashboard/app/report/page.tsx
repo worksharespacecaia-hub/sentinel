@@ -1,4 +1,5 @@
-// 行動報告：彙整所有需要採取行動的結果（決策、風險與建議做法、受影響事件、通知草稿、處理中追蹤）。
+// 行動報告：彙整所有需要採取行動的結果（風險與建議做法、決策、受影響事件、通知草稿、處理中追蹤）。
+// 順序與今日重點一致：燈號與摘要 → 行動清單 → 今天要決定的事 → 外部事件 → 數字從哪來 → 通知草稿。
 // 「匯出 PDF」使用瀏覽器列印（globals.css 的 @media print）；daily 報告可傳送到 LINE、可設定處理中。
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -60,14 +61,6 @@ export default async function ReportPage({ searchParams }: SP) {
       </section>
 
       <section className="panel report-section">
-        <h2>今天要決定的事</h2>
-        {action.decisions.length ? <ol>{action.decisions.map(splitDecision).map((d, i) => (
-          <li key={i}><SummaryText text={d.question} facts={facts} base="" labels={labels} />
-            {d.ifNot && <div className="if-ignored"><b>不決定的話：</b><SummaryText text={d.ifNot} facts={facts} base="" labels={labels} /></div>}</li>
-        ))}</ol> : <p>今天沒有需要決定的事項。</p>}
-      </section>
-
-      <section className="panel report-section">
         <h2>行動清單：高風險 {c.high} 項、中風險 {c.medium} 項</h2>
         {!source.simulated && (
           <p className="track-summary">處理中 {c.in_progress}｜即將到期 <span className={c.due_soon ? "warn" : undefined}>{c.due_soon}</span>｜
@@ -109,6 +102,14 @@ export default async function ReportPage({ searchParams }: SP) {
             ))}
           </ol>
         )}
+      </section>
+
+      <section className="panel report-section">
+        <h2>今天要決定的事</h2>
+        {action.decisions.length ? <ol>{action.decisions.map(splitDecision).map((d, i) => (
+          <li key={i}><SummaryText text={d.question} facts={facts} base="" labels={labels} />
+            {d.ifNot && <div className="if-ignored"><b>不決定的話：</b><SummaryText text={d.ifNot} facts={facts} base="" labels={labels} /></div>}</li>
+        ))}</ol> : <p>今天沒有需要決定的事項。</p>}
       </section>
 
       <section className="panel report-section" id="events">
