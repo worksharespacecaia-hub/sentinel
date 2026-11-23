@@ -63,6 +63,15 @@
     "demo": false
   },
   {
+    "id": "kev-cve-2024-10441",
+    "kind": "advisory",
+    "title": "CISA KEV：Synology DiskStation Manager (DSM) Improper Encoding or Escaping of Output Vulnerability（CVE-2024-10441）",
+    "affected_count": 1,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
     "id": "kev-cve-2026-109618",
     "kind": "advisory",
     "title": "CISA KEV：PHP Memory Corruption Vulnerability（CVE-2026-109618）",
@@ -108,48 +117,39 @@
     "demo": false
   },
   {
-    "id": "live-cyberbiz-bvi-order-db-2026-11",
+    "id": "live-nginx-http2-rce-2026-11",
     "kind": "live",
-    "title": "永邑（BVI臺灣）委外電商服務商順立智慧（Cyberbiz）發生資安事件，訂單資料庫遭未授權存取",
+    "title": "NGINX 修補 2 項 HTTP/2 嚴重遠端程式碼執行漏洞",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
     "demo": false
   },
   {
-    "id": "live-ai-agent-attacks-tw-ecommerce-2026-11",
+    "id": "live-kuokuo-fake-order-phishing-2026-11",
     "kind": "live",
-    "title": "AI代理網攻（ARTEX）波及臺灣十餘家企業與網路平臺，逾百萬份個資受影響",
+    "title": "全國電會員收到含真實個資的假訂單釣魚郵件，來源待查",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
     "demo": false
   },
   {
-    "id": "live-daouoffice-korea-finance-2026-11",
+    "id": "live-ibiza-liteshop-anomalous-access-2026-11",
     "kind": "live",
-    "title": "韓國企業協作平臺DaouOffice遭零時差漏洞攻擊與共用帳號暴力破解，至少3家金融業者受駭",
+    "title": "電商服務商伊比薩發現異常資料存取，崇越子公司全越運動影響待查",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
     "demo": false
   },
   {
-    "id": "live-metam-cs-outsourcer-2026-11",
+    "id": "live-sbc-medical-japan-breach-2026-11",
     "kind": "live",
-    "title": "韓國客服委外業者MetaM遭駭，加密貨幣交易所Coinone與二手交易平臺Bunjang受波及",
+    "title": "SBC Medical Group 日本診所客戶資料外洩，影響逾 200 萬人",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
-    "demo": false
-  },
-  {
-    "id": "live-php2shell-check-point-esxi-wiper-2026-11",
-    "kind": "live",
-    "title": "Check Point 閘道遭 PHP2Shell 鏈式攻擊，VMware ESXi 主機資料被抹除",
-    "affected_count": 2,
-    "max_level": "high",
-    "status": "open",
     "demo": false
   }
 ]

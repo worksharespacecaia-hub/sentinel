@@ -1,0 +1,217 @@
+{
+  "event": {
+    "id": "live-arara-mail-service-breach-2026-11",
+    "kind": "live",
+    "title": "日本郵件發送服務 Arara 遭駭，波及約 380 家企業客戶，大阪市確認逾 107 萬筆信箱外洩",
+    "date": "2026-11-18",
+    "industry": "SaaS",
+    "attack_chain": [
+      "郵件發送服務業者 Arara 遭駭（來源未說明初始入侵手法）",
+      "約 8,133 萬筆電子郵件地址已外洩或可能外流，最多波及約 380 家企業客戶",
+      "攻擊者利用遭入侵的郵件服務，寄出最多約 713 萬封冒充信用卡公司的可疑郵件",
+      "大阪市委外商 TKC 因使用該服務，1,078,713 筆電子郵件地址外洩"
+    ],
+    "attck": [
+      "T1566",
+      "T1199"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180555",
+        "title": "Arara郵件服務遭駭，日本大阪市確認逾107萬筆電子郵件地址外洩",
+        "quote": "攻擊者還利用遭入侵的郵件服務，寄送最多約713萬封冒充信用卡公司的可疑郵件。",
+        "published": "2026-11-18",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-18T04:54:32Z",
+        "content_hash": "sha256:ca1b964d579a453c5db6b4357a46cd4cd8433df8e0fb479274cf07d874c8e379",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-arara-mail-service-breach-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "ai-1",
+          "source": "ai",
+          "inferred": true,
+          "target": null,
+          "hypothesis": "寄信服務供應商若同樣遭駭，客戶信箱與寄信額度可能被濫用",
+          "why": null,
+          "check": "向採購或負責團隊確認寄信服務供應商是否為 Arara；若是，檢查寄信紀錄有無異常大量或冒名郵件，並評估輪替寄信服務金鑰",
+          "how": null,
+          "plain": "寄信服務供應商若同樣遭駭，客戶信箱與寄信額度可能被濫用",
+          "basis": "AI 依事件推測：攻擊過程第 1、3 步：郵件服務業者遭駭，且被用來寄出冒充信用卡公司的郵件，來源未交代入侵手法",
+          "systems": [
+            {
+              "asset_id": "mail-service",
+              "label": "寄信服務"
+            },
+            {
+              "asset_id": "mail-api-key",
+              "label": "寄信服務金鑰"
+            }
+          ],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "程式無法自動判定：事件沒有可比對的產品或控制項，需要人工確認。若我們使用的寄信服務供應商同樣遭駭，客戶信箱與寄信額度可能被濫用，建議確認供應商是否受影響。",
+  "blocks": {
+    "1_summary": {
+      "title": "日本郵件發送服務 Arara 遭駭，波及約 380 家企業客戶，大阪市確認逾 107 萬筆信箱外洩",
+      "date": "2026-11-18",
+      "industry": "SaaS",
+      "attack_chain": [
+        "郵件發送服務業者 Arara 遭駭（來源未說明初始入侵手法）",
+        "約 8,133 萬筆電子郵件地址已外洩或可能外流，最多波及約 380 家企業客戶",
+        "攻擊者利用遭入侵的郵件服務，寄出最多約 713 萬封冒充信用卡公司的可疑郵件",
+        "大阪市委外商 TKC 因使用該服務，1,078,713 筆電子郵件地址外洩"
+      ],
+      "attck": [
+        "T1566",
+        "T1199"
+      ],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180555",
+          "title": "Arara郵件服務遭駭，日本大阪市確認逾107萬筆電子郵件地址外洩",
+          "quote": "攻擊者還利用遭入侵的郵件服務，寄送最多約713萬封冒充信用卡公司的可疑郵件。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-18T04:54:32Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "程式無法自動判定：事件沒有可比對的產品或控制項，需要人工確認。若我們使用的寄信服務供應商同樣遭駭，客戶信箱與寄信額度可能被濫用，建議確認供應商是否受影響。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增"
+          ],
+          "observed_at": "2026-11-18T04:54:32Z",
+          "suggestions": [
+            {
+              "id": "ai-1",
+              "source": "ai",
+              "inferred": true,
+              "target": null,
+              "hypothesis": "寄信服務供應商若同樣遭駭，客戶信箱與寄信額度可能被濫用",
+              "why": null,
+              "check": "向採購或負責團隊確認寄信服務供應商是否為 Arara；若是，檢查寄信紀錄有無異常大量或冒名郵件，並評估輪替寄信服務金鑰",
+              "how": null,
+              "plain": "寄信服務供應商若同樣遭駭，客戶信箱與寄信額度可能被濫用",
+              "basis": "AI 依事件推測：攻擊過程第 1、3 步：郵件服務業者遭駭，且被用來寄出冒充信用卡公司的郵件，來源未交代入侵手法",
+              "systems": [
+                {
+                  "asset_id": "mail-service",
+                  "label": "寄信服務"
+                },
+                {
+                  "asset_id": "mail-api-key",
+                  "label": "寄信服務金鑰"
+                }
+              ],
+              "controls": []
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    },
+    "8_extra_checks": [
+      {
+        "control_id": "C-THIRD-PARTY-KEY-ROTATION",
+        "title": "第三方服務金鑰 90 天內輪替且有 IP 白名單",
+        "status": "fail",
+        "assets": [
+          {
+            "asset_id": "mail-api-key",
+            "evidence": [
+              "secrets.json: mail-api-key：465 天未輪替、無 IP 白名單"
+            ]
+          }
+        ],
+        "check_reason": "第三方金鑰未依規定輪替或無白名單",
+        "suggested_reason": "事件為寄信服務供應商遭駭，且我們使用寄信服務金鑰，值得確認第三方金鑰輪替與來源限制。",
+        "status_label": "不符合"
+      }
+    ]
+  },
+  "orchestrator_results": [
+    {
+      "stage": "review",
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "target_type": "event",
+      "target_id": "live-arara-mail-service-breach-2026-11",
+      "text": "程式無法自動判定：事件沒有可比對的產品或控制項，需要人工確認。若我們使用的寄信服務供應商同樣遭駭，客戶信箱與寄信額度可能被濫用，建議確認供應商是否受影響。",
+      "source": "live"
+    }
+  ]
+}

@@ -224,7 +224,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "程式比對出 2 項受影響：行銷官網對外且原廠已不再修補，為高風險（9 分）；資料庫管理介面雖也命中，但僅允許公司網路連入，為中風險（4 分）。建議行銷官網優先升級或暫時下架。",
+  "summary": "行銷官網的 PHP 8.1.27 受影響、利用條件成立且已停止支援無修補，為高風險（9 分）；phpmyadmin 因只允許公司 VPN 連入而降為中風險（4 分）。",
   "blocks": {
     "1_summary": {
       "title": "PHP2Shell：PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619）",
@@ -276,7 +276,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "程式比對出 2 項受影響：行銷官網對外且原廠已不再修補，為高風險（9 分）；資料庫管理介面雖也命中，但僅允許公司網路連入，為中風險（4 分）。建議行銷官網優先升級或暫時下架。",
+      "summary": "行銷官網的 PHP 8.1.27 受影響、利用條件成立且已停止支援無修補，為高風險（9 分）；phpmyadmin 因只允許公司 VPN 連入而降為中風險（4 分）。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -314,7 +314,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-php2shell-2026-10、live-php2shell-check-point-esxi-wiper-2026-11"
+            "reason": "evt-php2shell-2026-10"
           },
           {
             "factor": "已停止支援",
@@ -324,7 +324,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-17T05:28:31Z"
+        "observed_at": "2026-11-23T04:24:02Z"
       },
       {
         "asset_id": "phpmyadmin",
@@ -354,7 +354,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-php2shell-2026-10、live-php2shell-check-point-esxi-wiper-2026-11"
+            "reason": "evt-php2shell-2026-10"
           },
           {
             "factor": "補償措施",
@@ -364,7 +364,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-17T05:28:31Z"
+        "observed_at": "2026-11-23T04:24:02Z"
       }
     ],
     "4_unaffected_and_check": {
@@ -445,15 +445,5 @@
       "label": "待處理"
     }
   },
-  "orchestrator_results": [],
-  "updates": [
-    {
-      "id": "live-php2shell-check-point-esxi-wiper-2026-11",
-      "title": "Check Point 閘道遭 PHP2Shell 鏈式攻擊，VMware ESXi 主機資料被抹除",
-      "date": "2026-11-15",
-      "status": "open",
-      "conclusion": "2 項受影響，最高風險為高。marketing-site：php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On。",
-      "confidence": "provisional"
-    }
-  ]
+  "orchestrator_results": []
 }

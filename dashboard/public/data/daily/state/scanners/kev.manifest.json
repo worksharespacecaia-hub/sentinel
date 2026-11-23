@@ -1,19 +1,19 @@
 {
   "schema_version": 1,
-  "run_id": "44024324550",
+  "run_id": "45111578163",
   "job": "scanners-kev",
   "scope": "scanner",
   "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
-  "observed_at": "2026-11-17T05:29:23Z",
-  "valid_until": "2026-11-18T05:29:23Z",
+  "observed_at": "2026-11-23T04:24:46Z",
+  "valid_until": "2026-11-24T04:24:46Z",
   "tool_version": {
-    "kev": "2026.11.13"
+    "kev": "2026.11.20"
   },
   "database_revision": {
-    "kev": "2026-11-13T20:24:18.3008Z"
+    "kev": "2026-11-20T17:48:39.1516Z"
   },
   "files": {
-    "kev.json": "d86b3fc289d31a117117ae24e944d89737fd34ab06965ddc38bfec3059d4505f"
+    "kev.json": "a7512186c51792a81e1421b102056de3e48a97f8d746d1a43da8d4d3ef8d462a"
   },
   "status": "ok"
 }

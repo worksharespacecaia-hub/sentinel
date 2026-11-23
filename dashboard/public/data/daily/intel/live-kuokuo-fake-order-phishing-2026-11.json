@@ -1,0 +1,256 @@
+{
+  "event": {
+    "id": "live-kuokuo-fake-order-phishing-2026-11",
+    "kind": "live",
+    "title": "全國電會員收到含真實個資的假訂單釣魚郵件，來源待查",
+    "date": "2026-11-23",
+    "industry": "零售",
+    "attack_chain": [
+      "會員收到冒用全國電名義寄發的虛假訂單電子郵件",
+      "郵件中的會員姓名、電子郵件及會員卡號與真實資料相符，懷疑遭第三方利用進行釣魚詐騙",
+      "全國電盤點 APP 會員中臺、電商及內部會員管理系統的資料流向，並要求委外廠商協同調查"
+    ],
+    "attck": [
+      "T1566"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180706",
+        "title": "全國電子發布資安重訊，會員收到含真實個資的假訂單釣魚郵件，來源待查",
+        "quote": "經查發現，郵件中的會員姓名、電子郵件及會員卡號等資訊與真實資料相符，懷疑相關資訊遭第三方利用進行釣魚詐騙。",
+        "published": "2026-11-23",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-23T04:24:02Z",
+        "content_hash": "sha256:ffdb363590a8be2a8c4b576f870064e7c7759986204e3ade6346b5fe242b019b",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "會員資料的大量讀取與委外廠商存取需留存紀錄並監控異常",
+        "reason": "來源指出會員真實個資流入釣魚郵件但外洩途徑未明，需靠存取紀錄追溯；現有控制項未涵蓋會員資料存取監控。"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-kuokuo-fake-order-phishing-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：會員資料的大量讀取與委外廠商存取需留存紀錄並監控異常"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "ai-1",
+          "source": "ai",
+          "inferred": true,
+          "target": null,
+          "hypothesis": "會員中臺或會員 API 可能被大量撈取資料",
+          "why": null,
+          "check": "查會員 API 與資料庫的存取紀錄，找異常 IP、大量查詢或匯出；確認 API 有驗證資料擁有者與頻率限制",
+          "how": null,
+          "plain": "會員中臺或會員 API 可能被大量撈取資料",
+          "basis": "AI 依事件推測：全國電正對 APP 會員中臺、電商及會員管理系統做資料流向盤點與異常存取紀錄分析",
+          "systems": [
+            {
+              "asset_id": "member-api",
+              "label": "會員服務 API"
+            },
+            {
+              "asset_id": "member-db-prod",
+              "label": "正式會員資料庫"
+            },
+            {
+              "asset_id": "api-gateway",
+              "label": "API 閘道"
+            }
+          ],
+          "controls": []
+        },
+        {
+          "id": "ai-2",
+          "source": "ai",
+          "inferred": true,
+          "target": null,
+          "hypothesis": "委外廠商或寄信服務端的會員資料可能外流",
+          "why": null,
+          "check": "盤點哪些委外廠商與寄信服務能取得會員姓名、Email、會員卡號，檢查其帳號權限與近期存取紀錄",
+          "how": null,
+          "plain": "委外廠商或寄信服務端的會員資料可能外流",
+          "basis": "AI 依事件推測：全國電要求委外廠商協同調查，且外洩的欄位正是郵件寄送會用到的姓名與 Email",
+          "systems": [
+            {
+              "asset_id": "mail-service",
+              "label": "寄信服務"
+            },
+            {
+              "asset_id": "member-api",
+              "label": "會員服務 API"
+            }
+          ],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "事件沒有可比對的產品或控制項，程式無法自動判定，需人工確認；可檢查會員 API 是否被大量撈取，以及委外或寄信服務端的會員資料是否外流。",
+  "blocks": {
+    "1_summary": {
+      "title": "全國電會員收到含真實個資的假訂單釣魚郵件，來源待查",
+      "date": "2026-11-23",
+      "industry": "零售",
+      "attack_chain": [
+        "會員收到冒用全國電名義寄發的虛假訂單電子郵件",
+        "郵件中的會員姓名、電子郵件及會員卡號與真實資料相符，懷疑遭第三方利用進行釣魚詐騙",
+        "全國電盤點 APP 會員中臺、電商及內部會員管理系統的資料流向，並要求委外廠商協同調查"
+      ],
+      "attck": [
+        "T1566"
+      ],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180706",
+          "title": "全國電子發布資安重訊，會員收到含真實個資的假訂單釣魚郵件，來源待查",
+          "quote": "經查發現，郵件中的會員姓名、電子郵件及會員卡號等資訊與真實資料相符，懷疑相關資訊遭第三方利用進行釣魚詐騙。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-23T04:24:02Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "事件沒有可比對的產品或控制項，程式無法自動判定，需人工確認；可檢查會員 API 是否被大量撈取，以及委外或寄信服務端的會員資料是否外流。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：會員資料的大量讀取與委外廠商存取需留存紀錄並監控異常"
+          ],
+          "observed_at": "2026-11-23T04:24:02Z",
+          "suggestions": [
+            {
+              "id": "ai-1",
+              "source": "ai",
+              "inferred": true,
+              "target": null,
+              "hypothesis": "會員中臺或會員 API 可能被大量撈取資料",
+              "why": null,
+              "check": "查會員 API 與資料庫的存取紀錄，找異常 IP、大量查詢或匯出；確認 API 有驗證資料擁有者與頻率限制",
+              "how": null,
+              "plain": "會員中臺或會員 API 可能被大量撈取資料",
+              "basis": "AI 依事件推測：全國電正對 APP 會員中臺、電商及會員管理系統做資料流向盤點與異常存取紀錄分析",
+              "systems": [
+                {
+                  "asset_id": "member-api",
+                  "label": "會員服務 API"
+                },
+                {
+                  "asset_id": "member-db-prod",
+                  "label": "正式會員資料庫"
+                },
+                {
+                  "asset_id": "api-gateway",
+                  "label": "API 閘道"
+                }
+              ],
+              "controls": []
+            },
+            {
+              "id": "ai-2",
+              "source": "ai",
+              "inferred": true,
+              "target": null,
+              "hypothesis": "委外廠商或寄信服務端的會員資料可能外流",
+              "why": null,
+              "check": "盤點哪些委外廠商與寄信服務能取得會員姓名、Email、會員卡號，檢查其帳號權限與近期存取紀錄",
+              "how": null,
+              "plain": "委外廠商或寄信服務端的會員資料可能外流",
+              "basis": "AI 依事件推測：全國電要求委外廠商協同調查，且外洩的欄位正是郵件寄送會用到的姓名與 Email",
+              "systems": [
+                {
+                  "asset_id": "mail-service",
+                  "label": "寄信服務"
+                },
+                {
+                  "asset_id": "member-api",
+                  "label": "會員服務 API"
+                }
+              ],
+              "controls": []
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  },
+  "orchestrator_results": [
+    {
+      "stage": "review",
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "target_type": "event",
+      "target_id": "live-kuokuo-fake-order-phishing-2026-11",
+      "text": "事件沒有可比對的產品或控制項，程式無法自動判定，需人工確認；可檢查會員 API 是否被大量撈取，以及委外或寄信服務端的會員資料是否外流。",
+      "source": "live"
+    }
+  ]
+}

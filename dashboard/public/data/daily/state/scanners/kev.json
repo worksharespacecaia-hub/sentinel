@@ -1,9 +1,72 @@
 {
   "tool": "kev",
-  "tool_version": "2026.11.13",
-  "database_revision": "2026-11-13T20:24:18.3008Z",
-  "count": 1781,
+  "tool_version": "2026.11.20",
+  "database_revision": "2026-11-20T17:48:39.1516Z",
+  "count": 1790,
   "cves": {
+    "CVE-2026-129448": {
+      "added": "2026-11-20",
+      "vendor": "Apache",
+      "product": "Roller",
+      "name": "Apache Roller Deserialization of Untrusted Data Vulnerability",
+      "ransomware": false
+    },
+    "CVE-2026-123890": {
+      "added": "2026-11-20",
+      "vendor": "Broadcom",
+      "product": "VMware vCenter",
+      "name": "VMWare vCenter Authentication Bypass Using an Alternate Path or Channel Vulnerability",
+      "ransomware": false
+    },
+    "CVE-2025-42884": {
+      "added": "2026-11-20",
+      "vendor": "SAP",
+      "product": "NetWeaver",
+      "name": "SAP NetWeaver Improper Neutralization of Special Elements in Data Query Logic Vulnerability",
+      "ransomware": false
+    },
+    "CVE-2026-76466": {
+      "added": "2026-11-20",
+      "vendor": "Cisco",
+      "product": "Expressway Series",
+      "name": "Cisco Expressway Series Use of Hard-coded Credentials Vulnerability",
+      "ransomware": false
+    },
+    "CVE-2024-10441": {
+      "added": "2026-11-18",
+      "vendor": "Synology",
+      "product": "DiskStation Manager (DSM)",
+      "name": "Synology DiskStation Manager (DSM) Improper Encoding or Escaping of Output Vulnerability",
+      "ransomware": false
+    },
+    "CVE-2026-40217": {
+      "added": "2026-11-18",
+      "vendor": "BerriAI",
+      "product": "LiteLLM",
+      "name": "BerriAI LiteLLM Unprotected Alternate Channel Vulnerability",
+      "ransomware": false
+    },
+    "CVE-2026-90817": {
+      "added": "2026-11-18",
+      "vendor": "Vanderbilt University",
+      "product": "Research Electronic Data Capture (REDCap)",
+      "name": "Vanderbilt University Research Electronic Data Capture (REDCap) Code Injection Vulnerability",
+      "ransomware": false
+    },
+    "CVE-2026-90436": {
+      "added": "2026-11-18",
+      "vendor": "Apache",
+      "product": "Axis",
+      "name": "Apache Axis Unsafe Reflection Vulnerability",
+      "ransomware": false
+    },
+    "CVE-2026-115731": {
+      "added": "2026-11-17",
+      "vendor": "Perforce",
+      "product": "Puppet Enterprise",
+      "name": "Perforce Puppet Enterprise Deserialization of Untrusted Data Vulnerability",
+      "ransomware": false
+    },
     "CVE-2026-114713": {
       "added": "2026-11-13",
       "vendor": "UnrealIRCd",

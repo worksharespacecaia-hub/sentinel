@@ -1,0 +1,186 @@
+{
+  "event": {
+    "id": "live-ibiza-liteshop-anomalous-access-2026-11",
+    "kind": "live",
+    "title": "電商服務商伊比薩發現異常資料存取，崇越子公司全越運動影響待查",
+    "date": "2026-11-23",
+    "industry": "電商",
+    "attack_chain": [
+      "委外服務商伊比薩發現異常資料存取並通知客戶",
+      "全越運動在電商平臺發布防詐公告並清查受影響消費者與資料範圍"
+    ],
+    "attck": [],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180703",
+        "title": "崇越發布資安重訊，揭露第三方電商服務商伊比薩發現異常資料存取，子公司全越運動影響待查",
+        "quote": "根據上市公司崇越（5434）11月19日發布的 資安事件重大訊息 ，旗下子公司全越運動事業接獲電商平臺委外服務商伊比薩（IBIZA）通知，該服務商近期發現異常資料存取情況。",
+        "published": "2026-11-23",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-23T04:24:02Z",
+        "content_hash": "sha256:d78d019f8c9920de44f41090dd362e776656fb8cd0a6bc0dc757e9d2440cb67a",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "委外電商服務商須有資安事件通報義務並定期盤點其可存取的資料",
+        "reason": "來源顯示事件由委外服務商發現後才通知品牌方，影響範圍待查；現有控制項未涵蓋委外服務商的資料存取與通報要求。"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-ibiza-liteshop-anomalous-access-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：委外電商服務商須有資安事件通報義務並定期盤點其可存取的資料"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "ai-1",
+          "source": "ai",
+          "inferred": true,
+          "target": null,
+          "hypothesis": "我們若使用第三方電商或架站服務，其後台可能是破口",
+          "why": null,
+          "check": "盤點是否有委外電商、倉儲、架站服務（含未登記的 SaaS），確認其可取得的顧客資料與管理員帳號是否啟用多因素驗證",
+          "how": null,
+          "plain": "我們若使用第三方電商或架站服務，其後台可能是破口",
+          "basis": "AI 依事件推測：事件為第三方電商服務商發現異常資料存取，來源未交代入侵手法",
+          "systems": [
+            {
+              "asset_id": "saas-quicksite-builder",
+              "label": "未登記的架站服務"
+            },
+            {
+              "asset_id": "storefront",
+              "label": "商店網站"
+            }
+          ],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "崇越於 11 月 19 日發布資安重訊，子公司全越運動接獲電商平臺委外服務商伊比薩通知，該服務商近期發現異常資料存取。是否有消費者資料受影響仍待確認，伊比薩旗下經營 LiteShop 電商平臺，是否波及其他企業客戶尚不清楚。",
+  "blocks": {
+    "1_summary": {
+      "title": "電商服務商伊比薩發現異常資料存取，崇越子公司全越運動影響待查",
+      "date": "2026-11-23",
+      "industry": "電商",
+      "attack_chain": [
+        "委外服務商伊比薩發現異常資料存取並通知客戶",
+        "全越運動在電商平臺發布防詐公告並清查受影響消費者與資料範圍"
+      ],
+      "attck": [],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180703",
+          "title": "崇越發布資安重訊，揭露第三方電商服務商伊比薩發現異常資料存取，子公司全越運動影響待查",
+          "quote": "根據上市公司崇越（5434）11月19日發布的 資安事件重大訊息 ，旗下子公司全越運動事業接獲電商平臺委外服務商伊比薩（IBIZA）通知，該服務商近期發現異常資料存取情況。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-23T04:24:02Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "崇越於 11 月 19 日發布資安重訊，子公司全越運動接獲電商平臺委外服務商伊比薩通知，該服務商近期發現異常資料存取。是否有消費者資料受影響仍待確認，伊比薩旗下經營 LiteShop 電商平臺，是否波及其他企業客戶尚不清楚。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：委外電商服務商須有資安事件通報義務並定期盤點其可存取的資料"
+          ],
+          "observed_at": "2026-11-23T04:24:02Z",
+          "suggestions": [
+            {
+              "id": "ai-1",
+              "source": "ai",
+              "inferred": true,
+              "target": null,
+              "hypothesis": "我們若使用第三方電商或架站服務，其後台可能是破口",
+              "why": null,
+              "check": "盤點是否有委外電商、倉儲、架站服務（含未登記的 SaaS），確認其可取得的顧客資料與管理員帳號是否啟用多因素驗證",
+              "how": null,
+              "plain": "我們若使用第三方電商或架站服務，其後台可能是破口",
+              "basis": "AI 依事件推測：事件為第三方電商服務商發現異常資料存取，來源未交代入侵手法",
+              "systems": [
+                {
+                  "asset_id": "saas-quicksite-builder",
+                  "label": "未登記的架站服務"
+                },
+                {
+                  "asset_id": "storefront",
+                  "label": "商店網站"
+                }
+              ],
+              "controls": []
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  },
+  "orchestrator_results": []
+}

@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-11-17T22:53:39Z",
-  "advisories_checked": 6,
+  "checked_at": "2026-11-23T02:47:31Z",
+  "advisories_checked": 7,
   "hits": [],
   "dispatched": false,
   "items": [
@@ -99,7 +99,7 @@
     {
       "advisory_id": "kev-cve-2026-111497",
       "revision": "2026-11-10T20:25:59.130",
-      "status": "pending",
+      "status": "done",
       "verdict": "affected",
       "asset_ids": [
         "internal-tool",
@@ -111,7 +111,8 @@
       "matched_component": [
         "node"
       ],
-      "error": null
+      "error": null,
+      "run_id": "44452165378"
     },
     {
       "advisory_id": "kev-cve-2026-109618",
@@ -133,7 +134,7 @@
     {
       "advisory_id": "kev-cve-2026-109618",
       "revision": "2026-11-16T16:54:58.603",
-      "status": "pending",
+      "status": "done",
       "verdict": "affected",
       "asset_ids": [
         "marketing-site",
@@ -144,12 +145,13 @@
       "matched_component": [
         "php"
       ],
-      "error": null
+      "error": null,
+      "run_id": "44452157855"
     },
     {
       "advisory_id": "kev-cve-2026-109619",
       "revision": "2026-11-16T16:17:46.967",
-      "status": "pending",
+      "status": "done",
       "verdict": "affected",
       "asset_ids": [
         "marketing-site",
@@ -160,16 +162,202 @@
       "matched_component": [
         "php"
       ],
+      "error": null,
+      "run_id": "44452161773"
+    },
+    {
+      "advisory_id": "kev-cve-2024-10441",
+      "revision": "2026-11-18T21:17:43.400",
+      "status": "done",
+      "verdict": "affected",
+      "asset_ids": [
+        "nas-office-01"
+      ],
+      "input_hash": "b5deda320067092fedc7204d572708d24e290f13dca8b7710b3831af753652f1",
+      "reason": "命中 nas-office-01",
+      "matched_component": [
+        "synology-dsm"
+      ],
+      "error": null,
+      "run_id": "44666872557"
+    },
+    {
+      "advisory_id": "kev-cve-2026-109618",
+      "revision": "2026-11-18T19:17:25.813",
+      "status": "done",
+      "verdict": "affected",
+      "asset_ids": [
+        "marketing-site",
+        "phpmyadmin"
+      ],
+      "input_hash": "c9a17403aac6d64f9760f6344e90a6e27ddff19da7ea92344c945042f31733ab",
+      "reason": "命中 marketing-site, phpmyadmin",
+      "matched_component": [
+        "php"
+      ],
+      "error": null,
+      "run_id": "44740126535"
+    },
+    {
+      "advisory_id": "kev-cve-2026-109619",
+      "revision": "2026-11-18T19:17:26.517",
+      "status": "done",
+      "verdict": "affected",
+      "asset_ids": [
+        "marketing-site",
+        "phpmyadmin"
+      ],
+      "input_hash": "b31b3c1051f75d064267b00dd95880c1f50593555b0221315bcad11a19383d04",
+      "reason": "命中 marketing-site, phpmyadmin",
+      "matched_component": [
+        "php"
+      ],
+      "error": null,
+      "run_id": "44740130290"
+    },
+    {
+      "advisory_id": "kev-cve-2026-111497",
+      "revision": "2026-11-18T19:17:27.513",
+      "status": "pending",
+      "verdict": "affected",
+      "asset_ids": [
+        "internal-tool",
+        "member-api",
+        "storefront"
+      ],
+      "input_hash": "8ade064f589a2b143de248c57bbe7672438daacaaf075d948fe6db6f01419cdd",
+      "reason": "命中 internal-tool, member-api, storefront",
+      "matched_component": [
+        "node"
+      ],
+      "error": null
+    },
+    {
+      "advisory_id": "kev-cve-2024-10441",
+      "revision": "2026-11-19T17:17:51.900",
+      "status": "done",
+      "verdict": "affected",
+      "asset_ids": [
+        "nas-office-01"
+      ],
+      "input_hash": "ccec4cf4d36688e6c691ea7e5ed37531a46e2e1c8ef949b6bf9efe2363511c4b",
+      "reason": "命中 nas-office-01",
+      "matched_component": [
+        "synology-dsm"
+      ],
+      "error": null,
+      "run_id": "44897488989"
+    },
+    {
+      "advisory_id": "kev-cve-2026-109618",
+      "revision": "2026-11-20T12:18:18.987",
+      "status": "pending",
+      "verdict": "affected",
+      "asset_ids": [
+        "marketing-site",
+        "phpmyadmin"
+      ],
+      "input_hash": "07f9e54d27d9f261d50a4202f0f60da5de6fd26b0a8d4a26683fc1e0db009dec",
+      "reason": "命中 marketing-site, phpmyadmin",
+      "matched_component": [
+        "php"
+      ],
+      "error": null
+    },
+    {
+      "advisory_id": "kev-cve-2026-109619",
+      "revision": "2026-11-20T12:18:19.730",
+      "status": "pending",
+      "verdict": "affected",
+      "asset_ids": [
+        "marketing-site",
+        "phpmyadmin"
+      ],
+      "input_hash": "2da116e43d7240832affdf4bcac0f5f640cb410c0394c8e5d1106e42c14e3984",
+      "reason": "命中 marketing-site, phpmyadmin",
+      "matched_component": [
+        "php"
+      ],
+      "error": null
+    },
+    {
+      "advisory_id": "kev-cve-2024-10441",
+      "revision": "2026-11-21T05:18:09.090",
+      "status": "pending",
+      "verdict": "affected",
+      "asset_ids": [
+        "nas-office-01"
+      ],
+      "input_hash": "85a508342b757c269ecc65609bdfa979b348af11138912da7239a1e111e66040",
+      "reason": "命中 nas-office-01",
+      "matched_component": [
+        "synology-dsm"
+      ],
       "error": null
     }
   ],
   "graph_fresh": true,
   "auto_advisories": [
     {
+      "id": "kev-cve-2024-10441",
+      "kind": "advisory",
+      "generated_by": "kev-nvd",
+      "revision": "2026-11-21T05:18:09.090",
+      "title": "CISA KEV：Synology DiskStation Manager (DSM) Improper Encoding or Escaping of Output Vulnerability（CVE-2024-10441）",
+      "date": "2026-11-18",
+      "industry": null,
+      "summary": "Improper encoding or escaping of output vulnerability in the system plugin daemon in Synology BeeStation OS (BSM) before 1.1-65374 and Synology DiskStation Manager (DSM) before 7.2-64570-4, 7.2.1-69057-6 and 7.2.2-72806-1 allows remote attackers to execute arbitrary code via unspecified vectors.",
+      "attack_chain": [],
+      "attck": [],
+      "cves": [
+        "CVE-2024-10441"
+      ],
+      "controls": [],
+      "confidence": "confirmed",
+      "products": [
+        {
+          "name": "synology-dsm",
+          "ecosystem": "synology-dsm",
+          "affected": [
+            {
+              "start_including": "7.2",
+              "end_excluding": "7.2-64570-4"
+            },
+            {
+              "start_including": "7.2.1-69057",
+              "end_excluding": "7.2.1-69057-6"
+            },
+            {
+              "start_including": "7.2.2",
+              "end_excluding": "7.2.2-72806-1"
+            }
+          ],
+          "cvss": 9.8,
+          "known_exploited": true,
+          "impact": "other"
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search=CVE-2024-10441",
+          "title": "CISA Known Exploited Vulnerabilities：CVE-2024-10441",
+          "quote": null,
+          "published": "2026-11-18"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-10441",
+          "title": "NVD：CVE-2024-10441",
+          "quote": null,
+          "published": "2025-03-19"
+        }
+      ],
+      "generated_at": "2026-11-21T11:05:09Z"
+    },
+    {
       "id": "kev-cve-2026-109618",
       "kind": "advisory",
       "generated_by": "kev-nvd",
-      "revision": "2026-11-16T16:54:58.603",
+      "revision": "2026-11-20T12:18:18.987",
       "title": "CISA KEV：PHP Memory Corruption Vulnerability（CVE-2026-109618）",
       "date": "2026-10-26",
       "industry": null,
@@ -222,13 +410,13 @@
           "published": "2026-10-21"
         }
       ],
-      "generated_at": "2026-11-16T22:04:48Z"
+      "generated_at": "2026-11-20T12:55:27Z"
     },
     {
       "id": "kev-cve-2026-109619",
       "kind": "advisory",
       "generated_by": "kev-nvd",
-      "revision": "2026-11-16T16:17:46.967",
+      "revision": "2026-11-20T12:18:19.730",
       "title": "CISA KEV：PHP Stale Internal Request-State Vulnerability（CVE-2026-109619）",
       "date": "2026-10-26",
       "industry": null,
@@ -281,13 +469,13 @@
           "published": "2026-10-21"
         }
       ],
-      "generated_at": "2026-11-16T22:04:48Z"
+      "generated_at": "2026-11-20T12:55:27Z"
     },
     {
       "id": "kev-cve-2026-111497",
       "kind": "advisory",
       "generated_by": "kev-nvd",
-      "revision": "2026-11-10T20:25:59.130",
+      "revision": "2026-11-18T19:17:27.513",
       "title": "CISA KEV：Google Brotli Unchecked Return Value Vulnerability（CVE-2026-111497）",
       "date": "2026-10-27",
       "industry": null,
@@ -335,7 +523,7 @@
           "published": "2026-10-22"
         }
       ],
-      "generated_at": "2026-11-11T18:42:51Z"
+      "generated_at": "2026-11-19T03:30:16Z"
     },
     {
       "id": "kev-cve-2026-119977",
@@ -537,232 +725,227 @@
     }
   ],
   "kev_checked": {
+    "CVE-2024-10441": {
+      "checked_at": "2026-11-22T15:19:39Z",
+      "mapped": true,
+      "revision": "2026-11-21T05:18:09.090"
+    },
     "CVE-2024-27834": {
-      "checked_at": "2026-11-17T22:53:39Z",
+      "checked_at": "2026-11-22T21:47:42Z",
       "mapped": false,
       "revision": null
     },
-    "CVE-2025-61624": {
-      "checked_at": "2026-11-15T22:50:04Z",
-      "mapped": false,
-      "revision": null
-    },
-    "CVE-2026-0322": {
-      "checked_at": "2026-11-13T08:00:00Z",
-      "mapped": false,
-      "revision": null
-    },
-    "CVE-2026-102764": {
-      "checked_at": "2026-11-15T02:41:04Z",
+    "CVE-2025-42884": {
+      "checked_at": "2026-11-23T02:47:31Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-102895": {
-      "checked_at": "2026-11-17T22:53:39Z",
-      "mapped": false,
-      "revision": null
-    },
-    "CVE-2026-104935": {
-      "checked_at": "2026-11-12T01:32:58Z",
-      "mapped": false,
-      "revision": null
-    },
-    "CVE-2026-105133": {
-      "checked_at": "2026-11-13T08:00:00Z",
-      "mapped": false,
-      "revision": null
-    },
-    "CVE-2026-105134": {
-      "checked_at": "2026-11-13T08:00:00Z",
+      "checked_at": "2026-11-22T21:47:42Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-106931": {
-      "checked_at": "2026-11-17T04:29:59Z",
+      "checked_at": "2026-11-19T21:37:18Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-109618": {
-      "checked_at": "2026-11-17T22:53:39Z",
+      "checked_at": "2026-11-22T21:47:42Z",
       "mapped": true,
-      "revision": "2026-11-16T16:54:58.603"
+      "revision": "2026-11-20T12:18:18.987"
     },
     "CVE-2026-109619": {
-      "checked_at": "2026-11-17T22:53:39Z",
+      "checked_at": "2026-11-23T02:47:31Z",
       "mapped": true,
-      "revision": "2026-11-16T16:17:46.967"
+      "revision": "2026-11-20T12:18:19.730"
     },
     "CVE-2026-110447": {
-      "checked_at": "2026-11-16T22:04:48Z",
+      "checked_at": "2026-11-21T23:19:01Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-110936": {
-      "checked_at": "2026-11-17T04:29:59Z",
+      "checked_at": "2026-11-19T21:37:18Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-111357": {
-      "checked_at": "2026-11-17T04:29:59Z",
+      "checked_at": "2026-11-22T06:51:45Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-111497": {
-      "checked_at": "2026-11-17T22:53:39Z",
+      "checked_at": "2026-11-22T21:47:42Z",
       "mapped": true,
-      "revision": "2026-11-10T20:25:59.130"
+      "revision": "2026-11-18T19:17:27.513"
     },
     "CVE-2026-111560": {
-      "checked_at": "2026-11-17T22:53:39Z",
+      "checked_at": "2026-11-22T21:47:42Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-111793": {
-      "checked_at": "2026-11-17T04:29:59Z",
+      "checked_at": "2026-11-22T06:51:45Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-114625": {
-      "checked_at": "2026-11-17T04:29:59Z",
+      "checked_at": "2026-11-22T06:51:45Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-114713": {
-      "checked_at": "2026-11-17T14:26:46Z",
+      "checked_at": "2026-11-22T15:19:39Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-115731": {
-      "checked_at": "2026-11-17T22:53:39Z",
+      "checked_at": "2026-11-22T21:47:42Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-116606": {
-      "checked_at": "2026-11-17T22:53:39Z",
+      "checked_at": "2026-11-22T21:47:42Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-116779": {
-      "checked_at": "2026-11-17T22:53:39Z",
+      "checked_at": "2026-11-22T21:47:42Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-118527": {
-      "checked_at": "2026-11-17T22:53:39Z",
+      "checked_at": "2026-11-22T21:47:42Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-119977": {
-      "checked_at": "2026-11-17T22:53:39Z",
+      "checked_at": "2026-11-22T21:47:42Z",
       "mapped": true,
       "revision": "2026-11-04T12:52:38.683"
     },
     "CVE-2026-123039": {
-      "checked_at": "2026-11-17T14:26:46Z",
+      "checked_at": "2026-11-22T15:19:39Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-123158": {
-      "checked_at": "2026-11-17T04:29:59Z",
+      "checked_at": "2026-11-22T06:51:45Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-123218": {
-      "checked_at": "2026-11-17T22:53:39Z",
+      "checked_at": "2026-11-22T21:47:42Z",
+      "mapped": false,
+      "revision": null
+    },
+    "CVE-2026-123890": {
+      "checked_at": "2026-11-23T02:47:31Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-124194": {
-      "checked_at": "2026-11-17T22:53:39Z",
+      "checked_at": "2026-11-22T21:47:42Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-125350": {
-      "checked_at": "2026-11-17T22:53:39Z",
+      "checked_at": "2026-11-22T21:47:42Z",
+      "mapped": false,
+      "revision": null
+    },
+    "CVE-2026-129448": {
+      "checked_at": "2026-11-23T02:47:31Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-19868": {
-      "checked_at": "2026-11-17T22:53:39Z",
+      "checked_at": "2026-11-22T21:47:42Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-20320": {
-      "checked_at": "2026-11-17T04:29:59Z",
+      "checked_at": "2026-11-22T06:51:45Z",
       "mapped": false,
       "revision": null
     },
-    "CVE-2026-21589": {
-      "checked_at": "2026-11-14T18:04:32Z",
+    "CVE-2026-40217": {
+      "checked_at": "2026-11-22T21:47:42Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-41709": {
-      "checked_at": "2026-11-17T22:53:39Z",
+      "checked_at": "2026-11-22T21:47:42Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-46300": {
-      "checked_at": "2026-11-17T22:53:39Z",
+      "checked_at": "2026-11-22T21:47:42Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-48356": {
-      "checked_at": "2026-11-17T22:53:39Z",
+      "checked_at": "2026-11-22T21:47:42Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-76418": {
-      "checked_at": "2026-11-17T22:53:39Z",
+      "checked_at": "2026-11-22T21:47:42Z",
       "mapped": false,
       "revision": null
     },
-    "CVE-2026-76519": {
-      "checked_at": "2026-11-13T08:00:00Z",
+    "CVE-2026-76466": {
+      "checked_at": "2026-11-23T02:47:31Z",
+      "mapped": false,
+      "revision": null
+    },
+    "CVE-2026-90436": {
+      "checked_at": "2026-11-22T15:19:39Z",
+      "mapped": false,
+      "revision": null
+    },
+    "CVE-2026-90817": {
+      "checked_at": "2026-11-22T15:19:39Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-96652": {
-      "checked_at": "2026-11-17T04:29:59Z",
+      "checked_at": "2026-11-19T21:37:18Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-96654": {
-      "checked_at": "2026-11-17T04:29:59Z",
+      "checked_at": "2026-11-19T21:37:18Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-96655": {
-      "checked_at": "2026-11-17T04:29:59Z",
+      "checked_at": "2026-11-19T21:37:18Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-96656": {
-      "checked_at": "2026-11-17T04:29:59Z",
-      "mapped": false,
-      "revision": null
-    },
-    "CVE-2026-96951": {
-      "checked_at": "2026-11-12T01:32:58Z",
+      "checked_at": "2026-11-19T21:37:18Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-97229": {
-      "checked_at": "2026-11-17T22:53:39Z",
+      "checked_at": "2026-11-22T21:47:42Z",
       "mapped": true,
       "revision": "2026-11-02T13:30:16.800"
     }
   },
   "kev_catalog": {
-    "version": "2026.11.17",
-    "released": "2026-11-17T17:53:15.5664Z",
-    "count": 1782
+    "version": "2026.11.20",
+    "released": "2026-11-20T17:48:39.1516Z",
+    "count": 1790
   },
   "auto_status": {
     "status": "ok",
     "new": [],
     "updated": [],
-    "remaining": 1,
+    "remaining": 0,
     "errors": []
   }
 }

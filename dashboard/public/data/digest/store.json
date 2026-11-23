@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-17T05:38:42Z",
+  "updated_at": "2026-11-23T04:32:37Z",
   "data_issues": [],
   "events": {
     "evt-1shop-2026-10": {
@@ -9,13 +9,13 @@
       "title": "1shop 一頁購物疑 Mailgun API 金鑰遭取得，詐騙信內容吻合真實訂單",
       "event_date": "2026-10-28",
       "first_seen": "2026-11-11",
-      "last_seen": "2026-11-17",
-      "last_seen_at": "2026-11-17T05:28:31Z",
-      "observed_run_id": "44024324550",
+      "last_seen": "2026-11-23",
+      "last_seen_at": "2026-11-23T04:24:02Z",
+      "observed_run_id": "45111578163",
       "confidence": "provisional",
       "is_update_of": null,
       "cves": [],
-      "summary": "此事件與我們有關：寄信服務金鑰已 464 天未輪替且沒有 IP 白名單，程式判定為中風險（6 分），建議輪替金鑰並加上 IP 白名單。",
+      "summary": "1shop 事件與我們的寄信服務金鑰有關：該金鑰 470 天未輪替、無 IP 白名單，程式判定 1 項受影響，風險為中（6 分）。",
       "sources": [
         {
           "title": "繼91APP遭駭後，1shop、Cyberbiz與meepShop等電商技術服務業者接連傳出資安警訊 | iThome",
@@ -31,8 +31,8 @@
         }
       ],
       "assessment": {
-        "evaluated_at": "2026-11-17T05:28:31Z",
-        "run_id": "44024324550",
+        "evaluated_at": "2026-11-23T04:24:02Z",
+        "run_id": "45111578163",
         "relation": "affected",
         "max_level": "medium",
         "affected_count": 1,
@@ -57,13 +57,13 @@
       "title": "91APP 訂單資料庫遭入侵：未更新的內部工具 Appsmith 成破口，自內部 GitLab 取得資料庫金鑰",
       "event_date": "2026-10-03",
       "first_seen": "2026-11-11",
-      "last_seen": "2026-11-17",
-      "last_seen_at": "2026-11-17T05:28:31Z",
-      "observed_run_id": "44024324550",
+      "last_seen": "2026-11-23",
+      "last_seen_at": "2026-11-23T04:24:02Z",
+      "observed_run_id": "45111578163",
       "confidence": "confirmed",
       "is_update_of": null,
       "cves": [],
-      "summary": "程式比對出 5 項受影響，最高為高風險：內部營運工具對外開放、程式碼管理平台與品牌 App 內有正式金鑰，與 91APP 事件的入侵手法相符；另有辦公室 NAS 對外開放與測試環境可連正式訂單資料庫 2 項中風險，建議優先關閉對外開放並輪替金鑰。",
+      "summary": "程式判定 5 項受影響，最高為高風險：內部營運工具對外開放（8 分）、品牌 App 與程式碼管理平台的金鑰存放不當（10 分與 8 分），另有辦公室 NAS 對外開放與測試環境連到正式訂單資料庫（各為中風險 5 分）。",
       "sources": [
         {
           "title": "91APP 階段性調查結果還原資安事件經過，向品牌客戶與消費者致歉 | TechNews 科技新報",
@@ -79,8 +79,8 @@
         }
       ],
       "assessment": {
-        "evaluated_at": "2026-11-17T05:28:31Z",
-        "run_id": "44024324550",
+        "evaluated_at": "2026-11-23T04:24:02Z",
+        "run_id": "45111578163",
         "relation": "affected",
         "max_level": "high",
         "affected_count": 5,
@@ -129,13 +129,13 @@
       "title": "幣安 63.4 億美元駭案：假面試惡意程式入侵開發者電腦，取得容器部署憑證後攻陷錢包簽章服務",
       "event_date": "2026-10-30",
       "first_seen": "2026-11-11",
-      "last_seen": "2026-11-17",
-      "last_seen_at": "2026-11-17T05:28:31Z",
-      "observed_run_id": "44024324550",
+      "last_seen": "2026-11-23",
+      "last_seen_at": "2026-11-23T04:24:02Z",
+      "observed_run_id": "45111578163",
       "confidence": "confirmed",
       "is_update_of": null,
       "cves": [],
-      "summary": "程式比對出 2 項受影響：工程部門筆電（乙）持有正式部署憑證為高風險（7 分），AI 程式助理可繞過審核直接部署為中風險（4 分）；建議撤銷憑證並讓正式部署只走自動部署流程。",
+      "summary": "程式判定 2 項受影響：工程部門筆電持有正式部署授權（高風險 7 分），以及 AI 程式助理的授權可繞過審核直接部署（中風險 4 分）。",
       "sources": [
         {
           "title": "幣安63.4億美元資安案調查出爐：北韓駭客如何用「假面試、內部AI」層層攻陷錢包？|數位時代 BusinessNext",
@@ -151,8 +151,8 @@
         }
       ],
       "assessment": {
-        "evaluated_at": "2026-11-17T05:28:31Z",
-        "run_id": "44024324550",
+        "evaluated_at": "2026-11-23T04:24:02Z",
+        "run_id": "45111578163",
         "relation": "affected",
         "max_level": "high",
         "affected_count": 2,
@@ -183,15 +183,15 @@
       "title": "Next.js Middleware 授權繞過（CVE-2025-29927）",
       "event_date": "2025-03-21",
       "first_seen": "2026-11-11",
-      "last_seen": "2026-11-17",
-      "last_seen_at": "2026-11-17T05:28:31Z",
-      "observed_run_id": "44024324550",
+      "last_seen": "2026-11-23",
+      "last_seen_at": "2026-11-23T04:24:02Z",
+      "observed_run_id": "45111578163",
       "confidence": "confirmed",
       "is_update_of": null,
       "cves": [
         "CVE-2025-29927"
       ],
-      "summary": "商店網站使用的框架版本落在受影響範圍，且對外、自行代管、依賴中介層做登入檢查，利用條件成立，程式判定為高風險（8 分）；建議升級到已修補版本。",
+      "summary": "商店網站的 Next.js 14.1.0 落在受影響範圍，且自行架設並使用中介層驗證，利用條件成立；程式判定為高風險（8 分）。",
       "sources": [
         {
           "title": "Authorization Bypass in Next.js Middleware · Advisory · vercel/next.js · GitHub",
@@ -201,8 +201,8 @@
         }
       ],
       "assessment": {
-        "evaluated_at": "2026-11-17T05:28:31Z",
-        "run_id": "44024324550",
+        "evaluated_at": "2026-11-23T04:24:02Z",
+        "run_id": "45111578163",
         "relation": "affected",
         "max_level": "high",
         "affected_count": 1,
@@ -227,16 +227,16 @@
       "title": "PHP2Shell：PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619）",
       "event_date": "2026-10-21",
       "first_seen": "2026-11-11",
-      "last_seen": "2026-11-17",
-      "last_seen_at": "2026-11-17T05:28:31Z",
-      "observed_run_id": "44024324550",
+      "last_seen": "2026-11-23",
+      "last_seen_at": "2026-11-23T04:24:02Z",
+      "observed_run_id": "45111578163",
       "confidence": "confirmed",
       "is_update_of": null,
       "cves": [
         "CVE-2026-109618",
         "CVE-2026-109619"
       ],
-      "summary": "程式比對出 2 項受影響：行銷官網對外且原廠已不再修補，為高風險（9 分）；資料庫管理介面雖也命中，但僅允許公司網路連入，為中風險（4 分）。建議行銷官網優先升級或暫時下架。",
+      "summary": "行銷官網的 PHP 8.1.27 受影響、利用條件成立且已停止支援無修補，為高風險（9 分）；phpmyadmin 因只允許公司 VPN 連入而降為中風險（4 分）。",
       "sources": [
         {
           "title": "CVE-2026-109618 and CVE-2026-109619: Critical Unauthenticated Remote Code Execution in PHP",
@@ -258,8 +258,8 @@
         }
       ],
       "assessment": {
-        "evaluated_at": "2026-11-17T05:28:31Z",
-        "run_id": "44024324550",
+        "evaluated_at": "2026-11-23T04:24:02Z",
+        "run_id": "45111578163",
         "relation": "affected",
         "max_level": "high",
         "affected_count": 2,
@@ -296,9 +296,9 @@
       "title": "Synology NAS 遭 C3RB3R 勒索軟體加密：DSM 登入頁對外暴露，常駐連接的備份碟一併被加密",
       "event_date": "2026-10-28",
       "first_seen": "2026-11-11",
-      "last_seen": "2026-11-17",
-      "last_seen_at": "2026-11-17T05:28:31Z",
-      "observed_run_id": "44024324550",
+      "last_seen": "2026-11-23",
+      "last_seen_at": "2026-11-23T04:24:02Z",
+      "observed_run_id": "45111578163",
       "confidence": "provisional",
       "is_update_of": null,
       "cves": [
@@ -306,7 +306,7 @@
         "CVE-2026-13639",
         "CVE-2026-13684"
       ],
-      "summary": "辦公室 NAS 版本落在受影響範圍且管理頁對外，為高風險（8 分）；另有備份與來源未隔離、管理頁對外開放 2 項中風險（各 5 分），與該事件勒索加密備份碟的情況相同，建議先關閉對外並隔離備份。",
+      "summary": "辦公室 NAS 有 3 項受影響：系統版本漏洞且管理頁對外（高風險 8 分），備份未與來源隔離且從未還原測試、管理頁對外開放（各為中風險 5 分）。",
       "sources": [
         {
           "title": "Synology NAS 接連遭勒索、PHP2Shell 漏洞波及套件，用戶自保與各家 NAS 因應之道 – CyberQ 賽博客",
@@ -316,8 +316,8 @@
         }
       ],
       "assessment": {
-        "evaluated_at": "2026-11-17T05:28:31Z",
-        "run_id": "44024324550",
+        "evaluated_at": "2026-11-23T04:24:02Z",
+        "run_id": "45111578163",
         "relation": "affected",
         "max_level": "high",
         "affected_count": 3,
@@ -348,21 +348,71 @@
         "relation_changed_at": null
       }
     },
+    "kev-cve-2024-10441": {
+      "id": "kev-cve-2024-10441",
+      "kind": "advisory",
+      "title": "CISA KEV：Synology DiskStation Manager (DSM) Improper Encoding or Escaping of Output Vulnerability（CVE-2024-10441）",
+      "event_date": "2026-11-18",
+      "first_seen": "2026-11-19",
+      "last_seen": "2026-11-23",
+      "last_seen_at": "2026-11-23T04:24:02Z",
+      "observed_run_id": "45111578163",
+      "confidence": "confirmed",
+      "is_update_of": null,
+      "cves": [
+        "CVE-2024-10441"
+      ],
+      "summary": "辦公室 NAS 的 synology-dsm 7.2.1-69057 Update 5 落在受影響範圍且對外，此漏洞已被實際利用，程式判定為高風險（8 分）。",
+      "sources": [
+        {
+          "title": "CISA Known Exploited Vulnerabilities：CVE-2024-10441",
+          "domain": "www.cisa.gov",
+          "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search=CVE-2024-10441",
+          "verified": true
+        },
+        {
+          "title": "NVD：CVE-2024-10441",
+          "domain": "nvd.nist.gov",
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-10441",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-23T04:24:02Z",
+        "run_id": "45111578163",
+        "relation": "affected",
+        "max_level": "high",
+        "affected_count": 1,
+        "conclusion": "1 項受影響，最高風險為高。辦公室 NAS：synology-dsm 7.2.1-69057 Update 5，對外。",
+        "impacts": [
+          {
+            "asset_id": "nas-office-01",
+            "asset_label": "辦公室 NAS",
+            "verdict": "affected",
+            "level": "high"
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
     "kev-cve-2026-109618": {
       "id": "kev-cve-2026-109618",
       "kind": "advisory",
       "title": "CISA KEV：PHP Memory Corruption Vulnerability（CVE-2026-109618）",
       "event_date": "2026-10-26",
       "first_seen": "2026-11-11",
-      "last_seen": "2026-11-17",
-      "last_seen_at": "2026-11-17T05:28:31Z",
-      "observed_run_id": "44024324550",
+      "last_seen": "2026-11-23",
+      "last_seen_at": "2026-11-23T04:24:02Z",
+      "observed_run_id": "45111578163",
       "confidence": "confirmed",
       "is_update_of": null,
       "cves": [
         "CVE-2026-109618"
       ],
-      "summary": "此漏洞已被列入已遭利用清單。行銷官網版本受影響，為高風險（9 分）；資料庫管理介面也受影響但僅限公司網路連入，為中風險（4 分）。",
+      "summary": "行銷官網的 php 8.1.27 受影響，為高風險（9 分）；phpmyadmin 的 php 8.3.20 也受影響，但因只允許公司 VPN 連入，為中風險（4 分）。",
       "sources": [
         {
           "title": "CISA Known Exploited Vulnerabilities：CVE-2026-109618",
@@ -378,8 +428,8 @@
         }
       ],
       "assessment": {
-        "evaluated_at": "2026-11-17T05:28:31Z",
-        "run_id": "44024324550",
+        "evaluated_at": "2026-11-23T04:24:02Z",
+        "run_id": "45111578163",
         "relation": "affected",
         "max_level": "high",
         "affected_count": 2,
@@ -416,15 +466,15 @@
       "title": "CISA KEV：PHP Stale Internal Request-State Vulnerability（CVE-2026-109619）",
       "event_date": "2026-10-26",
       "first_seen": "2026-11-11",
-      "last_seen": "2026-11-17",
-      "last_seen_at": "2026-11-17T05:28:31Z",
-      "observed_run_id": "44024324550",
+      "last_seen": "2026-11-23",
+      "last_seen_at": "2026-11-23T04:24:02Z",
+      "observed_run_id": "45111578163",
       "confidence": "confirmed",
       "is_update_of": null,
       "cves": [
         "CVE-2026-109619"
       ],
-      "summary": "此漏洞已被列入已遭利用清單。行銷官網版本受影響，為高風險（9 分）；資料庫管理介面也受影響但僅限公司網路連入，為中風險（4 分）。",
+      "summary": "行銷官網的 php 8.1.27 受影響，為高風險（9 分）；phpmyadmin 的 php 8.3.20 也受影響，但因有連線限制補償，為中風險（4 分）。",
       "sources": [
         {
           "title": "CISA Known Exploited Vulnerabilities：CVE-2026-109619",
@@ -440,8 +490,8 @@
         }
       ],
       "assessment": {
-        "evaluated_at": "2026-11-17T05:28:31Z",
-        "run_id": "44024324550",
+        "evaluated_at": "2026-11-23T04:24:02Z",
+        "run_id": "45111578163",
         "relation": "affected",
         "max_level": "high",
         "affected_count": 2,
@@ -478,15 +528,15 @@
       "title": "CISA KEV：Google Brotli Unchecked Return Value Vulnerability（CVE-2026-111497）",
       "event_date": "2026-10-27",
       "first_seen": "2026-11-11",
-      "last_seen": "2026-11-17",
-      "last_seen_at": "2026-11-17T05:28:31Z",
-      "observed_run_id": "44024324550",
+      "last_seen": "2026-11-23",
+      "last_seen_at": "2026-11-23T04:24:02Z",
+      "observed_run_id": "45111578163",
       "confidence": "confirmed",
       "is_update_of": null,
       "cves": [
         "CVE-2026-111497"
       ],
-      "summary": "此漏洞已被列入已遭利用清單，3 項受影響且皆為高風險：商店網站（9 分）、內部營運工具（8 分）與會員 API（7 分），建議升級 Node.js 到已修補版本。",
+      "summary": "node 22.11.0 落在受影響範圍，共 3 項受影響且皆為高風險：商店網站（9 分）、內部營運工具（8 分）、會員 API（7 分）；此漏洞已被實際利用。",
       "sources": [
         {
           "title": "CISA Known Exploited Vulnerabilities：CVE-2026-111497",
@@ -502,8 +552,8 @@
         }
       ],
       "assessment": {
-        "evaluated_at": "2026-11-17T05:28:31Z",
-        "run_id": "44024324550",
+        "evaluated_at": "2026-11-23T04:24:02Z",
+        "run_id": "45111578163",
         "relation": "affected",
         "max_level": "high",
         "affected_count": 3,
@@ -540,15 +590,15 @@
       "title": "CISA KEV：WordPress WordPress Core Time-of-check Time-of-use (TOCTOU) Race Condition Vulnerability（CVE-2026-119977）",
       "event_date": "2026-11-03",
       "first_seen": "2026-11-11",
-      "last_seen": "2026-11-17",
-      "last_seen_at": "2026-11-17T05:28:31Z",
-      "observed_run_id": "44024324550",
+      "last_seen": "2026-11-23",
+      "last_seen_at": "2026-11-23T04:24:02Z",
+      "observed_run_id": "45111578163",
       "confidence": "confirmed",
       "is_update_of": null,
       "cves": [
         "CVE-2026-119977"
       ],
-      "summary": "此漏洞已被列入已遭利用清單，行銷官網使用的 WordPress 版本受影響且對外，程式判定為中風險（6 分）；建議更新到已修補版本。",
+      "summary": "行銷官網的 wordpress 6.4.3 落在受影響範圍且對外，此漏洞已被實際利用，程式判定為中風險（6 分）。",
       "sources": [
         {
           "title": "CISA Known Exploited Vulnerabilities：CVE-2026-119977",
@@ -564,8 +614,8 @@
         }
       ],
       "assessment": {
-        "evaluated_at": "2026-11-17T05:28:31Z",
-        "run_id": "44024324550",
+        "evaluated_at": "2026-11-23T04:24:02Z",
+        "run_id": "45111578163",
         "relation": "affected",
         "max_level": "medium",
         "affected_count": 1,
@@ -590,9 +640,9 @@
       "title": "CISA KEV：GitLab Community Edition and Enterprise Edition Integer Overflow or Wraparound Vulnerability（CVE-2026-97229）",
       "event_date": "2026-10-29",
       "first_seen": "2026-11-11",
-      "last_seen": "2026-11-17",
-      "last_seen_at": "2026-11-17T05:28:31Z",
-      "observed_run_id": "44024324550",
+      "last_seen": "2026-11-23",
+      "last_seen_at": "2026-11-23T04:24:02Z",
+      "observed_run_id": "45111578163",
       "confidence": "confirmed",
       "is_update_of": null,
       "cves": [
@@ -614,8 +664,8 @@
         }
       ],
       "assessment": {
-        "evaluated_at": "2026-11-17T05:28:31Z",
-        "run_id": "44024324550",
+        "evaluated_at": "2026-11-23T04:24:02Z",
+        "run_id": "45111578163",
         "relation": "not_affected",
         "max_level": null,
         "affected_count": 0,
@@ -830,6 +880,152 @@
               "內部營運工具",
               "行銷官網",
               "辦公室 NAS",
+              "商店網站"
+            ],
+            "source": "rule"
+          }
+        ],
+        "relation_changed_at": null
+      }
+    },
+    "live-ai-agent-ecommerce-attacks-tw-2026-11": {
+      "id": "live-ai-agent-ecommerce-attacks-tw-2026-11",
+      "kind": "live",
+      "title": "AI 代理工具網攻波及臺灣電商與各行業，逾百萬份個資受影響",
+      "event_date": "2026-11-16",
+      "first_seen": "2026-11-18",
+      "last_seen": "2026-11-18",
+      "last_seen_at": "2026-11-18T04:54:32Z",
+      "observed_run_id": "44240498560",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [],
+      "summary": "程式無法自動判定：事件沒有可比對的產品或控制項，需要人工確認。可先檢查資料庫或管理工具是否可被直接連上、對外系統是否有未修補漏洞，以及員工電腦上的登入授權與資料庫帳密是否可能外流。",
+      "sources": [
+        {
+          "title": "【資安日報】11月17日，國家級駭客組織SilentAir鎖定臺灣等十多個國家的手機用戶，濫用電信訊號攔截簡訊與通話",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180566",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-18T04:54:32Z",
+        "run_id": "44240498560",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "*",
+            "asset_label": "待確認系統",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [
+          {
+            "text": "資料庫或管理工具可能可以被直接連上；先查：App 雲端檔案儲存區、正式會員資料庫、正式訂單資料庫、訂單匯出檔案儲存區、資料庫網頁管理工具",
+            "systems": [
+              "App 雲端檔案儲存區",
+              "正式會員資料庫",
+              "正式訂單資料庫",
+              "訂單匯出檔案儲存區",
+              "資料庫網頁管理工具"
+            ],
+            "source": "rule"
+          },
+          {
+            "text": "對外系統可能有沒修補的漏洞；先查：API 閘道、內部營運工具、行銷官網、辦公室 NAS、商店網站",
+            "systems": [
+              "API 閘道",
+              "內部營運工具",
+              "行銷官網",
+              "辦公室 NAS",
+              "商店網站"
+            ],
+            "source": "rule"
+          },
+          {
+            "text": "員工電腦上的登入權杖可能被偷走；先查：辦公室檔案伺服器、工程部門筆電（甲）、工程部門筆電（乙）、維運部門筆電、辦公室 NAS",
+            "systems": [
+              "辦公室檔案伺服器",
+              "工程部門筆電（甲）",
+              "工程部門筆電（乙）",
+              "維運部門筆電",
+              "辦公室 NAS"
+            ],
+            "source": "rule"
+          }
+        ],
+        "relation_changed_at": null
+      }
+    },
+    "live-ai-agent-taiwan-ecommerce-2026-11": {
+      "id": "live-ai-agent-taiwan-ecommerce-2026-11",
+      "kind": "live",
+      "title": "AI 代理網攻波及臺灣十餘家企業與電商平臺，逾百萬份個資受影響",
+      "event_date": "2026-11-19",
+      "first_seen": "2026-11-22",
+      "last_seen": "2026-11-22",
+      "last_seen_at": "2026-11-22T03:45:43Z",
+      "observed_run_id": "44982062283",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [],
+      "summary": "程式無法自動判定，需人工確認：建議檢查資料庫或管理工具是否能被直接連上、資料庫帳密是否可能外流，以及網站介面是否可能被大量讀取資料。",
+      "sources": [
+        {
+          "title": "【資安週報】1116～1120，全球第三方供應商遭駭連環爆；Java4Shell、NGINX2Root等重大漏洞揭露引關注",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180681",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-22T03:45:43Z",
+        "run_id": "44982062283",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "*",
+            "asset_label": "待確認系統",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [
+          {
+            "text": "資料庫或管理工具可能可以被直接連上；先查：App 雲端檔案儲存區、正式會員資料庫、正式訂單資料庫、訂單匯出檔案儲存區、資料庫網頁管理工具",
+            "systems": [
+              "App 雲端檔案儲存區",
+              "正式會員資料庫",
+              "正式訂單資料庫",
+              "訂單匯出檔案儲存區",
+              "資料庫網頁管理工具"
+            ],
+            "source": "rule"
+          },
+          {
+            "text": "資料庫的帳號密碼可能外流被拿來登入；先查：正式訂單資料庫帳密、測試訂單資料庫帳密",
+            "systems": [
+              "正式訂單資料庫帳密",
+              "測試訂單資料庫帳密"
+            ],
+            "source": "rule"
+          },
+          {
+            "text": "網站或系統介面的漏洞可能被用來大量讀取資料；先查：API 閘道、商店網站",
+            "systems": [
+              "API 閘道",
               "商店網站"
             ],
             "source": "rule"
@@ -1080,6 +1276,57 @@
         "suggestions": [
           {
             "text": "我們的寄信服務若被入侵，可能被拿來寄假冒信件給會員；先查：MailRelay（虛構寄信服務）、寄信服務金鑰",
+            "systems": [
+              "MailRelay（虛構寄信服務）",
+              "寄信服務金鑰"
+            ],
+            "source": "ai"
+          }
+        ],
+        "relation_changed_at": null
+      }
+    },
+    "live-arara-mail-service-breach-2026-11": {
+      "id": "live-arara-mail-service-breach-2026-11",
+      "kind": "live",
+      "title": "日本郵件發送服務 Arara 遭駭，波及約 380 家企業客戶，大阪市確認逾 107 萬筆信箱外洩",
+      "event_date": "2026-11-18",
+      "first_seen": "2026-11-18",
+      "last_seen": "2026-11-18",
+      "last_seen_at": "2026-11-18T04:54:32Z",
+      "observed_run_id": "44240498560",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [],
+      "summary": "程式無法自動判定：事件沒有可比對的產品或控制項，需要人工確認。若我們使用的寄信服務供應商同樣遭駭，客戶信箱與寄信額度可能被濫用，建議確認供應商是否受影響。",
+      "sources": [
+        {
+          "title": "Arara郵件服務遭駭，日本大阪市確認逾107萬筆電子郵件地址外洩",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180555",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-18T04:54:32Z",
+        "run_id": "44240498560",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "*",
+            "asset_label": "待確認系統",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [
+          {
+            "text": "寄信服務供應商若同樣遭駭，客戶信箱與寄信額度可能被濫用；先查：MailRelay（虛構寄信服務）、寄信服務金鑰",
             "systems": [
               "MailRelay（虛構寄信服務）",
               "寄信服務金鑰"
@@ -1655,6 +1902,78 @@
         "relation_changed_at": null
       }
     },
+    "live-evt-91app-artex-2026-11": {
+      "id": "live-evt-91app-artex-2026-11",
+      "kind": "live",
+      "title": "FBI 示警 ARTEX AI 攻擊框架遭濫用，電商 SaaS 91APP 最大可能影響 1,329 家品牌",
+      "event_date": "2026-11-13",
+      "first_seen": "2026-11-19",
+      "last_seen": "2026-11-19",
+      "last_seen_at": "2026-11-19T04:47:04Z",
+      "observed_run_id": "44460635163",
+      "confidence": "provisional",
+      "is_update_of": "evt-91app-2026-10",
+      "cves": [],
+      "summary": "此事件有 6 項與我們相符，最高為高風險：內部營運工具對外開放（8 分）、內部程式碼管理平台與品牌 App 的金鑰留在程式碼（分別 8、10 分）；另 3 項為中風險（辦公室 NAS 5 分、測試環境連正式資料庫 5 分、寄信金鑰 6 分）。",
+      "sources": [
+        {
+          "title": "FBI 示警 AI 滲透測試工具 ARTEX 遭駭客濫用，最快不到 3 小時取得企業高階權限",
+          "domain": "infosecu.technews.tw",
+          "url": "https://infosecu.technews.tw/2026/11/19/artex-is-criminals-new-favorite-point-and-shoot-ai-hacking-tool/",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-19T04:47:04Z",
+        "run_id": "44460635163",
+        "relation": "affected",
+        "max_level": "high",
+        "affected_count": 6,
+        "conclusion": "6 項受影響，最高風險為高。包括內部營運工具、辦公室 NAS、內部程式碼管理平台等。",
+        "impacts": [
+          {
+            "asset_id": "brand-app",
+            "asset_label": "品牌 App",
+            "verdict": "affected",
+            "level": "high"
+          },
+          {
+            "asset_id": "gitlab",
+            "asset_label": "內部程式碼管理平台",
+            "verdict": "affected",
+            "level": "high"
+          },
+          {
+            "asset_id": "internal-tool",
+            "asset_label": "內部營運工具",
+            "verdict": "affected",
+            "level": "high"
+          },
+          {
+            "asset_id": "mail-api-key",
+            "asset_label": "寄信服務金鑰",
+            "verdict": "affected",
+            "level": "medium"
+          },
+          {
+            "asset_id": "nas-office-01",
+            "asset_label": "辦公室 NAS",
+            "verdict": "affected",
+            "level": "medium"
+          },
+          {
+            "asset_id": "order-db-prod",
+            "asset_label": "正式訂單資料庫",
+            "verdict": "affected",
+            "level": "medium"
+          }
+        ],
+        "impacts_total": 6,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
     "live-evt-amadeus-2026-11": {
       "id": "live-evt-amadeus-2026-11",
       "kind": "live",
@@ -1755,6 +2074,48 @@
           {
             "asset_id": "marketing-site",
             "asset_label": "行銷官網",
+            "verdict": "affected",
+            "level": "medium"
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
+    "live-evt-arara-mail-2026-11": {
+      "id": "live-evt-arara-mail-2026-11",
+      "kind": "live",
+      "title": "日本郵件服務業者 Arara 遭駭，BIC Camera、摩斯漢堡等客戶信箱外洩",
+      "event_date": "2026-11-18",
+      "first_seen": "2026-11-19",
+      "last_seen": "2026-11-19",
+      "last_seen_at": "2026-11-19T04:47:04Z",
+      "observed_run_id": "44460635163",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [],
+      "summary": "寄信服務金鑰（mail-api-key）466 天未輪替且無 IP 白名單，與此事件相符，程式判定為中風險（6 分）；建議換發金鑰並加上白名單。",
+      "sources": [
+        {
+          "title": "【資安日報】11月18日，Optimizely供應鏈攻擊波及BBC、GitLab、IKEA等178個組織網站，匯豐臺灣也名列其中",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180612",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-19T04:47:04Z",
+        "run_id": "44460635163",
+        "relation": "affected",
+        "max_level": "medium",
+        "affected_count": 1,
+        "conclusion": "1 項受影響，最高風險為中。包括寄信服務金鑰。",
+        "impacts": [
+          {
+            "asset_id": "mail-api-key",
+            "asset_label": "寄信服務金鑰",
             "verdict": "affected",
             "level": "medium"
           }
@@ -1939,6 +2300,106 @@
         "relation_changed_at": null
       }
     },
+    "live-evt-n0n-visa-apac-2026-11": {
+      "id": "live-evt-n0n-visa-apac-2026-11",
+      "kind": "live",
+      "title": "N0n 勒索組織宣稱取得 Visa 亞太行銷資料，Visa 稱出於亞太第三方供應商",
+      "event_date": "2026-11-16",
+      "first_seen": "2026-11-19",
+      "last_seen": "2026-11-19",
+      "last_seen_at": "2026-11-19T04:47:04Z",
+      "observed_run_id": "44460635163",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [],
+      "summary": "N0n 於 11 月 16 日將 59 家企業列入受害者名單，宣稱取得 Visa 亞太地區超過 150 萬次行銷活動互動紀錄，並威脅 48 小時內未談判將公開。Visa 證實得知此事，表示事件出於亞太地區一家第三方合作供應商，Visa 本身系統未受影響，未說明供應商類型。資料取得內容為駭客宣稱。",
+      "sources": [
+        {
+          "title": "N0n勒索軟體組織宣稱取得Visa、摩根大通等59家公司資料",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180643",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-19T04:47:04Z",
+        "run_id": "44460635163",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "*",
+            "asset_label": "待確認系統",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [
+          {
+            "text": "第三方行銷或郵件供應商持有大量客戶資料而遭入侵；先查：MailRelay（虛構寄信服務）",
+            "systems": [
+              "MailRelay（虛構寄信服務）"
+            ],
+            "source": "ai"
+          }
+        ],
+        "relation_changed_at": null
+      }
+    },
+    "live-evt-nginx-cve-2026-123007": {
+      "id": "live-evt-nginx-cve-2026-123007",
+      "kind": "live",
+      "title": "NGINX HTTP/2 漏洞 CVE-2026-123007（nginx2root）可讓未認證攻擊者遠端執行程式碼",
+      "event_date": "2026-11-18",
+      "first_seen": "2026-11-19",
+      "last_seen": "2026-11-19",
+      "last_seen_at": "2026-11-19T04:47:04Z",
+      "observed_run_id": "44460635163",
+      "confidence": "confirmed",
+      "is_update_of": null,
+      "cves": [
+        "CVE-2026-123007"
+      ],
+      "summary": "API 閘道使用的 nginx 1.27.2 落在受影響範圍且對外，程式判定為高風險（8 分）；建議升級到已修補版本。",
+      "sources": [
+        {
+          "title": "10-Year-Old NGINX HTTP/2 Flaw Lets Unauthenticated Attackers Execute Code on Servers",
+          "domain": "thehackernews.com",
+          "url": "https://thehackernews.com/2026/11/10-year-old-nginx-http2-flaw-lets.html",
+          "verified": true
+        },
+        {
+          "title": "實測 NGINX2Root：CVSS 9.2 分 nginx 漏洞影響上千萬台主機，從升級修補到重啟驗證",
+          "domain": "cyberq.tw",
+          "url": "https://cyberq.tw/2026/11/19/nginx2root-cve-2026-123007-hands-on/",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-19T04:47:04Z",
+        "run_id": "44460635163",
+        "relation": "affected",
+        "max_level": "high",
+        "affected_count": 1,
+        "conclusion": "1 項受影響，最高風險為高。API 閘道：nginx 1.27.2，對外。",
+        "impacts": [
+          {
+            "asset_id": "api-gateway",
+            "asset_label": "API 閘道",
+            "verdict": "affected",
+            "level": "high"
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
     "live-evt-nitori-2026-11": {
       "id": "live-evt-nitori-2026-11",
       "kind": "live",
@@ -1999,6 +2460,64 @@
         "relation_changed_at": null
       }
     },
+    "live-evt-node-http2-2026-11": {
+      "id": "live-evt-node-http2-2026-11",
+      "kind": "live",
+      "title": "Node.js 修補 16 個漏洞，含 HTTP/2 當機與連線資料洩漏",
+      "event_date": "2026-11-11",
+      "first_seen": "2026-11-19",
+      "last_seen": "2026-11-19",
+      "last_seen_at": "2026-11-19T04:47:04Z",
+      "observed_run_id": "44460635163",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [
+        "CVE-2026-123863",
+        "CVE-2026-123864",
+        "CVE-2026-123866"
+      ],
+      "summary": "3 項使用 Node.js 22.11.0 的系統都受影響：商店網站（高風險，10 分）、會員服務 API（高風險，8 分）、內部營運工具（高風險，8 分）；建議升級到已修補版本。",
+      "sources": [
+        {
+          "title": "Node.js修補16個漏洞，包括可能導致伺服器當機與洩漏連線資料的HTTP/2漏洞",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180608",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-19T04:47:04Z",
+        "run_id": "44460635163",
+        "relation": "affected",
+        "max_level": "high",
+        "affected_count": 3,
+        "conclusion": "3 項受影響，最高風險為高。商店網站：node 22.11.0，對外。",
+        "impacts": [
+          {
+            "asset_id": "internal-tool",
+            "asset_label": "內部營運工具",
+            "verdict": "affected",
+            "level": "high"
+          },
+          {
+            "asset_id": "member-api",
+            "asset_label": "會員服務 API",
+            "verdict": "affected",
+            "level": "high"
+          },
+          {
+            "asset_id": "storefront",
+            "asset_label": "商店網站",
+            "verdict": "affected",
+            "level": "high"
+          }
+        ],
+        "impacts_total": 3,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
     "live-evt-nodejs-2026-11-fixes": {
       "id": "live-evt-nodejs-2026-11-fixes",
       "kind": "live",
@@ -2052,6 +2571,176 @@
           }
         ],
         "impacts_total": 3,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
+    "live-evt-openjdk-cve-2026-114938": {
+      "id": "live-evt-openjdk-cve-2026-114938",
+      "kind": "live",
+      "title": "OpenJDK CVE-2026-114938（Java4Shell）傳出重大漏洞，細節尚未證實",
+      "event_date": "2026-11-17",
+      "first_seen": "2026-11-19",
+      "last_seen": "2026-11-19",
+      "last_seen_at": "2026-11-19T04:47:04Z",
+      "observed_run_id": "44460635163",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [
+        "CVE-2026-114938"
+      ],
+      "summary": "Calif 稱發現並通報 OpenJDK 漏洞 CVE-2026-114938（Java4Shell），據稱 CVSS 4.0 為 9.2、影響 OpenJDK 17.0.6 及之後版本。來源指出這些細節尚未確認，CVE 紀錄仍為保留狀態，沒有官方公告說明受影響元件、版本範圍或修補。獨立分析指向 Java Base64 解碼器，較可能造成 JVM 當機而非程式碼執行。",
+      "sources": [
+        {
+          "title": "Oracle to Patch 11 Java Flaws Today as Critical OpenJDK RCE (CVE-2026-114938) Report Emerges",
+          "domain": "thehackernews.com",
+          "url": "https://thehackernews.com/2026/11/oracle-to-patch-11-java-flaws-today-as.html",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-19T04:47:04Z",
+        "run_id": "44460635163",
+        "relation": "not_affected",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "不受影響：沒有符合的資產。",
+        "impacts": [
+          {
+            "asset_id": "payment-service",
+            "asset_label": "金流服務",
+            "verdict": "not_affected",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
+    "live-evt-optimizely-optimjack-2026-11": {
+      "id": "live-evt-optimizely-optimjack-2026-11",
+      "kind": "live",
+      "title": "Optimizely 供應鏈攻擊（OPTIMJACK）波及 178 個組織，匯豐台灣列名",
+      "event_date": "2026-11-16",
+      "first_seen": "2026-11-19",
+      "last_seen": "2026-11-19",
+      "last_seen_at": "2026-11-19T04:47:04Z",
+      "observed_run_id": "44460635163",
+      "confidence": "confirmed",
+      "is_update_of": null,
+      "cves": [],
+      "summary": "Optimizely Web Experimentation 的客戶專案 JavaScript 被植入惡意程式，可替換加密貨幣錢包地址、側錄信用卡資料與 Cookie，並載入 iOS 漏洞利用工具包。研究人員發現 188 份遭植入的檔案，涉及 178 個組織，包括 HSBC Taiwan。Optimizely 表示已修補漏洞、移除惡意程式碼。",
+      "sources": [
+        {
+          "title": "Optimizely 供應鏈攻擊波及 178 家機構：匯豐台灣列名，惡意腳本鎖定加密貨幣與 iPhone",
+          "domain": "cyberq.tw",
+          "url": "https://cyberq.tw/2026/11/18/optimizely-supply-chain-attack-taiwan/",
+          "verified": true
+        },
+        {
+          "title": "【資安日報】11月18日，Optimizely供應鏈攻擊波及BBC、GitLab、IKEA等178個組織網站，匯豐臺灣也名列其中",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180612",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-19T04:47:04Z",
+        "run_id": "44460635163",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "*",
+            "asset_label": "待確認系統",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [
+          {
+            "text": "對外系統可能有沒修補的漏洞；先查：API 閘道、內部營運工具、行銷官網、辦公室 NAS、商店網站",
+            "systems": [
+              "API 閘道",
+              "內部營運工具",
+              "行銷官網",
+              "辦公室 NAS",
+              "商店網站"
+            ],
+            "source": "rule"
+          },
+          {
+            "text": "員工電腦上的登入權杖可能被偷走；先查：辦公室檔案伺服器、工程部門筆電（甲）、工程部門筆電（乙）、維運部門筆電、辦公室 NAS",
+            "systems": [
+              "辦公室檔案伺服器",
+              "工程部門筆電（甲）",
+              "工程部門筆電（乙）",
+              "維運部門筆電",
+              "辦公室 NAS"
+            ],
+            "source": "rule"
+          },
+          {
+            "text": "伺服器的遠端管理帳號可能被猜中；先查：辦公室 NAS",
+            "systems": [
+              "辦公室 NAS"
+            ],
+            "source": "rule"
+          }
+        ],
+        "relation_changed_at": null
+      }
+    },
+    "live-evt-plaid-karte-2026-11": {
+      "id": "live-evt-plaid-karte-2026-11",
+      "kind": "live",
+      "title": "日本行銷平台 PLAID KARTE 遭駭，JINS、DHC、思夢樂等零售與消費品牌會員個資外洩",
+      "event_date": "2026-11-13",
+      "first_seen": "2026-11-19",
+      "last_seen": "2026-11-19",
+      "last_seen_at": "2026-11-19T04:47:04Z",
+      "observed_run_id": "44460635163",
+      "confidence": "confirmed",
+      "is_update_of": null,
+      "cves": [],
+      "summary": "寄信服務金鑰（mail-api-key）466 天未輪替且無 IP 白名單，與此事件相符，程式判定為中風險（6 分）；建議換發金鑰並加上白名單。",
+      "sources": [
+        {
+          "title": "JINS、三菱UFJ銀行等數十家日本企業陸續發布資安事件公告，皆因第三方行銷科技業者PLAID旗下KARTE平臺遭駭",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180640",
+          "verified": true
+        },
+        {
+          "title": "日本 DHC 爆 1,911 萬筆個資外洩，JINS、思夢樂也遭殃",
+          "domain": "infosecu.technews.tw",
+          "url": "https://infosecu.technews.tw/2026/11/19/japanese-dhc-data-breach-19-11-million-jins-shimamura-affected/",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-19T04:47:04Z",
+        "run_id": "44460635163",
+        "relation": "affected",
+        "max_level": "medium",
+        "affected_count": 1,
+        "conclusion": "1 項受影響，最高風險為中。包括寄信服務金鑰。",
+        "impacts": [
+          {
+            "asset_id": "mail-api-key",
+            "asset_label": "寄信服務金鑰",
+            "verdict": "affected",
+            "level": "medium"
+          }
+        ],
+        "impacts_total": 1,
         "impacts_truncated": false,
         "suggestions": [],
         "relation_changed_at": null
@@ -2118,6 +2807,50 @@
         "relation_changed_at": null
       }
     },
+    "live-evt-synology-cve-2024-10441": {
+      "id": "live-evt-synology-cve-2024-10441",
+      "kind": "live",
+      "title": "CISA KEV 新增已遭利用漏洞：Synology DSM CVE-2024-10441",
+      "event_date": "2026-11-18",
+      "first_seen": "2026-11-19",
+      "last_seen": "2026-11-19",
+      "last_seen_at": "2026-11-19T04:47:04Z",
+      "observed_run_id": "44460635163",
+      "confidence": "confirmed",
+      "is_update_of": null,
+      "cves": [
+        "CVE-2024-10441"
+      ],
+      "summary": "程式沒有判定為確定受影響，但辦公室 NAS 的 DSM 7.2.1-69057 Update 5 需要人工確認是否落在此漏洞範圍並需更新。",
+      "sources": [
+        {
+          "title": "CISA KEV 新增已遭利用漏洞：Synology DiskStation Manager (DSM) CVE-2024-10441",
+          "domain": "www.cisa.gov",
+          "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search=CVE-2024-10441",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-19T04:47:04Z",
+        "run_id": "44460635163",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "沒有確定受影響的項目，但有 1 項需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "nas-office-01",
+            "asset_label": "辦公室 NAS",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
     "live-evt-synology-dsm-sa-26-19": {
       "id": "live-evt-synology-dsm-sa-26-19",
       "kind": "live",
@@ -2163,6 +2896,108 @@
         "relation_changed_at": null
       }
     },
+    "live-evt-tatung-etungo-2026-11": {
+      "id": "live-evt-tatung-etungo-2026-11",
+      "kind": "live",
+      "title": "大同購物網站 e同購遭自動化攻擊入侵，疑似個資外洩",
+      "event_date": "2026-11-17",
+      "first_seen": "2026-11-19",
+      "last_seen": "2026-11-19",
+      "last_seen_at": "2026-11-19T04:47:04Z",
+      "observed_run_id": "44460635163",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [],
+      "summary": "此事件沒有可比對的產品、版本或控制項，程式未比對任何資產，需要人工確認我們對外的登入或會員查詢是否有遭自動化批次攻擊的風險。",
+      "sources": [
+        {
+          "title": "大同購物網站e同購遭自動化攻擊入侵，疑似個資外洩",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180615",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-19T04:47:04Z",
+        "run_id": "44460635163",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "*",
+            "asset_label": "待確認系統",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [
+          {
+            "text": "自建對外購物網站的登入或會員查詢遭自動化批次攻擊；先查：商店網站、API 閘道",
+            "systems": [
+              "商店網站",
+              "API 閘道"
+            ],
+            "source": "ai"
+          }
+        ],
+        "relation_changed_at": null
+      }
+    },
+    "live-evt-yongxin-pharma-2026-11": {
+      "id": "live-evt-yongxin-pharma-2026-11",
+      "kind": "live",
+      "title": "永信藥品委外電商平台服務商發生資安事件，部分會員個資疑似外洩",
+      "event_date": "2026-11-17",
+      "first_seen": "2026-11-19",
+      "last_seen": "2026-11-19",
+      "last_seen_at": "2026-11-19T04:47:04Z",
+      "observed_run_id": "44460635163",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [],
+      "summary": "永信國際於 11 月 17 日發布重大訊息，旗下永信藥品購物網站接獲會員反映個資疑似外洩，事件與委外電商平臺服務商的系統有關。目前確認範圍僅限線上購物網站的部分會員資料，確切原因與影響範圍仍在調查。",
+      "sources": [
+        {
+          "title": "永信藥品委外電商服務商發生資安事件，部分會員個資疑似外洩",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180619",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-19T04:47:04Z",
+        "run_id": "44460635163",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "*",
+            "asset_label": "待確認系統",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [
+          {
+            "text": "委外電商平台服務商的系統遭入侵；先查：商店網站、會員服務 API",
+            "systems": [
+              "商店網站",
+              "會員服務 API"
+            ],
+            "source": "ai"
+          }
+        ],
+        "relation_changed_at": null
+      }
+    },
     "live-evt-zhengnengliang-2026-11": {
       "id": "live-evt-zhengnengliang-2026-11",
       "kind": "live",
@@ -2195,6 +3030,313 @@
         "impacts_total": 0,
         "impacts_truncated": false,
         "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
+    "live-fubon-mo-shop-plus-2026-11": {
+      "id": "live-fubon-mo-shop-plus-2026-11",
+      "kind": "live",
+      "title": "富邦媒 mo店+ 出貨資料遭未經授權存取",
+      "event_date": "2026-11-18",
+      "first_seen": "2026-11-20",
+      "last_seen": "2026-11-20",
+      "last_seen_at": "2026-11-20T04:38:26Z",
+      "observed_run_id": "44675731205",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [],
+      "summary": "程式無法自動判定此事件是否影響我們，需要人工確認訂單匯出檔或出貨資料介面是否可能被未授權取用。",
+      "sources": [
+        {
+          "title": "富邦媒mo店+發生資安事件，部分出貨資料遭未經授權存取",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180656",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-20T04:38:26Z",
+        "run_id": "44675731205",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "*",
+            "asset_label": "待確認系統",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [
+          {
+            "text": "訂單匯出檔或出貨資料介面可能被未授權取用；先查：訂單匯出檔案儲存區、商店網站、API 閘道",
+            "systems": [
+              "訂單匯出檔案儲存區",
+              "商店網站",
+              "API 閘道"
+            ],
+            "source": "ai"
+          }
+        ],
+        "relation_changed_at": null
+      }
+    },
+    "live-gootloader-wordpress-2026-11": {
+      "id": "live-gootloader-wordpress-2026-11",
+      "kind": "live",
+      "title": "FBI 警告 Gootloader 已入侵逾千個 WordPress 網站，相關勒索贖金逾 2,800 萬美元",
+      "event_date": "2026-11-18",
+      "first_seen": "2026-11-20",
+      "last_seen": "2026-11-20",
+      "last_seen_at": "2026-11-20T04:38:26Z",
+      "observed_run_id": "44675731205",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [],
+      "summary": "FBI 於 11 月 16 日發布通報，警告 Gootloader 透過污染的搜尋結果與遭挾持的網站取得初始存取後部署勒索軟體。截至 2026 年 10 月已識別逾 1,000 個遭感染的 WordPress 網站，相關攻擊已造成逾 2,800 萬美元贖金。",
+      "sources": [
+        {
+          "title": "FBI警告Gootloader已入侵逾千個WordPress網站，相關勒索軟體贖金逾2,800萬美元",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180649",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-20T04:38:26Z",
+        "run_id": "44675731205",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "*",
+            "asset_label": "待確認系統",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [
+          {
+            "text": "行銷官網的外掛、佈景或管理帳號可能被利用來植入惡意內容；先查：行銷官網",
+            "systems": [
+              "行銷官網"
+            ],
+            "source": "ai"
+          }
+        ],
+        "relation_changed_at": null
+      }
+    },
+    "live-ibiza-liteshop-anomalous-access-2026-11": {
+      "id": "live-ibiza-liteshop-anomalous-access-2026-11",
+      "kind": "live",
+      "title": "電商服務商伊比薩發現異常資料存取，崇越子公司全越運動影響待查",
+      "event_date": "2026-11-23",
+      "first_seen": "2026-11-23",
+      "last_seen": "2026-11-23",
+      "last_seen_at": "2026-11-23T04:24:02Z",
+      "observed_run_id": "45111578163",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [],
+      "summary": "崇越於 11 月 19 日發布資安重訊，子公司全越運動接獲電商平臺委外服務商伊比薩通知，該服務商近期發現異常資料存取。是否有消費者資料受影響仍待確認，伊比薩旗下經營 LiteShop 電商平臺，是否波及其他企業客戶尚不清楚。",
+      "sources": [
+        {
+          "title": "崇越發布資安重訊，揭露第三方電商服務商伊比薩發現異常資料存取，子公司全越運動影響待查",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180703",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-23T04:24:02Z",
+        "run_id": "45111578163",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "*",
+            "asset_label": "待確認系統",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [
+          {
+            "text": "我們若使用第三方電商或架站服務，其後台可能是破口；先查：QuickSite Builder、商店網站",
+            "systems": [
+              "QuickSite Builder",
+              "商店網站"
+            ],
+            "source": "ai"
+          }
+        ],
+        "relation_changed_at": null
+      }
+    },
+    "live-java4shell-cve-2026-114938": {
+      "id": "live-java4shell-cve-2026-114938",
+      "kind": "live",
+      "title": "OpenJDK Java4Shell（CVE-2026-114938）Base64 解碼器越界寫入",
+      "event_date": "2026-11-20",
+      "first_seen": "2026-11-21",
+      "last_seen": "2026-11-22",
+      "last_seen_at": "2026-11-22T03:45:43Z",
+      "observed_run_id": "44982062283",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [
+        "CVE-2026-114938"
+      ],
+      "summary": "OpenJDK 的 Base64 解碼器在 x86-64 上發生記憶體毀損，只在 HotSpot、OpenJDK 17.0.6 以上、處理器支援 AVX-512 VBMI 三者同時成立時發生。研究團隊示範可洩漏記憶體或達成遠端程式碼執行，來源未列修補版本也未提到在野利用。",
+      "sources": [
+        {
+          "title": "實測 Java4Shell（CVE-2026-114938）：65 個字元讓 OpenJDK 越界寫入，哪些 Java 真的會中",
+          "domain": "cyberq.tw",
+          "url": "https://cyberq.tw/2026/11/20/java4shell-cve-2026-114938-hands-on/",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-22T03:45:43Z",
+        "run_id": "44982062283",
+        "relation": "not_affected",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "不受影響：沒有符合的資產。",
+        "impacts": [
+          {
+            "asset_id": "payment-service",
+            "asset_label": "金流服務",
+            "verdict": "not_affected",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
+    "live-kev-synology-dsm-cve-2024-10441": {
+      "id": "live-kev-synology-dsm-cve-2024-10441",
+      "kind": "live",
+      "title": "CISA KEV 新增 Synology DSM CVE-2024-10441 已遭利用漏洞",
+      "event_date": "2026-11-18",
+      "first_seen": "2026-11-20",
+      "last_seen": "2026-11-20",
+      "last_seen_at": "2026-11-20T04:38:26Z",
+      "observed_run_id": "44675731205",
+      "confidence": "confirmed",
+      "is_update_of": null,
+      "cves": [
+        "CVE-2024-10441"
+      ],
+      "summary": "CISA 將 Synology DSM 的 CVE-2024-10441（CVSS 9.8）列入已遭利用漏洞目錄，遠端攻擊者可經由未指明途徑執行任意程式碼。來源未載明受影響與修補版本。",
+      "sources": [
+        {
+          "title": "CISA KEV 新增已遭利用漏洞：Synology DiskStation Manager (DSM) CVE-2024-10441",
+          "domain": "www.cisa.gov",
+          "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search=CVE-2024-10441",
+          "verified": true
+        },
+        {
+          "title": "CISA Warns of 4 Exploited Flaws Linked to Ransomware, Cryptomining, and LLMjacking Attacks",
+          "domain": "thehackernews.com",
+          "url": "https://thehackernews.com/2026/11/cisa-warns-of-4-exploited-flaws-linked.html",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-20T04:38:26Z",
+        "run_id": "44675731205",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "沒有確定受影響的項目，但有 1 項需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "nas-office-01",
+            "asset_label": "辦公室 NAS",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
+    "live-kuokuo-fake-order-phishing-2026-11": {
+      "id": "live-kuokuo-fake-order-phishing-2026-11",
+      "kind": "live",
+      "title": "全國電會員收到含真實個資的假訂單釣魚郵件，來源待查",
+      "event_date": "2026-11-23",
+      "first_seen": "2026-11-23",
+      "last_seen": "2026-11-23",
+      "last_seen_at": "2026-11-23T04:24:02Z",
+      "observed_run_id": "45111578163",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [],
+      "summary": "事件沒有可比對的產品或控制項，程式無法自動判定，需人工確認；可檢查會員 API 是否被大量撈取，以及委外或寄信服務端的會員資料是否外流。",
+      "sources": [
+        {
+          "title": "全國電子發布資安重訊，會員收到含真實個資的假訂單釣魚郵件，來源待查",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180706",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-23T04:24:02Z",
+        "run_id": "45111578163",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "*",
+            "asset_label": "待確認系統",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [
+          {
+            "text": "會員中臺或會員 API 可能被大量撈取資料；先查：會員服務 API、正式會員資料庫、API 閘道",
+            "systems": [
+              "會員服務 API",
+              "正式會員資料庫",
+              "API 閘道"
+            ],
+            "source": "ai"
+          },
+          {
+            "text": "委外廠商或寄信服務端的會員資料可能外流；先查：MailRelay（虛構寄信服務）、會員服務 API",
+            "systems": [
+              "MailRelay（虛構寄信服務）",
+              "會員服務 API"
+            ],
+            "source": "ai"
+          }
+        ],
         "relation_changed_at": null
       }
     },
@@ -2539,6 +3681,73 @@
         "relation_changed_at": null
       }
     },
+    "live-n0n-visa-apac-vendor-2026-11": {
+      "id": "live-n0n-visa-apac-vendor-2026-11",
+      "kind": "live",
+      "title": "N0n 勒索組織宣稱取得 Visa 等 59 家公司資料，Visa 證實亞太第三方供應商發生事件",
+      "event_date": "2026-11-16",
+      "first_seen": "2026-11-20",
+      "last_seen": "2026-11-20",
+      "last_seen_at": "2026-11-20T04:38:26Z",
+      "observed_run_id": "44675731205",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [],
+      "summary": "勒索軟體組織 N0n 於 11 月 16 日將 Visa、Mastercard、Walmart 等 59 家企業列入暗網受害名單，宣稱竊得客戶個資及行銷活動紀錄。Visa 證實亞太地區一家第三方供應商發生資安事件，並表示自身系統未受影響。",
+      "sources": [
+        {
+          "title": "【資安日報】11月19日，Nginx緊急修補10個漏洞，其中5個恐遭遠端執行程式碼",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180654",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-20T04:38:26Z",
+        "run_id": "44675731205",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "*",
+            "asset_label": "待確認系統",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [
+          {
+            "text": "委外廠商被入侵，連帶外流我們交給它的資料；先查：MailRelay（虛構寄信服務）、QuickSite Builder",
+            "systems": [
+              "MailRelay（虛構寄信服務）",
+              "QuickSite Builder"
+            ],
+            "source": "rule"
+          },
+          {
+            "text": "我們交給廠商的連線金鑰可能被冒用；先查：寄信服務金鑰",
+            "systems": [
+              "寄信服務金鑰"
+            ],
+            "source": "rule"
+          },
+          {
+            "text": "委外人員的登入帳號可能被盜用；先查：內部營運工具、辦公室 NAS、資料庫網頁管理工具",
+            "systems": [
+              "內部營運工具",
+              "辦公室 NAS",
+              "資料庫網頁管理工具"
+            ],
+            "source": "rule"
+          }
+        ],
+        "relation_changed_at": null
+      }
+    },
     "live-neticrm-provider-breach-2026-11": {
       "id": "live-neticrm-provider-breach-2026-11",
       "kind": "live",
@@ -2577,6 +3786,207 @@
         ],
         "impacts_total": 1,
         "impacts_truncated": false,
+        "relation_changed_at": null
+      }
+    },
+    "live-nginx-http2-cve-2026-123633": {
+      "id": "live-nginx-http2-cve-2026-123633",
+      "kind": "live",
+      "title": "NGINX 修補 2 項 HTTP/2 遠端程式碼執行漏洞（CVE-2026-123633、CVE-2026-123007）",
+      "event_date": "2026-11-21",
+      "first_seen": "2026-11-22",
+      "last_seen": "2026-11-22",
+      "last_seen_at": "2026-11-22T03:45:43Z",
+      "observed_run_id": "44982062283",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [
+        "CVE-2026-123007",
+        "CVE-2026-123633"
+      ],
+      "summary": "NGINX 修補 2 項涉及 HTTP/2 的嚴重遠端程式碼執行漏洞，CVSS 4.0 皆為 9.2。數發部資安署提醒攻擊者可在未經身分驗證下取得伺服器權限。來源未列受影響版本。",
+      "sources": [
+        {
+          "title": "NGINX釋重大安全更新 資安署籲儘速升級防範入侵",
+          "domain": "www.cna.com.tw",
+          "url": "https://www.cna.com.tw/news/ait/202611210071.aspx",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-22T03:45:43Z",
+        "run_id": "44982062283",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "沒有確定受影響的項目，但有 1 項需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "api-gateway",
+            "asset_label": "API 閘道",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
+    "live-nginx-http2-nginx2root-2026-11": {
+      "id": "live-nginx-http2-nginx2root-2026-11",
+      "kind": "live",
+      "title": "NGINX HTTP/2 重大漏洞 nginx2root（CVE-2026-123007、CVE-2026-123633）可遠端執行程式碼",
+      "event_date": "2026-11-18",
+      "first_seen": "2026-11-21",
+      "last_seen": "2026-11-21",
+      "last_seen_at": "2026-11-21T04:31:48Z",
+      "observed_run_id": "44866524353",
+      "confidence": "confirmed",
+      "is_update_of": null,
+      "cves": [
+        "CVE-2026-123007",
+        "CVE-2026-123633"
+      ],
+      "summary": "API 閘道 api-gateway 的 nginx 1.27.2 落在受影響範圍且對外，影響所有品牌並牽涉會員個資，程式判定為高風險（8 分）。建議升級到已修補版本。",
+      "sources": [
+        {
+          "title": "10-Year-Old NGINX HTTP/2 Flaw Lets Unauthenticated Attackers Execute Code on Servers",
+          "domain": "thehackernews.com",
+          "url": "https://thehackernews.com/2026/11/10-year-old-nginx-http2-flaw-lets.html",
+          "verified": true
+        },
+        {
+          "title": "NGINX釋重大安全更新 資安署籲儘速升級防範入侵",
+          "domain": "www.cna.com.tw",
+          "url": "https://www.cna.com.tw/news/ait/202611210071.aspx",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-21T04:31:48Z",
+        "run_id": "44866524353",
+        "relation": "affected",
+        "max_level": "high",
+        "affected_count": 1,
+        "conclusion": "1 項受影響，最高風險為高。API 閘道：nginx 1.27.2，對外。",
+        "impacts": [
+          {
+            "asset_id": "api-gateway",
+            "asset_label": "API 閘道",
+            "verdict": "affected",
+            "level": "high"
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
+    "live-nginx-http2-rce-2026-11": {
+      "id": "live-nginx-http2-rce-2026-11",
+      "kind": "live",
+      "title": "NGINX 修補 2 項 HTTP/2 嚴重遠端程式碼執行漏洞",
+      "event_date": "2026-11-21",
+      "first_seen": "2026-11-23",
+      "last_seen": "2026-11-23",
+      "last_seen_at": "2026-11-23T04:24:02Z",
+      "observed_run_id": "45111578163",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [
+        "CVE-2026-123007",
+        "CVE-2026-123633"
+      ],
+      "summary": "程式沒有確定受影響的項目，但我們使用 nginx 1.27.2，需人工確認是否落在此次修補範圍並決定是否更新。",
+      "sources": [
+        {
+          "title": "NGINX釋重大安全更新 資安署籲儘速升級防範入侵",
+          "domain": "www.cna.com.tw",
+          "url": "https://www.cna.com.tw/news/ait/202611210071.aspx",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-23T04:24:02Z",
+        "run_id": "45111578163",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "沒有確定受影響的項目，但有 1 項需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "api-gateway",
+            "asset_label": "API 閘道",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
+    "live-nginx2root-2026-11": {
+      "id": "live-nginx2root-2026-11",
+      "kind": "live",
+      "title": "nginx2root：nginx 1.31.9 與 1.30.7 修補 10 個漏洞，5 個可遠端執行程式碼",
+      "event_date": "2026-11-18",
+      "first_seen": "2026-11-20",
+      "last_seen": "2026-11-20",
+      "last_seen_at": "2026-11-20T04:38:26Z",
+      "observed_run_id": "44675731205",
+      "confidence": "confirmed",
+      "is_update_of": null,
+      "cves": [
+        "CVE-2026-113425",
+        "CVE-2026-121810",
+        "CVE-2026-123007",
+        "CVE-2026-123633",
+        "CVE-2026-123634"
+      ],
+      "summary": "API 閘道使用 nginx 1.27.2，對外且落在受影響範圍，可能碰到會員個資，程式判定為高風險（8 分）。",
+      "sources": [
+        {
+          "title": "10-Year-Old NGINX HTTP/2 Flaw Lets Unauthenticated Attackers Execute Code on Servers",
+          "domain": "thehackernews.com",
+          "url": "https://thehackernews.com/2026/11/10-year-old-nginx-http2-flaw-lets.html",
+          "verified": true
+        },
+        {
+          "title": "Nginx緊急修補10個漏洞，其中5個恐遭遠端執行程式碼",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180651",
+          "verified": true
+        },
+        {
+          "title": "實測 NGINX2Root：CVSS 9.2 分 nginx 漏洞影響上千萬台主機，從升級修補到重啟驗證",
+          "domain": "cyberq.tw",
+          "url": "https://cyberq.tw/2026/11/19/nginx2root-cve-2026-123007-hands-on/",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-20T04:38:26Z",
+        "run_id": "44675731205",
+        "relation": "affected",
+        "max_level": "high",
+        "affected_count": 1,
+        "conclusion": "1 項受影響，最高風險為高。API 閘道：nginx 1.27.2，對外。",
+        "impacts": [
+          {
+            "asset_id": "api-gateway",
+            "asset_label": "API 閘道",
+            "verdict": "affected",
+            "level": "high"
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [],
         "relation_changed_at": null
       }
     },
@@ -2902,6 +4312,64 @@
         "relation_changed_at": null
       }
     },
+    "live-nodejs-http2-cves-2026-11": {
+      "id": "live-nodejs-http2-cves-2026-11",
+      "kind": "live",
+      "title": "Node.js 修補 16 個漏洞，含可致伺服器當機與洩漏連線資料的 HTTP/2 漏洞",
+      "event_date": "2026-11-11",
+      "first_seen": "2026-11-18",
+      "last_seen": "2026-11-18",
+      "last_seen_at": "2026-11-18T04:54:32Z",
+      "observed_run_id": "44240498560",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [
+        "CVE-2026-123863",
+        "CVE-2026-123864",
+        "CVE-2026-123866"
+      ],
+      "summary": "商店網站（10 分）、會員服務 API（8 分）與內部營運工具（8 分）使用的 Node.js 版本都在此次修補範圍內，皆為高風險，需升級到已修補版本。",
+      "sources": [
+        {
+          "title": "Node.js修補16個漏洞，包括可能導致伺服器當機與洩漏連線資料的HTTP/2漏洞",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180608",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-18T04:54:32Z",
+        "run_id": "44240498560",
+        "relation": "affected",
+        "max_level": "high",
+        "affected_count": 3,
+        "conclusion": "3 項受影響，最高風險為高。商店網站：node 22.11.0，對外。",
+        "impacts": [
+          {
+            "asset_id": "internal-tool",
+            "asset_label": "內部營運工具",
+            "verdict": "affected",
+            "level": "high"
+          },
+          {
+            "asset_id": "member-api",
+            "asset_label": "會員服務 API",
+            "verdict": "affected",
+            "level": "high"
+          },
+          {
+            "asset_id": "storefront",
+            "asset_label": "商店網站",
+            "verdict": "affected",
+            "level": "high"
+          }
+        ],
+        "impacts_total": 3,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
     "live-nodejs-http2-flaws-2026-11": {
       "id": "live-nodejs-http2-flaws-2026-11",
       "kind": "live",
@@ -3125,6 +4593,338 @@
             "asset_label": "商店網站",
             "verdict": "affected",
             "level": "high"
+          }
+        ],
+        "impacts_total": 3,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
+    "live-openjdk-java4shell-cve-2026-114938": {
+      "id": "live-openjdk-java4shell-cve-2026-114938",
+      "kind": "live",
+      "title": "OpenJDK Java4Shell CVE-2026-114938 通報，細節尚未證實",
+      "event_date": "2026-11-17",
+      "first_seen": "2026-11-18",
+      "last_seen": "2026-11-20",
+      "last_seen_at": "2026-11-20T04:38:26Z",
+      "observed_run_id": "44675731205",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [
+        "CVE-2026-114938"
+      ],
+      "summary": "資安公司 Calif 通報 OpenJDK 漏洞 CVE-2026-114938（Java4Shell），報導稱 CVSS 4.0 為 9.2、影響 OpenJDK 17.0.6 以後，但細節未獲證實。兩家公司分析指向 Base64 解碼器，較可能的結果是 JVM 當機而非程式碼執行；尚無官方公告說明受影響版本與修補。",
+      "sources": [
+        {
+          "title": "Oracle to Patch 11 Java Flaws Today as Critical OpenJDK RCE (CVE-2026-114938) Report Emerges",
+          "domain": "thehackernews.com",
+          "url": "https://thehackernews.com/2026/11/oracle-to-patch-11-java-flaws-today-as.html",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-20T04:38:26Z",
+        "run_id": "44675731205",
+        "relation": "not_affected",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "不受影響：沒有符合的資產。",
+        "impacts": [
+          {
+            "asset_id": "payment-service",
+            "asset_label": "金流服務",
+            "verdict": "not_affected",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
+    "live-optimizely-supply-chain-2026-11": {
+      "id": "live-optimizely-supply-chain-2026-11",
+      "kind": "live",
+      "title": "Optimizely 供應鏈攻擊：178 個組織網站被植入惡意 JavaScript，含臺灣匯豐官網",
+      "event_date": "2026-11-16",
+      "first_seen": "2026-11-18",
+      "last_seen": "2026-11-18",
+      "last_seen_at": "2026-11-18T04:54:32Z",
+      "observed_run_id": "44240498560",
+      "confidence": "confirmed",
+      "is_update_of": null,
+      "cves": [],
+      "summary": "程式無法自動判定：事件沒有可比對的產品或控制項，需要人工確認。可先檢查對外系統是否有未修補漏洞、遠端管理帳號是否可能被猜中，以及員工的登入授權與帳密是否可能被騙走。",
+      "sources": [
+        {
+          "title": "Optimizely供應鏈攻擊波及BBC、GitLab、IKEA等178個組織網站，匯豐臺灣也名列其中",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180588",
+          "verified": true
+        },
+        {
+          "title": "Optimizely 供應鏈攻擊波及 178 家機構：匯豐台灣列名，惡意腳本鎖定加密貨幣與 iPhone",
+          "domain": "cyberq.tw",
+          "url": "https://cyberq.tw/2026/11/18/optimizely-supply-chain-attack-taiwan/",
+          "verified": true
+        },
+        {
+          "title": "Zoom 等 178 網站遭惡意程式波及，第三方軟體成資安隱憂",
+          "domain": "infosecu.technews.tw",
+          "url": "https://infosecu.technews.tw/2026/11/18/popular-websites-compromised-in-bid-to-steal-crypto-target-iphone-users/",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-18T04:54:32Z",
+        "run_id": "44240498560",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "*",
+            "asset_label": "待確認系統",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [
+          {
+            "text": "對外系統可能有沒修補的漏洞；先查：API 閘道、內部營運工具、行銷官網、辦公室 NAS、商店網站",
+            "systems": [
+              "API 閘道",
+              "內部營運工具",
+              "行銷官網",
+              "辦公室 NAS",
+              "商店網站"
+            ],
+            "source": "rule"
+          },
+          {
+            "text": "伺服器的遠端管理帳號可能被猜中；先查：辦公室 NAS",
+            "systems": [
+              "辦公室 NAS"
+            ],
+            "source": "rule"
+          },
+          {
+            "text": "員工電腦上的登入權杖可能被偷走；先查：辦公室檔案伺服器、工程部門筆電（甲）、工程部門筆電（乙）、維運部門筆電、辦公室 NAS",
+            "systems": [
+              "辦公室檔案伺服器",
+              "工程部門筆電（甲）",
+              "工程部門筆電（乙）",
+              "維運部門筆電",
+              "辦公室 NAS"
+            ],
+            "source": "rule"
+          }
+        ],
+        "relation_changed_at": null
+      }
+    },
+    "live-phoenix-travel-breach-2026-11": {
+      "id": "live-phoenix-travel-breach-2026-11",
+      "kind": "live",
+      "title": "鳳凰旅遊資訊系統遭入侵，部分旅客個資外洩並出現冒名訂單詐騙",
+      "event_date": "2026-11-16",
+      "first_seen": "2026-11-21",
+      "last_seen": "2026-11-22",
+      "last_seen_at": "2026-11-22T03:45:43Z",
+      "observed_run_id": "44982062283",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [],
+      "summary": "鳳凰旅遊於 11 月 16 日發現資訊系統遭入侵，部分訂單資料疑似遭未經授權存取，可能涉及姓名、聯絡電話、電子郵件、聯絡地址及行程內容。尚未發現信用卡與護照、身分證字號外洩，並出現冒用公司名義的訂單詐騙。",
+      "sources": [
+        {
+          "title": "鳳凰旅遊遭駭、部分旅客個資外洩，已發現冒名訂單詐騙活動",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180684",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-22T03:45:43Z",
+        "run_id": "44982062283",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "*",
+            "asset_label": "待確認系統",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [
+          {
+            "text": "訂單系統或後台帳號可能被未授權存取；先查：商店網站、正式訂單資料庫、訂單匯出檔案儲存區",
+            "systems": [
+              "商店網站",
+              "正式訂單資料庫",
+              "訂單匯出檔案儲存區"
+            ],
+            "source": "ai"
+          }
+        ],
+        "relation_changed_at": null
+      }
+    },
+    "live-php-nov-2026-security-release": {
+      "id": "live-php-nov-2026-security-release",
+      "kind": "live",
+      "title": "PHP 11/19 安全更新修補 18 個漏洞，7 個為重大等級",
+      "event_date": "2026-11-19",
+      "first_seen": "2026-11-22",
+      "last_seen": "2026-11-22",
+      "last_seen_at": "2026-11-22T03:45:43Z",
+      "observed_run_id": "44982062283",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [
+        "CVE-2026-115560",
+        "CVE-2026-126714",
+        "CVE-2026-129182",
+        "CVE-2026-129289",
+        "CVE-2026-129291",
+        "CVE-2026-129474",
+        "CVE-2026-129481",
+        "CVE-2026-129496"
+      ],
+      "summary": "2 項受影響：報表服務為低風險（3 分），phpmyadmin 為中風險（4 分，已因只允許公司 VPN 連入扣 3 分）。建議依 11/19 安全更新升級。",
+      "sources": [
+        {
+          "title": "PHP Fixes 7 Critical Flaws, Including Bugs That Could Allow Remote Code Execution",
+          "domain": "thehackernews.com",
+          "url": "https://thehackernews.com/2026/11/php-fixes-7-critical-flaws-including.html",
+          "verified": true
+        },
+        {
+          "title": "phpAfterShell Explained: How Hackers Could Turn a PHP Session Flaw Into Code Execution",
+          "domain": "thehackernews.com",
+          "url": "https://thehackernews.com/2026/11/phpaftershell-explained-how-hackers.html",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-22T03:45:43Z",
+        "run_id": "44982062283",
+        "relation": "affected",
+        "max_level": "medium",
+        "affected_count": 2,
+        "conclusion": "2 項受影響，最高風險為中。報表服務：php 8.4.27（fpm-fcgi）。",
+        "impacts": [
+          {
+            "asset_id": "phpmyadmin",
+            "asset_label": "資料庫網頁管理工具",
+            "verdict": "affected",
+            "level": "medium"
+          },
+          {
+            "asset_id": "report-svc",
+            "asset_label": "報表服務",
+            "verdict": "affected",
+            "level": "low"
+          },
+          {
+            "asset_id": "marketing-site",
+            "asset_label": "行銷官網",
+            "verdict": "not_affected",
+            "level": null
+          }
+        ],
+        "impacts_total": 3,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
+    "live-php-security-release-2026-11-19": {
+      "id": "live-php-security-release-2026-11-19",
+      "kind": "live",
+      "title": "PHP 11/19 安全更新修補 7 個 Critical RCE 漏洞，含 PHP2Shell 的不完整修補",
+      "event_date": "2026-11-19",
+      "first_seen": "2026-11-20",
+      "last_seen": "2026-11-21",
+      "last_seen_at": "2026-11-21T04:31:48Z",
+      "observed_run_id": "44866524353",
+      "confidence": "confirmed",
+      "is_update_of": "evt-php2shell-2026-10",
+      "cves": [
+        "CVE-2026-109618",
+        "CVE-2026-109619",
+        "CVE-2026-115560",
+        "CVE-2026-126714",
+        "CVE-2026-129182",
+        "CVE-2026-129289",
+        "CVE-2026-129291",
+        "CVE-2026-129474",
+        "CVE-2026-129481",
+        "CVE-2026-129496"
+      ],
+      "summary": "3 項受影響：行銷官網 marketing-site 已停止支援且無修補，為高風險（9 分）；報表服務 report-svc（5 分）與 phpmyadmin（4 分，只允許公司連線通道連入）為中風險。",
+      "sources": [
+        {
+          "title": "PHP Patches Seven Critical RCE Vulnerabilities",
+          "domain": "www.securityweek.com",
+          "url": "https://www.securityweek.com/php-patches-seven-critical-rce-vulnerabilities/",
+          "verified": true
+        },
+        {
+          "title": "PHP Fixes 7 Critical Flaws, Including Bugs That Could Allow Remote Code Execution",
+          "domain": "thehackernews.com",
+          "url": "https://thehackernews.com/2026/11/php-fixes-7-critical-flaws-including.html",
+          "verified": true
+        },
+        {
+          "title": "PHP釋出安全更新修補18個漏洞，7個為重大等級",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180678",
+          "verified": true
+        },
+        {
+          "title": "phpAfterShell Explained: How Hackers Could Turn a PHP Session Flaw Into Code Execution",
+          "domain": "thehackernews.com",
+          "url": "https://thehackernews.com/2026/11/phpaftershell-explained-how-hackers.html",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-21T04:31:48Z",
+        "run_id": "44866524353",
+        "relation": "affected",
+        "max_level": "high",
+        "affected_count": 3,
+        "conclusion": "3 項受影響，最高風險為高。包括行銷官網、報表服務、資料庫網頁管理工具。",
+        "impacts": [
+          {
+            "asset_id": "marketing-site",
+            "asset_label": "行銷官網",
+            "verdict": "affected",
+            "level": "high"
+          },
+          {
+            "asset_id": "phpmyadmin",
+            "asset_label": "資料庫網頁管理工具",
+            "verdict": "affected",
+            "level": "medium"
+          },
+          {
+            "asset_id": "report-svc",
+            "asset_label": "報表服務",
+            "verdict": "affected",
+            "level": "medium"
           }
         ],
         "impacts_total": 3,
@@ -3422,6 +5222,165 @@
         "relation_changed_at": null
       }
     },
+    "live-plaid-karte-dhc-2026-11": {
+      "id": "live-plaid-karte-dhc-2026-11",
+      "kind": "live",
+      "title": "日本 DHC 因第三方行銷分析平臺 KARTE 被駭，外洩 1,911 萬筆用戶個資",
+      "event_date": "2026-11-19",
+      "first_seen": "2026-11-20",
+      "last_seen": "2026-11-20",
+      "last_seen_at": "2026-11-20T04:38:26Z",
+      "observed_run_id": "44675731205",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [],
+      "summary": "程式無法自動判定此事件是否影響我們，需要人工確認我們使用的第三方行銷或寄信服務是否有連帶外洩會員資料的可能。",
+      "sources": [
+        {
+          "title": "日本藥妝業者DHC因第三方行銷分析平臺被駭，外洩用戶個資1,911萬筆",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180648",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-20T04:38:26Z",
+        "run_id": "44675731205",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "*",
+            "asset_label": "待確認系統",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [
+          {
+            "text": "第三方行銷或寄信服務被入侵後，連帶外洩我們的會員資料；先查：MailRelay（虛構寄信服務）、寄信服務金鑰",
+            "systems": [
+              "MailRelay（虛構寄信服務）",
+              "寄信服務金鑰"
+            ],
+            "source": "ai"
+          }
+        ],
+        "relation_changed_at": null
+      }
+    },
+    "live-plaid-karte-third-party-2026-11": {
+      "id": "live-plaid-karte-third-party-2026-11",
+      "kind": "live",
+      "title": "日本 PLAID 旗下 KARTE 平臺遭入侵，JINS、DHC、三菱UFJ銀行等數十家企業公告個資外洩",
+      "event_date": "2026-11-20",
+      "first_seen": "2026-11-22",
+      "last_seen": "2026-11-22",
+      "last_seen_at": "2026-11-22T03:45:43Z",
+      "observed_run_id": "44982062283",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [],
+      "summary": "程式無法自動判定，需人工確認：我們使用的第三方 SaaS 若遭入侵，客戶資料可能一併外流，建議盤點使用的第三方服務。",
+      "sources": [
+        {
+          "title": "【資安週報】1116～1120，全球第三方供應商遭駭連環爆；Java4Shell、NGINX2Root等重大漏洞揭露引關注",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180681",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-22T03:45:43Z",
+        "run_id": "44982062283",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "*",
+            "asset_label": "待確認系統",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [
+          {
+            "text": "我們使用的第三方 SaaS 若遭入侵，客戶資料會一併外流；先查：QuickSite Builder、MailRelay（虛構寄信服務）、App 推播服務",
+            "systems": [
+              "QuickSite Builder",
+              "MailRelay（虛構寄信服務）",
+              "App 推播服務"
+            ],
+            "source": "ai"
+          }
+        ],
+        "relation_changed_at": null
+      }
+    },
+    "live-postgresql-cve-2026-116331": {
+      "id": "live-postgresql-cve-2026-116331",
+      "kind": "live",
+      "title": "PostgreSQL CVE-2026-116331：可建立物件的帳號可在資料庫主機執行程式碼",
+      "event_date": "2026-11-19",
+      "first_seen": "2026-11-20",
+      "last_seen": "2026-11-22",
+      "last_seen_at": "2026-11-22T03:45:43Z",
+      "observed_run_id": "44982062283",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [
+        "CVE-2026-116331"
+      ],
+      "summary": "研究員公布 PostgreSQL 漏洞 CVE-2026-116331，能建立資料庫物件的帳號可用資料庫的作業系統使用者身分執行程式碼。已於上週修補，來源未列版本，且未見在野利用。",
+      "sources": [
+        {
+          "title": "Researcher Demonstrates Database RCE Exploits Affecting PostgreSQL, MySQL and Oracle",
+          "domain": "thehackernews.com",
+          "url": "https://thehackernews.com/2026/11/researcher-demonstrates-database-rce.html",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-22T03:45:43Z",
+        "run_id": "44982062283",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "沒有確定受影響的項目，但有 3 項需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "member-db-prod",
+            "asset_label": "正式會員資料庫",
+            "verdict": "need_check",
+            "level": null
+          },
+          {
+            "asset_id": "order-db-prod",
+            "asset_label": "正式訂單資料庫",
+            "verdict": "need_check",
+            "level": null
+          },
+          {
+            "asset_id": "order-db-test",
+            "asset_label": "測試訂單資料庫",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 3,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
     "live-postgresql-cve-2026-6460": {
       "id": "live-postgresql-cve-2026-6460",
       "kind": "live",
@@ -3610,6 +5569,138 @@
         "relation_changed_at": null
       }
     },
+    "live-sbc-medical-breach-2026-11": {
+      "id": "live-sbc-medical-breach-2026-11",
+      "kind": "live",
+      "title": "SBC Medical Group 日本診所線上平台遭駭，逾 200 萬人資料受影響",
+      "event_date": "2026-11-20",
+      "first_seen": "2026-11-21",
+      "last_seen": "2026-11-21",
+      "last_seen_at": "2026-11-21T04:31:48Z",
+      "observed_run_id": "44866524353",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [],
+      "summary": "此事件沒有可比對的產品、版本或控制項，程式無法自動判定，需人工確認；建議檢查第三方預約或寄信服務的管理員帳號是否遭盜用，以及會員平台資料庫與後台有無被直接入侵的跡象。",
+      "sources": [
+        {
+          "title": "SBC Medical Group Data Breach Impacts Over 2 Million",
+          "domain": "www.securityweek.com",
+          "url": "https://www.securityweek.com/sbc-medical-group-data-breach-impacts-over-2-million/",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-21T04:31:48Z",
+        "run_id": "44866524353",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "*",
+            "asset_label": "待確認系統",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [
+          {
+            "text": "第三方預約或寄信服務的管理員帳號遭盜用；先查：MailRelay（虛構寄信服務）、寄信服務金鑰",
+            "systems": [
+              "MailRelay（虛構寄信服務）",
+              "寄信服務金鑰"
+            ],
+            "source": "ai"
+          },
+          {
+            "text": "會員平台的資料庫或後台被直接入侵；先查：會員服務 API、正式會員資料庫",
+            "systems": [
+              "會員服務 API",
+              "正式會員資料庫"
+            ],
+            "source": "ai"
+          }
+        ],
+        "relation_changed_at": null
+      }
+    },
+    "live-sbc-medical-japan-breach-2026-11": {
+      "id": "live-sbc-medical-japan-breach-2026-11",
+      "kind": "live",
+      "title": "SBC Medical Group 日本診所客戶資料外洩，影響逾 200 萬人",
+      "event_date": "2026-11-20",
+      "first_seen": "2026-11-23",
+      "last_seen": "2026-11-23",
+      "last_seen_at": "2026-11-23T04:24:02Z",
+      "observed_run_id": "45111578163",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [],
+      "summary": "事件沒有可比對的產品或控制項，程式無法自動判定，需人工確認；可檢查資料庫或管理工具是否可被直接連上、員工電腦授權與帳號密碼是否可能外流。",
+      "sources": [
+        {
+          "title": "SBC Medical Group Data Breach Impacts Over 2 Million",
+          "domain": "www.securityweek.com",
+          "url": "https://www.securityweek.com/sbc-medical-group-data-breach-impacts-over-2-million/",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-23T04:24:02Z",
+        "run_id": "45111578163",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "*",
+            "asset_label": "待確認系統",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [
+          {
+            "text": "資料庫或管理工具可能可以被直接連上；先查：App 雲端檔案儲存區、正式會員資料庫、正式訂單資料庫、訂單匯出檔案儲存區、資料庫網頁管理工具",
+            "systems": [
+              "App 雲端檔案儲存區",
+              "正式會員資料庫",
+              "正式訂單資料庫",
+              "訂單匯出檔案儲存區",
+              "資料庫網頁管理工具"
+            ],
+            "source": "rule"
+          },
+          {
+            "text": "員工電腦上的登入權杖可能被偷走；先查：辦公室檔案伺服器、工程部門筆電（甲）、工程部門筆電（乙）、維運部門筆電、辦公室 NAS",
+            "systems": [
+              "辦公室檔案伺服器",
+              "工程部門筆電（甲）",
+              "工程部門筆電（乙）",
+              "維運部門筆電",
+              "辦公室 NAS"
+            ],
+            "source": "rule"
+          },
+          {
+            "text": "資料庫的帳號密碼可能外流被拿來登入；先查：正式訂單資料庫帳密、測試訂單資料庫帳密",
+            "systems": [
+              "正式訂單資料庫帳密",
+              "測試訂單資料庫帳密"
+            ],
+            "source": "rule"
+          }
+        ],
+        "relation_changed_at": null
+      }
+    },
     "live-sharefull-admin-breach-2026-11": {
       "id": "live-sharefull-admin-breach-2026-11",
       "kind": "live",
@@ -3757,6 +5848,195 @@
         "relation_changed_at": null
       }
     },
+    "live-synology-dsm-cve-2024-10441-kev": {
+      "id": "live-synology-dsm-cve-2024-10441-kev",
+      "kind": "live",
+      "title": "CISA 將 Synology DSM CVE-2024-10441 列入已遭利用漏洞（KEV）",
+      "event_date": "2026-11-19",
+      "first_seen": "2026-11-21",
+      "last_seen": "2026-11-21",
+      "last_seen_at": "2026-11-21T04:31:48Z",
+      "observed_run_id": "44866524353",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [
+        "CVE-2024-10441"
+      ],
+      "summary": "程式未能確定受影響，但需要人工確認：請確認 synology-dsm 7.2.1-69057 Update 5 是否需要更新。同一漏洞已在其他情資比對中判定 nas-office-01 為高風險。",
+      "sources": [
+        {
+          "title": "CISA Warns of 4 Exploited Flaws Linked to Ransomware, Cryptomining, and LLMjacking Attacks",
+          "domain": "thehackernews.com",
+          "url": "https://thehackernews.com/2026/11/cisa-warns-of-4-exploited-flaws-linked.html",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-21T04:31:48Z",
+        "run_id": "44866524353",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "沒有確定受影響的項目，但有 1 項需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "nas-office-01",
+            "asset_label": "辦公室 NAS",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
+    "live-synology-dsm-kev-cve-2024-10441": {
+      "id": "live-synology-dsm-kev-cve-2024-10441",
+      "kind": "live",
+      "title": "CISA 將 Synology DSM CVE-2024-10441 列入已遭利用漏洞（KEV）",
+      "event_date": "2026-11-19",
+      "first_seen": "2026-11-22",
+      "last_seen": "2026-11-22",
+      "last_seen_at": "2026-11-22T03:45:43Z",
+      "observed_run_id": "44982062283",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [
+        "CVE-2024-10441"
+      ],
+      "summary": "此項需人工確認：請確認辦公室 NAS 的 DSM 版本是否需要更新；程式已在另一則比對中將其列為高風險。",
+      "sources": [
+        {
+          "title": "CISA Warns of 4 Exploited Flaws Linked to Ransomware, Cryptomining, and LLMjacking Attacks",
+          "domain": "thehackernews.com",
+          "url": "https://thehackernews.com/2026/11/cisa-warns-of-4-exploited-flaws-linked.html",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-22T03:45:43Z",
+        "run_id": "44982062283",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "沒有確定受影響的項目，但有 1 項需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "nas-office-01",
+            "asset_label": "辦公室 NAS",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
+    "live-synology-dsm-oauth-2026-11": {
+      "id": "live-synology-dsm-oauth-2026-11",
+      "kind": "live",
+      "title": "Synology DSM OAuth API 重大漏洞 CVE-2026-120382（CVSS 9.8），另有 CVE-2026-123007",
+      "event_date": "2026-11-19",
+      "first_seen": "2026-11-21",
+      "last_seen": "2026-11-21",
+      "last_seen_at": "2026-11-21T04:31:48Z",
+      "observed_run_id": "44866524353",
+      "confidence": "confirmed",
+      "is_update_of": null,
+      "cves": [
+        "CVE-2026-120382",
+        "CVE-2026-123007"
+      ],
+      "summary": "辦公室 NAS nas-office-01 的 synology-dsm 7.2.1-69057 Update 5 落在受影響範圍且管理頁對外，程式判定為高風險（8 分）。建議更新並關閉對外管理頁。",
+      "sources": [
+        {
+          "title": "實測 Synology DSM 致命漏洞 CVE-2026-120382：CVSS 9.8、免登入可讀寫檔案，停用 OAuth 與更新修補驗證",
+          "domain": "cyberq.tw",
+          "url": "https://cyberq.tw/2026/11/20/real-world-testing-revealed-a-critical/",
+          "verified": true
+        },
+        {
+          "title": "群暉警告NAS存在兩個重大漏洞，預計20日提供部分版本作業系統修補程式",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180680",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-21T04:31:48Z",
+        "run_id": "44866524353",
+        "relation": "affected",
+        "max_level": "high",
+        "affected_count": 1,
+        "conclusion": "1 項受影響，最高風險為高。辦公室 NAS：synology-dsm 7.2.1-69057 Update 5，對外。",
+        "impacts": [
+          {
+            "asset_id": "nas-office-01",
+            "asset_label": "辦公室 NAS",
+            "verdict": "affected",
+            "level": "high"
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
+    "live-synology-dsm-oauth-cve-2026-120382": {
+      "id": "live-synology-dsm-oauth-cve-2026-120382",
+      "kind": "live",
+      "title": "Synology DSM OAuth API 嚴重漏洞 CVE-2026-120382（CVSS 9.8）",
+      "event_date": "2026-11-19",
+      "first_seen": "2026-11-22",
+      "last_seen": "2026-11-22",
+      "last_seen_at": "2026-11-22T03:45:43Z",
+      "observed_run_id": "44982062283",
+      "confidence": "confirmed",
+      "is_update_of": null,
+      "cves": [
+        "CVE-2026-120382"
+      ],
+      "summary": "辦公室 NAS 版本落在受影響範圍且管理頁對外，為高風險（8 分）。建議更新到原廠修補版本並關閉管理頁對外。",
+      "sources": [
+        {
+          "title": "實測 Synology DSM 致命漏洞 CVE-2026-120382：CVSS 9.8、免登入可讀寫檔案，停用 OAuth 與更新修補驗證",
+          "domain": "cyberq.tw",
+          "url": "https://cyberq.tw/2026/11/20/real-world-testing-revealed-a-critical/",
+          "verified": true
+        },
+        {
+          "title": "群暉警告NAS存在兩個重大漏洞，預計20日提供部分版本作業系統修補程式",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180680",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-22T03:45:43Z",
+        "run_id": "44982062283",
+        "relation": "affected",
+        "max_level": "high",
+        "affected_count": 1,
+        "conclusion": "1 項受影響，最高風險為高。辦公室 NAS：synology-dsm 7.2.1-69057 Update 5，對外。",
+        "impacts": [
+          {
+            "asset_id": "nas-office-01",
+            "asset_label": "辦公室 NAS",
+            "verdict": "affected",
+            "level": "high"
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
     "live-synology-dsm-sa-26-19": {
       "id": "live-synology-dsm-sa-26-19",
       "kind": "live",
@@ -3844,6 +6124,58 @@
         "impacts_total": 1,
         "impacts_truncated": false,
         "suggestions": [],
+        "relation_changed_at": null
+      }
+    },
+    "live-taiwan-taxi-gbt-breach-2026-11": {
+      "id": "live-taiwan-taxi-gbt-breach-2026-11",
+      "kind": "live",
+      "title": "大車隊子公司全球商務科技遭未經授權存取，客戶與會員資料外洩",
+      "event_date": "2026-11-18",
+      "first_seen": "2026-11-21",
+      "last_seen": "2026-11-21",
+      "last_seen_at": "2026-11-21T04:31:48Z",
+      "observed_run_id": "44866524353",
+      "confidence": "provisional",
+      "is_update_of": null,
+      "cves": [],
+      "summary": "大車隊 11/18 發布重大訊息，子公司全球商務科技資訊系統遭外部未經授權存取，影響全球商務科技與全球快遞的業務資料，含部分客戶、會員及外務人員資訊。公司已關閉異常存取入口、修補系統弱點並啟動帳號安全處置，影響範圍仍在評估。",
+      "sources": [
+        {
+          "title": "大車隊子公司全球商務科技遭未經授權存取，部分客戶及會員資料外洩",
+          "domain": "www.ithome.com.tw",
+          "url": "https://www.ithome.com.tw/news/180662",
+          "verified": true
+        }
+      ],
+      "assessment": {
+        "evaluated_at": "2026-11-21T04:31:48Z",
+        "run_id": "44866524353",
+        "relation": "need_check",
+        "max_level": null,
+        "affected_count": 0,
+        "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+        "impacts": [
+          {
+            "asset_id": "*",
+            "asset_label": "待確認系統",
+            "verdict": "need_check",
+            "level": null
+          }
+        ],
+        "impacts_total": 1,
+        "impacts_truncated": false,
+        "suggestions": [
+          {
+            "text": "對外開放的會員或後台入口存在未修補弱點；先查：商店網站、內部營運工具、會員服務 API",
+            "systems": [
+              "商店網站",
+              "內部營運工具",
+              "會員服務 API"
+            ],
+            "source": "ai"
+          }
+        ],
         "relation_changed_at": null
       }
     },

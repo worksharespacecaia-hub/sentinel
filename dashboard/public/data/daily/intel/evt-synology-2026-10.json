@@ -191,7 +191,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "辦公室 NAS 版本落在受影響範圍且管理頁對外，為高風險（8 分）；另有備份與來源未隔離、管理頁對外開放 2 項中風險（各 5 分），與該事件勒索加密備份碟的情況相同，建議先關閉對外並隔離備份。",
+  "summary": "辦公室 NAS 有 3 項受影響：系統版本漏洞且管理頁對外（高風險 8 分），備份未與來源隔離且從未還原測試、管理頁對外開放（各為中風險 5 分）。",
   "blocks": {
     "1_summary": {
       "title": "Synology NAS 遭 C3RB3R 勒索軟體加密：DSM 登入頁對外暴露，常駐連接的備份碟一併被加密",
@@ -232,7 +232,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "辦公室 NAS 版本落在受影響範圍且管理頁對外，為高風險（8 分）；另有備份與來源未隔離、管理頁對外開放 2 項中風險（各 5 分），與該事件勒索加密備份碟的情況相同，建議先關閉對外並隔離備份。",
+      "summary": "辦公室 NAS 有 3 項受影響：系統版本漏洞且管理頁對外（高風險 8 分），備份未與來源隔離且從未還原測試、管理頁對外開放（各為中風險 5 分）。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -275,7 +275,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-17T05:28:31Z"
+        "observed_at": "2026-11-23T04:24:02Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -305,7 +305,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-17T05:28:31Z"
+        "observed_at": "2026-11-23T04:24:02Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -335,7 +335,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-17T05:28:31Z"
+        "observed_at": "2026-11-23T04:24:02Z"
       }
     ],
     "4_unaffected_and_check": {

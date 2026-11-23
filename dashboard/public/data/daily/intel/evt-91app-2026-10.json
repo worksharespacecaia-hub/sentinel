@@ -214,7 +214,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "程式比對出 5 項受影響，最高為高風險：內部營運工具對外開放、程式碼管理平台與品牌 App 內有正式金鑰，與 91APP 事件的入侵手法相符；另有辦公室 NAS 對外開放與測試環境可連正式訂單資料庫 2 項中風險，建議優先關閉對外開放並輪替金鑰。",
+  "summary": "程式判定 5 項受影響，最高為高風險：內部營運工具對外開放（8 分）、品牌 App 與程式碼管理平台的金鑰存放不當（10 分與 8 分），另有辦公室 NAS 對外開放與測試環境連到正式訂單資料庫（各為中風險 5 分）。",
   "blocks": {
     "1_summary": {
       "title": "91APP 訂單資料庫遭入侵：未更新的內部工具 Appsmith 成破口，自內部 GitLab 取得資料庫金鑰",
@@ -258,7 +258,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "程式比對出 5 項受影響，最高為高風險：內部營運工具對外開放、程式碼管理平台與品牌 App 內有正式金鑰，與 91APP 事件的入侵手法相符；另有辦公室 NAS 對外開放與測試環境可連正式訂單資料庫 2 項中風險，建議優先關閉對外開放並輪替金鑰。",
+      "summary": "程式判定 5 項受影響，最高為高風險：內部營運工具對外開放（8 分）、品牌 App 與程式碼管理平台的金鑰存放不當（10 分與 8 分），另有辦公室 NAS 對外開放與測試環境連到正式訂單資料庫（各為中風險 5 分）。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -301,7 +301,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-17T05:28:31Z"
+        "observed_at": "2026-11-23T04:24:02Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -331,7 +331,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-17T05:28:31Z"
+        "observed_at": "2026-11-23T04:24:02Z"
       },
       {
         "asset_id": "gitlab",
@@ -371,7 +371,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-17T05:28:31Z"
+        "observed_at": "2026-11-23T04:24:02Z"
       },
       {
         "asset_id": "brand-app",
@@ -416,7 +416,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-17T05:28:31Z"
+        "observed_at": "2026-11-23T04:24:02Z"
       },
       {
         "asset_id": "order-db-prod",
@@ -451,7 +451,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-17T05:28:31Z"
+        "observed_at": "2026-11-23T04:24:02Z"
       }
     ],
     "4_unaffected_and_check": {

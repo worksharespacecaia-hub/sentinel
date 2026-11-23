@@ -1,5 +1,5 @@
 {
-  "run_id": "44024324550",
+  "run_id": "45111578163",
   "scenario": "daily",
   "trigger_source": "schedule",
   "scope": "daily",
@@ -13,14 +13,14 @@
       "impact": "NVD 未涵蓋（沒有 CPE 對照或版本未知）：code-assistant-bot 1.2.0、opsbuilder 1.88、pipeline-runner 4.1.0；只能靠情資事件比對"
     }
   ],
-  "generated_at": "2026-11-17T05:28:31Z",
-  "as_of": "2026-11-17T05:28:31Z",
+  "generated_at": "2026-11-23T04:24:02Z",
+  "as_of": "2026-11-23T04:24:02Z",
   "light": "red",
   "light_reasons": [
     "20 個未處理的高風險"
   ],
   "ceo_summary": [
-    "今天是紅燈：有 20 個高風險、22 個中風險的問題還沒處理。",
+    "今天是紅燈：有 20 個高風險、23 個中風險的問題還沒處理。",
     "最急的是 5 個問題可以被駭客串起來一路闖進去，最後可能拿到訂單資料、會員個資、核心系統（自動部署流程）；另有 1 個對外系統的軟體原廠已不再修補。",
     "今天看了 17 件外面發生的資安事件，其中 12 件的問題我們也有。"
   ],
@@ -30,8 +30,8 @@
   ],
   "counts": {
     "high": 20,
-    "medium": 22,
-    "low": 10
+    "medium": 23,
+    "low": 11
   },
   "coverage": {
     "assets_total": 24,
@@ -53,7 +53,7 @@
         "eol_date": "2025-12-31"
       }
     ],
-    "backup_verified_ratio": 0.75,
+    "backup_verified_ratio": 0.5,
     "shadow_it": [
       "internal-tool",
       "marketing-site",
@@ -117,38 +117,38 @@
       "deadline_hours": 24,
       "solution": {
         "risk_id": "internal-tool:opsbuilder:vuln",
-        "temporary": "今天先限制內部營運工具只能從公司網路登入，登入頁不對外。",
-        "permanent": "升級到已修補的版本（1.90 或以上），並重設所有帳號密碼、檢查近期登入紀錄是否有異常。",
+        "temporary": "今天先把內部營運工具撤離網際網路，或限制只有內部可連線，並強制重設管理帳號密碼。",
+        "permanent": "升級到原廠已修補的版本，並確保內部工具不再對外開放。",
         "options": [
           {
             "name": "修補",
-            "action": "升級到官方已修補的版本並重設帳號密碼",
-            "cost": "需短暫停機與測試",
+            "action": "升級至原廠已修補版本",
+            "cost": "需要維護時間與功能測試",
             "timing": "今天"
           },
           {
             "name": "緩解",
-            "action": "限制登入頁只允許公司網路來源",
-            "cost": "遠端使用需先連上公司網路；漏洞仍在",
+            "action": "限制連線來源、啟用額外身分驗證，並檢查近期登入紀錄",
+            "cost": "使用上較不便，只降低風險",
             "timing": "今天"
           },
           {
             "name": "下架",
-            "action": "確認無人使用後暫停該工具",
-            "cost": "相關內部作業暫停",
+            "action": "更新完成前暫時關閉此工具",
+            "cost": "依賴它的營運作業會暫停",
             "timing": "今天"
           }
         ],
-        "verify": "確認版本已更新、外部網路無法連到登入頁，且近期登入紀錄無異常。",
-        "suggested_owner": "內部工具負責團隊／資安團隊",
+        "verify": "確認版本已更新、外部網路無法連到登入頁，並檢視無可疑帳號活動。",
+        "suggested_owner": "內部營運工具負責單位與資安團隊",
         "plain_title": "內部營運工具有帳號被盜用的漏洞，可能造成訂單與會員資料外洩",
-        "if_ignored": "這個漏洞已有人在用。外人可冒用帳號登入，再一路拿到正式訂單資料庫的帳密，把訂單和會員個資帶走。同業 91APP 就是這樣被入侵。",
+        "if_ignored": "外人可以從網路冒用帳號登入，再一路拿到程式碼管理平台和正式訂單資料庫的帳密，把訂單和會員個資整批帶走。這個漏洞已經有人在用。",
         "source": "live",
         "plain_source": "live"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "依拆解，基礎漏洞分 3 分來自 CVSS 9.8，另有已遭實際利用 2 分、對外可連線 2 分、同業事件命中 1 分，以及位於完整攻擊鏈的必要步驟 3 分。攻擊路徑為 internet → internal-tool → GitLab 唯讀 Token → gitlab → order-db-prod 憑證 → order-db-prod，可能導致訂單資料庫遭存取。圖譜查詢因資產不在本次範圍而失敗，品牌數、安裝數與資料欄位未提供，無法評估其數量與範圍。",
       "explanation_source": "live",
@@ -213,32 +213,32 @@
       "deadline_hours": 24,
       "solution": {
         "risk_id": "brand-app:C-SECRET-IN-GIT",
-        "temporary": "今天先更換程式碼中那組系統金鑰，並停用舊的。",
-        "permanent": "金鑰不再寫進程式碼與 App 安裝檔，改由後端代為存取或使用安全的金鑰保管服務；清除程式碼歷史中的舊金鑰，並檢查舊金鑰近期的使用紀錄。",
+        "temporary": "今天先請工程團隊更換品牌 App 內嵌的系統金鑰，舊的立即停用。",
+        "permanent": "金鑰改由安全的金鑰管理服務保管，不再寫進程式碼；清理 Git 歷史並加入提交前的金鑰掃描。",
         "options": [
           {
             "name": "緩解",
-            "action": "立即輪替金鑰並限制其可存取範圍與來源",
-            "cost": "舊版 App 可能需強制更新才能繼續使用",
+            "action": "立即輪替內嵌金鑰並撤銷舊金鑰，檢查近期異常使用紀錄",
+            "cost": "舊版 App 可能需要強制更新才能繼續使用",
             "timing": "今天"
           },
           {
             "name": "修補",
-            "action": "改版 App，移除內嵌金鑰並改由後端轉接",
-            "cost": "需要 App 改版與上架審核時間",
+            "action": "改版 App，移除內嵌金鑰並改由後端代為呼叫",
+            "cost": "需要開發、測試與上架審核時間",
             "timing": "30 天內"
           }
         ],
-        "verify": "舊金鑰已失效；重新掃描程式碼與安裝檔都找不到正式金鑰；後端日誌沒有舊金鑰的異常使用。",
-        "suggested_owner": "App 開發團隊／資安團隊",
-        "plain_title": "品牌 App 內嵌系統密碼，可能造成會員個資外洩",
-        "if_ignored": "拿到程式碼或 App 安裝檔的人，就能用這組密碼讀走正式會員資料庫的個資。密碼不換，這個破口就一直在。",
+        "verify": "確認程式碼與安裝檔中已找不到正式金鑰，舊金鑰已無法使用，掃描不再告警。",
+        "suggested_owner": "App 開發團隊",
+        "plain_title": "品牌 App 的系統密碼寫在程式碼裡，可能造成會員個資外洩",
+        "if_ignored": "拿到程式碼或 App 安裝檔的人，就能用這組密碼連到 API 閘道並讀走會員個資。同業 91APP 也是因金鑰外流而出事。",
         "source": "live",
         "plain_source": "live"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "圖譜顯示 brand-app 為對外暴露的正式環境 App（可從網際網路下載），資料類別為 pii，屬平台層資產，並儲存 app-api-key，攻擊路徑為 internet → brand-app → app-api-key → api-gateway → member-db-prod。圖譜未提供影響品牌數與安裝數，breakdown 中「影響所有品牌」與「商店上架」的說明僅能部分由平台層與對外下載屬性印證，且以 C-SECRET-IN-GIT 為名的元件查無對應資產，故此說明的數字與元件關聯無法完全確認。分數 2+2+1+1+1+3 維持程式結果，不予更動。",
       "explanation_source": "live",
@@ -277,7 +277,7 @@
         {
           "factor": "同業事件命中",
           "points": 1,
-          "reason": "evt-php2shell-2026-10、live-php2shell-check-point-esxi-wiper-2026-11"
+          "reason": "evt-php2shell-2026-10"
         },
         {
           "factor": "已停止支援",
@@ -289,46 +289,45 @@
       "matched_events": [
         "evt-php2shell-2026-10",
         "kev-cve-2026-109618",
-        "kev-cve-2026-109619",
-        "live-php2shell-check-point-esxi-wiper-2026-11"
+        "kev-cve-2026-109619"
       ],
       "deadline_hours": 24,
       "solution": {
         "risk_id": "marketing-site:php:vuln",
-        "temporary": "今天先把行銷官網暫時下線或改放一頁靜態公告頁，並限制只有公司網路能進後台。",
-        "permanent": "將 PHP 升級到仍受原廠支援的版本（或遷移到受支援的主機環境），並關閉不必要的上傳進度功能（session.upload_progress）；完成後重新掃描確認。",
+        "temporary": "今天先評估把行銷官網暫時關閉，或限制為只放靜態頁面，並加強監看。",
+        "permanent": "將官網搬到仍有原廠支援的軟體版本，或改為靜態網站。",
         "options": [
           {
             "name": "修補",
-            "action": "升級到仍受支援的 PHP 版本並回歸測試網站功能",
-            "cost": "需要工程與測試人力，可能有相容性調整",
-            "timing": "7 天內"
+            "action": "升級至仍受原廠支援的版本（目前舊版無修補可用，需搬遷）",
+            "cost": "需要網站相容性測試與搬遷時間",
+            "timing": "30 天內"
           },
           {
             "name": "緩解",
-            "action": "在網站前加防護規則並關閉上傳進度功能，縮小可攻擊面",
-            "cost": "只降低風險，漏洞仍在；可能誤擋正常流量",
+            "action": "在前端加上防護並限縮可用功能，持續監控",
+            "cost": "只降低風險，漏洞仍在",
             "timing": "今天"
           },
           {
             "name": "下架",
-            "action": "暫時下架行銷官網，改放靜態公告頁",
-            "cost": "官網暫時無法使用，影響行銷與品牌曝光",
+            "action": "暫時關閉行銷官網，待搬遷完成再上線",
+            "cost": "官網暫時無法瀏覽，影響行銷活動",
             "timing": "今天"
           }
         ],
-        "verify": "重新掃描確認 PHP 版本已在支援範圍、對外請求無法觸發相關漏洞，並確認 KEV 命中消失。",
-        "suggested_owner": "網站／基礎架構團隊",
-        "plain_title": "行銷官網的軟體已停止修補且有漏洞，可能被入侵或竄改",
-        "if_ignored": "原廠不再提供修補，漏洞會一直開著，而且已有人在利用。外人可能入侵官網、竄改內容，甚至把它當跳板。",
+        "verify": "確認網站已改用受支援版本，重新掃描無嚴重漏洞，且網頁內容未被竄改。",
+        "suggested_owner": "行銷官網負責單位與資訊部門",
+        "plain_title": "行銷官網的軟體原廠已不再修補，有可被入侵的漏洞",
+        "if_ignored": "這個漏洞已經有人在用，而且原廠不會再修補，外人可能入侵官網、竄改內容或當成跳板。",
         "source": "live",
         "plain_source": "live"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "拆解為：基礎漏洞 3 分（CVSS 9.8）、已遭實際利用 2 分（KEV 或官方確認）、對外暴露 2 分（可從 internet 連到）、同業事件命中 1 分（evt-php2shell-2026-10、live-php2shell-check-point-esxi-wiper-2026-11）、已停止支援 1 分（無修補可用）。圖譜查詢顯示此資產不在本次資產範圍，無法確認品牌數、安裝數與資料欄位，業務影響也無法依資產資料評估。攻擊路徑為 null，未推測。",
+      "explanation": "原任務 ID 不在本次資產範圍，改以元件搜尋對應到資產 marketing-site（prod，php 8.1.27，apache2handler）。資產資料：對外暴露（internet 443）、未登錄（registered: false）、無 CI 部署、owner 為空、非 crown jewel、無資料欄位（data_classes 為空）、由行銷外包以 FTP 上傳建立，屬 shadow IT，level_floor 為 high。影響品牌數與安裝數資料未提供，無法回報。分數拆解說明（依程式結果，未重新計分）：1. 基礎分：漏洞 +3，依 CVSS 9.8（CVE-2024-11236）。2. 已遭實際利用 +2，依 KEV 或官方確認。3. 對外暴露 +2，資產確實可由 internet 連到，與圖譜資料一致。4. 同業事件命中 +1，命中 evt-php2shell-2026-10。5. 已停止支援 +1，無修補可用。業務影響：此為行銷官網，但因屬 shadow IT、無 owner、未登錄且由外包上傳，風險主要來自無人負責修補與監控；同機另有 WordPress 6.4.3 與 Apache 2.4.57 元件，攻擊面可能擴大。資料欄位未登錄，無法判斷是否涉及個資。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -380,32 +379,32 @@
       "deadline_hours": 24,
       "solution": {
         "risk_id": "storefront:node:vuln",
-        "temporary": "今天先在商店網站前加上防護規則，並確認異常流量有被監控。",
-        "permanent": "將 Node.js 升級到已修補的版本，重新部署並回歸測試。",
+        "temporary": "今天先加強商店網站的異常連線監控，並確認可立即更新的時間。",
+        "permanent": "將商店網站的執行環境升級到原廠已修補版本，並建立定期更新機制。",
         "options": [
           {
             "name": "修補",
-            "action": "升級 Node.js 到官方已修補版本並重新部署",
-            "cost": "需要測試與一次部署，可能有短暫停機",
+            "action": "升級執行環境至原廠修補版本並完成測試",
+            "cost": "需要短暫維護與回歸測試",
             "timing": "今天"
           },
           {
             "name": "緩解",
-            "action": "加防護規則並加強監控，降低被利用機率",
-            "cost": "漏洞仍在，可能誤擋正常顧客",
+            "action": "更新前在入口處加強過濾與監控",
+            "cost": "只降低風險，漏洞仍在",
             "timing": "今天"
           }
         ],
-        "verify": "確認執行環境版本已更新，重新掃描不再命中該漏洞。",
-        "suggested_owner": "商店網站開發／維運團隊",
-        "plain_title": "商店網站有已被利用的漏洞，可能造成訂單與會員資料外洩",
-        "if_ignored": "這個漏洞已有人在利用。商店網站對外開放，外人可能藉此入侵，取得訂單資料與會員個資，影響所有品牌。",
+        "verify": "重新掃描確認版本已更新、已知漏洞不再出現，購物流程正常。",
+        "suggested_owner": "商店網站開發團隊",
+        "plain_title": "商店網站有已被用來攻擊的漏洞，可能造成訂單與會員資料外洩",
+        "if_ignored": "這個漏洞已經有人在用，商店網站又對外開放，外人可能入侵並讀走訂單資料與會員個資，影響所有品牌。",
         "source": "live",
         "plain_source": "live"
       },
       "status": "open",
       "first_seen": "2026-11-10T16:09:21Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "圖譜中找不到此 ID（圖譜回傳錯誤），改以 node 22.11.0 所在的 storefront 資產說明（元件查詢另有 internal-tool、member-api 也含 node 22.11.0，無法確認任務指的是哪一個）。影響品牌數：圖譜未提供，無法確認「影響所有品牌」。安裝數：圖譜未提供。storefront 為 prod、web-team 負責、self-hosted、經 CI 部署。資料類別 order、pii，與「資料敏感」一致；對外連線 internet 443，與「對外暴露」一致；platform_layer 為 true，與「平台層」一致；下游可達 cache-redis (6379)、order-db-prod (5432)、payment-service (8443)；crown_jewel 為 false，無補償控制。CVSS 9.8 與 KEV 資訊不在圖譜中，無法驗證。建議確認任務所指資產並補充品牌數、安裝數與漏洞來源資料。分數維持程式結果，未重新計分。",
       "explanation_source": "live",
@@ -466,32 +465,32 @@
       "deadline_hours": 24,
       "solution": {
         "risk_id": "gitlab:C-SECRET-IN-GIT",
-        "temporary": "今天先更換程式碼庫裡那組正式資料庫的帳密，並停用舊的。",
-        "permanent": "正式密碼不得放在程式碼庫；改用安全的金鑰保管服務，清除歷史紀錄中的舊密碼，並加上提交前的密碼掃描。",
+        "temporary": "今天先更換內部程式碼管理平台中出現的正式資料庫帳密，並撤銷舊的。",
+        "permanent": "正式帳密改由金鑰管理服務保管，不放進程式碼；清理歷史紀錄並啟用提交前的金鑰掃描。",
         "options": [
           {
             "name": "緩解",
-            "action": "立即輪替該組帳密並縮小其權限與可連線來源",
-            "cost": "使用該帳密的服務需同步更新設定，可能短暫中斷",
+            "action": "輪替正式訂單資料庫帳密，檢查近期異常登入",
+            "cost": "使用該帳密的服務需同步更新，可能短暫中斷",
             "timing": "今天"
           },
           {
             "name": "修補",
-            "action": "導入金鑰保管服務與自動掃描，清理歷史紀錄",
-            "cost": "需要工程人力與流程調整",
-            "timing": "30 天內"
+            "action": "移除程式碼中的帳密、改用金鑰管理服務並清理歷史",
+            "cost": "需要開發與部署時間",
+            "timing": "7 天內"
           }
         ],
-        "verify": "舊帳密已失效；重新掃描程式碼庫與歷史紀錄找不到正式密碼；資料庫日誌無舊帳密的異常登入。",
-        "suggested_owner": "平台／資安團隊",
-        "plain_title": "內部程式碼管理平台存放正式密碼，可能造成訂單與會員資料外洩",
-        "if_ignored": "只要進得了程式碼管理平台，就能拿到正式訂單資料庫的帳密，帶走訂單與會員個資。同業 91APP 就是這樣被入侵。",
+        "verify": "確認程式碼庫與歷史中已無正式帳密，舊帳密已失效，掃描不再告警。",
+        "suggested_owner": "平台工程團隊",
+        "plain_title": "內部程式碼管理平台存放正式資料庫密碼，可能造成訂單與會員資料外洩",
+        "if_ignored": "外人一旦進到內部程式碼管理平台，就能拿到正式訂單資料庫的帳密，把訂單與會員個資整批帶走。同業 91APP 就是這樣被入侵。",
         "source": "live",
         "plain_source": "live"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "分數 2+1+1+1+3 依 breakdown 拆解：控制項基礎分 2、資料敏感（order、pii）1、影響範圍 1、同業事件 evt-91app-2026-10 命中 1、位於完整攻擊鏈的必要步驟 3。圖譜顯示 gitlab 非網際網路暴露、非 crown jewel，且 platform_layer 為 false，與拆解中「平台層，影響所有品牌」不一致，故影響範圍的依據需人工確認；品牌數與安裝數資料未提供，無法驗證。",
       "explanation_source": "live",
@@ -547,38 +546,32 @@
       "deadline_hours": 24,
       "solution": {
         "risk_id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
-        "temporary": "今天先把內部營運工具從網際網路上撤下，改成只有公司內部網路才能連。",
-        "permanent": "內部工具一律放在內網或需經公司身分驗證的入口後面，並納入網路設定的稽核，避免再被對外開放。",
+        "temporary": "今天先把內部營運工具從網際網路撤下，只讓公司內部連線使用。",
+        "permanent": "內部工具一律不對外開放，需經公司內部網路或強化身分驗證才能使用。",
         "options": [
           {
             "name": "緩解",
-            "action": "在防火牆關閉對外連線，僅允許公司網路或 VPN 來源",
-            "cost": "遠端同仁需先連上公司網路才能使用",
+            "action": "限制只有公司內部或指定來源可連入",
+            "cost": "外出同仁需透過公司指定方式連線",
             "timing": "今天"
           },
           {
-            "name": "修補",
-            "action": "加上單一登入與多重驗證，並更新工具到最新版本",
-            "cost": "需要工程人力與一次設定",
-            "timing": "7 天內"
-          },
-          {
             "name": "下架",
-            "action": "若確認無人使用，直接停用該工具",
-            "cost": "需先確認沒有業務依賴",
-            "timing": "7 天內"
+            "action": "確認無人使用後，暫時關閉對外服務",
+            "cost": "營運流程若依賴此工具會暫時中斷",
+            "timing": "今天"
           }
         ],
-        "verify": "從外部網路測試無法連到該工具；網路設定檢查不再出現「對外開放」。",
-        "suggested_owner": "基礎架構／資安團隊",
+        "verify": "從外部網路嘗試連線應被拒絕；內部同仁仍能正常使用。",
+        "suggested_owner": "資訊部門與內部營運工具負責單位",
         "plain_title": "內部營運工具對外開放，可能造成訂單與會員資料外洩",
-        "if_ignored": "任何人從網路都能連到這個內部工具，外人可一路取得正式訂單資料庫的帳密，帶走訂單與會員個資。同業 91APP 就是這樣被入侵。",
+        "if_ignored": "任何人都能從網路連到這個內部工具，再一路走到程式碼管理平台與正式訂單資料庫。同業 91APP 就是這樣被入侵。",
         "source": "live",
         "plain_source": "live"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "摘要：internal-tool 是未登錄、由手動 docker run 啟動的內部工具，且可從 internet 經 443 連入，違反「內部工具不得對外開放」控制項（基礎 2 分、對外暴露 2 分、同業事件命中 1 分、位於完整攻擊鏈 3 分，皆依輸入拆解）。影響：圖譜顯示攻擊鏈 internet → internal-tool → 儲存於其中的 GitLab 讀取 Token → gitlab → order-db-prod 憑證 → order-db-prod，代表外部攻擊者可能藉此取得正式訂單資料庫存取權。資料欄位：圖譜未記錄其存取的 data_classes（為空）、無 owner、非 crown jewel，因此無法確認實際涉及的個資或交易欄位。品牌數與安裝數：輸入與圖譜均未提供，無法估計，屬未知。",
       "explanation_source": "live",
@@ -628,32 +621,32 @@
       "deadline_hours": 24,
       "solution": {
         "risk_id": "internal-tool:node:vuln",
-        "temporary": "今天先讓內部營運工具只能從公司網路連入，不對外。",
-        "permanent": "將 Node.js 升級到已修補的版本並重新部署，內部工具長期放在內網。",
+        "temporary": "今天先限制內部營運工具對外開放，並加強監看異常連線。",
+        "permanent": "將內部營運工具使用的執行環境升級至原廠已修補版本，並建立定期更新機制。",
         "options": [
           {
             "name": "修補",
-            "action": "升級 Node.js 到官方已修補版本",
-            "cost": "需要測試與短暫停機",
+            "action": "升級執行環境至原廠修補版本並重新測試",
+            "cost": "需要短暫維護與回歸測試",
             "timing": "今天"
           },
           {
             "name": "緩解",
-            "action": "關閉對外連線，僅限公司網路使用",
-            "cost": "遠端使用需先連上公司網路；漏洞仍在",
+            "action": "更新前限縮對外連線來源",
+            "cost": "外部使用者可能暫時無法使用",
             "timing": "今天"
           }
         ],
-        "verify": "確認版本已更新、外部網路連不到該工具，重新掃描不再命中該漏洞。",
-        "suggested_owner": "內部工具負責團隊／基礎架構團隊",
-        "plain_title": "內部營運工具另有已被利用的漏洞，且對外開放",
-        "if_ignored": "這個漏洞已有人在利用，且工具對外開放，外人可能直接入侵。同業 91APP 也是從類似的內部工具被攻破。",
+        "verify": "重新掃描確認版本已更新、已知漏洞不再出現，工具功能正常。",
+        "suggested_owner": "內部營運工具負責單位",
+        "plain_title": "內部營運工具有已被用來攻擊的漏洞，可能造成訂單與會員資料外洩",
+        "if_ignored": "這個漏洞已經有人在用，工具又對外開放，外人可能直接入侵。同業 91APP 也是因內部工具未更新而出事。",
         "source": "live",
         "plain_source": "live"
       },
       "status": "open",
       "first_seen": "2026-11-10T16:09:21Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "node 22.11.0 有 17 個已知 NVD 漏洞，最高 CVSS 9.8（CVE-2026-111497）。分數 8 由拆解組成：漏洞基礎 3 分（CVSS 9.8）、已遭實際利用 2 分（KEV 或官方確認）、可從 internet 連到的對外暴露 2 分、同業事件命中 1 分（evt-91app-2026-10）。任務資料未提供品牌數、安裝數與業務影響欄位，圖譜查詢因資產不在本次範圍而失敗，故無法補充影響範圍。",
       "explanation_source": "live",
@@ -698,43 +691,38 @@
       "attack_path": null,
       "matched_events": [
         "evt-91app-2026-10",
-        "evt-synology-2026-10"
+        "evt-synology-2026-10",
+        "kev-cve-2024-10441"
       ],
       "deadline_hours": 24,
       "solution": {
         "risk_id": "nas-office-01:synology-dsm:vuln",
-        "temporary": "今天先把辦公室 NAS 的管理頁從網際網路撤下，並確認備份碟已拔離或隔離。",
-        "permanent": "更新 NAS 系統到最新版本，管理頁只允許公司內網存取；備份改為與來源隔離的獨立備份，並定期做還原測試。",
+        "temporary": "今天先把辦公室 NAS 的管理頁從網際網路撤下，並確認備份有離線一份。",
+        "permanent": "更新 NAS 系統至原廠修補版本，管理頁只允許內部連線，備份與來源設備隔離。",
         "options": [
           {
-            "name": "緩解",
-            "action": "關閉管理頁對外連線，僅允許公司網路",
-            "cost": "遠端存取檔案需改走公司網路",
+            "name": "修補",
+            "action": "更新 NAS 系統至最新修補版本",
+            "cost": "需要維護時間，更新期間檔案暫時無法存取",
             "timing": "今天"
           },
           {
-            "name": "修補",
-            "action": "更新 NAS 系統到最新版本",
-            "cost": "需要短暫停機，更新前先備份",
-            "timing": "7 天內"
-          },
-          {
-            "name": "下架",
-            "action": "若可由雲端服務取代，逐步停用該 NAS",
-            "cost": "需要資料搬遷與流程調整",
-            "timing": "30 天內"
+            "name": "緩解",
+            "action": "關閉管理頁對外連線，只留內部使用",
+            "cost": "外出同仁無法直接遠端管理",
+            "timing": "今天"
           }
         ],
-        "verify": "外部網路連不到管理頁；系統版本已更新；備份能成功還原一次。",
-        "suggested_owner": "資訊／行政維運團隊",
+        "verify": "從外部網路無法連到管理頁，系統版本已更新，並完成一次備份還原測試。",
+        "suggested_owner": "資訊部門",
         "plain_title": "辦公室 NAS 有漏洞且管理頁對外開放，可能被勒索軟體加密",
-        "if_ignored": "同型號 NAS 已被勒索集團大量攻擊。檔案被加密後要付贖金才拿得回來，接在上面的備份也可能一起被加密。",
+        "if_ignored": "同型號 NAS 已被勒索集團攻擊。檔案被加密後要付贖金才拿得回來，接在上面的備份也可能一起被加密。",
         "source": "live",
         "plain_source": "live"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "直接以任務 ID 查詢時回報不在本次資產範圍，改以資產 nas-office-01 查詢成功。影響品牌數：圖譜無品牌（vendor）欄位，本次範圍內僅 1 個 Synology 相關資產，無法確認，標記 low。安裝數：synology-dsm 元件僅 nas-office-01 一筆（7.2.1-69057 Update 5），本次範圍內安裝數為 1。資產資料：type device、env office、owner 為空、registered false、reconcile shadow_it、exposed_to_internet true、management_interface true、inbound 經 network 自 internet 連入 port 5001、outbound 無、crown_jewel false、無補償控制、platform_layer false、data_classes 空、level_floor high、fingerprint 信心 high。業務影響：位於 office 的 NAS，管理介面（5001）對外暴露，且為未登錄的影子 IT、無負責人、無補償控制；因圖譜未標示其資料類別與 crown jewel，實際資料外洩衝擊無法判定。breakdown 說明：1. 基礎分：漏洞 +3（CVSS 9.8）。2. 已遭實際利用 +2（KEV 或官方確認，圖譜無此欄位，僅依 breakdown 採用）。3. 對外暴露 +2（圖譜確認 exposed_to_internet=true，inbound internet port 5001）。4. 同業事件命中 +1（evt-91app-2026-10、evt-synology-2026-10，圖譜無事件內容可驗證）。分數合計與等級以程式結果為準，本說明未改動任何分數或等級（原始 breakdown 合計 8 分）。整體信心 high（資產與暴露資料一致），品牌數部分 low。",
       "explanation_source": "live",
@@ -747,7 +735,7 @@
         "storefront:next:vuln"
       ],
       "asset_id": "storefront",
-      "title": "next 14.1.0 有 36 個已知漏洞（最高 CVSS 9.1，CVE-2025-29927）",
+      "title": "next 14.1.0 有 37 個已知漏洞（最高 CVSS 9.1，CVE-2025-29927）",
       "category": "vuln",
       "level": "high",
       "score": 8,
@@ -788,34 +776,34 @@
       "deadline_hours": 24,
       "solution": {
         "risk_id": "storefront:next:vuln",
-        "temporary": "今天先在商店網站前加規則，擋掉帶有特殊標頭、試圖繞過登入檢查的請求。",
-        "permanent": "將網站框架升級到已修補的版本，並不要只靠中介層做授權，後端也要再次檢查權限。",
+        "temporary": "今天先在商店網站前端加上防護，擋掉可繞過登入檢查的請求，並加強監看。",
+        "permanent": "將商店網站使用的框架升級到原廠已修補版本，並建立定期更新機制。",
         "options": [
           {
             "name": "修補",
-            "action": "升級網站框架到官方已修補版本並重新部署",
-            "cost": "需要測試與一次部署",
+            "action": "升級框架至原廠修補版本並完成回歸測試",
+            "cost": "需要開發與測試時間，部署時短暫維護",
             "timing": "今天"
           },
           {
             "name": "緩解",
-            "action": "在入口處過濾可繞過登入檢查的請求標頭",
-            "cost": "只降低風險；需確認不影響正常功能",
+            "action": "在入口處過濾可疑請求，更新前先降低風險",
+            "cost": "可能誤擋部分正常請求，且只是暫時做法",
             "timing": "今天"
           }
         ],
-        "verify": "確認框架版本已更新，並以測試請求驗證無法繞過登入檢查。",
+        "verify": "確認版本已更新，用測試請求確認登入檢查無法被繞過，網站功能正常。",
         "suggested_owner": "商店網站開發團隊",
-        "plain_title": "商店網站的登入檢查可被繞過，可能造成訂單與會員資料外洩",
-        "if_ignored": "外人可能不用登入就看到需要權限的頁面或資料，進而取得訂單與會員個資，影響所有品牌。",
+        "plain_title": "商店網站有可繞過登入檢查的漏洞，可能造成訂單與會員資料外洩",
+        "if_ignored": "外人可能繞過檢查直接進入需要登入的頁面，讀取訂單資料與會員個資，影響所有品牌。",
         "source": "live",
         "plain_source": "live"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "依拆解，基礎分 3 分來自 CVSS 9.1 的漏洞，對外暴露 2 分因可從 internet 連到，資料敏感 1 分涉及 order 與 pii，影響範圍 1 分因屬平台層會影響所有品牌，同業事件命中 1 分對應 evt-nextjs-cve-2025-29927。輸入未提供受影響品牌數與安裝數，圖譜查詢因資產不在本次範圍而失敗，因此無法補充這兩項數字與攻擊路徑。",
+      "explanation": "此項分數為 8 分，依拆解：漏洞基礎分 3 分（最高 CVSS 9.1，CVE-2025-29927）、對外暴露 2 分（可從 internet 連到）、資料敏感 1 分（涉及 order、pii）、影響範圍 1 分（平台層，影響所有品牌）、同業事件命中 1 分（evt-nextjs-cve-2025-29927）。分數與等級以程式拆解結果為準，本說明未重新計分。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -826,7 +814,7 @@
         "api-gateway:nginx:vuln"
       ],
       "asset_id": "api-gateway",
-      "title": "nginx 1.27.2 有 17 個已知漏洞（NVD，最高 CVSS 9.2，CVE-2026-42055）",
+      "title": "nginx 1.27.2 有 31 個已知漏洞（NVD，最高 CVSS 9.8，CVE-2026-97205）",
       "category": "vuln",
       "level": "high",
       "score": 7,
@@ -837,7 +825,7 @@
         {
           "factor": "基礎分：漏洞",
           "points": 3,
-          "reason": "CVSS 9.2"
+          "reason": "CVSS 9.8"
         },
         {
           "factor": "對外暴露",
@@ -860,34 +848,34 @@
       "deadline_hours": 24,
       "solution": {
         "risk_id": "api-gateway:nginx:vuln",
-        "temporary": "今天先確認 API 閘道的存取記錄與告警正常，並暫時封鎖可疑來源。",
-        "permanent": "將閘道使用的網頁伺服器軟體升級到已修補的版本，並重新部署。",
+        "temporary": "今天先請工程團隊限制 API 閘道對外開放的範圍，並加強監看異常連線。",
+        "permanent": "將 API 閘道使用的 nginx 升級到原廠已修補的版本，並建立定期更新機制。",
         "options": [
           {
             "name": "修補",
-            "action": "升級閘道的網頁伺服器軟體到已修補版本",
-            "cost": "需要排定維護時段，短暫影響 API",
-            "timing": "7 天內"
+            "action": "升級 nginx 至原廠修補版本並重新驗證服務",
+            "cost": "需要短暫維護時間，並安排回歸測試",
+            "timing": "今天"
           },
           {
             "name": "緩解",
-            "action": "加強監控並限制來源，關閉未使用的功能",
-            "cost": "漏洞仍在；可能誤擋正常流量",
+            "action": "在更新前限制可連入的來源、加強流量監控",
+            "cost": "可能影響部分合作方連線，且只是降低風險",
             "timing": "今天"
           }
         ],
-        "verify": "確認版本已更新，重新掃描不再命中該漏洞，API 正常運作。",
-        "suggested_owner": "基礎架構／API 平台團隊",
-        "plain_title": "API 閘道有漏洞且對外開放，可能造成會員個資外洩",
-        "if_ignored": "API 閘道是所有品牌會員資料的入口。漏洞不處理，外人可能藉此干擾服務或接觸會員個資。",
+        "verify": "重新掃描確認版本已更新、已知漏洞不再出現，且 API 正常運作。",
+        "suggested_owner": "平台工程團隊",
+        "plain_title": "API 閘道有嚴重漏洞，可能造成會員個資外洩",
+        "if_ignored": "API 閘道對外開放，外人可能利用漏洞入侵，進而接觸會員個資，且影響所有品牌。",
         "source": "live",
         "plain_source": "live"
       },
       "status": "open",
       "first_seen": "2026-11-10T16:09:21Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "依拆解，本項 CVSS 9.2 漏洞基礎分 3 分、可從 internet 連線加 2 分、資料敏感（pii）加 1 分、平台層影響所有品牌加 1 分。圖譜確認 api-gateway 為唯一含 nginx 1.27.2 的資產，對外暴露，並可經 brand-app 與 app-api-key 到達 member-db-prod，但任務資料的 attack_path 為 null，與圖譜查得的路徑不一致，品牌數與安裝數無法從現有資料確認。",
+      "explanation": "原資產 ID 不在本次資產範圍，改以元件查詢找到同一 nginx 1.27.2 的 api-gateway（prod，platform-team）。圖譜確認其對外暴露（internet 443）、platform_layer 為 true（支持「影響所有品牌」），資料類別含 pii，並可連到 member-api 與 member-db-prod（5432）；分數拆解的各項原因與此一致，但圖譜未提供品牌數與安裝數，故無法確認影響規模。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -932,32 +920,32 @@
       "deadline_hours": 24,
       "solution": {
         "risk_id": "firebase-brand-app-storage:C-CLOUD-STORAGE-PUBLIC",
-        "temporary": "今天先把雲端儲存空間改為不公開，只允許 App 與後端經授權存取。",
-        "permanent": "調整儲存空間的存取規則為預設拒絕，改用有時效的授權連結；清查已公開的檔案內容，判斷是否含個資並評估是否需通報。",
+        "temporary": "今天先把 App 雲端檔案儲存區改為不公開，並檢查是否已有不明下載紀錄。",
+        "permanent": "儲存區預設為私有，存取一律經過身分驗證；定期檢查權限設定。",
         "options": [
           {
             "name": "緩解",
-            "action": "立即關閉公開讀取，改為需驗證身分才能存取",
-            "cost": "App 內依賴公開網址的功能可能暫時異常，需配合調整",
+            "action": "關閉公開讀取權限，改用有時效的授權連結",
+            "cost": "依賴公開網址的功能需要調整",
             "timing": "今天"
           },
           {
             "name": "修補",
-            "action": "重寫存取規則並改用短效授權連結",
-            "cost": "需要 App 與後端團隊配合改版",
+            "action": "盤點儲存區內檔案並分級，個資與訂單檔案移到受控區域",
+            "cost": "需要工程人力與資料搬遷",
             "timing": "7 天內"
           }
         ],
-        "verify": "未登入狀態下直接開啟檔案網址會被拒絕；存取規則檢查不再顯示公開讀取。",
-        "suggested_owner": "App／雲端平台團隊",
-        "plain_title": "App 的雲端檔案設成公開，可能造成會員與訂單資料外洩",
-        "if_ignored": "只要知道網址，任何人都能下載裡面的檔案；外洩後要通報、通知會員，也可能要負個資法責任。",
+        "verify": "用未登入身分嘗試讀取，確認被拒絕；App 正常功能不受影響。",
+        "suggested_owner": "App 開發團隊與資安團隊",
+        "plain_title": "App 的雲端檔案設成任何人都能下載，可能造成會員與訂單資料外洩",
+        "if_ignored": "只要知道網址，任何人都能下載裡面的會員個資與訂單資料；外洩後要通報、通知會員，也可能負個資法責任。",
         "source": "live",
         "plain_source": "live"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "firebase 規則 /user-uploads/{allPaths=**} 設為 read if true，且外部掃描可匿名列出內容，使用者上傳檔案可能外洩。建議立即收緊讀取規則為需驗證身分，並檢視已暴露的檔案是否含個資。",
       "explanation_source": "live",
@@ -1010,32 +998,32 @@
       "deadline_hours": 24,
       "solution": {
         "risk_id": "laptop-eng-07:C-DEV-DEVICE-TOKEN",
-        "temporary": "今天先撤銷工程部門筆電（乙）上那組可直接發布正式系統的憑證，並換發新的。",
-        "permanent": "員工電腦不存放正式部署憑證；部署一律走自動部署流程，使用短效、有範圍限制的憑證，並對員工電腦做惡意程式檢查。",
+        "temporary": "今天先撤銷這台工程部門筆電上的個人部署授權，並請工程師重新取得。",
+        "permanent": "正式部署只能透過自動部署流程進行，員工電腦不保存長效授權；改用短效、需審核的授權。",
         "options": [
           {
             "name": "緩解",
-            "action": "立即撤銷並重發憑證，檢查近期使用紀錄",
-            "cost": "該工程師需重新設定部署環境",
+            "action": "撤銷並重發授權，檢查近期部署紀錄是否異常",
+            "cost": "該工程師需暫時改用核准流程",
             "timing": "今天"
           },
           {
             "name": "修補",
-            "action": "改為自動部署流程發放短效憑證，禁止在個人電腦保存",
-            "cost": "需要流程調整與工程人力",
-            "timing": "30 天內"
+            "action": "移除電腦上的長效授權，改為短效授權並加強設備管控",
+            "cost": "需調整部署流程與設備設定",
+            "timing": "7 天內"
           }
         ],
-        "verify": "舊憑證已失效；電腦上找不到正式部署憑證；部署紀錄沒有異常來源。",
-        "suggested_owner": "工程部門／資安團隊",
-        "plain_title": "工程部門筆電（乙）存有可直接發布正式系統的憑證，可能被盜用",
-        "if_ignored": "電腦一旦中毒或被盜，外人就能用憑證直接動到自動部署流程。國外幣安就是這樣被攻陷。",
+        "verify": "確認筆電上不再有正式部署授權，舊授權已失效，部署紀錄皆來自自動流程。",
+        "suggested_owner": "資安團隊與工程部門",
+        "plain_title": "工程部門筆電存有正式部署權限，一旦被入侵可能影響所有品牌",
+        "if_ignored": "筆電若被惡意程式入侵，外人就能直接操作自動部署流程，影響所有品牌的系統。海外大型交易所就是這樣被攻陷。",
         "source": "live",
         "plain_source": "live"
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "判定為高風險。工程師電腦上持有可用於正式部署的權杖，部署權限因此暴露在一般工作站上，若裝置遭入侵即可直接觸發正式部署。建議撤銷該裝置上的部署權杖、改用短效且與身分綁定的部署憑證，並檢視該權杖近期的使用紀錄。",
       "explanation_source": "live",
@@ -1102,9 +1090,9 @@
       },
       "status": "open",
       "first_seen": "2026-11-10T16:09:21Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "apache-httpd 2.4.57 依 NVD 比對有 69 個確定漏洞，最高 CVSS 9.8（CVE-2024-38474），其中 CVE-2024-38475 已列入 CISA KEV 並遭實際利用，應優先處理。資料顯示部分漏洞無明確修補版本，建議人工確認後再規劃升級路徑。",
+      "explanation": "依 NVD 比對共 69 個確定漏洞及 2 個待確認，最高 CVSS 9.8（CVE-2024-38474）。CVE-2024-38475 已列於 CISA KEV，屬已遭實際利用，應立即處置；目前無法確定修補版本，建議先核對官方公告、確認 2 個待確認項目並評估隔離或加強監控。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -1176,9 +1164,9 @@
       },
       "status": "open",
       "first_seen": "2026-11-10T16:09:21Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "node 22.11.0 有 17 個確定漏洞及 1 個需確認項目，最高 CVSS 9.8（CVE-2026-111497），已列入 CISA KEV 遭實際利用，會員 API 暴露風險高。目前無法確定修補版本，建議優先升級至官方最新 22.x 安全版本並確認修補範圍。",
+      "explanation": "node 22.11.0 有 17 個已確認漏洞與 1 個待確認項，其中 CVE-2026-111497（CVSS 最高 9.8）已列入 CISA KEV 且有實際利用紀錄，會員 API 若對外提供服務風險較高；修補版本無法確定，建議優先升級並加強存取監控。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -1242,7 +1230,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "S3 bucket 以 public-read ACL 設定，且外部可匿名列出內容，訂單匯出檔可能外洩。建議改為私有 ACL、啟用 Block Public Access，並評估是否涉及個資外洩通報。",
       "explanation_source": "live",
@@ -1314,9 +1302,9 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "postcss 8.4.31 存在 4 個已知漏洞，最高 CVSS 9.1（CVE-2026-45623），嚴重程度高。建議升級至 8.5.12。",
+      "explanation": "共 4 個已知漏洞，最高 CVSS 9.1（CVE-2026-45623）。證據未顯示已遭實際利用；修補版本為 8.5.12，建議升級。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -1376,7 +1364,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "internal-tool 不在清冊也無部署紀錄，但已被外部掃描與 runtime 實際觀察到，屬未登記的影子資產。建議盤點負責人、補登清冊或下線。",
       "explanation_source": "live",
@@ -1438,7 +1426,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "marketing-site 不在清冊也無部署紀錄，卻有外部掃描與 runtime 紀錄，屬未登記的影子資產。建議確認擁有者並補登或下線。",
       "explanation_source": "live",
@@ -1500,7 +1488,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "nas-office-01 未出現在任何清冊，但被 external-scan 與 lan-scan 觀察到，屬未登記資產。建議釐清用途與管理者，並納入清冊管理。",
       "explanation_source": "live",
@@ -1557,7 +1545,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "QuickSite Builder 出現在 payments、sso 流程中，但不在第三方清冊，可能是未經採購或審核的 SaaS。建議評估資料流向並補登第三方清冊。",
       "explanation_source": "live",
@@ -1623,7 +1611,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "此 API 7 天有 95 次實際流量，但未列於 OpenAPI 規格，且路徑名稱涉及會員匯出，風險較高。建議補登規格、確認授權與用途，並評估是否需限制存取。",
       "explanation_source": "live",
@@ -1689,7 +1677,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "正式版 AndroidManifest 設定 debuggable=\"true\"，攻擊者可附加除錯器讀取執行狀態與記憶體。建議伺服器端無法緩解，應立即發布關閉 debuggable 的正式版並強制更新。",
       "explanation_source": "live",
@@ -1757,9 +1745,9 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "類型為第三方郵件服務 API 金鑰，已 464 天未輪替且無 IP 白名單，違反 90 天輪替與 IP 白名單規則。環境與權限範圍未確認，風險等級高，建議立即輪替、設定 IP 白名單，並提供撤銷與輪替的證據。",
+      "explanation": "第三方郵件 API 金鑰已 470 天未輪替，且未設定 IP 白名單，不符合 90 天輪替與白名單規範，金鑰外洩時影響範圍較大。建議立即輪替，若服務商支援則加上 IP 白名單，並建立定期輪替排程。環境資訊不在資料中，無法確定是否為正式環境。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -1826,9 +1814,9 @@
       },
       "status": "open",
       "first_seen": "2026-11-10T16:09:21Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "判定為確認受影響且風險優先：wordpress 6.4.3 本地比對確認 3 個已知漏洞、另 1 個需人工確認，最高 CVSS 8.1；CVE-2026-119977 與 CVE-2026-87902 已遭實際利用（CISA KEV）。修補版本無法確定，需逐一核對 NVD 與官方公告後再決定升級目標。",
+      "explanation": "wordpress 6.4.3 有 3 個已知漏洞，最高 CVSS 8.1（CVE-2026-119977），其中 CVE-2026-119977 與 CVE-2026-87902 已列入 CISA KEV，代表已遭實際利用，另有 1 筆需進一步確認。資料無法確定修補版本，建議先確認官方可用的最新安全版本，並評估暫時停用高風險外掛或限制後台存取。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -1892,7 +1880,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "App 設定 usesCleartextTraffic=\"true\"，允許明文 HTTP 傳輸，可能遭中間人竊聽或竄改資料。建議伺服器端強制 HTTPS，並在下一版移除此設定、改用網路安全設定限制明文流量。",
       "explanation_source": "live",
@@ -1958,7 +1946,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "DeepLinkOrderActivity 與 PushCommandReceiver 對外開放且未設定權限保護，其他 App 可任意觸發。建議先以伺服器端驗證與遠端關閉相關功能緩解，再於新版設為非匯出或加上權限保護。",
       "explanation_source": "live",
@@ -2024,7 +2012,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "targetSdkVersion 為 31，依證據政策 2025-08-31 起最低需為 35，目前（2026-11-11）已逾期未達標，可能影響商店上架或更新。建議盡快升級 targetSdkVersion 至 35 以上並完成相容性測試後分批發版。",
       "explanation_source": "live",
@@ -2091,9 +2079,9 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "lodash 4.17.20 存在 4 個已知漏洞，最高 CVSS 9.8（CVE-2026-4800），嚴重程度高。建議升級至 4.18.0。",
+      "explanation": "共 4 個已知漏洞，最高 CVSS 9.8（CVE-2026-4800），為高優先項目。證據未顯示已遭實際利用；修補版本為 4.18.0，建議優先升級。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -2154,9 +2142,9 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "判定為不符合：備份與來源設備未隔離（USB 裝置仍掛載於 nas-office-01），且從未做過還原測試。影響是勒索軟體或誤刪可能同時毀損來源與備份，且備份是否可用無法確認；建議將備份媒體與來源設備隔離（例如離線或異地保存），並儘快執行並記錄一次完整還原測試。",
+      "explanation": "備份與來源設備未隔離（USB 仍掛載於 nas-office-01），勒索軟體或硬體故障可能同時毀損來源與備份，且從未做過還原測試，備份可用性未經驗證。建議將備份媒體與來源設備實體或邏輯隔離、保留異地或離線副本，並儘速完成首次還原測試。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -2218,7 +2206,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "網際網路可直接連到 nas-office-01:5001，違反內部工具不得對外開放規則。建議關閉對外對應並改由內網或 VPN 存取。",
       "explanation_source": "live",
@@ -2286,7 +2274,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "測試環境 order-db-test 可直接連到正式資料庫 order-db-prod:5432，違反環境隔離規則。建議封鎖測試到正式的連線並以防火牆規則強制隔離。",
       "explanation_source": "live",
@@ -2360,9 +2348,9 @@
       },
       "status": "open",
       "first_seen": "2026-11-10T16:09:21Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "postgresql 15.6 有 44 個確定漏洞，最高 CVSS 8.8（CVE-2024-10979），影響正式訂單資料庫。建議升級至 PostgreSQL 15.19 修補版本，並安排維護窗口處理。",
+      "explanation": "postgresql 15.6 有 44 個已確認漏洞，最高 CVSS 8.8（CVE-2024-10979），可能影響訂單生產資料庫的機密性與完整性；資料中的修補版本為 15.19，建議規劃維護窗口升級，並檢查資料庫存取權限。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -2423,7 +2411,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "ai-assistant-token 存於 ai-code-assistant 並可直接觸發 deploy-pipeline，繞過 Pipeline 審核，違反正式部署必須來自 Pipeline 的規則。建議撤銷此 Token、改用受控的部署身分並加上審核關卡。",
       "explanation_source": "live",
@@ -2485,9 +2473,9 @@
       },
       "status": "open",
       "first_seen": "2026-11-10T16:09:21Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "redis 7.0.15 有 11 個確定漏洞，最高 CVSS 9.9（CVE-2025-49844），可能導致遠端程式碼執行等嚴重風險。建議升級至 Redis 8.6.3 修補版本，並限制網路存取範圍。",
+      "explanation": "redis 7.0.15 有 11 個已知漏洞，最高 CVSS 9.9（CVE-2025-49844），可能造成遠端程式碼執行或服務中斷，目前資料未列出實際利用紀錄。修補版本為 8.6.3，建議評估升級並限制 Redis 的網路存取範圍。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -2541,7 +2529,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "商店掃描顯示開發者為 Bloom Rewards Studio 的 App 與「花漾美妝（虛構）」品牌圖示相似度達 0.93，疑似冒用品牌。判定屬自動化結果，需人工核實商標與開發者關聯後，再向 Google Play 提出冒用檢舉並通知品牌商。",
       "explanation_source": "live",
@@ -2605,9 +2593,9 @@
       },
       "status": "open",
       "first_seen": "2026-11-10T16:09:21Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "gitlab-ce 18.4.1 依 NVD 比對有 163 個確定漏洞，最高 CVSS 10.0（CVE-2026-110264），風險極高。建議升級至 19.3.6，升級前應審閱版本跨度與相容性說明。",
+      "explanation": "依 NVD 比對共 163 個確定漏洞，最高 CVSS 10.0（CVE-2026-110264）。證據未顯示已遭實際利用；修補版本為 19.3.6，屬跨主版本升級，建議規劃維護窗口並先進行備份與測試。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -2661,7 +2649,7 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "依 runtime.json 與 eol.json，marketing-site 使用的 php 8.1.27 支援已於 2025-12-31 結束，截至今日（2026-11-11）已為不再支援的執行環境。輸入未提供修補狀態或可利用前提條件，相關風險需確認；建議規劃升級至仍受支援的 PHP 版本，並另行確認對外暴露面與既知漏洞的影響範圍。",
       "explanation_source": "live",
@@ -2728,9 +2716,9 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "body-parser 1.20.1 存在 3 個已知漏洞，最高 CVSS 7.5（CVE-2024-45590），可能造成服務拒絕。建議升級至 1.20.3。",
+      "explanation": "共 3 個已知漏洞，最高 CVSS 7.5（CVE-2024-45590）。證據未顯示已遭實際利用；修補版本為 1.20.3，建議排入升級計畫。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -2795,9 +2783,9 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "path-to-regexp 0.1.7 存在 3 個已知漏洞，最高 CVSS 7.5（CVE-2024-45296），可能造成服務拒絕。可依所用分支選擇修補版本 0.1.10、1.9.0、3.3.0、6.3.0 或 8.0.0。",
+      "explanation": "共 3 個已知漏洞，最高 CVSS 7.5（CVE-2024-45296）。證據未顯示已遭實際利用；若維持 0.1.x 分支可升級至 0.1.10，建議依相依關係選擇同分支修補版本。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -2862,9 +2850,9 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "qs 6.11.0 存在 4 個已知漏洞，最高 CVSS 7.5（CVE-2025-15284），可能造成服務拒絕。建議升級至 6.14.1。",
+      "explanation": "共 4 個已知漏洞，最高 CVSS 7.5（CVE-2025-15284）。證據未顯示已遭實際利用；修補版本為 6.14.1，建議升級。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -2929,9 +2917,76 @@
       },
       "status": "open",
       "first_seen": "2026-11-10T16:09:21Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "postgresql 15.6 有 44 個確定漏洞，最高 CVSS 8.8（CVE-2024-10979），影響正式會員資料庫的機密性與完整性。建議升級至 PostgreSQL 15.19 修補版本，並安排維護窗口處理。",
+      "explanation": "postgresql 15.6 有 44 個已確認漏洞，最高 CVSS 8.8（CVE-2024-10979），可能影響會員生產資料庫的機密性與完整性；資料中的修補版本為 15.19，建議規劃維護窗口升級，並先確認連線權限與備份狀態。",
+      "explanation_source": "live",
+      "level_floor": null,
+      "provisional_basis": false
+    },
+    {
+      "id": "payment-service:openjdk:vuln",
+      "finding_ids": [
+        "payment-service:openjdk:vuln"
+      ],
+      "asset_id": "payment-service",
+      "title": "openjdk 21.0.4 有 1 個已知漏洞（NVD，最高 CVSS 8.1，CVE-2026-114938）",
+      "category": "vuln",
+      "level": "medium",
+      "score": 4,
+      "raw_score": 4,
+      "score_level": "medium",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：漏洞",
+          "points": 2,
+          "reason": "CVSS 8.1"
+        },
+        {
+          "factor": "資料敏感",
+          "points": 1,
+          "reason": "payment"
+        },
+        {
+          "factor": "影響範圍",
+          "points": 1,
+          "reason": "平台層，影響所有品牌"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 168,
+      "solution": {
+        "risk_id": "payment-service:openjdk:vuln",
+        "temporary": "先確認金流服務有哪些地方外人連得到，並安排更新",
+        "permanent": "將 payment-service 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "168 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "payments-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template",
+        "plain_title": "金流服務有已知漏洞，可能造成金流資料外洩",
+        "if_ignored": "外人可能利用這個漏洞讓金流服務停擺或被入侵，進一步碰到金流資料。",
+        "plain_source": "template"
+      },
+      "status": "open",
+      "first_seen": "2026-11-21T04:31:48Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
+      "verification_evidence": [],
+      "explanation": "openjdk 21.0.4 有 1 個已確認漏洞（CVE-2026-114938，CVSS 最高 8.1），可能影響付款服務的機密性或完整性；修補版本無法確定，建議確認該漏洞的影響範圍並評估升級至較新的 OpenJDK 21 更新版本。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -2968,7 +3023,7 @@
         {
           "factor": "同業事件命中",
           "points": 1,
-          "reason": "evt-php2shell-2026-10、live-php2shell-check-point-esxi-wiper-2026-11"
+          "reason": "evt-php2shell-2026-10"
         },
         {
           "factor": "補償措施",
@@ -2980,8 +3035,7 @@
       "matched_events": [
         "evt-php2shell-2026-10",
         "kev-cve-2026-109618",
-        "kev-cve-2026-109619",
-        "live-php2shell-check-point-esxi-wiper-2026-11"
+        "kev-cve-2026-109619"
       ],
       "deadline_hours": 168,
       "solution": {
@@ -3011,9 +3065,9 @@
       },
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "圖譜查詢 phpmyadmin:php:vuln 時回報「不在本次資產範圍」，無法直接取得該 ID 的脈絡。改查近似資產 phpmyadmin（含 php 8.3.20，fpm-fcgi）：資料類別為 order、pii，連往 order-db-prod（5432 埠），僅允許 corp-vpn 經 443 連入，非網際網路暴露、非 crown jewel，攻擊路徑查詢結果為空（與任務中 attack_path 為 null 一致）。品牌數與安裝數圖譜未提供，無法說明；另請確認此近似對應是否正確。breakdown 說明：基礎分漏洞 3 分對應 CVSS 9.8；已遭實際利用 2 分依任務資料為 KEV 或官方確認；資料敏感 1 分對應 order、pii；同業事件命中 1 分對應 evt-php2shell-2026-10 與 live-php2shell-check-point-esxi-wiper-2026-11；補償措施 -3 分對應 corp-vpn 限制連入（vpn-only）。分數與等級以程式結果為準。",
+      "explanation": "php 8.3.20 有 28 個已確認漏洞與 3 個待確認項，最高 CVSS 9.8（CVE-2025-14179），其中 CVE-2026-109618 與 CVE-2026-109619 已列入 CISA KEV 且有實際利用紀錄；資料中的修補版本為 8.3.36，建議優先升級，並限制 phpMyAdmin 的對外存取。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -3054,9 +3108,9 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "express 4.18.2 存在 2 個已知漏洞，最高 CVSS 6.1（CVE-2024-29041），可能涉及開放式重新導向相關風險。建議升級至 4.19.2 或 5.0.0-beta.3。",
+      "explanation": "共 2 個已知漏洞，最高 CVSS 6.1（CVE-2024-29041）。證據未顯示已遭實際利用；同一主版本修補為 4.19.2，若要跨主版本可考慮 5.0.0-beta.3，建議先升級至 4.19.2。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -3097,9 +3151,9 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "send 0.18.0 存在 1 個已知漏洞，最高 CVSS 5.0（CVE-2024-43799），影響中等。建議升級至 0.19.0。",
+      "explanation": "共 1 個已知漏洞，最高 CVSS 5.0（CVE-2024-43799）。證據未顯示已遭實際利用；修補版本為 0.19.0，建議升級。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -3140,9 +3194,9 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "serve-static 1.15.0 存在 1 個已知漏洞，最高 CVSS 5.0（CVE-2024-43800），影響中等。可升級至 1.16.0 或 2.1.0。",
+      "explanation": "共 1 個已知漏洞，最高 CVSS 5.0（CVE-2024-43800）。證據未顯示已遭實際利用；同分支修補版本為 1.16.0，若可跨主版本可考慮 2.1.0，建議先升級至 1.16.0。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -3178,9 +3232,42 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "runtime 顯示 cache-redis 未啟用 TLS，連線明文傳輸，違反快取連線須加密規則。建議啟用 TLS 並同步更新客戶端連線設定。",
+      "explanation_source": "live",
+      "level_floor": null,
+      "provisional_basis": false
+    },
+    {
+      "id": "gitlab:C-BACKUP-ISOLATION",
+      "finding_ids": [
+        "gitlab:C-BACKUP-ISOLATION"
+      ],
+      "asset_id": "gitlab",
+      "title": "備份與來源設備隔離，且 90 天內做過還原測試：gitlab",
+      "category": "backup",
+      "level": "low",
+      "score": 2,
+      "raw_score": 2,
+      "score_level": "low",
+      "level_reason": "依分數",
+      "breakdown": [
+        {
+          "factor": "基礎分：控制項不符",
+          "points": 2,
+          "reason": "controls.yaml base_points"
+        }
+      ],
+      "attack_path": null,
+      "matched_events": [],
+      "deadline_hours": 720,
+      "solution": null,
+      "status": "open",
+      "first_seen": "2026-11-19T04:47:04Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
+      "verification_evidence": [],
+      "explanation": "距離上次還原測試已 95 天，超過 90 天的要求，無法確認備份在需要時可用。建議立即排定還原測試，並將週期納入例行排程與提醒，以在期限內完成驗證。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -3221,9 +3308,9 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "cookie 0.5.0 存在 1 個已知漏洞，最高 CVSS 3.7（CVE-2024-47764），影響層級較低。建議升級至 0.7.0。",
+      "explanation": "共 1 個已知漏洞，最高 CVSS 3.7（CVE-2024-47764）。證據未顯示已遭實際利用；修補版本為 0.7.0，建議升級。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -3254,9 +3341,9 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-10T16:09:21Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "postgresql 15.6 有 44 個確定漏洞，最高 CVSS 8.8（CVE-2024-10979），影響測試訂單資料庫。建議升級至 PostgreSQL 15.19 修補版本，正式環境亦應同步規劃。",
+      "explanation": "postgresql 15.6 測試環境有 44 個已確認漏洞，最高 CVSS 8.8（CVE-2024-10979）；資料中的修補版本為 15.19，建議與正式環境同步規劃升級，並確認測試資料未包含真實個資。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -3287,7 +3374,7 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
       "explanation": "判定為高風險。推播金鑰存放於共用檔案伺服器且全體辦公室人員可存取，違反最小權限原則，金鑰一旦外洩可能被用於偽造推播。建議立即將金鑰移至金鑰管理服務並限制存取對象，同時輪替該金鑰並稽核過去的存取紀錄。",
       "explanation_source": "live",
@@ -3325,9 +3412,9 @@
       "solution": null,
       "status": "need_check",
       "first_seen": "2026-11-10T16:09:21Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "php 8.4.27 目前僅有 1 個需確認項目（CVE-2007-3205），NVD 版本範圍無法判斷，尚無確定漏洞。目前無法確定修補版本，建議人工確認該 CVE 是否適用於實際執行環境。",
+      "explanation": "php 8.4.27 目前僅有 1 個待確認漏洞（CVE-2007-3205），因 NVD 版本範圍無法判斷，尚未確定是否受影響；修補版本無法確定，建議確認實際執行環境與發行版補丁狀態後再決定是否處置。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": true
@@ -3358,9 +3445,9 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-09T01:00:00Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "類型為資料庫連線憑證，位於 config/db.yml 第 7 行，依規則標示為測試環境。測試環境金鑰仍不應進入 Git，風險等級中，建議輪替測試憑證、改用環境變數或金鑰管理服務，並清除 Git 歷史中的紀錄。",
+      "explanation": "config/db.yml 第 7 行的測試環境資料庫憑證被存入 Git，與同檔第 4 行的正式環境金鑰位於同一檔案。建議從 Git 移除並輪替，確認測試憑證未與正式環境共用或重複使用。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -3401,9 +3488,9 @@
       "solution": null,
       "status": "open",
       "first_seen": "2026-11-10T16:09:21Z",
-      "last_evaluated": "2026-11-17T05:28:31Z",
+      "last_evaluated": "2026-11-23T04:24:02Z",
       "verification_evidence": [],
-      "explanation": "phpmyadmin 5.2.1 有 7 個確定漏洞，最高 CVSS 8.8（CVE-2026-119426），可能影響資料庫管理介面的安全性。目前無法確定修補版本，建議查閱 phpMyAdmin 官方公告後升級至已修補版本。",
+      "explanation": "phpmyadmin 5.2.1 有 7 個已確認漏洞，最高 CVSS 8.8（CVE-2026-119426），可能造成資料庫管理介面的未授權操作風險；修補版本無法確定，建議升級至官方最新版本並限制管理介面僅允許內部網路存取。",
       "explanation_source": "live",
       "level_floor": null,
       "provisional_basis": false
@@ -3466,9 +3553,7 @@
       "max_level": "high",
       "status": "open",
       "demo": false,
-      "updates": [
-        "live-php2shell-check-point-esxi-wiper-2026-11"
-      ],
+      "updates": [],
       "update_of": null,
       "brand": null
     },
@@ -3488,6 +3573,18 @@
       "id": "adv-opsbuilder-2026-001",
       "kind": "advisory",
       "title": "示範公告：OpsBuilder 1.90 以前版本的帳號接管漏洞（虛構產品）",
+      "affected_count": 1,
+      "max_level": "high",
+      "status": "open",
+      "demo": false,
+      "updates": [],
+      "update_of": null,
+      "brand": null
+    },
+    {
+      "id": "kev-cve-2024-10441",
+      "kind": "advisory",
+      "title": "CISA KEV：Synology DiskStation Manager (DSM) Improper Encoding or Escaping of Output Vulnerability（CVE-2024-10441）",
       "affected_count": 1,
       "max_level": "high",
       "status": "open",
@@ -3557,9 +3654,9 @@
       "brand": null
     },
     {
-      "id": "live-cyberbiz-bvi-order-db-2026-11",
+      "id": "live-nginx-http2-rce-2026-11",
       "kind": "live",
-      "title": "永邑（BVI臺灣）委外電商服務商順立智慧（Cyberbiz）發生資安事件，訂單資料庫遭未授權存取",
+      "title": "NGINX 修補 2 項 HTTP/2 嚴重遠端程式碼執行漏洞",
       "affected_count": 0,
       "max_level": null,
       "status": "need_check",
@@ -3569,9 +3666,9 @@
       "brand": null
     },
     {
-      "id": "live-ai-agent-attacks-tw-ecommerce-2026-11",
+      "id": "live-kuokuo-fake-order-phishing-2026-11",
       "kind": "live",
-      "title": "AI代理網攻（ARTEX）波及臺灣十餘家企業與網路平臺，逾百萬份個資受影響",
+      "title": "全國電會員收到含真實個資的假訂單釣魚郵件，來源待查",
       "affected_count": 0,
       "max_level": null,
       "status": "need_check",
@@ -3581,9 +3678,9 @@
       "brand": null
     },
     {
-      "id": "live-daouoffice-korea-finance-2026-11",
+      "id": "live-ibiza-liteshop-anomalous-access-2026-11",
       "kind": "live",
-      "title": "韓國企業協作平臺DaouOffice遭零時差漏洞攻擊與共用帳號暴力破解，至少3家金融業者受駭",
+      "title": "電商服務商伊比薩發現異常資料存取，崇越子公司全越運動影響待查",
       "affected_count": 0,
       "max_level": null,
       "status": "need_check",
@@ -3593,50 +3690,30 @@
       "brand": null
     },
     {
-      "id": "live-metam-cs-outsourcer-2026-11",
+      "id": "live-sbc-medical-japan-breach-2026-11",
       "kind": "live",
-      "title": "韓國客服委外業者MetaM遭駭，加密貨幣交易所Coinone與二手交易平臺Bunjang受波及",
+      "title": "SBC Medical Group 日本診所客戶資料外洩，影響逾 200 萬人",
       "affected_count": 0,
       "max_level": null,
       "status": "need_check",
       "demo": false,
       "updates": [],
       "update_of": null,
-      "brand": null
-    },
-    {
-      "id": "live-php2shell-check-point-esxi-wiper-2026-11",
-      "kind": "live",
-      "title": "Check Point 閘道遭 PHP2Shell 鏈式攻擊，VMware ESXi 主機資料被抹除",
-      "affected_count": 2,
-      "max_level": "high",
-      "status": "open",
-      "demo": false,
-      "updates": [],
-      "update_of": "evt-php2shell-2026-10",
       "brand": null
     }
   ],
   "proposed_controls": [
     {
-      "title": "委外電商平臺的訂單資料庫須有異常存取偵測與事件通報時限",
-      "reason": "來源指出訂單資料庫在委外服務商端遭未授權存取，品牌端是接獲通知後才得知；現有控制項沒有涵蓋委外服務商資料存取監控與通報時限。"
+      "title": "會員資料的大量讀取與委外廠商存取需留存紀錄並監控異常",
+      "reason": "來源指出會員真實個資流入釣魚郵件但外洩途徑未明，需靠存取紀錄追溯；現有控制項未涵蓋會員資料存取監控。"
     },
     {
-      "title": "後端API須獨立驗證身分與授權，不得僅依賴前端控管",
-      "reason": "來源指出攻擊特徵是繞過前端直接攻擊後端API與憑證漏洞；現有控制項沒有涵蓋後端API授權驗證與異常呼叫偵測。"
+      "title": "委外電商服務商須有資安事件通報義務並定期盤點其可存取的資料",
+      "reason": "來源顯示事件由委外服務商發現後才通知品牌方，影響範圍待查；現有控制項未涵蓋委外服務商的資料存取與通報要求。"
     },
     {
-      "title": "協作與郵件平臺禁用共用帳號，並啟用MFA與暴力破解鎖定",
-      "reason": "來源指出Flybit事件是攻擊者從海外IP自動猜中共用帳號密碼後登入；現有控制項沒有涵蓋帳號強度、MFA與登入嘗試限制。"
-    },
-    {
-      "title": "委外客服系統須限縮留存敏感個資並遮罩帳號等欄位",
-      "reason": "來源指出客服紀錄含銀行帳號、身分證號碼，通話錄音與逐字稿也可能含銀行帳號；現有控制項沒有涵蓋委外客服資料最小化。"
-    },
-    {
-      "title": "邊界安全設備須於時限內套用修補並汰換已停止支援版本",
-      "reason": "來源指出 CVE-2026-123039 已遭實際利用，且 R81.10 與 R81 已結束支援、不會有修補；現有控制項沒有涵蓋邊界設備修補與 EOL 管理。"
+      "title": "客戶與員工密碼須以雜湊儲存，且資料庫不得集中存放大量個資明細",
+      "reason": "來源指出客戶密碼與 2 萬筆員工帳密紀錄隨資料庫一併遭竊，現有控制項未涵蓋憑證儲存方式。"
     }
   ],
   "open_alerts": [],
@@ -3644,13 +3721,13 @@
     "checked": 17,
     "affected": 12,
     "by_kind": {
-      "live": 5,
+      "live": 4,
       "archive": 6,
       "demo": 0,
-      "advisory": 6
+      "advisory": 7
     },
-    "real_checked": 11,
-    "real_affected": 7
+    "real_checked": 10,
+    "real_affected": 6
   },
   "daily_intel_status": "ok",
   "cost": {
@@ -3659,9 +3736,9 @@
       "a0": 0.0,
       "a1": 0.0,
       "orchestrator-dispatch": 0.0,
-      "a2": 0.007245,
+      "a2": 0.006439,
       "a3": 0.0,
-      "a4": 0.00554,
+      "a4": 0.0,
       "orchestrator-review": 0.0
     },
     "cache_hit_rate": null
@@ -4094,76 +4171,56 @@
       "source": "subscription",
       "note": null,
       "events": [
-        "live-ai-agent-attacks-tw-ecommerce-2026-11",
-        "live-cyberbiz-bvi-order-db-2026-11",
-        "live-daouoffice-korea-finance-2026-11",
-        "live-metam-cs-outsourcer-2026-11",
-        "live-php2shell-check-point-esxi-wiper-2026-11"
+        "live-ibiza-liteshop-anomalous-access-2026-11",
+        "live-kuokuo-fake-order-phishing-2026-11",
+        "live-nginx-http2-rce-2026-11",
+        "live-sbc-medical-japan-breach-2026-11"
       ],
-      "suggested": 9,
-      "approved_count": 9,
+      "suggested": 6,
+      "approved_count": 6,
       "rejected_count": 0,
       "control_titles": {
-        "C-THIRD-PARTY-KEY-ROTATION": "第三方服務金鑰 90 天內輪替且有 IP 白名單",
+        "C-NET-SEGMENT": "非正式環境不得連線正式資料庫",
+        "C-DEV-DEVICE-TOKEN": "員工電腦不得持有正式部署權杖",
         "C-CLOUD-STORAGE-PUBLIC": "雲端儲存空間不得公開讀取"
       },
       "approved": [
         {
           "type": "control",
-          "event_id": "live-metam-cs-outsourcer-2026-11",
-          "control_id": "C-THIRD-PARTY-KEY-ROTATION",
-          "reason": "事件為委外客服業者被入侵，值得確認我們交給第三方服務的金鑰是否定期輪替並有來源限制。"
-        },
-        {
-          "type": "control",
-          "event_id": "live-cyberbiz-bvi-order-db-2026-11",
-          "control_id": "C-THIRD-PARTY-KEY-ROTATION",
-          "reason": "事件為委外電商服務商的訂單資料庫遭未授權存取，應一併確認第三方服務金鑰的輪替狀況。"
-        },
-        {
-          "type": "control",
-          "event_id": "live-ai-agent-attacks-tw-ecommerce-2026-11",
+          "event_id": "live-sbc-medical-japan-breach-2026-11",
           "control_id": "C-CLOUD-STORAGE-PUBLIC",
-          "reason": "事件手法涉及直接讀取後端資料，推測要先查 App 與訂單匯出的雲端儲存區是否可公開讀取。"
+          "reason": "事件推測資料儲存區可能被直接存取，值得一併確認雲端儲存空間是否公開。"
+        },
+        {
+          "type": "control",
+          "event_id": "live-sbc-medical-japan-breach-2026-11",
+          "control_id": "C-NET-SEGMENT",
+          "reason": "事件涉及資料庫遭入侵，需確認非正式環境是否能連到正式資料庫。"
+        },
+        {
+          "type": "control",
+          "event_id": "live-sbc-medical-japan-breach-2026-11",
+          "control_id": "C-DEV-DEVICE-TOKEN",
+          "reason": "推測員工電腦上的登入權杖可能被竊，需確認電腦是否持有正式部署權杖。"
         },
         {
           "type": "task",
           "agent": "a2",
           "subagent": "dependency-analyst",
-          "event_id": "live-php2shell-check-point-esxi-wiper-2026-11",
-          "reason": "事件與我們的行銷官網及資料庫網頁管理工具使用的 PHP 相關，且候選清單有對應套件。"
-        },
-        {
-          "type": "task",
-          "agent": "a2",
-          "subagent": "runtime-analyst",
-          "event_id": "live-php2shell-check-point-esxi-wiper-2026-11",
-          "reason": "事件為已受影響關係，候選清單中有舊版 PHP 執行環境，需確認支援期限與漏洞前提條件。"
-        },
-        {
-          "type": "task",
-          "agent": "a4",
-          "subagent": "impact-analyst",
-          "event_id": "live-php2shell-check-point-esxi-wiper-2026-11",
-          "reason": "事件受影響且追加候選含資料庫網頁管理工具的高風險，需補充影響說明。"
-        },
-        {
-          "type": "priority",
-          "agent": "a4",
-          "risk_id": "marketing-site:php:vuln",
-          "reason": "本次唯一受影響事件涉及行銷官網的 PHP，應先說明。"
-        },
-        {
-          "type": "priority",
-          "agent": "a4",
-          "risk_id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
-          "reason": "多件事件把內部營運工具列為先查系統，且屬對外暴露風險。"
+          "event_id": "live-nginx-http2-rce-2026-11",
+          "reason": "事件涉及網頁伺服器遠端攻擊，而我們的 API 閘道使用相同產品，且已有候選元件。"
         },
         {
           "type": "priority",
           "agent": "a4",
           "risk_id": "api-gateway:nginx:vuln",
-          "reason": "多件事件的破口推測都先指向 API 閘道的未修補漏洞。"
+          "reason": "與網頁伺服器遠端攻擊事件直接相關，且影響對外的 API 閘道。"
+        },
+        {
+          "type": "priority",
+          "agent": "a4",
+          "risk_id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+          "reason": "同業資料外洩事件涉及管理工具與資料庫被直接連上，內部工具對外開放需先處理。"
         }
       ],
       "rejected": []
@@ -4173,11 +4230,10 @@
       "source": "subscription",
       "note": null,
       "events": [
-        "live-ai-agent-attacks-tw-ecommerce-2026-11",
-        "live-cyberbiz-bvi-order-db-2026-11",
-        "live-daouoffice-korea-finance-2026-11",
-        "live-metam-cs-outsourcer-2026-11",
-        "live-php2shell-check-point-esxi-wiper-2026-11"
+        "live-ibiza-liteshop-anomalous-access-2026-11",
+        "live-kuokuo-fake-order-phishing-2026-11",
+        "live-nginx-http2-rce-2026-11",
+        "live-sbc-medical-japan-breach-2026-11"
       ],
       "suggested": 7,
       "approved_count": 7,
@@ -4188,48 +4244,48 @@
           "type": "task",
           "agent": "a5",
           "subagent": "intel-report-writer",
-          "event_id": "live-ai-agent-attacks-tw-ecommerce-2026-11",
-          "reason": "此事件需確認，涉及的系統最多，且已有加查控制項未通過，適合先整理情資摘要。"
+          "event_id": "live-nginx-http2-rce-2026-11",
+          "reason": "網頁伺服器遠端執行事件仍需確認，且 API 閘道有高風險套件漏洞，需要情資報告摘要。"
         },
         {
           "type": "task",
           "agent": "a5",
           "subagent": "intel-report-writer",
-          "event_id": "live-cyberbiz-bvi-order-db-2026-11",
-          "reason": "同業委外服務商的訂單資料庫遭存取，與我們的訂單資料庫和商店網站相關，需確認。"
+          "event_id": "live-kuokuo-fake-order-phishing-2026-11",
+          "reason": "假訂單釣魚事件涉及會員 API 與會員資料庫，仍為需確認，需要摘要供團隊判讀。"
         },
         {
           "type": "task",
           "agent": "a5",
-          "subagent": "brand-notice-writer",
-          "event_id": "live-php2shell-check-point-esxi-wiper-2026-11",
-          "reason": "此事件已判定受影響但程式未要求通知，可先備妥通知草稿供參考。"
+          "subagent": "intel-report-writer",
+          "event_id": "live-sbc-medical-japan-breach-2026-11",
+          "reason": "診所資料外洩事件牽涉多個系統且加查項目都未通過，需要情資報告摘要。"
         },
         {
           "type": "priority",
           "agent": "a5",
-          "risk_id": "marketing-site:php:vuln",
-          "reason": "PHP2Shell 事件已判定受影響，行銷官網的套件漏洞應優先說明解法。"
-        },
-        {
-          "type": "priority",
-          "agent": "a5",
-          "risk_id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
-          "reason": "多件需確認事件都指向內部營運工具可能被對外利用，且 A4 已優先排序。"
+          "risk_id": "api-gateway:nginx:vuln",
+          "reason": "API 閘道的套件漏洞與本次網頁伺服器遠端執行事件直接相關，應先說明解法。"
         },
         {
           "type": "priority",
           "agent": "a5",
           "risk_id": "firebase-brand-app-storage:C-CLOUD-STORAGE-PUBLIC",
-          "reason": "AI 代理網攻事件的加查結果未通過，雲端儲存區公開風險需盡早提出解法。"
+          "reason": "App 雲端檔案儲存區的設定缺失與診所資料外洩事件的破口推測相符，且加查未通過。"
+        },
+        {
+          "type": "priority",
+          "agent": "a5",
+          "risk_id": "laptop-eng-07:C-DEV-DEVICE-TOKEN",
+          "reason": "工程筆電的登入權杖風險對應外洩事件的權杖遭竊推測，加查未通過。"
         },
         {
           "type": "summary",
-          "text": "本次每日流程的開工路由、A1 至 A4 與派工 Job 全部成功。派工項目均已完成：兩件委外業者事件的第三方金鑰輪替加查、AI 代理網攻事件的雲端儲存區加查結果皆為未通過，需優先確認；Check Point 閘道事件已完成 A2 套件與執行環境解讀及 A4 影響說明，並重排行銷官網、內部營運工具與 API 閘道的風險順序。目前有四件需確認事件，Check Point 事件對行銷官網與資料庫網頁管理工具有影響，建議工程團隊先處理這些項目，再依 A5 報告跟進。"
+          "text": "A1 至 A4、派工與開工路由皆已完成。派工執行結果：三項加查檢查已完成且都未通過，涉及 App 雲端檔案儲存區、內部網路分段與裝置權杖；網頁伺服器事件的 A2 套件漏洞解讀已完成；兩項 A4 優先順序已重排。四件事件仍為需確認，包含電商服務商異常存取、假訂單釣魚、網頁伺服器遠端執行與日本診所資料外洩。接下來請優先處理 API 閘道漏洞、雲端儲存區與工程筆電權杖。"
         }
       ],
       "rejected": [],
-      "summary": "本次每日流程的開工路由、A1 至 A4 與派工 Job 全部成功。派工項目均已完成：兩件委外業者事件的第三方金鑰輪替加查、AI 代理網攻事件的雲端儲存區加查結果皆為未通過，需優先確認；Check Point 閘道事件已完成 A2 套件與執行環境解讀及 A4 影響說明，並重排行銷官網、內部營運工具與 API 閘道的風險順序。目前有四件需確認事件，Check Point 事件對行銷官網與資料庫網頁管理工具有影響，建議工程團隊先處理這些項目，再依 A5 報告跟進。"
+      "summary": "A1 至 A4、派工與開工路由皆已完成。派工執行結果：三項加查檢查已完成且都未通過，涉及 App 雲端檔案儲存區、內部網路分段與裝置權杖；網頁伺服器事件的 A2 套件漏洞解讀已完成；兩項 A4 優先順序已重排。四件事件仍為需確認，包含電商服務商異常存取、假訂單釣魚、網頁伺服器遠端執行與日本診所資料外洩。接下來請優先處理 API 閘道漏洞、雲端儲存區與工程筆電權杖。"
     }
   },
   "orchestrator_results": [
@@ -4238,17 +4294,8 @@
       "agent": "a2",
       "subagent": "dependency-analyst",
       "target_type": "event",
-      "target_id": "live-php2shell-check-point-esxi-wiper-2026-11",
-      "text": "php 8.1.27：php 8.1.27 經程式比對有 27 筆確定漏洞（最高 CVSS 9.8，CVE-2024-11236），另 3 筆需確認、不計入結論。資料標示修補版本為 8.2.35，屬跨次版本升級，建議另行確認 8.1 分支的修補版本。與事件攻擊鏈的關聯僅止於 CVE-2026-109618、CVE-2026-109619 同列 CISA KEV 已遭利用，現有證據無法證明此主機參與攻擊 Check Point 閘道或 ESXi。；php 8.3.20：php 8.3.20 經程式比對有 28 筆確定漏洞（最高 CVSS 9.8，CVE-2025-14179），另 3 筆需確認、不計入結論；修補版本為 8.3.36，同分支更新即可。與事件攻擊鏈的關聯僅止於 CVE-2026-109618、CVE-2026-109619 同列 CISA KEV，現有證據不足以確認此服務被用於攻擊鏈任一階段。",
-      "source": "live"
-    },
-    {
-      "stage": "dispatch",
-      "agent": "a2",
-      "subagent": "runtime-analyst",
-      "target_type": "event",
-      "target_id": "live-php2shell-check-point-esxi-wiper-2026-11",
-      "text": "依證據，marketing-site 執行的 PHP 8.1.27 已於 2025-12-31 停止支援，以今日 2026-11-17 計已停止支援約 10.5 個月，不再提供官方安全更新；是否已有修補屬漏洞本身的屬性，證據未說明。攻擊鏈（Check Point 閘道 PHP2Shell → ESXi 抹除）的證據未顯示 marketing-site 參與其中，利用條件需確認，不能推定為受影響或安全。建議評估升級至仍受支援的 PHP 版本並重新檢視網站暴露面。",
+      "target_id": "live-nginx-http2-rce-2026-11",
+      "text": "nginx 1.27.2 依 NVD 本地比對確認有 31 個受影響的已知漏洞，最高 CVSS 9.8（CVE-2026-97205），可能導致遠端攻擊與伺服器權限取得；修補版本無法確定，需依各 CVE 官方公告逐一確認。事件 live-nginx-http2-rce-2026-11 與此項目沒有直接證據關聯，資料未證明 1.27.2 受該 HTTP/2 漏洞影響，需比對 NGINX 官方公告的受影響版本，並建議先確認實際執行版本後升級至官方明確標示已修補的版本。",
       "source": "live"
     },
     {
@@ -4256,8 +4303,8 @@
       "agent": "a5",
       "subagent": "intel-report-writer",
       "target_type": "event",
-      "target_id": "live-ai-agent-attacks-tw-ecommerce-2026-11",
-      "text": "程式無法自動判定我們是否受影響，需要人工確認；可先檢查資料庫或管理工具是否可被直接連上、對外系統是否有未修補漏洞，以及委外廠商是否持有我們的資料。",
+      "target_id": "live-nginx-http2-rce-2026-11",
+      "text": "程式沒有確定受影響的項目，但我們使用 nginx 1.27.2，需人工確認是否落在此次修補範圍並決定是否更新。",
       "source": "live"
     },
     {
@@ -4265,17 +4312,17 @@
       "agent": "a5",
       "subagent": "intel-report-writer",
       "target_type": "event",
-      "target_id": "live-cyberbiz-bvi-order-db-2026-11",
-      "text": "程式無法自動判定我們是否受影響，需要人工確認是否使用同一家電商服務商，或有委外廠商持有我們的訂單資料。",
+      "target_id": "live-kuokuo-fake-order-phishing-2026-11",
+      "text": "事件沒有可比對的產品或控制項，程式無法自動判定，需人工確認；可檢查會員 API 是否被大量撈取，以及委外或寄信服務端的會員資料是否外流。",
       "source": "live"
     },
     {
       "stage": "review",
       "agent": "a5",
-      "subagent": "brand-notice-writer",
+      "subagent": "intel-report-writer",
       "target_type": "event",
-      "target_id": "live-php2shell-check-point-esxi-wiper-2026-11",
-      "text": "通知草稿：告知品牌商同業遭鏈式攻擊、資料被抹除，我們已發現行銷官網有相同漏洞並安排處理，目前尚無證據顯示資料遭影響；並提醒留意可疑的詐騙訊息。",
+      "target_id": "live-sbc-medical-japan-breach-2026-11",
+      "text": "事件沒有可比對的產品或控制項，程式無法自動判定，需人工確認；可檢查資料庫或管理工具是否可被直接連上、員工電腦授權與帳號密碼是否可能外流。",
       "source": "live"
     }
   ],

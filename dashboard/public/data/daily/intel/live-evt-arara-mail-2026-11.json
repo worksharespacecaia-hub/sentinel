@@ -1,0 +1,214 @@
+{
+  "event": {
+    "id": "live-evt-arara-mail-2026-11",
+    "kind": "live",
+    "title": "日本郵件服務業者 Arara 遭駭，BIC Camera、摩斯漢堡等客戶信箱外洩",
+    "date": "2026-11-18",
+    "industry": "SaaS（郵件發送服務）/ 零售",
+    "attack_chain": [
+      "Arara 郵件發送服務遭駭（入侵手法來源未說明）",
+      "電子郵件地址外洩或可能遭存取",
+      "攻擊者利用遭入侵的郵件服務寄送冒充信用卡公司的可疑郵件"
+    ],
+    "attck": [
+      "T1566"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [
+      "C-THIRD-PARTY-KEY-ROTATION"
+    ],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180612",
+        "title": "【資安日報】11月18日，Optimizely供應鏈攻擊波及BBC、GitLab、IKEA等178個組織網站，匯豐臺灣也名列其中",
+        "quote": "Arara調查指出，這起事件可能影響最多380家企業客戶，約8,133萬筆電子郵件地址已外洩或可能遭到存取，受害者包括出版社小學館、電器零售商BIC Camera及摩斯漢堡。",
+        "published": "2026-11-17",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-19T04:47:04Z",
+        "content_hash": "sha256:439b5f8d77cc45563bcd3569e32348637f528039510632cf7c11a4af6fc2c4cc",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "1 項受影響，最高風險為中。mail-api-key：secrets.json: mail-api-key：466 天未輪替、無 IP 白名單。",
+  "affected_count": 1,
+  "max_level": "medium",
+  "impacts": [
+    {
+      "event_id": "live-evt-arara-mail-2026-11",
+      "asset_id": "mail-api-key",
+      "basis": "control",
+      "our_state": "secrets.json: mail-api-key：466 天未輪替、無 IP 白名單",
+      "verdict": "affected",
+      "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+      "reason": "不符合 C-THIRD-PARTY-KEY-ROTATION（第三方服務金鑰 90 天內輪替且有 IP 白名單）"
+    }
+  ],
+  "solutions": [
+    {
+      "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+      "temporary": "馬上把這組密碼或金鑰作廢換新，並檢查最近有沒有被別人用過",
+      "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "撤銷並輪替金鑰",
+          "cost": "使用該金鑰的服務需同步更新",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "security-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template",
+      "plain_title": "寄信服務金鑰的密碼或金鑰保管不當",
+      "if_ignored": "拿到這組密碼或金鑰的人，可能直接登入相關系統；不換掉，這個破口就一直在。",
+      "plain_source": "template"
+    }
+  ],
+  "notice": {
+    "needed": false,
+    "draft": null,
+    "draft_extra": "【草稿】日本郵件服務業者 Arara 遭駭，BIC Camera、摩斯漢堡等客戶信箱外洩；我們正在確認是否受影響，確認後會再通知。提醒：官方不會要求轉帳或提供驗證碼，請提防冒名來信。（發送前需人工確認）",
+    "draft_extra_source": "live"
+  },
+  "status": "open",
+  "evaluated_asset_ids": [
+    "mail-api-key"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "寄信服務金鑰（mail-api-key）466 天未輪替且無 IP 白名單，與此事件相符，程式判定為中風險（6 分）；建議換發金鑰並加上白名單。",
+  "blocks": {
+    "1_summary": {
+      "title": "日本郵件服務業者 Arara 遭駭，BIC Camera、摩斯漢堡等客戶信箱外洩",
+      "date": "2026-11-18",
+      "industry": "SaaS（郵件發送服務）/ 零售",
+      "attack_chain": [
+        "Arara 郵件發送服務遭駭（入侵手法來源未說明）",
+        "電子郵件地址外洩或可能遭存取",
+        "攻擊者利用遭入侵的郵件服務寄送冒充信用卡公司的可疑郵件"
+      ],
+      "attck": [
+        "T1566"
+      ],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180612",
+          "title": "【資安日報】11月18日，Optimizely供應鏈攻擊波及BBC、GitLab、IKEA等178個組織網站，匯豐臺灣也名列其中",
+          "quote": "Arara調查指出，這起事件可能影響最多380家企業客戶，約8,133萬筆電子郵件地址已外洩或可能遭到存取，受害者包括出版社小學館、電器零售商BIC Camera及摩斯漢堡。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-19T04:47:04Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "寄信服務金鑰（mail-api-key）466 天未輪替且無 IP 白名單，與此事件相符，程式判定為中風險（6 分）；建議換發金鑰並加上白名單。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "1 項受影響，最高風險為中。mail-api-key：secrets.json: mail-api-key：466 天未輪替、無 IP 白名單。",
+      "affected_count": 1,
+      "max_level": "medium"
+    },
+    "3_affected": [
+      {
+        "asset_id": "mail-api-key",
+        "our_state": "secrets.json: mail-api-key：466 天未輪替、無 IP 白名單",
+        "basis": "control",
+        "verdict": "affected",
+        "reason": "不符合 C-THIRD-PARTY-KEY-ROTATION（第三方服務金鑰 90 天內輪替且有 IP 白名單）",
+        "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "level": "medium",
+        "score": 6,
+        "breakdown": [
+          {
+            "factor": "基礎分：控制項不符",
+            "points": 2,
+            "reason": "controls.yaml base_points"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "第三方金鑰無 IP 白名單，外部任何來源都可使用"
+          },
+          {
+            "factor": "資料敏感",
+            "points": 1,
+            "reason": "order、pii"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-1shop-2026-10、live-evt-91app-artex-2026-11、live-evt-arara-mail-2026-11、live-evt-plaid-karte-2026-11"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-19T04:47:04Z"
+      }
+    ],
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": []
+    },
+    "5_solutions": [
+      {
+        "risk_id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "temporary": "馬上把這組密碼或金鑰作廢換新，並檢查最近有沒有被別人用過",
+        "permanent": "金鑰改存 Secrets Manager、設定 IP 白名單與短效憑證，並從 Git 歷史稽核舊值的使用紀錄",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "撤銷並輪替金鑰",
+            "cost": "使用該金鑰的服務需同步更新",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "security-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template",
+        "plain_title": "寄信服務金鑰的密碼或金鑰保管不當",
+        "if_ignored": "拿到這組密碼或金鑰的人，可能直接登入相關系統；不換掉，這個破口就一直在。",
+        "plain_source": "template"
+      }
+    ],
+    "6_notice": {
+      "needed": false,
+      "draft": null,
+      "draft_extra": "【草稿】日本郵件服務業者 Arara 遭駭，BIC Camera、摩斯漢堡等客戶信箱外洩；我們正在確認是否受影響，確認後會再通知。提醒：官方不會要求轉帳或提供驗證碼，請提防冒名來信。（發送前需人工確認）",
+      "draft_extra_source": "live"
+    },
+    "7_status": {
+      "status": "open",
+      "label": "待處理"
+    }
+  },
+  "orchestrator_results": [
+    {
+      "stage": "review",
+      "agent": "a5",
+      "subagent": "brand-notice-writer",
+      "target_type": "event",
+      "target_id": "live-evt-arara-mail-2026-11",
+      "text": "【草稿】日本郵件服務業者 Arara 遭駭，BIC Camera、摩斯漢堡等客戶信箱外洩；我們正在確認是否受影響，確認後會再通知。提醒：官方不會要求轉帳或提供驗證碼，請提防冒名來信。（發送前需人工確認）",
+      "source": "live"
+    }
+  ]
+}

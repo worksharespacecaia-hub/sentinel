@@ -1,7 +1,7 @@
 {
   "tool": "nvd",
   "tool_version": "NVD CVE API 2.0",
-  "database_revision": "2026-11-17T05:29:25Z",
+  "database_revision": "2026-11-23T04:24:46Z",
   "api_key": false,
   "results": [
     {
@@ -8700,7 +8700,7 @@
           "cpe": "cpe:2.3:a:f5:nginx_open_source:1.27.2:*:*:*:*:*:*:*",
           "status": "ok",
           "truncated": false,
-          "candidates": 16
+          "candidates": 30
         },
         {
           "cpe": "cpe:2.3:a:f5:nginx:1.27.2:*:*:*:*:*:*:*",
@@ -8773,6 +8773,327 @@
                       "vulnerable": true,
                       "versionStartIncluding": "0.7.22",
                       "versionEndExcluding": "1.29.1"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-113425",
+          "published": "2026-11-18T16:17:59.493",
+          "last_modified": "2026-11-20T12:18:20.363",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 9.2,
+          "summary": "When NGINX Plus or NGINX Open Source is configured as a mail proxy, undisclosed traffic can cause a use-after-free in an nginx worker process. Additionally, attackers can execute code on systems with ",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "0.5.33",
+                      "versionEndExcluding": "1.30.7"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.31.0",
+                      "versionEndExcluding": "1.31.9"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-118899",
+          "published": "2026-11-18T16:18:00.357",
+          "last_modified": "2026-11-19T19:42:25.667",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 8.7,
+          "summary": "When using the listen directive with the ssl parameter in the http block with TLSv1.3 enabled, an attacker can use a specially crafted TLS connection to cause an infinite loop in the NGINX worker proc",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.13.0",
+                      "versionEndExcluding": "1.30.7"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.31.0",
+                      "versionEndExcluding": "1.31.9"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-121810",
+          "published": "2026-11-18T16:18:03.763",
+          "last_modified": "2026-11-20T12:18:20.573",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 9.2,
+          "summary": "Description:\nThis issue affects NGINX Plus and NGINX Open Source configurations that use HTTP/3. A remote, unauthenticated attacker can cause a use-after-free condition in the NGINX worker process, le",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.25.0",
+                      "versionEndExcluding": "1.30.7"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.31.0",
+                      "versionEndExcluding": "1.31.9"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-123007",
+          "published": "2026-11-18T16:18:04.047",
+          "last_modified": "2026-11-20T12:18:20.763",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 9.2,
+          "summary": "This issue affects NGINX Plus or NGINX Open Source configurations that use HTTP/2. When NGINX processes undisclosed traffic, the flow control window can exceed the allowed threshold, potentially resul",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.9.5",
+                      "versionEndExcluding": "1.30.7"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.31.0",
+                      "versionEndExcluding": "1.31.9"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-123633",
+          "published": "2026-11-18T16:18:04.207",
+          "last_modified": "2026-11-20T12:18:21.030",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 9.2,
+          "summary": "When NGINX Plus or NGINX Open Source is configured to use HTTP/2 for client connections and proxy client requests to a backend, a specially crafted request can result in use-after-free in the worker p",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.19.7",
+                      "versionEndExcluding": "1.30.7"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.31.0",
+                      "versionEndExcluding": "1.31.9"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-123634",
+          "published": "2026-11-18T16:18:04.353",
+          "last_modified": "2026-11-20T12:18:21.263",
+          "status": "Modified",
+          "kev_added": null,
+          "cvss": 9.2,
+          "summary": "This issue occurs when NGINX Plus or NGINX Open Source is configured as a proxy, the proxied server name includes variables, and a Server Side Includes (SSI) or mirror directive sends a subrequest to ",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "0.6.18",
+                      "versionEndExcluding": "0.8.55"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.0.0",
+                      "versionEndExcluding": "1.30.7"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.31.0",
+                      "versionEndExcluding": "1.31.9"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-123640",
+          "published": "2026-11-18T16:18:04.677",
+          "last_modified": "2026-11-19T19:43:50.543",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 6.9,
+          "summary": "Description\nWhen NGINX Plus or NGINX Open Source is configured with the ngx_stream_ssl_preread_module module, a specially crafted ClientHello message from an unauthenticated attacker causes forged val",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.15.2",
+                      "versionEndExcluding": "1.30.7"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.31.0",
+                      "versionEndExcluding": "1.31.9"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-125283",
+          "published": "2026-11-18T16:18:05.967",
+          "last_modified": "2026-11-19T22:03:01.163",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 6.9,
+          "summary": "When NGINX Plus or NGINX Open Source is configured to use the try_files and alias directives with a map variable, certain combinations of regular expression captures in map and try_files can cause a s",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "0.9.6",
+                      "versionEndExcluding": "1.30.7"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.31.0",
+                      "versionEndExcluding": "1.31.9"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-15176",
+          "published": "2026-10-14T15:17:19.140",
+          "last_modified": "2026-11-19T19:45:42.873",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 9.2,
+          "summary": "A vulnerability exists in NGINX Plus and NGINX Open Source when a location is configured that uses the alias directive together with rewrite and a set or return directive referencing the $request_file",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "0.1.29",
+                      "versionEndExcluding": "1.30.6"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.31.0",
+                      "versionEndExcluding": "1.31.7"
                     }
                   ]
                 }
@@ -9143,6 +9464,41 @@
           ]
         },
         {
+          "id": "CVE-2026-42533",
+          "published": "2026-07-15T15:16:33.480",
+          "last_modified": "2026-11-19T19:26:36.403",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 9.2,
+          "summary": "A vulnerability exists in NGINX Plus and NGINX Open Source when a map directive uses regex matching and a string expression references the map's regex capture variables before referencing the map outp",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "0.9.6",
+                      "versionEndExcluding": "1.30.4"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.31.0",
+                      "versionEndExcluding": "1.31.3"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
           "id": "CVE-2026-42934",
           "published": "2026-05-13T16:16:49.910",
           "last_modified": "2026-10-26T14:10:00.130",
@@ -9277,6 +9633,76 @@
           ]
         },
         {
+          "id": "CVE-2026-56434",
+          "published": "2026-07-15T15:16:45.700",
+          "last_modified": "2026-11-19T19:27:51.330",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 8.3,
+          "summary": "NGINX Plus and NGINX Open Source have a vulnerability in the ngx_http_ssi_module module. This vulnerability may exist when the Server-Side Includes (SSI), proxy_pass, and proxy_buffering off directive",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "0.8.11",
+                      "versionEndExcluding": "1.30.4"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.31.0",
+                      "versionEndExcluding": "1.31.3"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-60005",
+          "published": "2026-07-15T16:16:49.820",
+          "last_modified": "2026-11-19T19:29:02.100",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 8.8,
+          "summary": "NGINX Plus and NGINX Open Source have a vulnerability in the ngx_http_slice_module module. When the slice directive and unnamed regex captures are configured or when a background cache update happens,",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.15.8",
+                      "versionEndExcluding": "1.30.4"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.31.0",
+                      "versionEndExcluding": "1.31.3"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
           "id": "CVE-2026-9256",
           "published": "2026-05-22T15:16:27.073",
           "last_modified": "2026-08-25T13:19:33.400",
@@ -9308,6 +9734,76 @@
                     {
                       "criteria": "cpe:2.3:a:f5:nginx_open_source:1.31.0:*:*:*:*:*:*:*",
                       "vulnerable": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-97205",
+          "published": "2026-10-14T15:17:28.200",
+          "last_modified": "2026-11-19T19:23:49.147",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 9.8,
+          "summary": "NGINX Plus and NGINX Open Source have a vulnerability in the ngx_http_core_module module. When asynchronous file I/O (AIO) is enabled in certain configurations, processing a Server Side Includes (SSI)",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "0.8.11",
+                      "versionEndExcluding": "1.30.6"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.31.0",
+                      "versionEndExcluding": "1.31.7"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CVE-2026-97629",
+          "published": "2026-10-14T15:17:28.600",
+          "last_modified": "2026-11-19T19:09:54.483",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 8.3,
+          "summary": "Description\nWhen NGINX Plus or NGINX Open Source is configured with ssl_session_cache \n\nshared:name:size\n\nwithout an explicit ssl_session_ticket_key file directives to automatically rotate SSL session",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.23.2",
+                      "versionEndExcluding": "1.30.6"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:f5:nginx_open_source:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "1.31.0",
+                      "versionEndExcluding": "1.31.7"
                     }
                   ]
                 }
@@ -9587,7 +10083,7 @@
         {
           "id": "CVE-2026-111497",
           "published": "2026-10-22T14:17:37.190",
-          "last_modified": "2026-11-10T20:25:59.130",
+          "last_modified": "2026-11-18T19:17:27.513",
           "status": "Analyzed",
           "kev_added": "2026-10-27",
           "cvss": 9.8,
@@ -10164,10 +10660,58 @@
           "cpe": "cpe:2.3:a:oracle:openjdk:21.0.4:*:*:*:*:*:*:*",
           "status": "ok",
           "truncated": false,
-          "candidates": 0
+          "candidates": 1
         }
       ],
-      "cves": []
+      "cves": [
+        {
+          "id": "CVE-2026-114938",
+          "published": "2026-11-17T22:18:23.777",
+          "last_modified": "2026-11-20T19:18:45.483",
+          "status": "Analyzed",
+          "kev_added": null,
+          "cvss": 8.1,
+          "summary": "Vulnerability in the Oracle Java SE, Oracle GraalVM for JDK, Oracle GraalVM Enterprise Edition product of Oracle Java SE (component: Compiler).  Supported versions that are affected are Oracle Java SE",
+          "configurations": [
+            {
+              "operator": "OR",
+              "negate": false,
+              "nodes": [
+                {
+                  "operator": "OR",
+                  "negate": false,
+                  "cpe_match": [
+                    {
+                      "criteria": "cpe:2.3:a:oracle:openjdk:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "17.0.6",
+                      "versionEndIncluding": "17.0.21.0.3"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:oracle:openjdk:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "21",
+                      "versionEndIncluding": "21.0.13.0.3"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:oracle:openjdk:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "25",
+                      "versionEndIncluding": "25.0.5.0.3"
+                    },
+                    {
+                      "criteria": "cpe:2.3:a:oracle:openjdk:*:*:*:*:*:*:*:*",
+                      "vulnerable": true,
+                      "versionStartIncluding": "27",
+                      "versionEndIncluding": "27.0.1.0.3"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "name": "php",
@@ -11445,7 +11989,7 @@
         {
           "id": "CVE-2026-109618",
           "published": "2026-10-21T14:17:09.357",
-          "last_modified": "2026-11-16T16:54:58.603",
+          "last_modified": "2026-11-20T12:18:18.987",
           "status": "Analyzed",
           "kev_added": "2026-10-26",
           "cvss": 9.8,
@@ -11492,7 +12036,7 @@
         {
           "id": "CVE-2026-109619",
           "published": "2026-10-21T14:17:09.823",
-          "last_modified": "2026-11-16T16:17:46.967",
+          "last_modified": "2026-11-20T12:18:19.730",
           "status": "Analyzed",
           "kev_added": "2026-10-26",
           "cvss": 9.2,
@@ -12037,7 +12581,7 @@
         {
           "id": "CVE-2026-109618",
           "published": "2026-10-21T14:17:09.357",
-          "last_modified": "2026-11-16T16:54:58.603",
+          "last_modified": "2026-11-20T12:18:18.987",
           "status": "Analyzed",
           "kev_added": "2026-10-26",
           "cvss": 9.8,
@@ -12084,7 +12628,7 @@
         {
           "id": "CVE-2026-109619",
           "published": "2026-10-21T14:17:09.823",
-          "last_modified": "2026-11-16T16:17:46.967",
+          "last_modified": "2026-11-20T12:18:19.730",
           "status": "Analyzed",
           "kev_added": "2026-10-26",
           "cvss": 9.2,
@@ -16215,9 +16759,9 @@
         {
           "id": "CVE-2024-10441",
           "published": "2025-03-19T02:15:27.120",
-          "last_modified": "2026-06-17T06:55:39.970",
+          "last_modified": "2026-11-21T05:18:09.090",
           "status": "Analyzed",
-          "kev_added": null,
+          "kev_added": "2026-11-18",
           "cvss": 9.8,
           "summary": "Improper encoding or escaping of output vulnerability in the system plugin daemon in Synology BeeStation OS (BSM) before 1.1-65374 and Synology DiskStation Manager (DSM) before 7.2-64570-4, 7.2.1-6905",
           "configurations": [

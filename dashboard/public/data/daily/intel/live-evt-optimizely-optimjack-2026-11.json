@@ -1,0 +1,435 @@
+{
+  "event": {
+    "id": "live-evt-optimizely-optimjack-2026-11",
+    "kind": "live",
+    "title": "Optimizely 供應鏈攻擊（OPTIMJACK）波及 178 個組織，匯豐台灣列名",
+    "date": "2026-11-16",
+    "industry": "SaaS（網站實驗與個人化平台）/ 電商支付",
+    "attack_chain": [
+      "攻擊者利用 Optimizely Web Experimentation 漏洞，在客戶專案植入惡意 JavaScript",
+      "將載入惡意程式的指令寫入客戶專案的 projectJS 欄位",
+      "惡意檔案仍由合法的 cdn.optimizely.com 提供，訪客瀏覽器載入並執行",
+      "替換錢包地址、側錄卡號與 Cookie、投遞 iOS 漏洞利用工具包"
+    ],
+    "attck": [
+      "T1195",
+      "T1059.007",
+      "T1189",
+      "T1056",
+      "T1565"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "confirmed",
+    "sources": [
+      {
+        "url": "https://cyberq.tw/2026/11/18/optimizely-supply-chain-attack-taiwan/",
+        "title": "Optimizely 供應鏈攻擊波及 178 家機構：匯豐台灣列名，惡意腳本鎖定加密貨幣與 iPhone",
+        "quote": "這起被研究人員稱為 OPTIMJACK 的攻擊，也與台灣有關：Report URI 公布的清單明確列出 HSBC Taiwan，以及 www.hsbc.com.tw 。",
+        "published": "2026-11-18",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-19T04:47:04Z",
+        "content_hash": "sha256:29b00ecbec3b793bf3a08c2ea238a4421d32a05cd3a79d82855900a66a9fc137",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://www.ithome.com.tw/news/180612",
+        "title": "【資安日報】11月18日，Optimizely供應鏈攻擊波及BBC、GitLab、IKEA等178個組織網站，匯豐臺灣也名列其中",
+        "quote": "Optimizely表示已修補漏洞、移除惡意程式碼，並強化受影響帳號的安全防護。",
+        "published": "2026-11-17",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-19T04:47:04Z",
+        "content_hash": "sha256:439b5f8d77cc45563bcd3569e32348637f528039510632cf7c11a4af6fc2c4cc",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "第三方託管的前端腳本須盤點來源並監控內容變更",
+        "reason": "來源指出企業自己的網站程式庫沒有被修改，惡意程式卻從可信任的第三方網域載入，現有控制項沒有涵蓋第三方前端腳本的盤點與變更偵測。"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-evt-optimizely-optimjack-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：第三方託管的前端腳本須盤點來源並監控內容變更"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "server-unpatched",
+          "source": "rule",
+          "inferred": true,
+          "target": "server",
+          "hypothesis": "對外系統有未修補的漏洞被利用",
+          "why": "對外系統的已知漏洞是常見的入侵入口",
+          "check": "列出對外系統與元件版本，對照近期安全公告並排定修補",
+          "how": "查弱點掃描報告、元件版本清單與修補紀錄",
+          "plain": "對外系統可能有沒修補的漏洞",
+          "basis": "攻擊過程第 1 步提到「漏洞」",
+          "systems": [
+            {
+              "asset_id": "api-gateway",
+              "label": "API 閘道"
+            },
+            {
+              "asset_id": "internal-tool",
+              "label": "內部營運工具"
+            },
+            {
+              "asset_id": "marketing-site",
+              "label": "行銷官網"
+            },
+            {
+              "asset_id": "nas-office-01",
+              "label": "辦公室 NAS"
+            },
+            {
+              "asset_id": "storefront",
+              "label": "商店網站"
+            }
+          ],
+          "controls": []
+        },
+        {
+          "id": "endpoint-token",
+          "source": "rule",
+          "inferred": true,
+          "target": "endpoint",
+          "hypothesis": "員工電腦中毒，電腦上存的登入權杖或金鑰被拿走",
+          "why": "員工電腦上常存有部署或雲端權杖，中毒後會一起外流",
+          "check": "確認員工電腦上沒有長期有效的部署或雲端權杖，並檢查端點防護告警",
+          "how": "查端點管理平台的告警、電腦上的權杖清單與權杖有效期限",
+          "plain": "員工電腦上的登入權杖可能被偷走",
+          "basis": "攻擊過程第 2 步提到「惡意程式」",
+          "systems": [
+            {
+              "asset_id": "fileserver-01",
+              "label": "辦公室檔案伺服器"
+            },
+            {
+              "asset_id": "laptop-eng-03",
+              "label": "工程部門筆電（甲）"
+            },
+            {
+              "asset_id": "laptop-eng-07",
+              "label": "工程部門筆電（乙）"
+            },
+            {
+              "asset_id": "laptop-ops-02",
+              "label": "維運部門筆電"
+            },
+            {
+              "asset_id": "nas-office-01",
+              "label": "辦公室 NAS"
+            }
+          ],
+          "controls": [
+            {
+              "control_id": "C-DEV-DEVICE-TOKEN",
+              "title": "員工電腦不得持有正式部署權杖",
+              "status": "fail",
+              "status_label": "不符合"
+            }
+          ]
+        },
+        {
+          "id": "server-remote-admin",
+          "source": "rule",
+          "inferred": true,
+          "target": "server",
+          "hypothesis": "伺服器的遠端管理帳密被猜中或外洩",
+          "why": "遠端管理服務對外時，弱密碼與外洩帳密常被利用",
+          "check": "確認遠端管理只允許公司網路或 VPN 連線，並停用純密碼登入或啟用雙因素驗證",
+          "how": "查防火牆規則、遠端管理服務設定與登入紀錄",
+          "plain": "伺服器的遠端管理帳號可能被猜中",
+          "basis": "攻擊過程第 1 步提到「漏洞」",
+          "systems": [
+            {
+              "asset_id": "nas-office-01",
+              "label": "辦公室 NAS"
+            }
+          ],
+          "controls": [
+            {
+              "control_id": "C-INTERNAL-TOOL-EXPOSED",
+              "title": "內部工具不得對外開放",
+              "status": "fail",
+              "status_label": "不符合"
+            }
+          ]
+        },
+        {
+          "id": "endpoint-phishing",
+          "source": "rule",
+          "inferred": true,
+          "target": "endpoint",
+          "hypothesis": "員工帳號密碼被釣魚，攻擊者用它登入內部系統",
+          "why": "釣魚取得員工帳密是常見的初始入侵方式之一",
+          "check": "確認內部工具與管理介面都啟用雙因素驗證，檢查近期的異常登入",
+          "how": "查身分驗證服務的登入紀錄與雙因素驗證設定",
+          "plain": "員工的帳號密碼可能被釣魚騙走",
+          "basis": "攻擊過程第 2 步提到「惡意程式」",
+          "systems": [
+            {
+              "asset_id": "internal-tool",
+              "label": "內部營運工具"
+            },
+            {
+              "asset_id": "nas-office-01",
+              "label": "辦公室 NAS"
+            },
+            {
+              "asset_id": "phpmyadmin",
+              "label": "資料庫網頁管理工具"
+            }
+          ],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "Optimizely Web Experimentation 的客戶專案 JavaScript 被植入惡意程式，可替換加密貨幣錢包地址、側錄信用卡資料與 Cookie，並載入 iOS 漏洞利用工具包。研究人員發現 188 份遭植入的檔案，涉及 178 個組織，包括 HSBC Taiwan。Optimizely 表示已修補漏洞、移除惡意程式碼。",
+  "blocks": {
+    "1_summary": {
+      "title": "Optimizely 供應鏈攻擊（OPTIMJACK）波及 178 個組織，匯豐台灣列名",
+      "date": "2026-11-16",
+      "industry": "SaaS（網站實驗與個人化平台）/ 電商支付",
+      "attack_chain": [
+        "攻擊者利用 Optimizely Web Experimentation 漏洞，在客戶專案植入惡意 JavaScript",
+        "將載入惡意程式的指令寫入客戶專案的 projectJS 欄位",
+        "惡意檔案仍由合法的 cdn.optimizely.com 提供，訪客瀏覽器載入並執行",
+        "替換錢包地址、側錄卡號與 Cookie、投遞 iOS 漏洞利用工具包"
+      ],
+      "attck": [
+        "T1195",
+        "T1059.007",
+        "T1189",
+        "T1056",
+        "T1565"
+      ],
+      "cves": [],
+      "confidence": "已確認",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://cyberq.tw/2026/11/18/optimizely-supply-chain-attack-taiwan/",
+          "title": "Optimizely 供應鏈攻擊波及 178 家機構：匯豐台灣列名，惡意腳本鎖定加密貨幣與 iPhone",
+          "quote": "這起被研究人員稱為 OPTIMJACK 的攻擊，也與台灣有關：Report URI 公布的清單明確列出 HSBC Taiwan，以及 www.hsbc.com.tw 。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-19T04:47:04Z"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/180612",
+          "title": "【資安日報】11月18日，Optimizely供應鏈攻擊波及BBC、GitLab、IKEA等178個組織網站，匯豐臺灣也名列其中",
+          "quote": "Optimizely表示已修補漏洞、移除惡意程式碼，並強化受影響帳號的安全防護。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-19T04:47:04Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "Optimizely Web Experimentation 的客戶專案 JavaScript 被植入惡意程式，可替換加密貨幣錢包地址、側錄信用卡資料與 Cookie，並載入 iOS 漏洞利用工具包。研究人員發現 188 份遭植入的檔案，涉及 178 個組織，包括 HSBC Taiwan。Optimizely 表示已修補漏洞、移除惡意程式碼。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：第三方託管的前端腳本須盤點來源並監控內容變更"
+          ],
+          "observed_at": "2026-11-19T04:47:04Z",
+          "suggestions": [
+            {
+              "id": "server-unpatched",
+              "source": "rule",
+              "inferred": true,
+              "target": "server",
+              "hypothesis": "對外系統有未修補的漏洞被利用",
+              "why": "對外系統的已知漏洞是常見的入侵入口",
+              "check": "列出對外系統與元件版本，對照近期安全公告並排定修補",
+              "how": "查弱點掃描報告、元件版本清單與修補紀錄",
+              "plain": "對外系統可能有沒修補的漏洞",
+              "basis": "攻擊過程第 1 步提到「漏洞」",
+              "systems": [
+                {
+                  "asset_id": "api-gateway",
+                  "label": "API 閘道"
+                },
+                {
+                  "asset_id": "internal-tool",
+                  "label": "內部營運工具"
+                },
+                {
+                  "asset_id": "marketing-site",
+                  "label": "行銷官網"
+                },
+                {
+                  "asset_id": "nas-office-01",
+                  "label": "辦公室 NAS"
+                },
+                {
+                  "asset_id": "storefront",
+                  "label": "商店網站"
+                }
+              ],
+              "controls": []
+            },
+            {
+              "id": "endpoint-token",
+              "source": "rule",
+              "inferred": true,
+              "target": "endpoint",
+              "hypothesis": "員工電腦中毒，電腦上存的登入權杖或金鑰被拿走",
+              "why": "員工電腦上常存有部署或雲端權杖，中毒後會一起外流",
+              "check": "確認員工電腦上沒有長期有效的部署或雲端權杖，並檢查端點防護告警",
+              "how": "查端點管理平台的告警、電腦上的權杖清單與權杖有效期限",
+              "plain": "員工電腦上的登入權杖可能被偷走",
+              "basis": "攻擊過程第 2 步提到「惡意程式」",
+              "systems": [
+                {
+                  "asset_id": "fileserver-01",
+                  "label": "辦公室檔案伺服器"
+                },
+                {
+                  "asset_id": "laptop-eng-03",
+                  "label": "工程部門筆電（甲）"
+                },
+                {
+                  "asset_id": "laptop-eng-07",
+                  "label": "工程部門筆電（乙）"
+                },
+                {
+                  "asset_id": "laptop-ops-02",
+                  "label": "維運部門筆電"
+                },
+                {
+                  "asset_id": "nas-office-01",
+                  "label": "辦公室 NAS"
+                }
+              ],
+              "controls": [
+                {
+                  "control_id": "C-DEV-DEVICE-TOKEN",
+                  "title": "員工電腦不得持有正式部署權杖",
+                  "status": "fail",
+                  "status_label": "不符合"
+                }
+              ]
+            },
+            {
+              "id": "server-remote-admin",
+              "source": "rule",
+              "inferred": true,
+              "target": "server",
+              "hypothesis": "伺服器的遠端管理帳密被猜中或外洩",
+              "why": "遠端管理服務對外時，弱密碼與外洩帳密常被利用",
+              "check": "確認遠端管理只允許公司網路或 VPN 連線，並停用純密碼登入或啟用雙因素驗證",
+              "how": "查防火牆規則、遠端管理服務設定與登入紀錄",
+              "plain": "伺服器的遠端管理帳號可能被猜中",
+              "basis": "攻擊過程第 1 步提到「漏洞」",
+              "systems": [
+                {
+                  "asset_id": "nas-office-01",
+                  "label": "辦公室 NAS"
+                }
+              ],
+              "controls": [
+                {
+                  "control_id": "C-INTERNAL-TOOL-EXPOSED",
+                  "title": "內部工具不得對外開放",
+                  "status": "fail",
+                  "status_label": "不符合"
+                }
+              ]
+            },
+            {
+              "id": "endpoint-phishing",
+              "source": "rule",
+              "inferred": true,
+              "target": "endpoint",
+              "hypothesis": "員工帳號密碼被釣魚，攻擊者用它登入內部系統",
+              "why": "釣魚取得員工帳密是常見的初始入侵方式之一",
+              "check": "確認內部工具與管理介面都啟用雙因素驗證，檢查近期的異常登入",
+              "how": "查身分驗證服務的登入紀錄與雙因素驗證設定",
+              "plain": "員工的帳號密碼可能被釣魚騙走",
+              "basis": "攻擊過程第 2 步提到「惡意程式」",
+              "systems": [
+                {
+                  "asset_id": "internal-tool",
+                  "label": "內部營運工具"
+                },
+                {
+                  "asset_id": "nas-office-01",
+                  "label": "辦公室 NAS"
+                },
+                {
+                  "asset_id": "phpmyadmin",
+                  "label": "資料庫網頁管理工具"
+                }
+              ],
+              "controls": []
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  },
+  "orchestrator_results": []
+}

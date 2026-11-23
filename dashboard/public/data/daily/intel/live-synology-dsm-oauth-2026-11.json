@@ -1,0 +1,286 @@
+{
+  "event": {
+    "id": "live-synology-dsm-oauth-2026-11",
+    "kind": "live",
+    "title": "Synology DSM OAuth API 重大漏洞 CVE-2026-120382（CVSS 9.8），另有 CVE-2026-123007",
+    "date": "2026-11-19",
+    "industry": "通用（辦公室 NAS）",
+    "attack_chain": [
+      "遠端攻擊者不需帳號與使用者互動，透過網路呼叫 OAuth API",
+      "參數注入，讀寫系統上的任意檔案或發動阻斷服務"
+    ],
+    "attck": [
+      "T1190"
+    ],
+    "cves": [
+      "CVE-2026-120382",
+      "CVE-2026-123007"
+    ],
+    "products": [
+      {
+        "name": "synology-dsm",
+        "ecosystem": "synology-dsm",
+        "affected": [
+          {
+            "introduced": "7.1",
+            "fixed": "7.1.1-42962-10"
+          },
+          {
+            "introduced": "7.2.1",
+            "fixed": "7.2.1-69057-14"
+          },
+          {
+            "introduced": "7.2.2",
+            "fixed": "7.2.2-72806-11"
+          },
+          {
+            "introduced": "7.3",
+            "fixed": "7.3.2-86009-6"
+          },
+          {
+            "introduced": "7.4",
+            "fixed": "7.4.1-90080-2"
+          }
+        ],
+        "cvss": 9.8,
+        "impact": "remote_code_execution"
+      }
+    ],
+    "revision": "1",
+    "controls": [],
+    "confidence": "confirmed",
+    "sources": [
+      {
+        "url": "https://cyberq.tw/2026/11/20/real-world-testing-revealed-a-critical/",
+        "title": "實測 Synology DSM 致命漏洞 CVE-2026-120382：CVSS 9.8、免登入可讀寫檔案，停用 OAuth 與更新修補驗證",
+        "quote": "實測 Synology DSM 致命漏洞 CVE-2026-120382：CVSS 9.8、免登入可讀寫檔案，停用 OAuth 與更新修補驗證",
+        "published": "2026-11-20",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-21T04:31:48Z",
+        "content_hash": "sha256:40450c2062a8dab89b986fcfe32ad68079a18876e9ceb35948e2ba196aab06b5",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://www.ithome.com.tw/news/180680",
+        "title": "群暉警告NAS存在兩個重大漏洞，預計20日提供部分版本作業系統修補程式",
+        "quote": "群暉警告NAS存在兩個重大漏洞，預計20日提供部分版本作業系統修補程式",
+        "published": "2026-11-20",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-21T04:31:48Z",
+        "content_hash": "sha256:a3db2a5bd346621265ce4dce2b31af0b2c946b0a8fc07a4cc1af65a690eb2f3b",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "1 項受影響，最高風險為高。nas-office-01：synology-dsm 7.2.1-69057 Update 5，對外。",
+  "affected_count": 1,
+  "max_level": "high",
+  "impacts": [
+    {
+      "event_id": "live-synology-dsm-oauth-2026-11",
+      "asset_id": "nas-office-01",
+      "basis": "version",
+      "our_state": "synology-dsm 7.2.1-69057 Update 5，對外",
+      "verdict": "affected",
+      "risk_id": "nas-office-01:synology-dsm:vuln",
+      "to_verify": [],
+      "reason": "版本落在受影響範圍"
+    }
+  ],
+  "solutions": [
+    {
+      "risk_id": "nas-office-01:synology-dsm:vuln",
+      "temporary": "先確認辦公室 NAS 有哪些地方外人連得到，能關的先關，並盡快安排更新",
+      "permanent": "將 nas-office-01 的受影響元件升級到修補版本",
+      "options": [
+        {
+          "name": "修補",
+          "action": "升級到修補版本",
+          "cost": "需回歸測試",
+          "timing": "24 小時內"
+        },
+        {
+          "name": "緩解",
+          "action": "限制來源、關閉受影響功能",
+          "cost": "部分功能受限",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "it-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template",
+      "plain_title": "辦公室 NAS 有已經被用來攻擊的漏洞",
+      "if_ignored": "外人可能利用這個漏洞入侵辦公室 NAS；這個漏洞已經有人在用。",
+      "plain_source": "template"
+    }
+  ],
+  "notice": {
+    "needed": false,
+    "draft": null,
+    "draft_extra": "通知草稿：網路儲存設備廠商公布重大漏洞，我們的辦公室設備可能使用相關產品，正在確認並更新；目前未確認有資料外洩，請留意假冒通知的詐騙訊息。",
+    "draft_extra_source": "live"
+  },
+  "status": "open",
+  "evaluated_asset_ids": [
+    "nas-office-01"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "辦公室 NAS nas-office-01 的 synology-dsm 7.2.1-69057 Update 5 落在受影響範圍且管理頁對外，程式判定為高風險（8 分）。建議更新並關閉對外管理頁。",
+  "blocks": {
+    "1_summary": {
+      "title": "Synology DSM OAuth API 重大漏洞 CVE-2026-120382（CVSS 9.8），另有 CVE-2026-123007",
+      "date": "2026-11-19",
+      "industry": "通用（辦公室 NAS）",
+      "attack_chain": [
+        "遠端攻擊者不需帳號與使用者互動，透過網路呼叫 OAuth API",
+        "參數注入，讀寫系統上的任意檔案或發動阻斷服務"
+      ],
+      "attck": [
+        "T1190"
+      ],
+      "cves": [
+        "CVE-2026-120382",
+        "CVE-2026-123007"
+      ],
+      "confidence": "已確認",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://cyberq.tw/2026/11/20/real-world-testing-revealed-a-critical/",
+          "title": "實測 Synology DSM 致命漏洞 CVE-2026-120382：CVSS 9.8、免登入可讀寫檔案，停用 OAuth 與更新修補驗證",
+          "quote": "實測 Synology DSM 致命漏洞 CVE-2026-120382：CVSS 9.8、免登入可讀寫檔案，停用 OAuth 與更新修補驗證",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-21T04:31:48Z"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/180680",
+          "title": "群暉警告NAS存在兩個重大漏洞，預計20日提供部分版本作業系統修補程式",
+          "quote": "群暉警告NAS存在兩個重大漏洞，預計20日提供部分版本作業系統修補程式",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-21T04:31:48Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "辦公室 NAS nas-office-01 的 synology-dsm 7.2.1-69057 Update 5 落在受影響範圍且管理頁對外，程式判定為高風險（8 分）。建議更新並關閉對外管理頁。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "1 項受影響，最高風險為高。nas-office-01：synology-dsm 7.2.1-69057 Update 5，對外。",
+      "affected_count": 1,
+      "max_level": "high"
+    },
+    "3_affected": [
+      {
+        "asset_id": "nas-office-01",
+        "our_state": "synology-dsm 7.2.1-69057 Update 5，對外",
+        "basis": "version",
+        "verdict": "affected",
+        "reason": "版本落在受影響範圍",
+        "risk_id": "nas-office-01:synology-dsm:vuln",
+        "level": "high",
+        "score": 8,
+        "breakdown": [
+          {
+            "factor": "基礎分：漏洞",
+            "points": 3,
+            "reason": "CVSS 9.8"
+          },
+          {
+            "factor": "已遭實際利用",
+            "points": 2,
+            "reason": "KEV 或官方確認"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "可從 internet 連到"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-91app-2026-10、evt-synology-2026-10、live-synology-dsm-oauth-2026-11"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-21T04:31:48Z"
+      }
+    ],
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": []
+    },
+    "5_solutions": [
+      {
+        "risk_id": "nas-office-01:synology-dsm:vuln",
+        "temporary": "先確認辦公室 NAS 有哪些地方外人連得到，能關的先關，並盡快安排更新",
+        "permanent": "將 nas-office-01 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "24 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "it-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template",
+        "plain_title": "辦公室 NAS 有已經被用來攻擊的漏洞",
+        "if_ignored": "外人可能利用這個漏洞入侵辦公室 NAS；這個漏洞已經有人在用。",
+        "plain_source": "template"
+      }
+    ],
+    "6_notice": {
+      "needed": false,
+      "draft": null,
+      "draft_extra": "通知草稿：網路儲存設備廠商公布重大漏洞，我們的辦公室設備可能使用相關產品，正在確認並更新；目前未確認有資料外洩，請留意假冒通知的詐騙訊息。",
+      "draft_extra_source": "live"
+    },
+    "7_status": {
+      "status": "open",
+      "label": "待處理"
+    }
+  },
+  "orchestrator_results": [
+    {
+      "stage": "dispatch",
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "target_type": "event",
+      "target_id": "live-synology-dsm-oauth-2026-11",
+      "text": "【證據】版本 7.2.1-69057 Update 5 經本地比對確認受 5 個已知漏洞影響（NVD，最高 CVSS 9.8），其中 CVE-2024-10441 已列入 CISA KEV 且遭實際利用，修補版本為 7.2.1-69057-7，建議立即升級。【推論】事件 CVE-2026-120382（CVSS 9.8，未驗證身分的遠端 OAuth API 參數注入，可讀寫任意檔案或造成阻斷服務）是否影響此版本，證據中並未確認，需由廠商公告與版本範圍再行驗證。",
+      "source": "live"
+    },
+    {
+      "stage": "review",
+      "agent": "a5",
+      "subagent": "brand-notice-writer",
+      "target_type": "event",
+      "target_id": "live-synology-dsm-oauth-2026-11",
+      "text": "通知草稿：網路儲存設備廠商公布重大漏洞，我們的辦公室設備可能使用相關產品，正在確認並更新；目前未確認有資料外洩，請留意假冒通知的詐騙訊息。",
+      "source": "live"
+    }
+  ]
+}

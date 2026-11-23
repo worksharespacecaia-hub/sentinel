@@ -1,0 +1,202 @@
+{
+  "event": {
+    "id": "live-nginx-http2-rce-2026-11",
+    "kind": "live",
+    "title": "NGINX 修補 2 項 HTTP/2 嚴重遠端程式碼執行漏洞",
+    "date": "2026-11-21",
+    "industry": "通用（網頁伺服器）",
+    "attack_chain": [
+      "漏洞源於處理 HTTP/2 通訊協定時發生記憶體管理異常",
+      "攻擊者未經身分驗證即可遠端植入並執行惡意程式，取得伺服器權限"
+    ],
+    "attck": [],
+    "cves": [
+      "CVE-2026-123633",
+      "CVE-2026-123007"
+    ],
+    "products": [
+      {
+        "name": "nginx",
+        "ecosystem": "generic",
+        "affected": [],
+        "cvss": 9.2,
+        "impact": "remote_code_execution"
+      }
+    ],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.cna.com.tw/news/ait/202611210071.aspx",
+        "title": "NGINX釋重大安全更新 資安署籲儘速升級防範入侵",
+        "quote": "資安署透過新聞稿指出，此次NGINX修補的漏洞編號分別為CVE-2026-123633及CVE-2026-123007，依據通用漏洞評分系統（CVSS）4.0版，兩項漏洞嚴重度皆達9.2分。",
+        "published": "2026-11-21",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-23T04:24:02Z",
+        "content_hash": "sha256:858ef199950227dfd280a8f73a29bd14f33464196cbec4c1adb317986d445575",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "沒有確定受影響的項目，但有 1 項需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-nginx-http2-rce-2026-11",
+      "asset_id": "api-gateway",
+      "basis": "version",
+      "our_state": "nginx 1.27.2",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "版本未知或範圍無法判斷"
+      ],
+      "reason": "版本未知或範圍無法判斷，不視為安全",
+      "suggestions": [
+        {
+          "id": "version-unknown",
+          "source": "rule",
+          "inferred": false,
+          "target": null,
+          "hypothesis": null,
+          "why": null,
+          "check": "取得 api-gateway 上 nginx 的實際版本，對照受影響範圍 來源未列出（修補版本 來源未列出）",
+          "how": "補 runtime 盤點中的版本欄位",
+          "plain": "確認 nginx 的版本是否需要更新",
+          "basis": "版本未知或範圍無法判斷",
+          "systems": [
+            {
+              "asset_id": "api-gateway",
+              "label": "API 閘道"
+            }
+          ],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "api-gateway"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "程式沒有確定受影響的項目，但我們使用 nginx 1.27.2，需人工確認是否落在此次修補範圍並決定是否更新。",
+  "blocks": {
+    "1_summary": {
+      "title": "NGINX 修補 2 項 HTTP/2 嚴重遠端程式碼執行漏洞",
+      "date": "2026-11-21",
+      "industry": "通用（網頁伺服器）",
+      "attack_chain": [
+        "漏洞源於處理 HTTP/2 通訊協定時發生記憶體管理異常",
+        "攻擊者未經身分驗證即可遠端植入並執行惡意程式，取得伺服器權限"
+      ],
+      "attck": [],
+      "cves": [
+        "CVE-2026-123633",
+        "CVE-2026-123007"
+      ],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.cna.com.tw/news/ait/202611210071.aspx",
+          "title": "NGINX釋重大安全更新 資安署籲儘速升級防範入侵",
+          "quote": "資安署透過新聞稿指出，此次NGINX修補的漏洞編號分別為CVE-2026-123633及CVE-2026-123007，依據通用漏洞評分系統（CVSS）4.0版，兩項漏洞嚴重度皆達9.2分。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-23T04:24:02Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "程式沒有確定受影響的項目，但我們使用 nginx 1.27.2，需人工確認是否落在此次修補範圍並決定是否更新。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "沒有確定受影響的項目，但有 1 項需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "api-gateway",
+          "our_state": "nginx 1.27.2",
+          "basis": "version",
+          "verdict": "need_check",
+          "reason": "版本未知或範圍無法判斷，不視為安全",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "版本未知或範圍無法判斷"
+          ],
+          "observed_at": "2026-11-23T04:24:02Z",
+          "suggestions": [
+            {
+              "id": "version-unknown",
+              "source": "rule",
+              "inferred": false,
+              "target": null,
+              "hypothesis": null,
+              "why": null,
+              "check": "取得 api-gateway 上 nginx 的實際版本，對照受影響範圍 來源未列出（修補版本 來源未列出）",
+              "how": "補 runtime 盤點中的版本欄位",
+              "plain": "確認 nginx 的版本是否需要更新",
+              "basis": "版本未知或範圍無法判斷",
+              "systems": [
+                {
+                  "asset_id": "api-gateway",
+                  "label": "API 閘道"
+                }
+              ],
+              "controls": []
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  },
+  "orchestrator_results": [
+    {
+      "stage": "dispatch",
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "target_type": "event",
+      "target_id": "live-nginx-http2-rce-2026-11",
+      "text": "nginx 1.27.2 依 NVD 本地比對確認有 31 個受影響的已知漏洞，最高 CVSS 9.8（CVE-2026-97205），可能導致遠端攻擊與伺服器權限取得；修補版本無法確定，需依各 CVE 官方公告逐一確認。事件 live-nginx-http2-rce-2026-11 與此項目沒有直接證據關聯，資料未證明 1.27.2 受該 HTTP/2 漏洞影響，需比對 NGINX 官方公告的受影響版本，並建議先確認實際執行版本後升級至官方明確標示已修補的版本。",
+      "source": "live"
+    },
+    {
+      "stage": "review",
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "target_type": "event",
+      "target_id": "live-nginx-http2-rce-2026-11",
+      "text": "程式沒有確定受影響的項目，但我們使用 nginx 1.27.2，需人工確認是否落在此次修補範圍並決定是否更新。",
+      "source": "live"
+    }
+  ]
+}

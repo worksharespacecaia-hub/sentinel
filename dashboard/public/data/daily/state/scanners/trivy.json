@@ -433,6 +433,16 @@
           "Target": "package-lock.json"
         },
         {
+          "VulnerabilityID": "CVE-2026-119348",
+          "PkgName": "next",
+          "InstalledVersion": "14.1.0",
+          "FixedVersion": "16.4.5, 15.5.29",
+          "Severity": "MEDIUM",
+          "CVSSv3": 4.8,
+          "Title": "next: Next.js: Information disclosure via HTTP response desynchronization",
+          "Target": "package-lock.json"
+        },
+        {
           "VulnerabilityID": "CVE-2026-27980",
           "PkgName": "next",
           "InstalledVersion": "14.1.0",

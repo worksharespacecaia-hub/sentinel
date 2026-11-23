@@ -1,0 +1,285 @@
+{
+  "event": {
+    "id": "live-nginx2root-2026-11",
+    "kind": "live",
+    "title": "nginx2root：nginx 1.31.9 與 1.30.7 修補 10 個漏洞，5 個可遠端執行程式碼",
+    "date": "2026-11-18",
+    "industry": "SaaS",
+    "attack_chain": [
+      "未經認證的遠端攻擊者對啟用 HTTP/2 的 nginx 發送請求，利用流量控制整數溢位破壞 worker 記憶體",
+      "以 nginx worker 權限執行程式碼",
+      "串接另一個尚未修補的 Linux 核心 SCTP 漏洞取得主機 root"
+    ],
+    "attck": [
+      "T1190",
+      "T1068"
+    ],
+    "cves": [
+      "CVE-2026-123007",
+      "CVE-2026-123633",
+      "CVE-2026-121810",
+      "CVE-2026-123634",
+      "CVE-2026-113425"
+    ],
+    "products": [
+      {
+        "name": "nginx",
+        "ecosystem": "generic",
+        "affected": [
+          {
+            "introduced": "1.9.5",
+            "fixed": "1.30.7"
+          },
+          {
+            "introduced": "1.31.0",
+            "fixed": "1.31.9"
+          }
+        ],
+        "cvss": 9.2,
+        "impact": "remote_code_execution"
+      }
+    ],
+    "revision": "1",
+    "controls": [],
+    "confidence": "confirmed",
+    "sources": [
+      {
+        "url": "https://thehackernews.com/2026/11/10-year-old-nginx-http2-flaw-lets.html",
+        "title": "10-Year-Old NGINX HTTP/2 Flaw Lets Unauthenticated Attackers Execute Code on Servers",
+        "quote": "Fixed versions 1.31.9 and 1.30.7 came out today.",
+        "published": "2026-11-18",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-20T04:38:26Z",
+        "content_hash": "sha256:d4b6378e58c4e5aa9571103f8ec4ba95ca92a15a02390a0b671014c7b441f133",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://www.ithome.com.tw/news/180651",
+        "title": "Nginx緊急修補10個漏洞，其中5個恐遭遠端執行程式碼",
+        "quote": "Nginx緊急修補10個漏洞，其中5個恐遭遠端執行程式碼",
+        "published": "2026-11-18",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-20T04:38:26Z",
+        "content_hash": "sha256:b750fe2b045149257104a2aa0bfe7c738c77961c3646d0d886e7c2a9ef50c4a7",
+        "verification_basis": "live"
+      },
+      {
+        "url": "https://cyberq.tw/2026/11/19/nginx2root-cve-2026-123007-hands-on/",
+        "title": "實測 NGINX2Root：CVSS 9.2 分 nginx 漏洞影響上千萬台主機，從升級修補到重啟驗證",
+        "quote": "nginx 官方於 2026 年 11 月 18 日同時發布 mainline 1.31.9 與 stable 1.30.7 ，一次修補 10 個 CVE。",
+        "published": "2026-11-18",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-20T04:38:26Z",
+        "content_hash": "sha256:85a7e535a78a7c975600d5f8dbac16a1a6bf45f2af7f7c6a56d9dd1205f74372",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "1 項受影響，最高風險為高。api-gateway：nginx 1.27.2，對外。",
+  "affected_count": 1,
+  "max_level": "high",
+  "impacts": [
+    {
+      "event_id": "live-nginx2root-2026-11",
+      "asset_id": "api-gateway",
+      "basis": "version",
+      "our_state": "nginx 1.27.2，對外",
+      "verdict": "affected",
+      "risk_id": "api-gateway:nginx:vuln",
+      "to_verify": [],
+      "reason": "版本落在受影響範圍"
+    }
+  ],
+  "solutions": [
+    {
+      "risk_id": "api-gateway:nginx:vuln",
+      "temporary": "先確認 API 閘道有哪些地方外人連得到，並安排更新",
+      "permanent": "將 api-gateway 的受影響元件升級到修補版本",
+      "options": [
+        {
+          "name": "修補",
+          "action": "升級到修補版本",
+          "cost": "需回歸測試",
+          "timing": "24 小時內"
+        },
+        {
+          "name": "緩解",
+          "action": "限制來源、關閉受影響功能",
+          "cost": "部分功能受限",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "platform-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template",
+      "plain_title": "API 閘道有已知漏洞，可能造成會員個資外洩",
+      "if_ignored": "外人可能利用這個漏洞讓 API 閘道停擺或被入侵，進一步碰到會員個資。",
+      "plain_source": "template"
+    }
+  ],
+  "notice": {
+    "needed": true,
+    "draft": "致各品牌商：我們發現與「nginx2root：nginx 1.31.9 與 1.30.7 修補 10 個漏洞，5 個可遠端執行程式碼」相關的風險，正在處理中。請提醒會員：官方不會以電話或簡訊要求轉帳或提供驗證碼，也請只從官方商店下載品牌 App。有疑問請聯繫平台客服。（自動範本，發送前請人工確認）"
+  },
+  "status": "open",
+  "evaluated_asset_ids": [
+    "api-gateway"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "API 閘道使用 nginx 1.27.2，對外且落在受影響範圍，可能碰到會員個資，程式判定為高風險（8 分）。",
+  "blocks": {
+    "1_summary": {
+      "title": "nginx2root：nginx 1.31.9 與 1.30.7 修補 10 個漏洞，5 個可遠端執行程式碼",
+      "date": "2026-11-18",
+      "industry": "SaaS",
+      "attack_chain": [
+        "未經認證的遠端攻擊者對啟用 HTTP/2 的 nginx 發送請求，利用流量控制整數溢位破壞 worker 記憶體",
+        "以 nginx worker 權限執行程式碼",
+        "串接另一個尚未修補的 Linux 核心 SCTP 漏洞取得主機 root"
+      ],
+      "attck": [
+        "T1190",
+        "T1068"
+      ],
+      "cves": [
+        "CVE-2026-123007",
+        "CVE-2026-123633",
+        "CVE-2026-121810",
+        "CVE-2026-123634",
+        "CVE-2026-113425"
+      ],
+      "confidence": "已確認",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://thehackernews.com/2026/11/10-year-old-nginx-http2-flaw-lets.html",
+          "title": "10-Year-Old NGINX HTTP/2 Flaw Lets Unauthenticated Attackers Execute Code on Servers",
+          "quote": "Fixed versions 1.31.9 and 1.30.7 came out today.",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-20T04:38:26Z"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/180651",
+          "title": "Nginx緊急修補10個漏洞，其中5個恐遭遠端執行程式碼",
+          "quote": "Nginx緊急修補10個漏洞，其中5個恐遭遠端執行程式碼",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-20T04:38:26Z"
+        },
+        {
+          "url": "https://cyberq.tw/2026/11/19/nginx2root-cve-2026-123007-hands-on/",
+          "title": "實測 NGINX2Root：CVSS 9.2 分 nginx 漏洞影響上千萬台主機，從升級修補到重啟驗證",
+          "quote": "nginx 官方於 2026 年 11 月 18 日同時發布 mainline 1.31.9 與 stable 1.30.7 ，一次修補 10 個 CVE。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-20T04:38:26Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "API 閘道使用 nginx 1.27.2，對外且落在受影響範圍，可能碰到會員個資，程式判定為高風險（8 分）。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "1 項受影響，最高風險為高。api-gateway：nginx 1.27.2，對外。",
+      "affected_count": 1,
+      "max_level": "high"
+    },
+    "3_affected": [
+      {
+        "asset_id": "api-gateway",
+        "our_state": "nginx 1.27.2，對外",
+        "basis": "version",
+        "verdict": "affected",
+        "reason": "版本落在受影響範圍",
+        "risk_id": "api-gateway:nginx:vuln",
+        "level": "high",
+        "score": 8,
+        "breakdown": [
+          {
+            "factor": "基礎分：漏洞",
+            "points": 3,
+            "reason": "CVSS 9.8"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "可從 internet 連到"
+          },
+          {
+            "factor": "資料敏感",
+            "points": 1,
+            "reason": "pii"
+          },
+          {
+            "factor": "影響範圍",
+            "points": 1,
+            "reason": "平台層，影響所有品牌"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "live-nginx2root-2026-11"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-20T04:38:26Z"
+      }
+    ],
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": []
+    },
+    "5_solutions": [
+      {
+        "risk_id": "api-gateway:nginx:vuln",
+        "temporary": "先確認 API 閘道有哪些地方外人連得到，並安排更新",
+        "permanent": "將 api-gateway 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "24 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "platform-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template",
+        "plain_title": "API 閘道有已知漏洞，可能造成會員個資外洩",
+        "if_ignored": "外人可能利用這個漏洞讓 API 閘道停擺或被入侵，進一步碰到會員個資。",
+        "plain_source": "template"
+      }
+    ],
+    "6_notice": {
+      "needed": true,
+      "draft": "致各品牌商：我們發現與「nginx2root：nginx 1.31.9 與 1.30.7 修補 10 個漏洞，5 個可遠端執行程式碼」相關的風險，正在處理中。請提醒會員：官方不會以電話或簡訊要求轉帳或提供驗證碼，也請只從官方商店下載品牌 App。有疑問請聯繫平台客服。（自動範本，發送前請人工確認）"
+    },
+    "7_status": {
+      "status": "open",
+      "label": "待處理"
+    }
+  },
+  "orchestrator_results": []
+}

@@ -1,4 +1,5 @@
-// 今日重點：給 CEO 的一頁。只呈現程式已算好的燈號、摘要、決策與前 3 項風險；技術細節留在「工程細節」各頁。
+// 今日重點：給 CEO 的一頁。只呈現程式已算好的燈號、摘要、前 3 項風險與決策；技術細節留在「工程細節」各頁。
+// 順序：燈號與摘要 → 最需要處理的 3 件事 → 三個數字 → 今天要決定的事（最急的事放在第一屏）。
 import Link from "next/link";
 import { getReport, listSources, resolveSource, type Light } from "@/lib/data";
 import { computeSummary } from "@/lib/summary";
@@ -44,26 +45,6 @@ export default async function Brief({ searchParams }: { searchParams: Promise<Re
         <p className="muted">點底線數字可看是哪幾項。</p>
       </section>
 
-      <section className="kpis" aria-label="三個重點數字">
-        <div className="panel kpi"><div className="num lv-high">{report.counts.high}</div><div>個高風險</div>
-          <div className="muted">24 小時內要處理，拖越久越可能被入侵｜<Link href={`${base}#fact-high`}>看是哪些 →</Link></div></div>
-        <div className="panel kpi"><div className="num">{report.intel_summary.affected}<span className="of">／{report.intel_summary.checked}</span></div>
-          <div>件別人出的事，我們也有同樣的問題</div><div className="muted"><Link href={`${base}#events`}>看事件與來源 →</Link></div></div>
-        <div className="panel kpi"><div className="num">{typeof unregistered === "number" ? unregistered : "—"}</div>
-          <div>個系統沒登記就對外開放</div><div className="muted">{typeof unregistered === "number"
-            ? (unregisteredIds.length ? `${unregisteredIds.map((id) => assetLabel(labels, id)).join("、")}。負責人尚未確認，出事可能沒人發現`
-              : "看不到就管不到") : "無法計算"}</div></div>
-      </section>
-
-      <section className="panel">
-        <h2>今天要您決定的事</h2>
-        {decisions.length ? <ol className="brief-decisions">{decisions.map((d, i) => (
-          <li key={i}><SummaryText text={d.question} facts={facts} base={base} labels={labels} />
-            {d.ifNot && <div className="if-ignored"><b>不決定的話：</b><SummaryText text={d.ifNot} facts={facts} base={base} labels={labels} /></div>}</li>
-        ))}</ol>
-          : <p>今天沒有需要您決定的事項。</p>}
-      </section>
-
       <section className="panel">
         <h2>最需要處理的 {top.length} 件事</h2>
         {top.length === 0 ? <p>目前沒有未處理的高風險。</p> : (
@@ -100,6 +81,26 @@ export default async function Brief({ searchParams }: { searchParams: Promise<Re
           </ol>
         )}
         <p><Link className="button primary" href={base}>看完整{PAGES.report.label}／匯出 PDF →</Link></p>
+      </section>
+
+      <section className="kpis" aria-label="三個重點數字">
+        <div className="panel kpi"><div className="num lv-high">{report.counts.high}</div><div>個高風險</div>
+          <div className="muted">24 小時內要處理，拖越久越可能被入侵｜<Link href={`${base}#fact-high`}>看是哪些 →</Link></div></div>
+        <div className="panel kpi"><div className="num">{report.intel_summary.affected}<span className="of">／{report.intel_summary.checked}</span></div>
+          <div>件別人出的事，我們也有同樣的問題</div><div className="muted"><Link href={`${base}#events`}>看事件與來源 →</Link></div></div>
+        <div className="panel kpi"><div className="num">{typeof unregistered === "number" ? unregistered : "—"}</div>
+          <div>個系統沒登記就對外開放</div><div className="muted">{typeof unregistered === "number"
+            ? (unregisteredIds.length ? `${unregisteredIds.map((id) => assetLabel(labels, id)).join("、")}。負責人尚未確認，出事可能沒人發現`
+              : "看不到就管不到") : "無法計算"}</div></div>
+      </section>
+
+      <section className="panel">
+        <h2>今天要您決定的事</h2>
+        {decisions.length ? <ol className="brief-decisions">{decisions.map((d, i) => (
+          <li key={i}><SummaryText text={d.question} facts={facts} base={base} labels={labels} />
+            {d.ifNot && <div className="if-ignored"><b>不決定的話：</b><SummaryText text={d.ifNot} facts={facts} base={base} labels={labels} /></div>}</li>
+        ))}</ol>
+          : <p>今天沒有需要您決定的事項。</p>}
       </section>
 
       <footer className="brief-footer muted">
