@@ -1,9 +1,23 @@
 {
   "tool": "kev",
-  "tool_version": "2026.11.20",
-  "database_revision": "2026-11-20T17:48:39.1516Z",
-  "count": 1790,
+  "tool_version": "2026.11.23",
+  "database_revision": "2026-11-23T19:43:55.7979Z",
+  "count": 1792,
   "cves": {
+    "CVE-2026-133968": {
+      "added": "2026-11-23",
+      "vendor": "Project MONAI",
+      "product": "MONAI Label",
+      "name": "Project MONAI MONAI Label Path Traversal Vulnerability",
+      "ransomware": false
+    },
+    "CVE-2026-134624": {
+      "added": "2026-11-23",
+      "vendor": "N-able",
+      "product": "MailAssure",
+      "name": "N-able MailAssure (SpamExperts) Server-Side Request Forgery (SSRF) Vulnerability",
+      "ransomware": false
+    },
     "CVE-2026-129448": {
       "added": "2026-11-20",
       "vendor": "Apache",
@@ -37,7 +51,7 @@
       "vendor": "Synology",
       "product": "DiskStation Manager (DSM)",
       "name": "Synology DiskStation Manager (DSM) Improper Encoding or Escaping of Output Vulnerability",
-      "ransomware": false
+      "ransomware": true
     },
     "CVE-2026-40217": {
       "added": "2026-11-18",

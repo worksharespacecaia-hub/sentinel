@@ -1,0 +1,290 @@
+{
+  "event": {
+    "id": "live-bvshop-automated-access-2026-11",
+    "kind": "live",
+    "title": "電商開店平臺 BVShop 遭異常自動化存取，部分商家訂單資料外洩",
+    "date": "2026-11-22",
+    "industry": "電商",
+    "attack_chain": [
+      "11 月 15 日平臺偵測到異常自動化存取行為，部分商家訂單資訊遭未授權存取",
+      "11 月 16 日商家反映顧客收到冒用訂單資料的詐騙信",
+      "11 月 17 日凌晨完成目前發現的相關安全漏洞修補"
+    ],
+    "attck": [
+      "T1119"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180724",
+        "title": "電商開店平臺BVShop平臺揭露遭異常自動化存取，已通知多個品牌與主管機關",
+        "quote": "由於部分訂單聯絡資訊可能遭不當利用，業者也提醒商家及消費者提高警覺，慎防冒名詐騙。",
+        "published": "2026-11-22",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-24T07:20:10Z",
+        "content_hash": "sha256:9f8b0b385de2620e2f2d2c8e08d4c8f3bc80eafd550f4bebb618d5b9a7e76117",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "異常自動化與大量訂單存取須偵測並阻擋",
+        "reason": "來源破口為異常自動化存取，導致商家訂單資料外洩，現有控制項沒有涵蓋"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-bvshop-automated-access-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：異常自動化與大量訂單存取須偵測並阻擋"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "ai-1",
+          "source": "ai",
+          "inferred": true,
+          "target": null,
+          "hypothesis": "對外 API 遭自動化程式大量列舉訂單",
+          "why": null,
+          "check": "檢視 api-gateway 的請求速率與來源 IP，找出逐筆查詢訂單的行為，並確認訂單 API 有驗證資料擁有者",
+          "how": null,
+          "plain": "對外 API 遭自動化程式大量列舉訂單",
+          "basis": "AI 依事件推測：來源指出異常自動化存取導致訂單資訊遭存取，處置含阻擋異常存取",
+          "systems": [
+            {
+              "asset_id": "api-gateway",
+              "label": "API 閘道"
+            },
+            {
+              "asset_id": "storefront",
+              "label": "商店網站"
+            }
+          ],
+          "controls": []
+        },
+        {
+          "id": "ai-2",
+          "source": "ai",
+          "inferred": true,
+          "target": null,
+          "hypothesis": "第三方串接介面或憑證遭濫用",
+          "why": null,
+          "check": "盤點串接 order-exports-bucket 與 mail-service 的金鑰，確認輪替時間與 IP 白名單",
+          "how": null,
+          "plain": "第三方串接介面或憑證遭濫用",
+          "basis": "AI 依事件推測：來源處置含更新金鑰與憑證，並對第三方串接全面實施 IP 白名單",
+          "systems": [
+            {
+              "asset_id": "order-exports-bucket",
+              "label": "訂單匯出檔案儲存區"
+            },
+            {
+              "asset_id": "mail-service",
+              "label": "寄信服務"
+            }
+          ],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "程式無法自動判定我們是否受影響，需要人工確認；建議檢查對外 API 是否有被自動化程式大量列舉訂單，以及第三方串接憑證是否遭濫用。",
+  "blocks": {
+    "1_summary": {
+      "title": "電商開店平臺 BVShop 遭異常自動化存取，部分商家訂單資料外洩",
+      "date": "2026-11-22",
+      "industry": "電商",
+      "attack_chain": [
+        "11 月 15 日平臺偵測到異常自動化存取行為，部分商家訂單資訊遭未授權存取",
+        "11 月 16 日商家反映顧客收到冒用訂單資料的詐騙信",
+        "11 月 17 日凌晨完成目前發現的相關安全漏洞修補"
+      ],
+      "attck": [
+        "T1119"
+      ],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180724",
+          "title": "電商開店平臺BVShop平臺揭露遭異常自動化存取，已通知多個品牌與主管機關",
+          "quote": "由於部分訂單聯絡資訊可能遭不當利用，業者也提醒商家及消費者提高警覺，慎防冒名詐騙。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-24T07:20:10Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "程式無法自動判定我們是否受影響，需要人工確認；建議檢查對外 API 是否有被自動化程式大量列舉訂單，以及第三方串接憑證是否遭濫用。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：異常自動化與大量訂單存取須偵測並阻擋"
+          ],
+          "observed_at": "2026-11-24T07:20:10Z",
+          "suggestions": [
+            {
+              "id": "ai-1",
+              "source": "ai",
+              "inferred": true,
+              "target": null,
+              "hypothesis": "對外 API 遭自動化程式大量列舉訂單",
+              "why": null,
+              "check": "檢視 api-gateway 的請求速率與來源 IP，找出逐筆查詢訂單的行為，並確認訂單 API 有驗證資料擁有者",
+              "how": null,
+              "plain": "對外 API 遭自動化程式大量列舉訂單",
+              "basis": "AI 依事件推測：來源指出異常自動化存取導致訂單資訊遭存取，處置含阻擋異常存取",
+              "systems": [
+                {
+                  "asset_id": "api-gateway",
+                  "label": "API 閘道"
+                },
+                {
+                  "asset_id": "storefront",
+                  "label": "商店網站"
+                }
+              ],
+              "controls": []
+            },
+            {
+              "id": "ai-2",
+              "source": "ai",
+              "inferred": true,
+              "target": null,
+              "hypothesis": "第三方串接介面或憑證遭濫用",
+              "why": null,
+              "check": "盤點串接 order-exports-bucket 與 mail-service 的金鑰，確認輪替時間與 IP 白名單",
+              "how": null,
+              "plain": "第三方串接介面或憑證遭濫用",
+              "basis": "AI 依事件推測：來源處置含更新金鑰與憑證，並對第三方串接全面實施 IP 白名單",
+              "systems": [
+                {
+                  "asset_id": "order-exports-bucket",
+                  "label": "訂單匯出檔案儲存區"
+                },
+                {
+                  "asset_id": "mail-service",
+                  "label": "寄信服務"
+                }
+              ],
+              "controls": []
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    },
+    "8_extra_checks": [
+      {
+        "control_id": "C-THIRD-PARTY-KEY-ROTATION",
+        "title": "第三方服務金鑰 90 天內輪替且有 IP 白名單",
+        "status": "fail",
+        "assets": [
+          {
+            "asset_id": "mail-api-key",
+            "evidence": [
+              "secrets.json: mail-api-key：471 天未輪替、無 IP 白名單"
+            ]
+          }
+        ],
+        "check_reason": "第三方金鑰未依規定輪替或無白名單",
+        "suggested_reason": "事件推測第三方串接憑證遭濫用，需確認第三方金鑰有定期輪替與來源限制。",
+        "status_label": "不符合"
+      },
+      {
+        "control_id": "C-CLOUD-STORAGE-PUBLIC",
+        "title": "雲端儲存空間不得公開讀取",
+        "status": "fail",
+        "assets": [
+          {
+            "asset_id": "firebase-brand-app-storage",
+            "evidence": [
+              "firebase-config.json: /user-uploads/{allPaths=**} read if true",
+              "external-scan.json: storage.shopsaas-demo.example 可匿名列出內容"
+            ]
+          },
+          {
+            "asset_id": "order-exports-bucket",
+            "evidence": [
+              "external-scan.json: shopsaas-demo-order-exports.s3.example 可匿名列出內容",
+              "infra/terraform/main.tf: aws_s3_bucket_acl acl = \"public-read\""
+            ]
+          }
+        ],
+        "check_reason": "雲端儲存空間可公開讀取",
+        "suggested_reason": "事件涉及訂單資料外洩，需確認訂單匯出檔案儲存區沒有公開讀取。",
+        "status_label": "不符合"
+      }
+    ]
+  },
+  "orchestrator_results": [
+    {
+      "stage": "review",
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "target_type": "event",
+      "target_id": "live-bvshop-automated-access-2026-11",
+      "text": "程式無法自動判定我們是否受影響，需要人工確認；建議檢查對外 API 是否有被自動化程式大量列舉訂單，以及第三方串接憑證是否遭濫用。",
+      "source": "live"
+    }
+  ]
+}

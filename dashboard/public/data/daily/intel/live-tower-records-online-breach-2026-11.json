@@ -1,0 +1,234 @@
+{
+  "event": {
+    "id": "live-tower-records-online-breach-2026-11",
+    "kind": "live",
+    "title": "日本 Tower Records 電商網站遭入侵，約 1,100 萬筆會員資料外洩",
+    "date": "2026-11-22",
+    "industry": "電商",
+    "attack_chain": [
+      "11 月 19 日 Tower Records Online 遭未經授權的外部存取，業者緊急暫停服務",
+      "會員個資遭存取，約 1,100 萬註冊會員受影響",
+      "外洩資料含姓名、電子郵件、會員 ID、雜湊密碼，部分含出生日期、性別、地址與電話"
+    ],
+    "attck": [],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180717",
+        "title": "日本Tower Records電商網站外洩千萬筆會員個資，網購出貨下單受影響",
+        "quote": "淘兒唱片於11月19日約下午5時10分確認其營運的電商網站Tower Records Online遭未經授權的外部存取，該公司緊急暫停服務。",
+        "published": "2026-11-22",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-24T07:20:10Z",
+        "content_hash": "sha256:ecfcfcb51c6f291004965a4779d783a4de5f644fcefb05762e1085baaf70b843",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "大量會員或訂單資料查詢須即時告警並限速",
+        "reason": "來源指出約 1,100 萬筆會員資料遭存取，現有控制項沒有涵蓋大量資料存取的偵測與限制"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-tower-records-online-breach-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：大量會員或訂單資料查詢須即時告警並限速"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "ai-1",
+          "source": "ai",
+          "inferred": true,
+          "target": null,
+          "hypothesis": "對外商店網站或 API 遭未授權存取後大量讀取會員資料",
+          "why": null,
+          "check": "檢視 storefront 與 api-gateway 的登入與查詢日誌，找出異常來源 IP 與大量會員資料讀取",
+          "how": null,
+          "plain": "對外商店網站或 API 遭未授權存取後大量讀取會員資料",
+          "basis": "AI 依事件推測：來源只說電商網站遭未經授權的外部存取，外洩內容為會員登入資訊與個資，未交代破口",
+          "systems": [
+            {
+              "asset_id": "storefront",
+              "label": "商店網站"
+            },
+            {
+              "asset_id": "api-gateway",
+              "label": "API 閘道"
+            }
+          ],
+          "controls": []
+        },
+        {
+          "id": "ai-2",
+          "source": "ai",
+          "inferred": true,
+          "target": null,
+          "hypothesis": "會員服務 API 或會員資料庫被大量讀取",
+          "why": null,
+          "check": "檢查 member-api 對 member-db-prod 的查詢量，與服務帳號的使用紀錄是否異常",
+          "how": null,
+          "plain": "會員服務 API 或會員資料庫被大量讀取",
+          "basis": "AI 依事件推測：外洩的是約 1,100 萬筆會員清單類資料，對應我們存放會員個資的系統",
+          "systems": [
+            {
+              "asset_id": "member-api",
+              "label": "會員服務 API"
+            },
+            {
+              "asset_id": "member-db-prod",
+              "label": "正式會員資料庫"
+            }
+          ],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "Tower Records Online 於 11 月 19 日確認遭未經授權的外部存取，業者緊急暫停服務。外洩資料包括 1,021 萬筆會員登入資訊（密碼為雜湊值），信用卡資訊未包含在內。商品自 11 月 23 日起依序恢復出貨。",
+  "blocks": {
+    "1_summary": {
+      "title": "日本 Tower Records 電商網站遭入侵，約 1,100 萬筆會員資料外洩",
+      "date": "2026-11-22",
+      "industry": "電商",
+      "attack_chain": [
+        "11 月 19 日 Tower Records Online 遭未經授權的外部存取，業者緊急暫停服務",
+        "會員個資遭存取，約 1,100 萬註冊會員受影響",
+        "外洩資料含姓名、電子郵件、會員 ID、雜湊密碼，部分含出生日期、性別、地址與電話"
+      ],
+      "attck": [],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180717",
+          "title": "日本Tower Records電商網站外洩千萬筆會員個資，網購出貨下單受影響",
+          "quote": "淘兒唱片於11月19日約下午5時10分確認其營運的電商網站Tower Records Online遭未經授權的外部存取，該公司緊急暫停服務。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-24T07:20:10Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "Tower Records Online 於 11 月 19 日確認遭未經授權的外部存取，業者緊急暫停服務。外洩資料包括 1,021 萬筆會員登入資訊（密碼為雜湊值），信用卡資訊未包含在內。商品自 11 月 23 日起依序恢復出貨。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：大量會員或訂單資料查詢須即時告警並限速"
+          ],
+          "observed_at": "2026-11-24T07:20:10Z",
+          "suggestions": [
+            {
+              "id": "ai-1",
+              "source": "ai",
+              "inferred": true,
+              "target": null,
+              "hypothesis": "對外商店網站或 API 遭未授權存取後大量讀取會員資料",
+              "why": null,
+              "check": "檢視 storefront 與 api-gateway 的登入與查詢日誌，找出異常來源 IP 與大量會員資料讀取",
+              "how": null,
+              "plain": "對外商店網站或 API 遭未授權存取後大量讀取會員資料",
+              "basis": "AI 依事件推測：來源只說電商網站遭未經授權的外部存取，外洩內容為會員登入資訊與個資，未交代破口",
+              "systems": [
+                {
+                  "asset_id": "storefront",
+                  "label": "商店網站"
+                },
+                {
+                  "asset_id": "api-gateway",
+                  "label": "API 閘道"
+                }
+              ],
+              "controls": []
+            },
+            {
+              "id": "ai-2",
+              "source": "ai",
+              "inferred": true,
+              "target": null,
+              "hypothesis": "會員服務 API 或會員資料庫被大量讀取",
+              "why": null,
+              "check": "檢查 member-api 對 member-db-prod 的查詢量，與服務帳號的使用紀錄是否異常",
+              "how": null,
+              "plain": "會員服務 API 或會員資料庫被大量讀取",
+              "basis": "AI 依事件推測：外洩的是約 1,100 萬筆會員清單類資料，對應我們存放會員個資的系統",
+              "systems": [
+                {
+                  "asset_id": "member-api",
+                  "label": "會員服務 API"
+                },
+                {
+                  "asset_id": "member-db-prod",
+                  "label": "正式會員資料庫"
+                }
+              ],
+              "controls": []
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  },
+  "orchestrator_results": []
+}

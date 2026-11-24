@@ -1,7 +1,7 @@
 {
   "tool": "nvd",
   "tool_version": "NVD CVE API 2.0",
-  "database_revision": "2026-11-23T04:24:46Z",
+  "database_revision": "2026-11-24T07:21:08Z",
   "api_key": false,
   "results": [
     {
@@ -10667,7 +10667,7 @@
         {
           "id": "CVE-2026-114938",
           "published": "2026-11-17T22:18:23.777",
-          "last_modified": "2026-11-20T19:18:45.483",
+          "last_modified": "2026-11-23T19:17:29.950",
           "status": "Analyzed",
           "kev_added": null,
           "cvss": 8.1,

@@ -1614,27 +1614,329 @@
       "generated_at": "2026-11-10T17:04:44Z"
     },
     {
-      "id": "live-nginx-http2-rce-2026-11",
+      "id": "live-tower-records-online-breach-2026-11",
       "kind": "live",
       "is_update_of": null,
-      "title": "NGINX 修補 2 項 HTTP/2 嚴重遠端程式碼執行漏洞",
-      "date": "2026-11-21",
-      "industry": "通用（網頁伺服器）",
+      "title": "日本 Tower Records 電商網站遭入侵，約 1,100 萬筆會員資料外洩",
+      "date": "2026-11-22",
+      "industry": "電商",
       "attack_chain": [
-        "漏洞源於處理 HTTP/2 通訊協定時發生記憶體管理異常",
-        "攻擊者未經身分驗證即可遠端植入並執行惡意程式，取得伺服器權限"
+        "11 月 19 日 Tower Records Online 遭未經授權的外部存取，業者緊急暫停服務",
+        "會員個資遭存取，約 1,100 萬註冊會員受影響",
+        "外洩資料含姓名、電子郵件、會員 ID、雜湊密碼，部分含出生日期、性別、地址與電話"
       ],
       "attck": [],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180717",
+          "title": "日本Tower Records電商網站外洩千萬筆會員個資，網購出貨下單受影響",
+          "quote": "淘兒唱片於11月19日約下午5時10分確認其營運的電商網站Tower Records Online遭未經授權的外部存取，該公司緊急暫停服務。",
+          "published": "2026-11-22",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-24T07:20:10Z",
+          "content_hash": "sha256:ecfcfcb51c6f291004965a4779d783a4de5f644fcefb05762e1085baaf70b843",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [
+        {
+          "title": "大量會員或訂單資料查詢須即時告警並限速",
+          "reason": "來源指出約 1,100 萬筆會員資料遭存取，現有控制項沒有涵蓋大量資料存取的偵測與限制"
+        }
+      ],
+      "demo": false,
+      "facts": [],
+      "summary": "Tower Records Online 於 11 月 19 日確認遭未經授權的外部存取，業者緊急暫停服務。外洩資料包括 1,021 萬筆會員登入資訊（密碼為雜湊值），信用卡資訊未包含在內。商品自 11 月 23 日起依序恢復出貨。",
+      "fixture_note": null,
+      "possible_entry_points": [
+        {
+          "text": "對外商店網站或 API 遭未授權存取後大量讀取會員資料",
+          "check": "檢視 storefront 與 api-gateway 的登入與查詢日誌，找出異常來源 IP 與大量會員資料讀取",
+          "systems": [
+            "storefront",
+            "api-gateway"
+          ],
+          "basis": "來源只說電商網站遭未經授權的外部存取，外洩內容為會員登入資訊與個資，未交代破口"
+        },
+        {
+          "text": "會員服務 API 或會員資料庫被大量讀取",
+          "check": "檢查 member-api 對 member-db-prod 的查詢量，與服務帳號的使用紀錄是否異常",
+          "systems": [
+            "member-api",
+            "member-db-prod"
+          ],
+          "basis": "外洩的是約 1,100 萬筆會員清單類資料，對應我們存放會員個資的系統"
+        }
+      ],
+      "brand": null
+    },
+    {
+      "id": "live-lifecom-admin-credential-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "電商訂單管理服務商立富康內部管理帳密遭盜用，訂單資料遭逐筆查詢",
+      "date": "2026-11-24",
+      "industry": "電商",
+      "attack_chain": [
+        "攻擊者取得一組內部系統管理帳號密碼，外洩途徑待第三方鑑識",
+        "以自動化程式登入系統，逐筆查詢訂單資料",
+        "利用有效帳密繞過既有網路防護層直接連線主機，操作看似正常行為",
+        "立富康封鎖異常來源並停用相關帳號"
+      ],
+      "attck": [
+        "T1078",
+        "T1119"
+      ],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180755",
+          "title": "電商資訊服務業者再傳資安事件，立富康內部管理帳密遭盜用",
+          "quote": "立富康表示，該公司於11月11日11時56分發現異常存取情形，攻擊者取得一組內部系統管理帳號密碼，透過自動化程式登入系統，逐筆查詢訂單資料。",
+          "published": "2026-11-23",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-24T07:20:10Z",
+          "content_hash": "sha256:cd5303ef9a7834b91cc5c4f17965c5171733346b2d76ab54f1fc52bbc73c69bf",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [
+        {
+          "title": "管理帳號須啟用雙重驗證並禁用共用帳號",
+          "reason": "來源指出攻擊者以一組有效管理帳密登入，事後改善含停用共用帳號與強制 OTP，現有控制項沒有涵蓋"
+        },
+        {
+          "title": "大量訂單查詢須即時告警並限制頻率",
+          "reason": "來源指出攻擊者以自動化程式逐筆查詢訂單，事後新增查詢告警與頻率限制"
+        }
+      ],
+      "demo": false,
+      "facts": [],
+      "summary": "立富康於 11 月 11 日發現攻擊者取得一組內部系統管理帳號密碼，以自動化程式逐筆查詢訂單資料。公司稱系統程式本身未遭入侵，並已通報數位發展部。合作品牌 Relove 公告部分顧客訂單資料可能遭未授權讀取。",
+      "fixture_note": null,
+      "possible_entry_points": [],
+      "brand": null
+    },
+    {
+      "id": "live-bvshop-automated-access-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "電商開店平臺 BVShop 遭異常自動化存取，部分商家訂單資料外洩",
+      "date": "2026-11-22",
+      "industry": "電商",
+      "attack_chain": [
+        "11 月 15 日平臺偵測到異常自動化存取行為，部分商家訂單資訊遭未授權存取",
+        "11 月 16 日商家反映顧客收到冒用訂單資料的詐騙信",
+        "11 月 17 日凌晨完成目前發現的相關安全漏洞修補"
+      ],
+      "attck": [
+        "T1119"
+      ],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180724",
+          "title": "電商開店平臺BVShop平臺揭露遭異常自動化存取，已通知多個品牌與主管機關",
+          "quote": "由於部分訂單聯絡資訊可能遭不當利用，業者也提醒商家及消費者提高警覺，慎防冒名詐騙。",
+          "published": "2026-11-22",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-24T07:20:10Z",
+          "content_hash": "sha256:9f8b0b385de2620e2f2d2c8e08d4c8f3bc80eafd550f4bebb618d5b9a7e76117",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [
+        {
+          "title": "異常自動化與大量訂單存取須偵測並阻擋",
+          "reason": "來源破口為異常自動化存取，導致商家訂單資料外洩，現有控制項沒有涵蓋"
+        }
+      ],
+      "demo": false,
+      "facts": [],
+      "summary": "BVShop 於 11 月 15 日偵測到異常自動化存取，部分商家訂單資訊遭未授權存取，並有顧客收到冒用訂單資料的詐騙信。業者於 11 月 17 日完成已發現漏洞的修補並通報主管機關，不含會員登入密碼與信用卡資訊。",
+      "fixture_note": null,
+      "possible_entry_points": [
+        {
+          "text": "對外 API 遭自動化程式大量列舉訂單",
+          "check": "檢視 api-gateway 的請求速率與來源 IP，找出逐筆查詢訂單的行為，並確認訂單 API 有驗證資料擁有者",
+          "systems": [
+            "api-gateway",
+            "storefront"
+          ],
+          "basis": "來源指出異常自動化存取導致訂單資訊遭存取，處置含阻擋異常存取"
+        },
+        {
+          "text": "第三方串接介面或憑證遭濫用",
+          "check": "盤點串接 order-exports-bucket 與 mail-service 的金鑰，確認輪替時間與 IP 白名單",
+          "systems": [
+            "order-exports-bucket",
+            "mail-service"
+          ],
+          "basis": "來源處置含更新金鑰與憑證，並對第三方串接全面實施 IP 白名單"
+        }
+      ],
+      "brand": null
+    },
+    {
+      "id": "live-shopline-shipping-data-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "Shopline 部分商店出貨資訊疑遭未授權存取，Funte、Simon 訂單資料受影響",
+      "date": "2026-11-22",
+      "industry": "電商",
+      "attack_chain": [
+        "部分商店出貨資訊疑似遭未經授權存取",
+        "Shopline 阻斷相關存取途徑並強化監控與存取管控",
+        "11 月 18 日起未再監測到其他未經授權的存取"
+      ],
+      "attck": [],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180721",
+          "title": "Shopline部分商店出貨資訊疑遭未授權存取，Funte、Simon訂單資料受影響",
+          "quote": "後續已有兩家品牌業者陸續公告接獲Shopline通知，並確認列入受影響名單，分別為升降桌品牌Funte及服飾品牌Simon。",
+          "published": "2026-11-22",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-24T07:20:10Z",
+          "content_hash": "sha256:2adc0bdfc9a98a5739f4fa0f09cbc68f11f4e387bec0535b5ca85689eb4a71f3",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [
+        {
+          "title": "第三方電商服務商須有事件通知窗口與受影響資料清冊",
+          "reason": "來源中品牌是被服務商通知後才得知受影響，且影響範圍不明，現有控制項沒有涵蓋供應商事件應變"
+        }
+      ],
+      "demo": false,
+      "facts": [],
+      "summary": "Shopline 於 11 月 17 日公告部分商店出貨資訊疑似遭未經授權存取並已通報主管機關。品牌 Funte 與 Simon 已確認列入受影響名單。信用卡卡號、金融帳號與登入密碼未受影響，受影響商店數量尚未公布。",
+      "fixture_note": null,
+      "possible_entry_points": [
+        {
+          "text": "訂單匯出檔案儲存區被未授權讀取",
+          "check": "檢視 order-exports-bucket 的存取權限與讀取日誌，確認有無非預期來源",
+          "systems": [
+            "order-exports-bucket"
+          ],
+          "basis": "來源受影響的是出貨與訂單資料，未交代破口；我們的匯出儲存區對外且含訂單與個資"
+        },
+        {
+          "text": "商店網站與寄信服務的訂單資料外流",
+          "check": "確認 storefront 與 mail-service 的訂單資料存取紀錄與服務帳號權限",
+          "systems": [
+            "storefront",
+            "mail-service"
+          ],
+          "basis": "受影響資料含收件姓名、電話、地址與訂單資訊，對應這兩個系統處理的資料"
+        }
+      ],
+      "brand": null
+    },
+    {
+      "id": "live-samsung-securities-voc-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "韓國三星證券客戶申訴系統遭駭，逾 8,200 名客戶個資外洩",
+      "date": "2026-11-24",
+      "industry": "金融",
+      "attack_chain": [
+        "官網客戶之聲（VOC）系統遭外部入侵",
+        "部分客戶上傳的附件檔案遭竊",
+        "封鎖攻擊來源 IP 位址並通報主管機關"
+      ],
+      "attck": [],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180744",
+          "title": "韓國三星證券客戶申訴系統遭駭，逾8,200名客戶個資外洩",
+          "quote": "三星證券於21日發現異常，確認部分客戶上傳的附件檔案遭竊，外洩資訊包括姓名、帳戶號碼、地址、聯絡方式及駕照號碼等13類資料，各客戶實際外洩項目不盡相同，該公司已採取阻擋措施封鎖攻擊來源IP位址，並通報韓國金融監督院及韓國資訊安全署。",
+          "published": "2026-11-24",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-24T07:20:10Z",
+          "content_hash": "sha256:8a954b0dda9ad89190b8949efb89bc9e1f079ff3d334b45f885e8d6418131590",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [
+        {
+          "title": "客戶上傳附件須加密並限期保存",
+          "reason": "來源指出被竊的是客戶上傳的附件（含駕照號碼），現有控制項沒有涵蓋附件保存與加密"
+        }
+      ],
+      "demo": false,
+      "facts": [],
+      "summary": "三星證券證實官網「客戶之聲」系統遭外部入侵，8,241 名客戶個資外洩，部分客戶上傳的附件遭竊。公司已封鎖攻擊來源 IP 並通報主管機關。勒索組織 Hyflock 聲稱入侵三星集團，但尚無證據證實。",
+      "fixture_note": null,
+      "possible_entry_points": [
+        {
+          "text": "客戶上傳檔案的儲存區遭讀取",
+          "check": "檢視 firebase-brand-app-storage 的存取規則與讀取日誌，確認有無公開讀取或異常來源",
+          "systems": [
+            "firebase-brand-app-storage"
+          ],
+          "basis": "來源指出被竊的是客戶上傳的附件檔案，未交代入侵手法"
+        }
+      ],
+      "brand": null
+    },
+    {
+      "id": "live-apache-httpd-http2-cve-2026-119618",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "Apache HTTP Server mod_http2 重大漏洞 CVE-2026-119618 已遭積極利用",
+      "date": "2026-11-23",
+      "industry": "其他",
+      "attack_chain": [
+        "mod_http2 處理 HTTP/2 請求時存在執行緒同步缺陷",
+        "攻擊者利用競爭條件造成堆積記憶體破壞",
+        "進而執行任意程式碼"
+      ],
+      "attck": [
+        "T1190"
+      ],
       "cves": [
-        "CVE-2026-123633",
-        "CVE-2026-123007"
+        "CVE-2026-119618"
       ],
       "products": [
         {
-          "name": "nginx",
+          "name": "apache-httpd",
           "ecosystem": "generic",
-          "affected": [],
-          "cvss": 9.2,
+          "affected": [
+            {
+              "introduced": "2.4.55",
+              "fixed": "2.4.71"
+            }
+          ],
+          "cvss": 8.1,
           "impact": "remote_code_execution"
         }
       ],
@@ -1643,184 +1945,182 @@
       "confidence": "provisional",
       "sources": [
         {
-          "url": "https://www.cna.com.tw/news/ait/202611210071.aspx",
-          "title": "NGINX釋重大安全更新 資安署籲儘速升級防範入侵",
-          "quote": "資安署透過新聞稿指出，此次NGINX修補的漏洞編號分別為CVE-2026-123633及CVE-2026-123007，依據通用漏洞評分系統（CVSS）4.0版，兩項漏洞嚴重度皆達9.2分。",
-          "published": "2026-11-21",
+          "url": "https://www.ithome.com.tw/news/180711",
+          "title": "新加坡CSA警告Apache HTTP/2重大漏洞已遭積極利用，公開PoC也已流傳",
+          "quote": "前述漏洞源自mod_http2處理HTTP/2請求時的執行緒同步缺陷，攻擊者可利用競爭條件造成堆積記憶體破壞，進而執行任意程式碼，Apache 2.4.55至2.4.70版若啟用mod_http2模組，便會受到影響，Apache已於11月11日 發布HTTP Server 2.4.71版修補此漏洞 。",
+          "published": "2026-11-23",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-23T04:24:02Z",
-          "content_hash": "sha256:858ef199950227dfd280a8f73a29bd14f33464196cbec4c1adb317986d445575",
+          "verified_at": "2026-11-24T07:20:10Z",
+          "content_hash": "sha256:28f4fc65b0bc8ace6c41f68dc157ec541fc2ad32486d92c82ac7b92ee504c557",
           "verification_basis": "live"
         }
       ],
       "proposed_controls": [],
       "demo": false,
       "facts": [],
-      "summary": "NGINX 發布重大安全更新，修補 CVE-2026-123633 與 CVE-2026-123007 兩項涉及 HTTP/2 的遠端程式碼執行漏洞，CVSS 4.0 皆為 9.2。資安署指出攻擊者可在未經身分驗證下利用漏洞取得伺服器權限，呼籲儘速升級。",
+      "summary": "新加坡 CSA 警告 Apache HTTP Server 的 mod_http2 漏洞據報已遭積極利用，且已有公開 PoC。攻擊者可遠端執行程式碼，CVSS 8.1。Apache 2.4.55 至 2.4.70 啟用 mod_http2 時受影響，2.4.71 已修補。",
       "fixture_note": null,
       "possible_entry_points": [],
       "brand": null
     },
     {
-      "id": "live-kuokuo-fake-order-phishing-2026-11",
+      "id": "live-php-afternshell-cve-2026-126714",
       "kind": "live",
-      "is_update_of": null,
-      "title": "全國電會員收到含真實個資的假訂單釣魚郵件，來源待查",
-      "date": "2026-11-23",
-      "industry": "零售",
+      "is_update_of": "evt-php2shell-2026-10",
+      "title": "PHP 重大漏洞 phpAfterShell（CVE-2026-126714），源自 PHP2Shell 修補不完整",
+      "date": "2026-11-22",
+      "industry": "其他",
       "attack_chain": [
-        "會員收到冒用全國電名義寄發的虛假訂單電子郵件",
-        "郵件中的會員姓名、電子郵件及會員卡號與真實資料相符，懷疑遭第三方利用進行釣魚詐騙",
-        "全國電盤點 APP 會員中臺、電商及內部會員管理系統的資料流向，並要求委外廠商協同調查"
+        "攻擊者送出未通過身分驗證的 multipart/form-data 請求",
+        "檔案上傳進度更新連線階段檔案時產生競爭條件，工作程序被終止可使檔案留下新舊混合資料",
+        "竄改伺服器連線階段資料，再結合物件反序列化與記憶體毀損達成遠端程式碼執行"
       ],
       "attck": [
-        "T1566"
+        "T1190"
       ],
-      "cves": [],
-      "products": [],
+      "cves": [
+        "CVE-2026-109618",
+        "CVE-2026-109619",
+        "CVE-2026-126714"
+      ],
+      "products": [
+        {
+          "name": "php",
+          "ecosystem": "php",
+          "affected": [
+            {
+              "introduced": "8.2.0",
+              "fixed": "8.2.35"
+            },
+            {
+              "introduced": "8.3.0",
+              "fixed": "8.3.36"
+            },
+            {
+              "introduced": "8.4.0",
+              "fixed": "8.4.27"
+            },
+            {
+              "introduced": "8.5.0",
+              "fixed": "8.5.12"
+            },
+            {
+              "introduced": "8.1.0",
+              "fixed": null
+            },
+            {
+              "introduced": "8.0.0",
+              "fixed": null
+            },
+            {
+              "introduced": "7.4.0",
+              "fixed": null
+            },
+            {
+              "introduced": "8.2.0",
+              "fixed": null
+            }
+          ],
+          "conditions": [
+            {
+              "key": "serves_web_requests",
+              "equals": true,
+              "source_ref": 0
+            }
+          ],
+          "unknown_below": "7.4.0",
+          "aggravating_conditions": [
+            {
+              "key": "session.upload_progress.enabled",
+              "equals": "On",
+              "source_ref": 0,
+              "applies_to": "CVE-2026-109619"
+            }
+          ],
+          "cvss": 9.2,
+          "known_exploited": true,
+          "impact": "remote_code_execution",
+          "confirmed": true,
+          "source_refs": [
+            0,
+            1,
+            2
+          ]
+        }
+      ],
       "revision": "1",
       "controls": [],
       "confidence": "provisional",
       "sources": [
         {
-          "url": "https://www.ithome.com.tw/news/180706",
-          "title": "全國電子發布資安重訊，會員收到含真實個資的假訂單釣魚郵件，來源待查",
-          "quote": "經查發現，郵件中的會員姓名、電子郵件及會員卡號等資訊與真實資料相符，懷疑相關資訊遭第三方利用進行釣魚詐騙。",
-          "published": "2026-11-23",
+          "url": "https://www.ithome.com.tw/news/180722",
+          "title": "研究人員揭露PHP重大漏洞phpAfterShell，問題源自PHP2Shell修補不夠完整",
+          "quote": "研究人員揭露PHP重大漏洞phpAfterShell，問題源自PHP2Shell修補不夠完整 | iThome 移至主內容 文/ 周峻佑 | 2026-11-23 發表 上週 PHP基金會發布安全更新 ，總共修補18個資安漏洞，其中最受到外界注意的地方，是 由資安公司DepthFirst通報的重大漏洞CVE-2026-126714 ，此為檢查時間與使用時間（TOCTOU）競爭條件類型的弱點，攻擊者可利用PHP處理未通過身分驗證的multipart/form-data請求，更新連線階段（Session）檔案所產生的競爭條件與中斷寫入問題，竄改伺服器連線階段資料，再透過PHP原生類別的反序列化及記憶體毀損漏洞，達成遠端程式碼執行（RCE），CVSS v4.0嚴重程度評分為9.2，影響8.2版以上的PHP，該公司將新漏洞命名為phpAfterShell。",
+          "published": "2026-11-22",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-23T04:24:02Z",
-          "content_hash": "sha256:ffdb363590a8be2a8c4b576f870064e7c7759986204e3ade6346b5fe242b019b",
+          "verified_at": "2026-11-24T07:20:10Z",
+          "content_hash": "sha256:16bad9e31105dea8250b48208262a28f91ce802a939d8f474e5f0b02d12d83c2",
           "verification_basis": "live"
         }
       ],
-      "proposed_controls": [
-        {
-          "title": "會員資料的大量讀取與委外廠商存取需留存紀錄並監控異常",
-          "reason": "來源指出會員真實個資流入釣魚郵件但外洩途徑未明，需靠存取紀錄追溯；現有控制項未涵蓋會員資料存取監控。"
-        }
-      ],
+      "proposed_controls": [],
       "demo": false,
       "facts": [],
-      "summary": "全國電於 11 月 19 日發布資安重訊，部分會員收到冒用其名義的虛假訂單郵件，郵件中的會員姓名、電子郵件與會員卡號與真實資料相符。初步調查未涉及帳號密碼、信用卡號或付款資訊，影響範圍與筆數仍待確認。",
+      "summary": "PHP 基金會上週發布安全更新修補 18 個漏洞，其中 CVE-2026-126714 為 TOCTOU 競爭條件弱點，可竄改連線階段資料並結合反序列化與記憶體毀損達成遠端程式碼執行，CVSS v4.0 為 9.2，影響 PHP 8.2 以上。來源未說明已遭利用。",
       "fixture_note": null,
-      "possible_entry_points": [
-        {
-          "text": "會員中臺或會員 API 可能被大量撈取資料",
-          "check": "查會員 API 與資料庫的存取紀錄，找異常 IP、大量查詢或匯出；確認 API 有驗證資料擁有者與頻率限制",
-          "systems": [
-            "member-api",
-            "member-db-prod",
-            "api-gateway"
-          ],
-          "basis": "全國電正對 APP 會員中臺、電商及會員管理系統做資料流向盤點與異常存取紀錄分析"
-        },
-        {
-          "text": "委外廠商或寄信服務端的會員資料可能外流",
-          "check": "盤點哪些委外廠商與寄信服務能取得會員姓名、Email、會員卡號，檢查其帳號權限與近期存取紀錄",
-          "systems": [
-            "mail-service",
-            "member-api"
-          ],
-          "basis": "全國電要求委外廠商協同調查，且外洩的欄位正是郵件寄送會用到的姓名與 Email"
-        }
-      ],
-      "brand": null
+      "possible_entry_points": [],
+      "brand": null,
+      "inherited_from": "evt-php2shell-2026-10"
     },
     {
-      "id": "live-ibiza-liteshop-anomalous-access-2026-11",
+      "id": "live-ghostscript-upload2shell-cve-2026-125396",
       "kind": "live",
       "is_update_of": null,
-      "title": "電商服務商伊比薩發現異常資料存取，崇越子公司全越運動影響待查",
-      "date": "2026-11-23",
-      "industry": "電商",
+      "title": "Ghostscript 漏洞 Upload2Shell（CVE-2026-125396）影響 WordPress、Roundcube 等應用",
+      "date": "2026-11-22",
+      "industry": "其他",
       "attack_chain": [
-        "委外服務商伊比薩發現異常資料存取並通知客戶",
-        "全越運動在電商平臺發布防詐公告並清查受影響消費者與資料範圍"
+        "攻擊者透過檔案上傳、圖片預覽或電子郵件附件，將惡意 PostScript 文件傳入 Ghostscript",
+        "觸發記憶體錯誤取得任意記憶體寫入能力",
+        "竄改 Ghostscript 內部的安全控制狀態"
       ],
-      "attck": [],
-      "cves": [],
-      "products": [],
+      "attck": [
+        "T1190"
+      ],
+      "cves": [
+        "CVE-2026-125396"
+      ],
+      "products": [
+        {
+          "name": "ghostscript",
+          "ecosystem": "generic",
+          "affected": [],
+          "cvss": 8.5,
+          "impact": "remote_code_execution"
+        }
+      ],
       "revision": "1",
       "controls": [],
       "confidence": "provisional",
       "sources": [
         {
-          "url": "https://www.ithome.com.tw/news/180703",
-          "title": "崇越發布資安重訊，揭露第三方電商服務商伊比薩發現異常資料存取，子公司全越運動影響待查",
-          "quote": "根據上市公司崇越（5434）11月19日發布的 資安事件重大訊息 ，旗下子公司全越運動事業接獲電商平臺委外服務商伊比薩（IBIZA）通知，該服務商近期發現異常資料存取情況。",
-          "published": "2026-11-23",
+          "url": "https://www.ithome.com.tw/news/180719",
+          "title": "Ghostscript字型載入器存在漏洞Upload2Shell，廣泛影響WordPress、Roundcube等多種應用系統及平臺",
+          "quote": "直到最近， Pwn.ai終於公布答案 ，這個漏洞存在於Ghostscript的Type 1字型載入器元件，為記憶體釋放後再存取使用（Use After Free）類型的弱點，他們將其命名為Upload2Shell，並登記為CVE-2026-125396列管，CVSS v4.0嚴重程度評為8.5分。",
+          "published": "2026-11-22",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-23T04:24:02Z",
-          "content_hash": "sha256:d78d019f8c9920de44f41090dd362e776656fb8cd0a6bc0dc757e9d2440cb67a",
+          "verified_at": "2026-11-24T07:20:10Z",
+          "content_hash": "sha256:f2c9051540bef7ea713eed43711c2dddaa3b613c8f7cef00c7b1784a8095ee2a",
           "verification_basis": "live"
         }
       ],
-      "proposed_controls": [
-        {
-          "title": "委外電商服務商須有資安事件通報義務並定期盤點其可存取的資料",
-          "reason": "來源顯示事件由委外服務商發現後才通知品牌方，影響範圍待查；現有控制項未涵蓋委外服務商的資料存取與通報要求。"
-        }
-      ],
+      "proposed_controls": [],
       "demo": false,
       "facts": [],
-      "summary": "崇越於 11 月 19 日發布資安重訊，子公司全越運動接獲電商平臺委外服務商伊比薩通知，該服務商近期發現異常資料存取。是否有消費者資料受影響仍待確認，伊比薩旗下經營 LiteShop 電商平臺，是否波及其他企業客戶尚不清楚。",
-      "fixture_note": null,
-      "possible_entry_points": [
-        {
-          "text": "我們若使用第三方電商或架站服務，其後台可能是破口",
-          "check": "盤點是否有委外電商、倉儲、架站服務（含未登記的 SaaS），確認其可取得的顧客資料與管理員帳號是否啟用多因素驗證",
-          "systems": [
-            "saas-quicksite-builder",
-            "storefront"
-          ],
-          "basis": "事件為第三方電商服務商發現異常資料存取，來源未交代入侵手法"
-        }
-      ],
-      "brand": null
-    },
-    {
-      "id": "live-sbc-medical-japan-breach-2026-11",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "SBC Medical Group 日本診所客戶資料外洩，影響逾 200 萬人",
-      "date": "2026-11-20",
-      "industry": "醫療服務（日本，線上預約平臺）",
-      "attack_chain": [
-        "駭客存取 SBC Medical Group 管理的線上平臺",
-        "入侵含日本部分診所客戶資訊的資料庫並竊取資料",
-        "另一起獨立事件中，駭客存取第三方預約服務 Tribeau 的管理員帳號"
-      ],
-      "attck": [],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://www.securityweek.com/sbc-medical-group-data-breach-impacts-over-2-million/",
-          "title": "SBC Medical Group Data Breach Impacts Over 2 Million",
-          "quote": "California-based SBC Medical Group Holdings Incorporated (NASDAQ: SBC) has disclosed a data breach impacting over 2 million individuals in Japan.",
-          "published": "2026-11-20",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-23T04:24:02Z",
-          "content_hash": "sha256:e01ee43063331ebfc4b017355c120970fa1cadb2c1aa08d2d3c0a3a96e8b9d20",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [
-        {
-          "title": "客戶與員工密碼須以雜湊儲存，且資料庫不得集中存放大量個資明細",
-          "reason": "來源指出客戶密碼與 2 萬筆員工帳密紀錄隨資料庫一併遭竊，現有控制項未涵蓋憑證儲存方式。"
-        }
-      ],
-      "demo": false,
-      "facts": [],
-      "summary": "SBC Medical Group 向 SEC 申報，駭客存取其管理的線上平臺並取得日本部分診所的客戶資料庫，外洩逾 160 萬人基本資料及預約、諮詢表單內容，另有客戶密碼與 2 萬筆員工帳密紀錄遭竊。公司仍在調查。",
+      "summary": "Pwn.ai 公布 Ghostscript Type 1 字型載入器的 Use After Free 漏洞 Upload2Shell，CVSS v4.0 為 8.5，可造成預先身分驗證的遠端程式碼執行。WordPress 可經媒體上傳與公開表單觸發，仍有部分應用程式及作業系統尚未完成修補。",
       "fixture_note": null,
       "possible_entry_points": [],
       "brand": null
@@ -1904,25 +2204,49 @@
       "max_level": null,
       "note": "程式取自 CISA KEV 與 NVD API"
     },
-    "live-nginx-http2-rce-2026-11": {
+    "live-tower-records-online-breach-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-kuokuo-fake-order-phishing-2026-11": {
+    "live-lifecom-admin-credential-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-ibiza-liteshop-anomalous-access-2026-11": {
+    "live-bvshop-automated-access-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-sbc-medical-japan-breach-2026-11": {
+    "live-shopline-shipping-data-2026-11": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "live-samsung-securities-voc-2026-11": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "live-apache-httpd-http2-cve-2026-119618": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "live-php-afternshell-cve-2026-126714": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "live-ghostscript-upload2shell-cve-2026-125396": {
       "status": "ok",
       "issues": [],
       "max_level": null,

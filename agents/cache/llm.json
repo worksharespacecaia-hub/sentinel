@@ -13960,5 +13960,85 @@
       "task": "event:live-nginx-http2-rce-2026-11:dependency-analyst",
       "scope": "daily"
     }
+  },
+  "352c59a5622787b7847e7a965a55cda2f67d781f9bee11e77810de428fcc3ec0": {
+    "output": [
+      {
+        "id": "gitlab:C-BACKUP-ISOLATION",
+        "explanation": "風險：依證據，超過 90 天未做還原測試（96 天），備份是否可用無法確認；證據未說明是否與來源隔離，故隔離狀態不明。影響：勒索或誤刪事件發生時，備份可能無法及時還原。建議：安排並記錄一次還原測試，另補充隔離狀態證據。僅為建議，未執行任何動作。",
+        "confidence": "low"
+      },
+      {
+        "id": "nas-office-01:C-BACKUP-ISOLATION",
+        "explanation": "風險：備份與來源未隔離（usb 裝置掛載於 nas-office-01），且從未做過還原測試，備份可能與來源同時受損。影響：勒索軟體或硬體故障可能同時毀損正式資料與備份，導致資料無法復原。建議：將備份媒體與來源設備實體或邏輯隔離（例如離線或異地保存），並儘速完成首次還原測試。僅為建議，未執行任何動作。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "backup-analyst",
+      "task": "backup-analyst#0",
+      "scope": "daily"
+    }
+  },
+  "76bf5c7136e800f03af158ebcebe7d1112fe83088629d05894538d331c37a9be": {
+    "output": [
+      {
+        "id": "gitlab:C-SECRET-IN-GIT",
+        "explanation": "位於 config/db.yml:4 的正式環境金鑰已進入 Git，類型屬資料庫連線憑證的可能性高，但證據未載明權限範圍。建議立即撤銷並輪替該金鑰，並檢視 Git 歷史記錄與存取日誌。",
+        "confidence": "high"
+      },
+      {
+        "id": "brand-app:C-SECRET-IN-GIT",
+        "explanation": "位於 services/brand-app/src/config.ts:3 的正式環境金鑰已進入 Git，類型與權限範圍證據不足。建議撤銷並輪替，改由環境變數或金鑰管理服務注入，並清除 Git 歷史中的殘留。",
+        "confidence": "high"
+      },
+      {
+        "id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "explanation": "此第三方 API 金鑰已 471 天未輪替且無 IP 白名單，違反 90 天輪替與白名單規範，風險高。建議立即輪替、設定 IP 白名單並限縮權限，環境與權限範圍證據不足，需人工確認。",
+        "confidence": "high"
+      },
+      {
+        "id": "order-db-test-cred:test-secret-in-git",
+        "explanation": "位於 config/db.yml:7 的測試環境資料庫憑證已進入 Git，環境判定為測試。測試憑證仍可能與正式資料或其他系統共用，建議撤銷並輪替，確認未重複使用後再清除 Git 中的記錄。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "secret-analyst",
+      "task": "secret-analyst#0",
+      "scope": "daily"
+    }
+  },
+  "9f31c5f6d0c7c4c05fbe93ecafc4b3b96df8eacc9a24a35683664c74ce0ee7f6": {
+    "output": [
+      {
+        "id": "marketing-site:apache-httpd:vuln",
+        "explanation": "apache-httpd 2.4.57 依本地版本比對命中 69 個已知漏洞（另 2 個待確認），最高 CVSS 9.8，其中 CVE-2024-38475 已列入 CISA KEV 遭實際利用，建議優先評估升級。修補版本無法確定，因部分漏洞沒有修補版本或範圍不明；event 所述 CVE-2026-119618（mod_http2 競爭條件導致堆積破壞並可能執行任意程式碼）不在本次資料內，未經本次資料確認，需向官方公告與 NVD 查證後再決定是否升級或停用 mod_http2。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "event:live-apache-httpd-http2-cve-2026-119618:dependency-analyst",
+      "scope": "daily"
+    }
+  },
+  "e546aa5938fcab929beae3ea67c34ceca410f14e9bd9876c004c5ed55b210a43": {
+    "output": [
+      {
+        "id": "marketing-site:php:vuln",
+        "explanation": "依輸入拆解：CVSS 9.8 漏洞加 3 分；已遭實際利用加 2 分（輸入未說明是 KEV 或官方確認）；可從 internet 連到加 2 分；命中同業事件 evt-php2shell-2026-10 與 live-php-afternshell-cve-2026-126714 加 1 分；PHP 8.1.27 已停止支援且無修補可用加 1 分。品牌數、安裝數與資料欄位因工具回報此資產不在本次範圍而無法查證，業務影響無法具體說明。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "marketing-site:php:vuln",
+      "scope": "daily"
+    }
   }
 }

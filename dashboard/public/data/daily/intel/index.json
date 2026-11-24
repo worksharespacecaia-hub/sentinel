@@ -117,39 +117,75 @@
     "demo": false
   },
   {
-    "id": "live-nginx-http2-rce-2026-11",
+    "id": "live-tower-records-online-breach-2026-11",
     "kind": "live",
-    "title": "NGINX 修補 2 項 HTTP/2 嚴重遠端程式碼執行漏洞",
+    "title": "日本 Tower Records 電商網站遭入侵，約 1,100 萬筆會員資料外洩",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
     "demo": false
   },
   {
-    "id": "live-kuokuo-fake-order-phishing-2026-11",
+    "id": "live-lifecom-admin-credential-2026-11",
     "kind": "live",
-    "title": "全國電會員收到含真實個資的假訂單釣魚郵件，來源待查",
+    "title": "電商訂單管理服務商立富康內部管理帳密遭盜用，訂單資料遭逐筆查詢",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
     "demo": false
   },
   {
-    "id": "live-ibiza-liteshop-anomalous-access-2026-11",
+    "id": "live-bvshop-automated-access-2026-11",
     "kind": "live",
-    "title": "電商服務商伊比薩發現異常資料存取，崇越子公司全越運動影響待查",
+    "title": "電商開店平臺 BVShop 遭異常自動化存取，部分商家訂單資料外洩",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
     "demo": false
   },
   {
-    "id": "live-sbc-medical-japan-breach-2026-11",
+    "id": "live-shopline-shipping-data-2026-11",
     "kind": "live",
-    "title": "SBC Medical Group 日本診所客戶資料外洩，影響逾 200 萬人",
+    "title": "Shopline 部分商店出貨資訊疑遭未授權存取，Funte、Simon 訂單資料受影響",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
+    "demo": false
+  },
+  {
+    "id": "live-samsung-securities-voc-2026-11",
+    "kind": "live",
+    "title": "韓國三星證券客戶申訴系統遭駭，逾 8,200 名客戶個資外洩",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
+    "demo": false
+  },
+  {
+    "id": "live-apache-httpd-http2-cve-2026-119618",
+    "kind": "live",
+    "title": "Apache HTTP Server mod_http2 重大漏洞 CVE-2026-119618 已遭積極利用",
+    "affected_count": 1,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "live-php-afternshell-cve-2026-126714",
+    "kind": "live",
+    "title": "PHP 重大漏洞 phpAfterShell（CVE-2026-126714），源自 PHP2Shell 修補不完整",
+    "affected_count": 2,
+    "max_level": "high",
+    "status": "open",
+    "demo": false
+  },
+  {
+    "id": "live-ghostscript-upload2shell-cve-2026-125396",
+    "kind": "live",
+    "title": "Ghostscript 漏洞 Upload2Shell（CVE-2026-125396）影響 WordPress、Roundcube 等應用",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "not_affected",
     "demo": false
   }
 ]
