@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-23T12:46:42Z",
+  "checked_at": "2026-11-24T00:53:07Z",
   "advisories_checked": 7,
   "hits": [],
   "dispatched": false,
@@ -726,12 +726,12 @@
   ],
   "kev_checked": {
     "CVE-2024-10441": {
-      "checked_at": "2026-11-22T15:19:39Z",
+      "checked_at": "2026-11-24T00:53:07Z",
       "mapped": true,
       "revision": "2026-11-21T05:18:09.090"
     },
     "CVE-2024-27834": {
-      "checked_at": "2026-11-22T21:47:42Z",
+      "checked_at": "2026-11-24T00:53:07Z",
       "mapped": false,
       "revision": null
     },
@@ -741,7 +741,7 @@
       "revision": null
     },
     "CVE-2026-102895": {
-      "checked_at": "2026-11-22T21:47:42Z",
+      "checked_at": "2026-11-24T00:53:07Z",
       "mapped": false,
       "revision": null
     },
@@ -781,7 +781,7 @@
       "revision": "2026-11-18T19:17:27.513"
     },
     "CVE-2026-111560": {
-      "checked_at": "2026-11-22T21:47:42Z",
+      "checked_at": "2026-11-24T00:53:07Z",
       "mapped": false,
       "revision": null
     },
@@ -796,37 +796,37 @@
       "revision": null
     },
     "CVE-2026-114713": {
-      "checked_at": "2026-11-22T15:19:39Z",
+      "checked_at": "2026-11-24T00:53:07Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-115731": {
-      "checked_at": "2026-11-22T21:47:42Z",
+      "checked_at": "2026-11-24T00:53:07Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-116606": {
-      "checked_at": "2026-11-22T21:47:42Z",
+      "checked_at": "2026-11-24T00:53:07Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-116779": {
-      "checked_at": "2026-11-22T21:47:42Z",
+      "checked_at": "2026-11-24T00:53:07Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-118527": {
-      "checked_at": "2026-11-22T21:47:42Z",
+      "checked_at": "2026-11-24T00:53:07Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-119977": {
-      "checked_at": "2026-11-22T21:47:42Z",
+      "checked_at": "2026-11-24T00:53:07Z",
       "mapped": true,
       "revision": "2026-11-04T12:52:38.683"
     },
     "CVE-2026-123039": {
-      "checked_at": "2026-11-22T15:19:39Z",
+      "checked_at": "2026-11-24T00:53:07Z",
       "mapped": false,
       "revision": null
     },
@@ -836,7 +836,7 @@
       "revision": null
     },
     "CVE-2026-123218": {
-      "checked_at": "2026-11-22T21:47:42Z",
+      "checked_at": "2026-11-24T00:53:07Z",
       "mapped": false,
       "revision": null
     },
@@ -846,12 +846,12 @@
       "revision": null
     },
     "CVE-2026-124194": {
-      "checked_at": "2026-11-22T21:47:42Z",
+      "checked_at": "2026-11-24T00:53:07Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-125350": {
-      "checked_at": "2026-11-22T21:47:42Z",
+      "checked_at": "2026-11-24T00:53:07Z",
       "mapped": false,
       "revision": null
     },
@@ -860,8 +860,18 @@
       "mapped": false,
       "revision": null
     },
+    "CVE-2026-133968": {
+      "checked_at": "2026-11-24T00:53:07Z",
+      "mapped": false,
+      "revision": null
+    },
+    "CVE-2026-134624": {
+      "checked_at": "2026-11-24T00:53:07Z",
+      "mapped": false,
+      "revision": null
+    },
     "CVE-2026-19868": {
-      "checked_at": "2026-11-22T21:47:42Z",
+      "checked_at": "2026-11-24T00:53:07Z",
       "mapped": false,
       "revision": null
     },
@@ -871,7 +881,7 @@
       "revision": null
     },
     "CVE-2026-40217": {
-      "checked_at": "2026-11-22T21:47:42Z",
+      "checked_at": "2026-11-24T00:53:07Z",
       "mapped": false,
       "revision": null
     },
@@ -901,12 +911,12 @@
       "revision": null
     },
     "CVE-2026-90436": {
-      "checked_at": "2026-11-22T15:19:39Z",
+      "checked_at": "2026-11-24T00:53:07Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-90817": {
-      "checked_at": "2026-11-22T15:19:39Z",
+      "checked_at": "2026-11-24T00:53:07Z",
       "mapped": false,
       "revision": null
     },
@@ -937,15 +947,15 @@
     }
   },
   "kev_catalog": {
-    "version": "2026.11.20",
-    "released": "2026-11-20T17:48:39.1516Z",
-    "count": 1790
+    "version": "2026.11.23",
+    "released": "2026-11-23T19:43:55.7979Z",
+    "count": 1792
   },
   "auto_status": {
     "status": "ok",
     "new": [],
     "updated": [],
-    "remaining": 0,
+    "remaining": 7,
     "errors": []
   }
 }
