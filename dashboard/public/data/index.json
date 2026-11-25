@@ -29,11 +29,11 @@
       "execution_mode": "live"
     },
     "kev-cve-2026-111497": {
-      "run_id": "44452165378",
-      "generated_at": "2026-11-19T03:48:10Z",
+      "run_id": "45635205408",
+      "generated_at": "2026-11-25T14:57:59Z",
       "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
       "completeness": "complete",
-      "path": "advisories/kev-cve-2026-111497/44452165378",
+      "path": "advisories/kev-cve-2026-111497/45635205408",
       "light": "red",
       "execution_mode": "live"
     },
@@ -112,6 +112,6 @@
     "light": "red",
     "execution_mode": "live"
   },
-  "updated_at": "2026-11-25T14:50:23Z",
+  "updated_at": "2026-11-25T14:57:59Z",
   "failures": {}
 }
