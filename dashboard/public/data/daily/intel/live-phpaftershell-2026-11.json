@@ -1,0 +1,428 @@
+{
+  "event": {
+    "id": "live-phpaftershell-2026-11",
+    "kind": "live",
+    "title": "PHP 重大漏洞 phpAfterShell，源自 PHP2Shell 修補不夠完整",
+    "date": "2026-11-23",
+    "industry": "SaaS",
+    "attack_chain": [],
+    "attck": [],
+    "cves": [
+      "CVE-2026-109618",
+      "CVE-2026-109619"
+    ],
+    "products": [
+      {
+        "name": "php",
+        "ecosystem": "php",
+        "affected": [
+          {
+            "introduced": "8.2.0",
+            "fixed": "8.2.35"
+          },
+          {
+            "introduced": "8.3.0",
+            "fixed": "8.3.36"
+          },
+          {
+            "introduced": "8.4.0",
+            "fixed": "8.4.27"
+          },
+          {
+            "introduced": "8.5.0",
+            "fixed": "8.5.12"
+          },
+          {
+            "introduced": "8.1.0",
+            "fixed": null
+          },
+          {
+            "introduced": "8.0.0",
+            "fixed": null
+          },
+          {
+            "introduced": "7.4.0",
+            "fixed": null
+          }
+        ],
+        "conditions": [
+          {
+            "key": "serves_web_requests",
+            "equals": true,
+            "source_ref": 0
+          }
+        ],
+        "unknown_below": "7.4.0",
+        "aggravating_conditions": [
+          {
+            "key": "session.upload_progress.enabled",
+            "equals": "On",
+            "source_ref": 0,
+            "applies_to": "CVE-2026-109619"
+          }
+        ],
+        "cvss": 9.2,
+        "known_exploited": true,
+        "impact": "remote_code_execution",
+        "confirmed": true,
+        "source_refs": [
+          0,
+          1,
+          2
+        ]
+      }
+    ],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180756",
+        "title": "【資安日報】11月24日，CrowdStrike以439億美元併購Zscaler，創下資安界交易紀錄",
+        "quote": "【資安日報】11月24日，CrowdStrike以439億美元併購Zscaler，創下資安界交易紀錄 | iThome 移至主內容 文/ 張明德 | 2026-11-24 發表 本日新聞焦點 ● CrowdStrike以439億美元併購Zscaler，創下資安界交易紀錄 ● Shopline部分商店出貨資訊疑遭未授權存取，Funte、Simon受影響 ● PHP2Shell修補不夠完整，研究人員揭露PHP重大漏洞phpAfterShell ● Ghostscript字型載入器漏洞Upload2Shell影響WordPress等平臺 ● Apple揭露macOS重大漏洞，可能導致系統當機或執行任意程式碼 資安新聞總覽 CrowdStrike以439億美元併購零信任資安業者Zscaler，創下",
+        "published": "2026-11-24",
+        "fetch_status": "quote_mismatch",
+        "verified": false,
+        "verified_at": null,
+        "content_hash": "sha256:db3f6a8f7434652a3929a2712e4f1cb2886d541324c7912bfb56a71294a9f3ad",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": "evt-php2shell-2026-10",
+    "proposed_controls": []
+  },
+  "conclusion": "2 項受影響，最高風險為高。marketing-site：php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On。",
+  "affected_count": 2,
+  "max_level": "high",
+  "impacts": [
+    {
+      "event_id": "live-phpaftershell-2026-11",
+      "asset_id": "marketing-site",
+      "basis": "condition",
+      "our_state": "php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On",
+      "verdict": "affected",
+      "risk_id": "marketing-site:php:vuln",
+      "to_verify": [],
+      "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True；停止支援且無修補",
+      "level_cap": "medium"
+    },
+    {
+      "event_id": "live-phpaftershell-2026-11",
+      "asset_id": "report-svc",
+      "basis": "version",
+      "our_state": "php 8.4.27（fpm-fcgi）",
+      "verdict": "not_affected",
+      "risk_id": null,
+      "reason": "8.4.27 不在受影響範圍（已是修補版本或不同分支）",
+      "level_cap": "medium"
+    },
+    {
+      "event_id": "live-phpaftershell-2026-11",
+      "asset_id": "phpmyadmin",
+      "basis": "condition",
+      "our_state": "php 8.3.20（fpm-fcgi），session.upload_progress.enabled=On",
+      "verdict": "affected",
+      "risk_id": "phpmyadmin:php:vuln",
+      "to_verify": [],
+      "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True",
+      "level_cap": "medium"
+    }
+  ],
+  "solutions": [
+    {
+      "risk_id": "marketing-site:php:vuln",
+      "temporary": "先限制外人連到行銷官網並加強監看，同時評估是否暫時關掉",
+      "permanent": "將 marketing-site 升級到仍受支援且已修補的版本，完成回歸測試後上線",
+      "options": [
+        {
+          "name": "緩解",
+          "action": "WAF 限制異常請求、關閉不必要的功能",
+          "cost": "需驗證不影響現有功能",
+          "timing": "今天"
+        },
+        {
+          "name": "下架",
+          "action": "暫停 marketing-site，改導向其他服務",
+          "cost": "相關流量中斷",
+          "timing": "今天"
+        },
+        {
+          "name": "修補",
+          "action": "升級到受支援的修補版本",
+          "cost": "需回歸測試",
+          "timing": "7 天內"
+        }
+      ],
+      "suggested_owner": "security-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template",
+      "plain_title": "行銷官網的軟體原廠已不再修補，有可被入侵的漏洞",
+      "if_ignored": "漏洞不會再有官方修補，外人可能藉此控制行銷官網或竄改內容。",
+      "plain_source": "template"
+    },
+    {
+      "risk_id": "phpmyadmin:php:vuln",
+      "temporary": "先確認資料庫網頁管理工具有哪些地方外人連得到，能關的先關，並盡快安排更新",
+      "permanent": "將 phpmyadmin 的受影響元件升級到修補版本",
+      "options": [
+        {
+          "name": "修補",
+          "action": "升級到修補版本",
+          "cost": "需回歸測試",
+          "timing": "168 小時內"
+        },
+        {
+          "name": "緩解",
+          "action": "限制來源、關閉受影響功能",
+          "cost": "部分功能受限",
+          "timing": "今天"
+        }
+      ],
+      "suggested_owner": "dba-team",
+      "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+      "source": "template",
+      "plain_title": "資料庫網頁管理工具有已經被用來攻擊的漏洞，可能造成訂單資料、會員個資外洩",
+      "if_ignored": "外人可能利用這個漏洞入侵資料庫網頁管理工具，一路碰到訂單資料、會員個資；這個漏洞已經有人在用。",
+      "plain_source": "template"
+    }
+  ],
+  "notice": {
+    "needed": false,
+    "draft": null
+  },
+  "status": "open",
+  "evaluated_asset_ids": [
+    "marketing-site",
+    "phpmyadmin",
+    "report-svc"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "這是前次修補不夠完整所衍生的漏洞；行銷官網受影響、對外且原廠已停止支援，為高風險（9 分），資料庫管理介面因只允許公司連線進入，為中風險（4 分）。",
+  "blocks": {
+    "1_summary": {
+      "title": "PHP 重大漏洞 phpAfterShell，源自 PHP2Shell 修補不夠完整",
+      "date": "2026-11-23",
+      "industry": "SaaS",
+      "attack_chain": [],
+      "attck": [],
+      "cves": [
+        "CVE-2026-109618",
+        "CVE-2026-109619"
+      ],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180756",
+          "title": "【資安日報】11月24日，CrowdStrike以439億美元併購Zscaler，創下資安界交易紀錄",
+          "quote": "【資安日報】11月24日，CrowdStrike以439億美元併購Zscaler，創下資安界交易紀錄 | iThome 移至主內容 文/ 張明德 | 2026-11-24 發表 本日新聞焦點 ● CrowdStrike以439億美元併購Zscaler，創下資安界交易紀錄 ● Shopline部分商店出貨資訊疑遭未授權存取，Funte、Simon受影響 ● PHP2Shell修補不夠完整，研究人員揭露PHP重大漏洞phpAfterShell ● Ghostscript字型載入器漏洞Upload2Shell影響WordPress等平臺 ● Apple揭露macOS重大漏洞，可能導致系統當機或執行任意程式碼 資安新聞總覽 CrowdStrike以439億美元併購零信任資安業者Zscaler，創下",
+          "fetch_status": "quote_mismatch",
+          "verification_basis": "live",
+          "verified_at": null
+        }
+      ],
+      "verification": {
+        "status": "quote_mismatch",
+        "issues": [
+          "https://www.ithome.com.tw/news/180756：抓取的原文中找不到引用"
+        ],
+        "max_level": "medium",
+        "note": null
+      },
+      "summary": "這是前次修補不夠完整所衍生的漏洞；行銷官網受影響、對外且原廠已停止支援，為高風險（9 分），資料庫管理介面因只允許公司連線進入，為中風險（4 分）。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "2 項受影響，最高風險為高。marketing-site：php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On。",
+      "affected_count": 2,
+      "max_level": "high"
+    },
+    "3_affected": [
+      {
+        "asset_id": "marketing-site",
+        "our_state": "php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On",
+        "basis": "condition",
+        "verdict": "affected",
+        "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True；停止支援且無修補",
+        "risk_id": "marketing-site:php:vuln",
+        "level": "high",
+        "score": 9,
+        "breakdown": [
+          {
+            "factor": "基礎分：漏洞",
+            "points": 3,
+            "reason": "CVSS 9.8"
+          },
+          {
+            "factor": "已遭實際利用",
+            "points": 2,
+            "reason": "KEV 或官方確認"
+          },
+          {
+            "factor": "對外暴露",
+            "points": 2,
+            "reason": "可從 internet 連到"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-php2shell-2026-10、live-phpaftershell-2026-11"
+          },
+          {
+            "factor": "已停止支援",
+            "points": 1,
+            "reason": "無修補可用"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-25T05:51:33Z"
+      },
+      {
+        "asset_id": "phpmyadmin",
+        "our_state": "php 8.3.20（fpm-fcgi），session.upload_progress.enabled=On",
+        "basis": "condition",
+        "verdict": "affected",
+        "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True",
+        "risk_id": "phpmyadmin:php:vuln",
+        "level": "medium",
+        "score": 4,
+        "breakdown": [
+          {
+            "factor": "基礎分：漏洞",
+            "points": 3,
+            "reason": "CVSS 9.8"
+          },
+          {
+            "factor": "已遭實際利用",
+            "points": 2,
+            "reason": "KEV 或官方確認"
+          },
+          {
+            "factor": "資料敏感",
+            "points": 1,
+            "reason": "order、pii"
+          },
+          {
+            "factor": "同業事件命中",
+            "points": 1,
+            "reason": "evt-php2shell-2026-10、live-phpaftershell-2026-11"
+          },
+          {
+            "factor": "補償措施",
+            "points": -3,
+            "reason": "network.json 顯示只允許 corp-vpn 連入（本次快照證據）"
+          }
+        ],
+        "app_impact": null,
+        "to_verify": [],
+        "observed_at": "2026-11-25T05:51:33Z"
+      }
+    ],
+    "4_unaffected_and_check": {
+      "not_affected": [
+        {
+          "asset_id": "report-svc",
+          "our_state": "php 8.4.27（fpm-fcgi）",
+          "reason": "8.4.27 不在受影響範圍（已是修補版本或不同分支）"
+        }
+      ],
+      "need_check": [],
+      "notes": []
+    },
+    "5_solutions": [
+      {
+        "risk_id": "marketing-site:php:vuln",
+        "temporary": "先限制外人連到行銷官網並加強監看，同時評估是否暫時關掉",
+        "permanent": "將 marketing-site 升級到仍受支援且已修補的版本，完成回歸測試後上線",
+        "options": [
+          {
+            "name": "緩解",
+            "action": "WAF 限制異常請求、關閉不必要的功能",
+            "cost": "需驗證不影響現有功能",
+            "timing": "今天"
+          },
+          {
+            "name": "下架",
+            "action": "暫停 marketing-site，改導向其他服務",
+            "cost": "相關流量中斷",
+            "timing": "今天"
+          },
+          {
+            "name": "修補",
+            "action": "升級到受支援的修補版本",
+            "cost": "需回歸測試",
+            "timing": "7 天內"
+          }
+        ],
+        "suggested_owner": "security-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template",
+        "plain_title": "行銷官網的軟體原廠已不再修補，有可被入侵的漏洞",
+        "if_ignored": "漏洞不會再有官方修補，外人可能藉此控制行銷官網或竄改內容。",
+        "plain_source": "template"
+      },
+      {
+        "risk_id": "phpmyadmin:php:vuln",
+        "temporary": "先確認資料庫網頁管理工具有哪些地方外人連得到，能關的先關，並盡快安排更新",
+        "permanent": "將 phpmyadmin 的受影響元件升級到修補版本",
+        "options": [
+          {
+            "name": "修補",
+            "action": "升級到修補版本",
+            "cost": "需回歸測試",
+            "timing": "168 小時內"
+          },
+          {
+            "name": "緩解",
+            "action": "限制來源、關閉受影響功能",
+            "cost": "部分功能受限",
+            "timing": "今天"
+          }
+        ],
+        "suggested_owner": "dba-team",
+        "verify": "工程團隊修正後，下次完整掃描不再命中才標示已修復",
+        "source": "template",
+        "plain_title": "資料庫網頁管理工具有已經被用來攻擊的漏洞，可能造成訂單資料、會員個資外洩",
+        "if_ignored": "外人可能利用這個漏洞入侵資料庫網頁管理工具，一路碰到訂單資料、會員個資；這個漏洞已經有人在用。",
+        "plain_source": "template"
+      }
+    ],
+    "6_notice": {
+      "needed": false,
+      "draft": null
+    },
+    "7_status": {
+      "status": "open",
+      "label": "待處理"
+    }
+  },
+  "orchestrator_results": [
+    {
+      "stage": "dispatch",
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "target_type": "event",
+      "target_id": "live-phpaftershell-2026-11",
+      "text": "php 8.1.27：php 8.1.27 依 NVD（CPE 候選經本地版本重新比對）確認有 27 個已知漏洞，最高 CVSS 9.8（CVE-2024-11236），其中 CVE-2026-109618、CVE-2026-109619 已列入 CISA KEV 且遭實際利用；程式給出的修補版本為 8.2.35。另有 3 個候選漏洞需人工確認，尚未納入確定結論。；php 8.3.20：php 8.3.20 依 NVD（CPE 候選經本地版本重新比對）確認有 28 個已知漏洞，最高 CVSS 9.8（CVE-2025-14179），其中 CVE-2026-109618、CVE-2026-109619 已列入 CISA KEV 且遭實際利用；程式給出的修補版本為 8.3.36。另有 3 個候選漏洞需人工確認，尚未納入確定結論。",
+      "source": "live"
+    },
+    {
+      "stage": "dispatch",
+      "agent": "a2",
+      "subagent": "runtime-analyst",
+      "target_type": "event",
+      "target_id": "live-phpaftershell-2026-11",
+      "text": "marketing-site 的 PHP 8.1.27 依 eol.json 記載支援已於 2025-12-31 結束，以今日 2026-11-25 計已停止支援。與 phpAfterShell 的關聯與利用條件在本次任務資料中沒有提供（attack_chain 為空），需確認受影響版本範圍與前提條件，目前不能視為安全。",
+      "source": "live"
+    }
+  ],
+  "update_of": {
+    "id": "evt-php2shell-2026-10",
+    "title": "PHP2Shell：PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619）",
+    "status": "open"
+  }
+}

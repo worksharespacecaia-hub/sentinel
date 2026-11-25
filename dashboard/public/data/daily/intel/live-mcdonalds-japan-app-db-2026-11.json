@@ -1,0 +1,230 @@
+{
+  "event": {
+    "id": "live-mcdonalds-japan-app-db-2026-11",
+    "kind": "live",
+    "title": "日本麥當勞 App 資料庫遭未授權存取，用戶消費紀錄恐外洩",
+    "date": "2026-11-25",
+    "industry": "零售",
+    "attack_chain": [
+      "官方 App 相關資料庫遭未授權第三方存取",
+      "客戶 ID、產品購買紀錄、IP 位址及行動裝置位置資訊可能外洩"
+    ],
+    "attck": [],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180782",
+        "title": "日本麥當勞App資料庫被駭，用戶消費紀錄恐外洩",
+        "quote": "可能已外洩的資料包括系統上的客戶ID、產品購買紀錄、IP位址及App使用時的行動裝置位置資訊。",
+        "published": "2026-11-25",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-25T05:51:33Z",
+        "content_hash": "sha256:fc3f1029bf07ab3933a9248acca8030838e5e0ae3f3d3fbb713cb0c291c74d09",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "App 後端資料庫與雲端儲存區須限縮存取並監控異常讀取",
+        "reason": "來源指出 App 相關資料庫遭未授權存取、購買紀錄與位置資訊可能外洩，但未說明路徑；現有控制項未涵蓋 App 後端資料庫存取。"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-mcdonalds-japan-app-db-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：App 後端資料庫與雲端儲存區須限縮存取並監控異常讀取"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "ai-1",
+          "source": "ai",
+          "inferred": true,
+          "target": null,
+          "hypothesis": "App 後端資料庫或雲端儲存區的存取權限可能過寬",
+          "why": null,
+          "check": "檢查品牌 App 的雲端儲存區與後端資料存取規則是否公開或過寬，並確認內嵌 API 金鑰的權限範圍與近期異常讀取紀錄",
+          "how": null,
+          "plain": "App 後端資料庫或雲端儲存區的存取權限可能過寬",
+          "basis": "AI 依事件推測：事件為 App 相關資料庫被未授權存取，外洩內容為購買紀錄與位置資訊，入侵路徑未說明",
+          "systems": [
+            {
+              "asset_id": "brand-app",
+              "label": "品牌 App"
+            },
+            {
+              "asset_id": "firebase-brand-app-storage",
+              "label": "App 雲端檔案儲存區"
+            },
+            {
+              "asset_id": "app-api-key",
+              "label": "App 內嵌的 API 金鑰"
+            }
+          ],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "程式無法自動判定是否影響我們，需要人工確認：建議檢查 App 後端資料庫與雲端儲存區的存取權限是否過寬。",
+  "blocks": {
+    "1_summary": {
+      "title": "日本麥當勞 App 資料庫遭未授權存取，用戶消費紀錄恐外洩",
+      "date": "2026-11-25",
+      "industry": "零售",
+      "attack_chain": [
+        "官方 App 相關資料庫遭未授權第三方存取",
+        "客戶 ID、產品購買紀錄、IP 位址及行動裝置位置資訊可能外洩"
+      ],
+      "attck": [],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180782",
+          "title": "日本麥當勞App資料庫被駭，用戶消費紀錄恐外洩",
+          "quote": "可能已外洩的資料包括系統上的客戶ID、產品購買紀錄、IP位址及App使用時的行動裝置位置資訊。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-25T05:51:33Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "程式無法自動判定是否影響我們，需要人工確認：建議檢查 App 後端資料庫與雲端儲存區的存取權限是否過寬。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：App 後端資料庫與雲端儲存區須限縮存取並監控異常讀取"
+          ],
+          "observed_at": "2026-11-25T05:51:33Z",
+          "suggestions": [
+            {
+              "id": "ai-1",
+              "source": "ai",
+              "inferred": true,
+              "target": null,
+              "hypothesis": "App 後端資料庫或雲端儲存區的存取權限可能過寬",
+              "why": null,
+              "check": "檢查品牌 App 的雲端儲存區與後端資料存取規則是否公開或過寬，並確認內嵌 API 金鑰的權限範圍與近期異常讀取紀錄",
+              "how": null,
+              "plain": "App 後端資料庫或雲端儲存區的存取權限可能過寬",
+              "basis": "AI 依事件推測：事件為 App 相關資料庫被未授權存取，外洩內容為購買紀錄與位置資訊，入侵路徑未說明",
+              "systems": [
+                {
+                  "asset_id": "brand-app",
+                  "label": "品牌 App"
+                },
+                {
+                  "asset_id": "firebase-brand-app-storage",
+                  "label": "App 雲端檔案儲存區"
+                },
+                {
+                  "asset_id": "app-api-key",
+                  "label": "App 內嵌的 API 金鑰"
+                }
+              ],
+              "controls": []
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    },
+    "8_extra_checks": [
+      {
+        "control_id": "C-CLOUD-STORAGE-PUBLIC",
+        "title": "雲端儲存空間不得公開讀取",
+        "status": "fail",
+        "assets": [
+          {
+            "asset_id": "firebase-brand-app-storage",
+            "evidence": [
+              "firebase-config.json: /user-uploads/{allPaths=**} read if true",
+              "external-scan.json: storage.shopsaas-demo.example 可匿名列出內容"
+            ]
+          },
+          {
+            "asset_id": "order-exports-bucket",
+            "evidence": [
+              "external-scan.json: shopsaas-demo-order-exports.s3.example 可匿名列出內容",
+              "infra/terraform/main.tf: aws_s3_bucket_acl acl = \"public-read\""
+            ]
+          }
+        ],
+        "check_reason": "雲端儲存空間可公開讀取",
+        "suggested_reason": "事件涉及 App 後端資料與雲端儲存區遭未授權存取，值得確認我們的儲存空間沒有公開讀取。",
+        "status_label": "不符合"
+      }
+    ]
+  },
+  "orchestrator_results": [
+    {
+      "stage": "review",
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "target_type": "event",
+      "target_id": "live-mcdonalds-japan-app-db-2026-11",
+      "text": "程式無法自動判定是否影響我們，需要人工確認：建議檢查 App 後端資料庫與雲端儲存區的存取權限是否過寬。",
+      "source": "live"
+    }
+  ]
+}

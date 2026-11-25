@@ -14040,5 +14040,120 @@
       "task": "marketing-site:php:vuln",
       "scope": "daily"
     }
+  },
+  "c27e36c272f4b3f316ee1de078cbb97dc1ebf59fd4c788d2909f6847431bdc9b": {
+    "output": [
+      {
+        "id": "gitlab:C-BACKUP-ISOLATION",
+        "explanation": "風險判定為不符合：證據顯示距上次還原測試已 97 天，超過 90 天的要求。證據未說明備份與來源設備的隔離狀態，此部分證據不足，需另行確認；建議排程還原測試並確認隔離配置。",
+        "confidence": "high"
+      },
+      {
+        "id": "nas-office-01:C-BACKUP-ISOLATION",
+        "explanation": "風險判定為高風險且不符合：備份與來源未隔離（USB 裝置仍連接於 nas-office-01），且從未做過還原測試，兩項要求皆未達成。建議將備份媒介與來源設備實體或邏輯隔離，並儘速完成首次還原測試。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "backup-analyst",
+      "task": "backup-analyst#0",
+      "scope": "daily"
+    }
+  },
+  "50e1d7b9d53dff831a8e3dc70139e7d289d8e8309f4afd9f1d6acb8c4df57c2a": {
+    "output": [
+      {
+        "id": "gitlab:C-SECRET-IN-GIT",
+        "explanation": "依掃描標題屬正式環境金鑰，位於 config/db.yml:4，但證據未標示金鑰類型與權限範圍，環境區段也未確認。建議先輪替該金鑰，再評估從 Git 歷史移除。等級以程式結果為準，此處不另定。",
+        "confidence": "low"
+      },
+      {
+        "id": "brand-app:C-SECRET-IN-GIT",
+        "explanation": "依掃描標題屬正式環境金鑰，位於 services/brand-app/src/config.ts:3，但證據未標示金鑰類型與權限範圍。建議先輪替該金鑰，再評估從 Git 歷史移除，並改由環境變數或密鑰管理服務注入。等級以程式結果為準。",
+        "confidence": "low"
+      },
+      {
+        "id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "explanation": "屬第三方服務 API 金鑰，已 472 天未輪替且無 IP 白名單，違反 90 天輪替規定。證據未標示環境與權限範圍，無法判定是否為正式環境。建議立即輪替並設定 IP 白名單，並確認該金鑰的權限範圍。",
+        "confidence": "high"
+      },
+      {
+        "id": "order-db-test-cred:test-secret-in-git",
+        "explanation": "位於 config/db.yml:7，依掃描結果判定為測試環境金鑰，類型推定為資料庫連線憑證，但證據未載明權限範圍。雖為測試環境，仍建議輪替，並確認是否與正式環境共用，再從 Git 歷史移除。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "secret-analyst",
+      "task": "secret-analyst#0",
+      "scope": "daily"
+    }
+  },
+  "20aa4f4f0e57d49e02949e98b14f3196107b06e2a05362e221c0406fadd83ed7": {
+    "output": [
+      {
+        "id": "marketing-site:php:vuln",
+        "explanation": "php 8.1.27 依 NVD（CPE 候選經本地版本重新比對）確認有 27 個已知漏洞，最高 CVSS 9.8（CVE-2024-11236），其中 CVE-2026-109618、CVE-2026-109619 已列入 CISA KEV 且遭實際利用；程式給出的修補版本為 8.2.35。另有 3 個候選漏洞需人工確認，尚未納入確定結論。",
+        "confidence": "low"
+      },
+      {
+        "id": "phpmyadmin:php:vuln",
+        "explanation": "php 8.3.20 依 NVD（CPE 候選經本地版本重新比對）確認有 28 個已知漏洞，最高 CVSS 9.8（CVE-2025-14179），其中 CVE-2026-109618、CVE-2026-109619 已列入 CISA KEV 且遭實際利用；程式給出的修補版本為 8.3.36。另有 3 個候選漏洞需人工確認，尚未納入確定結論。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "event:live-phpaftershell-2026-11:dependency-analyst",
+      "scope": "daily"
+    }
+  },
+  "b4e055c84f5625396f98d795a38bceff09a401c5c45631342b368d45d47c0fef": {
+    "output": [
+      {
+        "id": "marketing-site:php:eol",
+        "explanation": "marketing-site 的 PHP 8.1.27 依 eol.json 記載支援已於 2025-12-31 結束，以今日 2026-11-25 計已停止支援。與 phpAfterShell 的關聯與利用條件在本次任務資料中沒有提供（attack_chain 為空），需確認受影響版本範圍與前提條件，目前不能視為安全。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "runtime-analyst",
+      "task": "event:live-phpaftershell-2026-11:runtime-analyst",
+      "scope": "daily"
+    }
+  },
+  "75757dff84e1aa7f82f3f42a56cd9ba551eb8651f6f571bc7ccebe43a9d4e7cb": {
+    "output": [
+      {
+        "id": "marketing-site:php:vuln",
+        "explanation": "依 breakdown：基礎漏洞分 3 分（CVSS 9.8，php 8.1.27 共 27 個已知漏洞）；已遭實際利用 2 分（KEV 或官方確認）；對外暴露 2 分（可從 internet 連線）；同業事件命中 1 分（evt-php2shell-2026-10、live-phpaftershell-2026-11）；已停止支援 1 分（無可用修補）。圖譜查詢因資產不在本次範圍而失敗，無法提供品牌數、安裝數、資料欄位與業務影響等細節，須另行補充。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "marketing-site:php:vuln",
+      "scope": "daily"
+    }
+  },
+  "34e0f78d279195c0b6b8f2a088b7fa4a3f3e43cc12a8d301a1a2eab7a07737ea": {
+    "output": [
+      {
+        "id": "phpmyadmin:php:vuln",
+        "explanation": "依 breakdown 合計 4 分（漏洞 +3、已遭利用 +2、資料敏感 +1、同業事件 +1、補償措施 -3），分數以程式結果為準。圖譜查詢因資產不在本次範圍而失敗，品牌數、安裝數與資料欄位無法從圖譜確認，攻擊路徑亦無資料。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "dispatch:live-phpaftershell-2026-11:phpmyadmin:php:vuln",
+      "scope": "daily"
+    }
   }
 }

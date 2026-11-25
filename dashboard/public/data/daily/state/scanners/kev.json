@@ -1,9 +1,30 @@
 {
   "tool": "kev",
-  "tool_version": "2026.11.23",
-  "database_revision": "2026-11-23T19:43:55.7979Z",
-  "count": 1792,
+  "tool_version": "2026.11.24",
+  "database_revision": "2026-11-24T17:47:46.199Z",
+  "count": 1795,
   "cves": {
+    "CVE-2026-132224": {
+      "added": "2026-11-24",
+      "vendor": "Optimizely",
+      "product": "Web Experimentation",
+      "name": "Optimizely Web Experimentation External Control of Critical State Data Vulnerability",
+      "ransomware": false
+    },
+    "CVE-2026-131914": {
+      "added": "2026-11-24",
+      "vendor": "Idunno",
+      "product": "AntiCsrf",
+      "name": "Idunno AntiCsrf Deserialization of Untrusted Data Vulnerability",
+      "ransomware": false
+    },
+    "CVE-2026-132165": {
+      "added": "2026-11-24",
+      "vendor": "Drupal",
+      "product": "Core",
+      "name": "Drupal Core Remote Code Execution Vulnerability",
+      "ransomware": false
+    },
     "CVE-2026-133968": {
       "added": "2026-11-23",
       "vendor": "Project MONAI",

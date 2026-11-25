@@ -224,7 +224,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "行銷官網受影響且利用條件成立，原廠已停止支援且無修補，程式判定為高風險（9 分）；另一台管理工具主機同樣受影響但僅限公司內部連入，降為中風險（4 分）。",
+  "summary": "程式比對出 2 項受影響：行銷官網版本受影響、對外且原廠已停止支援無修補，為高風險（9 分）；資料庫管理介面同樣受影響，但只允許公司連線進入，風險降為中（4 分）。",
   "blocks": {
     "1_summary": {
       "title": "PHP2Shell：PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619）",
@@ -276,7 +276,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "行銷官網受影響且利用條件成立，原廠已停止支援且無修補，程式判定為高風險（9 分）；另一台管理工具主機同樣受影響但僅限公司內部連入，降為中風險（4 分）。",
+      "summary": "程式比對出 2 項受影響：行銷官網版本受影響、對外且原廠已停止支援無修補，為高風險（9 分）；資料庫管理介面同樣受影響，但只允許公司連線進入，風險降為中（4 分）。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -314,7 +314,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-php2shell-2026-10、live-php-afternshell-cve-2026-126714"
+            "reason": "evt-php2shell-2026-10、live-phpaftershell-2026-11"
           },
           {
             "factor": "已停止支援",
@@ -324,7 +324,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-24T07:20:10Z"
+        "observed_at": "2026-11-25T05:51:33Z"
       },
       {
         "asset_id": "phpmyadmin",
@@ -354,7 +354,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-php2shell-2026-10、live-php-afternshell-cve-2026-126714"
+            "reason": "evt-php2shell-2026-10、live-phpaftershell-2026-11"
           },
           {
             "factor": "補償措施",
@@ -364,7 +364,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-24T07:20:10Z"
+        "observed_at": "2026-11-25T05:51:33Z"
       }
     ],
     "4_unaffected_and_check": {
@@ -448,9 +448,9 @@
   "orchestrator_results": [],
   "updates": [
     {
-      "id": "live-php-afternshell-cve-2026-126714",
-      "title": "PHP 重大漏洞 phpAfterShell（CVE-2026-126714），源自 PHP2Shell 修補不完整",
-      "date": "2026-11-22",
+      "id": "live-phpaftershell-2026-11",
+      "title": "PHP 重大漏洞 phpAfterShell，源自 PHP2Shell 修補不夠完整",
+      "date": "2026-11-23",
       "status": "open",
       "conclusion": "2 項受影響，最高風險為高。marketing-site：php 8.1.27（apache2handler），對外，session.upload_progress.enabled=On。",
       "confidence": "provisional"

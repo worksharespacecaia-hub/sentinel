@@ -1,0 +1,342 @@
+{
+  "event": {
+    "id": "live-n0n-jpm-visa-mastercard-third-party-2026-11",
+    "kind": "live",
+    "title": "勒索組織 n0n 公布摩根大通、Visa、Mastercard 經第三方服務商外洩的資料",
+    "date": "2026-11-25",
+    "industry": "支付",
+    "attack_chain": [
+      "n0n 將59家企業列為受害者名單並威脅48小時內未聯繫贖金事宜就公開資料",
+      "倒數結束後在暗網公布摩根大通、Visa、Mastercard 資料",
+      "三家公司證實事件源自第三方服務商"
+    ],
+    "attck": [
+      "T1657",
+      "T1199"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180784",
+        "title": "駭客公布竊取的摩根大通、Visa、Mastercard資料",
+        "quote": "Visa和Mastercard都證實是第三方服務商發生資安事件，且涉及部分非支付類客戶資料外洩，但兩家公司皆未說明駭客公開檔案的完整真實性，也未確認資料筆數。",
+        "published": "2026-11-25",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-25T05:51:33Z",
+        "content_hash": "sha256:e0761b9058f7e12c32f5069a383dedf7e054613a5f74b35c0576f6aeebabdb11",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "委外服務商須限縮可取得的客戶資料並定期稽核其資安",
+        "reason": "來源指出外洩源自提供行銷服務的第三方業者，客戶姓名與電子郵件外流；現有控制項沒有涵蓋委外廠商的資料最小化與稽核。"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-n0n-jpm-visa-mastercard-third-party-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：委外服務商須限縮可取得的客戶資料並定期稽核其資安"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "vendor-data-leak",
+          "source": "rule",
+          "inferred": true,
+          "target": "vendor",
+          "hypothesis": "委外服務商自己的系統被入侵，我們交給它的客戶資料一起外流",
+          "why": "委外商遭入侵、多家客戶一起受波及，是這類事件常見的影響方式",
+          "check": "盤點我們交給委外商的資料欄位與筆數，確認對方是否已通知、資料是否已最小化",
+          "how": "查合約的事件通報時限、傳給委外商的 API 欄位，以及對方的資料保存期限",
+          "plain": "委外廠商被入侵，連帶外流我們交給它的資料",
+          "basis": "事件標題提到「服務商」；ATT&CK T1199",
+          "systems": [
+            {
+              "asset_id": "mail-service",
+              "label": "寄信服務"
+            },
+            {
+              "asset_id": "saas-quicksite-builder",
+              "label": "未登記的架站服務"
+            }
+          ],
+          "controls": []
+        },
+        {
+          "id": "vendor-key-abuse",
+          "source": "rule",
+          "inferred": true,
+          "target": "vendor",
+          "hypothesis": "我們給委外商的 API 金鑰在對方外洩，被拿來冒用呼叫服務",
+          "why": "委外商被入侵時，存放在對方的整合金鑰常一起外流",
+          "check": "確認給委外商的金鑰權限範圍與最近輪替時間，檢查近期呼叫紀錄有無異常",
+          "how": "查金鑰清冊的輪替日期與權限範圍，以及委外服務後台與我們 API 閘道的呼叫紀錄",
+          "plain": "我們交給廠商的連線金鑰可能被冒用",
+          "basis": "事件標題提到「服務商」；ATT&CK T1199",
+          "systems": [
+            {
+              "asset_id": "mail-api-key",
+              "label": "寄信服務金鑰"
+            }
+          ],
+          "controls": [
+            {
+              "control_id": "C-THIRD-PARTY-KEY-ROTATION",
+              "title": "第三方服務金鑰 90 天內輪替且有 IP 白名單",
+              "status": "fail",
+              "status_label": "不符合"
+            }
+          ]
+        },
+        {
+          "id": "vendor-account",
+          "source": "rule",
+          "inferred": true,
+          "target": "vendor",
+          "hypothesis": "委外人員的帳號可以登入我們的後台或內部工具，被盜用後直接進入",
+          "why": "委外人員帳號常有權限過大、結案後沒有停用的情況",
+          "check": "列出委外人員可登入的後台與內部工具帳號，確認是否最小權限、啟用雙因素驗證、停用不需要的帳號",
+          "how": "查內部工具與管理介面的帳號清單、最後登入時間與登入來源",
+          "plain": "委外人員的登入帳號可能被盜用",
+          "basis": "事件標題提到「服務商」；ATT&CK T1199",
+          "systems": [
+            {
+              "asset_id": "internal-tool",
+              "label": "內部營運工具"
+            },
+            {
+              "asset_id": "nas-office-01",
+              "label": "辦公室 NAS"
+            },
+            {
+              "asset_id": "phpmyadmin",
+              "label": "資料庫網頁管理工具"
+            }
+          ],
+          "controls": [
+            {
+              "control_id": "C-INTERNAL-TOOL-EXPOSED",
+              "title": "內部工具不得對外開放",
+              "status": "fail",
+              "status_label": "不符合"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "程式無法自動判定是否影響我們，需要人工確認：可能需確認有哪些資料與連線金鑰交給第三方廠商，以及委外人員帳號是否可能被盜用。",
+  "blocks": {
+    "1_summary": {
+      "title": "勒索組織 n0n 公布摩根大通、Visa、Mastercard 經第三方服務商外洩的資料",
+      "date": "2026-11-25",
+      "industry": "支付",
+      "attack_chain": [
+        "n0n 將59家企業列為受害者名單並威脅48小時內未聯繫贖金事宜就公開資料",
+        "倒數結束後在暗網公布摩根大通、Visa、Mastercard 資料",
+        "三家公司證實事件源自第三方服務商"
+      ],
+      "attck": [
+        "T1657",
+        "T1199"
+      ],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180784",
+          "title": "駭客公布竊取的摩根大通、Visa、Mastercard資料",
+          "quote": "Visa和Mastercard都證實是第三方服務商發生資安事件，且涉及部分非支付類客戶資料外洩，但兩家公司皆未說明駭客公開檔案的完整真實性，也未確認資料筆數。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-25T05:51:33Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "程式無法自動判定是否影響我們，需要人工確認：可能需確認有哪些資料與連線金鑰交給第三方廠商，以及委外人員帳號是否可能被盜用。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：委外服務商須限縮可取得的客戶資料並定期稽核其資安"
+          ],
+          "observed_at": "2026-11-25T05:51:33Z",
+          "suggestions": [
+            {
+              "id": "vendor-data-leak",
+              "source": "rule",
+              "inferred": true,
+              "target": "vendor",
+              "hypothesis": "委外服務商自己的系統被入侵，我們交給它的客戶資料一起外流",
+              "why": "委外商遭入侵、多家客戶一起受波及，是這類事件常見的影響方式",
+              "check": "盤點我們交給委外商的資料欄位與筆數，確認對方是否已通知、資料是否已最小化",
+              "how": "查合約的事件通報時限、傳給委外商的 API 欄位，以及對方的資料保存期限",
+              "plain": "委外廠商被入侵，連帶外流我們交給它的資料",
+              "basis": "事件標題提到「服務商」；ATT&CK T1199",
+              "systems": [
+                {
+                  "asset_id": "mail-service",
+                  "label": "寄信服務"
+                },
+                {
+                  "asset_id": "saas-quicksite-builder",
+                  "label": "未登記的架站服務"
+                }
+              ],
+              "controls": []
+            },
+            {
+              "id": "vendor-key-abuse",
+              "source": "rule",
+              "inferred": true,
+              "target": "vendor",
+              "hypothesis": "我們給委外商的 API 金鑰在對方外洩，被拿來冒用呼叫服務",
+              "why": "委外商被入侵時，存放在對方的整合金鑰常一起外流",
+              "check": "確認給委外商的金鑰權限範圍與最近輪替時間，檢查近期呼叫紀錄有無異常",
+              "how": "查金鑰清冊的輪替日期與權限範圍，以及委外服務後台與我們 API 閘道的呼叫紀錄",
+              "plain": "我們交給廠商的連線金鑰可能被冒用",
+              "basis": "事件標題提到「服務商」；ATT&CK T1199",
+              "systems": [
+                {
+                  "asset_id": "mail-api-key",
+                  "label": "寄信服務金鑰"
+                }
+              ],
+              "controls": [
+                {
+                  "control_id": "C-THIRD-PARTY-KEY-ROTATION",
+                  "title": "第三方服務金鑰 90 天內輪替且有 IP 白名單",
+                  "status": "fail",
+                  "status_label": "不符合"
+                }
+              ]
+            },
+            {
+              "id": "vendor-account",
+              "source": "rule",
+              "inferred": true,
+              "target": "vendor",
+              "hypothesis": "委外人員的帳號可以登入我們的後台或內部工具，被盜用後直接進入",
+              "why": "委外人員帳號常有權限過大、結案後沒有停用的情況",
+              "check": "列出委外人員可登入的後台與內部工具帳號，確認是否最小權限、啟用雙因素驗證、停用不需要的帳號",
+              "how": "查內部工具與管理介面的帳號清單、最後登入時間與登入來源",
+              "plain": "委外人員的登入帳號可能被盜用",
+              "basis": "事件標題提到「服務商」；ATT&CK T1199",
+              "systems": [
+                {
+                  "asset_id": "internal-tool",
+                  "label": "內部營運工具"
+                },
+                {
+                  "asset_id": "nas-office-01",
+                  "label": "辦公室 NAS"
+                },
+                {
+                  "asset_id": "phpmyadmin",
+                  "label": "資料庫網頁管理工具"
+                }
+              ],
+              "controls": [
+                {
+                  "control_id": "C-INTERNAL-TOOL-EXPOSED",
+                  "title": "內部工具不得對外開放",
+                  "status": "fail",
+                  "status_label": "不符合"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    },
+    "8_extra_checks": [
+      {
+        "control_id": "C-THIRD-PARTY-KEY-ROTATION",
+        "title": "第三方服務金鑰 90 天內輪替且有 IP 白名單",
+        "status": "fail",
+        "assets": [
+          {
+            "asset_id": "mail-api-key",
+            "evidence": [
+              "secrets.json: mail-api-key：472 天未輪替、無 IP 白名單"
+            ]
+          }
+        ],
+        "check_reason": "第三方金鑰未依規定輪替或無白名單",
+        "suggested_reason": "事件源自第三方服務商，且推測我們交給廠商的連線金鑰可能被冒用，應確認輪替與白名單。",
+        "status_label": "不符合"
+      }
+    ]
+  },
+  "orchestrator_results": [
+    {
+      "stage": "review",
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "target_type": "event",
+      "target_id": "live-n0n-jpm-visa-mastercard-third-party-2026-11",
+      "text": "程式無法自動判定是否影響我們，需要人工確認：可能需確認有哪些資料與連線金鑰交給第三方廠商，以及委外人員帳號是否可能被盜用。",
+      "source": "live"
+    }
+  ]
+}

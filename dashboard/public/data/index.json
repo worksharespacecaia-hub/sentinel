@@ -95,8 +95,8 @@
     }
   },
   "latest_daily": {
-    "run_id": "45347134402",
-    "generated_at": "2026-11-24T07:20:10Z",
+    "run_id": "45556435569",
+    "generated_at": "2026-11-25T05:51:33Z",
     "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
     "completeness": "complete",
     "path": "daily",
@@ -104,14 +104,14 @@
     "execution_mode": "live"
   },
   "latest_complete_daily": {
-    "run_id": "45347134402",
-    "generated_at": "2026-11-24T07:20:10Z",
+    "run_id": "45556435569",
+    "generated_at": "2026-11-25T05:51:33Z",
     "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
     "completeness": "complete",
     "path": "daily",
     "light": "red",
     "execution_mode": "live"
   },
-  "updated_at": "2026-11-24T07:20:10Z",
+  "updated_at": "2026-11-25T05:51:33Z",
   "failures": {}
 }

@@ -117,75 +117,57 @@
     "demo": false
   },
   {
+    "id": "live-lifecom-admin-credential-abuse-2026-11",
+    "kind": "live",
+    "title": "電商資訊服務商立富康內部管理帳密遭盜用，訂單資料遭逐筆查詢",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
+    "demo": false
+  },
+  {
+    "id": "live-cheliwu-automated-attack-2026-11",
+    "kind": "live",
+    "title": "車麗屋購物網站遭自動化攻擊，部分會員個資疑似外洩",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
+    "demo": false
+  },
+  {
+    "id": "live-mcdonalds-japan-app-db-2026-11",
+    "kind": "live",
+    "title": "日本麥當勞 App 資料庫遭未授權存取，用戶消費紀錄恐外洩",
+    "affected_count": 0,
+    "max_level": null,
+    "status": "need_check",
+    "demo": false
+  },
+  {
     "id": "live-tower-records-online-breach-2026-11",
     "kind": "live",
-    "title": "日本 Tower Records 電商網站遭入侵，約 1,100 萬筆會員資料外洩",
+    "title": "日本 Tower Records 電商網站遭未授權存取，約 1,100 萬筆會員資料可能外洩",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
     "demo": false
   },
   {
-    "id": "live-lifecom-admin-credential-2026-11",
+    "id": "live-n0n-jpm-visa-mastercard-third-party-2026-11",
     "kind": "live",
-    "title": "電商訂單管理服務商立富康內部管理帳密遭盜用，訂單資料遭逐筆查詢",
+    "title": "勒索組織 n0n 公布摩根大通、Visa、Mastercard 經第三方服務商外洩的資料",
     "affected_count": 0,
     "max_level": null,
     "status": "need_check",
     "demo": false
   },
   {
-    "id": "live-bvshop-automated-access-2026-11",
+    "id": "live-phpaftershell-2026-11",
     "kind": "live",
-    "title": "電商開店平臺 BVShop 遭異常自動化存取，部分商家訂單資料外洩",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "need_check",
-    "demo": false
-  },
-  {
-    "id": "live-shopline-shipping-data-2026-11",
-    "kind": "live",
-    "title": "Shopline 部分商店出貨資訊疑遭未授權存取，Funte、Simon 訂單資料受影響",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "need_check",
-    "demo": false
-  },
-  {
-    "id": "live-samsung-securities-voc-2026-11",
-    "kind": "live",
-    "title": "韓國三星證券客戶申訴系統遭駭，逾 8,200 名客戶個資外洩",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "need_check",
-    "demo": false
-  },
-  {
-    "id": "live-apache-httpd-http2-cve-2026-119618",
-    "kind": "live",
-    "title": "Apache HTTP Server mod_http2 重大漏洞 CVE-2026-119618 已遭積極利用",
-    "affected_count": 1,
-    "max_level": "high",
-    "status": "open",
-    "demo": false
-  },
-  {
-    "id": "live-php-afternshell-cve-2026-126714",
-    "kind": "live",
-    "title": "PHP 重大漏洞 phpAfterShell（CVE-2026-126714），源自 PHP2Shell 修補不完整",
+    "title": "PHP 重大漏洞 phpAfterShell，源自 PHP2Shell 修補不夠完整",
     "affected_count": 2,
     "max_level": "high",
     "status": "open",
-    "demo": false
-  },
-  {
-    "id": "live-ghostscript-upload2shell-cve-2026-125396",
-    "kind": "live",
-    "title": "Ghostscript 漏洞 Upload2Shell（CVE-2026-125396）影響 WordPress、Roundcube 等應用",
-    "affected_count": 0,
-    "max_level": null,
-    "status": "not_affected",
     "demo": false
   }
 ]
