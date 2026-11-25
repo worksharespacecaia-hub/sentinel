@@ -34,7 +34,7 @@
       ]
     }
   ],
-  "dispatched": false,
+  "dispatched": true,
   "items": [
     {
       "advisory_id": "adv-opsbuilder-2026-001",
@@ -330,7 +330,7 @@
     {
       "advisory_id": "kev-cve-2026-109618",
       "revision": "2026-11-24T14:27:42.290",
-      "status": "queued",
+      "status": "pending",
       "verdict": "affected",
       "asset_ids": [
         "marketing-site",
@@ -340,12 +340,13 @@
       "reason": "命中 marketing-site, phpmyadmin",
       "matched_component": [
         "php"
-      ]
+      ],
+      "error": null
     },
     {
       "advisory_id": "kev-cve-2026-109619",
       "revision": "2026-11-24T14:27:34.097",
-      "status": "queued",
+      "status": "pending",
       "verdict": "affected",
       "asset_ids": [
         "marketing-site",
@@ -355,12 +356,13 @@
       "reason": "命中 marketing-site, phpmyadmin",
       "matched_component": [
         "php"
-      ]
+      ],
+      "error": null
     },
     {
       "advisory_id": "kev-cve-2026-111497",
       "revision": "2026-11-24T15:17:09.400",
-      "status": "queued",
+      "status": "pending",
       "verdict": "affected",
       "asset_ids": [
         "internal-tool",
@@ -371,7 +373,8 @@
       "reason": "命中 internal-tool, member-api, storefront",
       "matched_component": [
         "node"
-      ]
+      ],
+      "error": null
     }
   ],
   "graph_fresh": true,
