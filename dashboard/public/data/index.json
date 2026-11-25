@@ -11,11 +11,11 @@
       "execution_mode": "replay"
     },
     "kev-cve-2026-109618": {
-      "run_id": "44740126535",
-      "generated_at": "2026-11-20T12:57:57Z",
+      "run_id": "45635193895",
+      "generated_at": "2026-11-25T14:32:58Z",
       "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
       "completeness": "complete",
-      "path": "advisories/kev-cve-2026-109618/44740126535",
+      "path": "advisories/kev-cve-2026-109618/45635193895",
       "light": "red",
       "execution_mode": "live"
     },
@@ -112,6 +112,6 @@
     "light": "red",
     "execution_mode": "live"
   },
-  "updated_at": "2026-11-25T05:51:33Z",
+  "updated_at": "2026-11-25T14:32:58Z",
   "failures": {}
 }
