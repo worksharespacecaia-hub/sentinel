@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-24T21:13:04Z",
+  "checked_at": "2026-11-25T04:14:56Z",
   "advisories_checked": 7,
   "hits": [],
   "dispatched": false,
@@ -726,12 +726,12 @@
   ],
   "kev_checked": {
     "CVE-2024-10441": {
-      "checked_at": "2026-11-24T00:53:07Z",
+      "checked_at": "2026-11-25T04:14:56Z",
       "mapped": true,
       "revision": "2026-11-21T05:18:09.090"
     },
     "CVE-2024-27834": {
-      "checked_at": "2026-11-24T00:53:07Z",
+      "checked_at": "2026-11-25T04:14:56Z",
       "mapped": false,
       "revision": null
     },
@@ -741,7 +741,7 @@
       "revision": null
     },
     "CVE-2026-102895": {
-      "checked_at": "2026-11-24T00:53:07Z",
+      "checked_at": "2026-11-25T04:14:56Z",
       "mapped": false,
       "revision": null
     },
@@ -781,7 +781,7 @@
       "revision": "2026-11-18T19:17:27.513"
     },
     "CVE-2026-111560": {
-      "checked_at": "2026-11-24T00:53:07Z",
+      "checked_at": "2026-11-25T04:14:56Z",
       "mapped": false,
       "revision": null
     },
@@ -796,37 +796,37 @@
       "revision": null
     },
     "CVE-2026-114713": {
-      "checked_at": "2026-11-24T00:53:07Z",
+      "checked_at": "2026-11-25T04:14:56Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-115731": {
-      "checked_at": "2026-11-24T00:53:07Z",
+      "checked_at": "2026-11-25T04:14:56Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-116606": {
-      "checked_at": "2026-11-24T00:53:07Z",
+      "checked_at": "2026-11-25T04:14:56Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-116779": {
-      "checked_at": "2026-11-24T00:53:07Z",
+      "checked_at": "2026-11-25T04:14:56Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-118527": {
-      "checked_at": "2026-11-24T00:53:07Z",
+      "checked_at": "2026-11-25T04:14:56Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-119977": {
-      "checked_at": "2026-11-24T00:53:07Z",
+      "checked_at": "2026-11-25T04:14:56Z",
       "mapped": true,
       "revision": "2026-11-04T12:52:38.683"
     },
     "CVE-2026-123039": {
-      "checked_at": "2026-11-24T00:53:07Z",
+      "checked_at": "2026-11-25T04:14:56Z",
       "mapped": false,
       "revision": null
     },
@@ -836,7 +836,7 @@
       "revision": null
     },
     "CVE-2026-123218": {
-      "checked_at": "2026-11-24T00:53:07Z",
+      "checked_at": "2026-11-25T04:14:56Z",
       "mapped": false,
       "revision": null
     },
@@ -846,12 +846,12 @@
       "revision": null
     },
     "CVE-2026-124194": {
-      "checked_at": "2026-11-24T00:53:07Z",
+      "checked_at": "2026-11-25T04:14:56Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-125350": {
-      "checked_at": "2026-11-24T00:53:07Z",
+      "checked_at": "2026-11-25T04:14:56Z",
       "mapped": false,
       "revision": null
     },
@@ -876,17 +876,17 @@
       "revision": null
     },
     "CVE-2026-133968": {
-      "checked_at": "2026-11-24T00:53:07Z",
+      "checked_at": "2026-11-25T04:14:56Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-134624": {
-      "checked_at": "2026-11-24T00:53:07Z",
+      "checked_at": "2026-11-25T04:14:56Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-19868": {
-      "checked_at": "2026-11-24T00:53:07Z",
+      "checked_at": "2026-11-25T04:14:56Z",
       "mapped": false,
       "revision": null
     },
@@ -896,7 +896,7 @@
       "revision": null
     },
     "CVE-2026-40217": {
-      "checked_at": "2026-11-24T00:53:07Z",
+      "checked_at": "2026-11-25T04:14:56Z",
       "mapped": false,
       "revision": null
     },
@@ -926,12 +926,12 @@
       "revision": null
     },
     "CVE-2026-90436": {
-      "checked_at": "2026-11-24T00:53:07Z",
+      "checked_at": "2026-11-25T04:14:56Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-90817": {
-      "checked_at": "2026-11-24T00:53:07Z",
+      "checked_at": "2026-11-25T04:14:56Z",
       "mapped": false,
       "revision": null
     },
