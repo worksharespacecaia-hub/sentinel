@@ -16529,5 +16529,250 @@
       "task": "notice:kev-cve-2026-111497",
       "scope": "advisory"
     }
+  },
+  "55a7426bbdc4ee00f15098603110b7c8303ea691598906e4932cb55b5636f307": {
+    "output": [
+      {
+        "id": "gitlab:C-BACKUP-ISOLATION",
+        "explanation": "gitlab 備份已 98 天未做還原測試，超過 90 天門檻，無法確認備份在需要時可用。風險在於真正災難發生時還原可能失敗、復原時間拉長。建議立即安排還原演練並留存紀錄，之後設定定期測試排程（至少每 90 天一次）。",
+        "confidence": "high"
+      },
+      {
+        "id": "nas-office-01:C-BACKUP-ISOLATION",
+        "explanation": "nas-office-01 的備份與來源設備未隔離（USB 硬碟仍掛載於 nas-office-01），且從未做過還原測試。勒索軟體或誤刪可能同時波及來源與備份，造成資料不可復原。建議將備份媒體離線或移至獨立設備並保留異地副本，同時完成首次還原測試並記錄結果。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "backup-analyst",
+      "task": "backup-analyst#0",
+      "scope": "daily"
+    }
+  },
+  "18b69f85b71982c678608db2c5247f283b8e496f4a24fe763a3e94d1fd255480": {
+    "output": [
+      {
+        "id": "gitlab:C-SECRET-IN-GIT",
+        "explanation": "類型為資料庫連線相關憑證，位於 config/db.yml:4，掃描規則判定為正式環境金鑰且存在於 Git 中，風險高。建議立即輪替該憑證、撤銷舊值，並清除 Git 歷史，同時取得輪替與撤銷證據，單純刪除檔案不算修復。",
+        "confidence": "high"
+      },
+      {
+        "id": "brand-app:C-SECRET-IN-GIT",
+        "explanation": "位於 services/brand-app/src/config.ts:3，掃描規則判定為正式環境金鑰且存在於 Git 中，風險高。建議立即輪替並撤銷舊金鑰，改用機密管理服務注入設定，清除 Git 歷史，並檢視該金鑰近期的使用紀錄。",
+        "confidence": "high"
+      },
+      {
+        "id": "mail-api-key:C-THIRD-PARTY-KEY-ROTATION",
+        "explanation": "類型為第三方郵件服務 API 金鑰，已 473 天未輪替且未設定 IP 白名單，違反 90 天輪替與白名單規範。環境在輸入中未標示，判定為 unknown，需依清冊確認。建議優先輪替、撤銷舊金鑰、加上 IP 白名單，並檢查存取紀錄是否有異常呼叫。",
+        "confidence": "high"
+      },
+      {
+        "id": "order-db-test-cred:test-secret-in-git",
+        "explanation": "位於 config/db.yml:7，屬測試環境資料庫憑證且存在於 Git 中，風險低於正式環境但不可忽略。建議輪替該測試憑證並清除 Git 歷史，同時確認它是否與正式環境共用或相似，若有共用則需提升處置等級。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "secret-analyst",
+      "task": "secret-analyst#0",
+      "scope": "daily"
+    }
+  },
+  "bf69c86426599ef795ace39cfc21ea0ef215bbf48752b2d255a94e28fb11490e": {
+    "output": [
+      {
+        "id": "payment-service:openjdk:vuln",
+        "explanation": "openjdk 21.0.4 落在 CVE-2026-114938（Java4Shell）的受影響範圍 [21.0.0, 21.0.13.1) 內，事件描述此漏洞可能造成 Jira、Jenkins、Keycloak 等服務未認證遠端程式碼執行。依範圍資料，21 分支的修補版本為 21.0.13.1，但原始評估標示修補版本無法確定，需人工確認範圍資料與實際部署的 JDK 是否一致，並確認 payment-service 是否暴露於可被利用的路徑。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "event:live-java4shell-cve-2026-114938:dependency-analyst",
+      "scope": "daily"
+    }
+  },
+  "925540ebbf0fc273e9f91d64977791a18e35a6fcae582b73e4fb1bf10643852f": {
+    "output": [
+      {
+        "id": "api-gateway:nginx:vuln",
+        "explanation": "nginx 1.27.2 落在 live 範圍 [1.9.5, 1.30.7) 內，依程式比對為受影響，最高 CVSS 9.8 (CVE-2026-97205)，且事件已有公開 PoC。可確定的最低修補版本為 1.30.7（1.31.x 分支為 1.31.9），但 31 個漏洞中部分沒有修補版本或範圍不明，整體修補版本無法完全確定，需人工逐一核對官方公告並確認 1.27.x 是否有後移修補。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "task": "event:live-nginx2root-2026-11:dependency-analyst",
+      "scope": "daily"
+    }
+  },
+  "1e8585ef1e572522c2a5b17cb115ce05812bc05deed5e415034d7f3a9007d62e": {
+    "output": [
+      {
+        "id": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+        "explanation": "基礎分 2 分來自控制項「內部工具不得對外開放」不符；對外暴露 2 分因圖譜顯示 internet 可經 443 連入，且資產為未登錄的 shadow_it（owner 為空，由 eng-11 手動 docker run 啟動）。同業事件命中 1 分對應 evt-91app-2026-10 與 live-91app-artex-traces-2026-11；位於完整攻擊鏈 3 分因 internet 經本工具儲存的 GitLab 唯讀 Token 與 gitlab 連到 order-db-prod 的憑證與資料庫，本工具是攻擊路徑的必要前提步驟。輸入資料未提供影響品牌數與安裝數，故無法說明此兩項。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "internal-tool:C-INTERNAL-TOOL-EXPOSED",
+      "scope": "daily"
+    }
+  },
+  "d646174e6b31439c990da6a1fa6219f108360f96e6dfe9cb6b2e9bbae6213697": {
+    "output": [
+      {
+        "id": "gitlab:C-SECRET-IN-GIT",
+        "explanation": "此項為基礎分 2 分（控制項不符）加上資料敏感 1 分、影響範圍 1 分、同業事件命中 1 分與攻擊鏈必要步驟 3 分，合計由程式算定。攻擊路徑為 internet → internal-tool → gitlab 讀取權杖 → gitlab → order-db-prod 憑證 → order-db-prod，gitlab 是取得生產訂單資料庫憑證的必經節點。圖譜資料顯示 gitlab 的 data_classes 僅有 source_code、platform_layer 為 false、未對外暴露，與拆解中的「平台層」與 order、pii 欄位描述不一致，需人工核對。品牌數與安裝數圖譜未提供，無法說明。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "gitlab:C-SECRET-IN-GIT",
+      "scope": "daily"
+    }
+  },
+  "79a47c6ad783d28a51d30d47938002ddf59461157d5e39e9cadf96a9c182c015": {
+    "output": [
+      {
+        "id": "brand-app:C-SECRET-IN-GIT",
+        "explanation": "基礎分 2 分來自控制項不符（Git 中存在正式環境金鑰）；對外暴露 2 分因為此 App 已上架商店且可從網際網路下載；資料敏感 1 分因涉及個資（pii）；影響範圍 1 分因屬平台層、影響所有品牌。同業事件命中 1 分（evt-91app-2026-10、live-91app-artex-traces-2026-11）；位於完整攻擊鏈 3 分，因攻擊路徑 internet → brand-app → app-api-key → api-gateway → member-db-prod 中此金鑰外洩是必要前提。圖譜未提供確切的受影響品牌數與安裝數，此處不估計。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "brand-app:C-SECRET-IN-GIT",
+      "scope": "daily"
+    }
+  },
+  "010c899ab31855aaa8a497bc2d7576690772e60c57a3e92727b1aee4329e6dbc": {
+    "output": [
+      {
+        "id": "internal-tool:opsbuilder:vuln",
+        "explanation": "程式總分由五項拆解組成：漏洞基礎分 3 分（CVSS 9.8）、已遭實際利用 2 分（reason 未註明 KEV 或官方確認來源）、對外暴露 2 分（圖譜顯示 internet 可經 443 連入）、同業事件命中 1 分（evt-91app-2026-10、live-91app-artex-traces-2026-11）、位於完整攻擊鏈 3 分（為 internet 到 order-db-prod 路徑的必要一步）。圖譜上游資產 internal-tool 為未登記的 shadow IT（手動 docker run），持有 GitLab 讀取 Token，並可連到 order-db-prod 的 5432 埠，因此業務上可能導致生產訂單資料庫遭接管。受影響品牌數與安裝數任務資料未提供，無法說明；任務給的 ID 不在本次資產範圍，本說明以上游資產 internal-tool 的圖譜資料補充。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "internal-tool:opsbuilder:vuln",
+      "scope": "daily"
+    }
+  },
+  "1100b4eaf4da64adc3aa4380c19d1fde03df02c63bed81494206e0f599a0da6d": {
+    "output": [
+      {
+        "id": "marketing-site:php:vuln",
+        "explanation": "分數拆解：基礎漏洞 3 分（php 8.1.27 有 27 個 NVD 已知漏洞，最高 CVSS 9.8）；已遭實際利用 2 分（KEV 或官方確認）；對外暴露 2 分（資產對 internet 開放 443 埠）；同業事件命中 1 分（evt-php2shell-2026-10 等三則事件）；已停止支援 1 分（無可用修補）。圖譜顯示此為行銷外包以 FTP 上傳、未登錄的 shadow IT 服務，無 owner、無資料分類、非 crown jewel；未提供命中品牌數與安裝數，無法說明其業務範圍。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "marketing-site:php:vuln",
+      "scope": "daily"
+    }
+  },
+  "a3bb47a80234a080acba580bb74534ad4e4f5d7e2c25bf41d7bec147f2d1831b": {
+    "output": [
+      {
+        "id": "internal-tool:node:vuln",
+        "explanation": "基礎分 3 分：node 22.11.0 在 NVD 有 17 個已知漏洞，最高 CVSS 9.8（CVE-2026-111497）。已遭實際利用 2 分：依據 KEV 或官方確認。對外暴露 2 分：資產可從 internet 連線。同業事件命中 1 分：命中 evt-91app-2026-10 與 live-91app-artex-traces-2026-11。資產上下文與攻擊路徑查詢失敗（該資產不在本次查詢範圍內），因此無法提供品牌數、安裝數與業務影響的補充數據。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "internal-tool:node:vuln",
+      "scope": "daily"
+    }
+  },
+  "0717bbc826b8ac3c208a6f78927c5db6ab158e6f18c0268d987a6d3e817d236e": {
+    "output": [
+      {
+        "id": "nas-office-01:synology-dsm:vuln",
+        "explanation": "基礎漏洞分 3 分依 NVD 最高 CVSS 9.8（CVE-2024-10441）計算，該組件共 5 個已知漏洞。已遭實際利用 2 分，依任務資料為 KEV 或官方確認。對外暴露 2 分：圖譜顯示此資產 exposed_to_internet=true，可從 internet 經 5001 埠連入，且為管理介面。同業事件命中 1 分，對應 3 筆事件（evt-91app-2026-10、evt-synology-2026-10、live-91app-artex-traces-2026-11）。目前圖譜查無攻擊路徑，資產非 crown jewel，無資料分類；此為 shadow_it 且未註冊的裝置。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "nas-office-01:synology-dsm:vuln",
+      "scope": "daily"
+    }
+  },
+  "55211638bb3cebdaa988ff1079d5bdf86f71f3934a2fbc5c2d60b6eb05845506": {
+    "output": [
+      {
+        "id": "nas-office-01:C-INTERNAL-TOOL-EXPOSED",
+        "explanation": "程式拆解為基礎分 2 分（控制項不符）、對外暴露 2 分、同業事件命中 1 分，合計 5 分，分數與等級以程式結果為準。圖譜顯示 nas-office-01 為 Synology DSM 7.2.1 管理介面，可從 internet 經 port 5001 連入，未註冊（shadow_it），無資料分類、非重要資產，且無 owner；拆解與圖譜未提供品牌數與安裝數，無法說明這兩項的影響。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "dispatch:live-91app-artex-traces-2026-11:nas-office-01:C-INTERNAL-TOOL-EXPOSED",
+      "scope": "daily"
+    }
+  },
+  "2e5527536741dca89352b5085eca3a68a2569c30122ca9d8f420f6d1f4358666": {
+    "output": [
+      {
+        "id": "order-db-prod:C-NET-SEGMENT",
+        "explanation": "總分 5 分由四項組成：控制項不符（基礎 2 分）、資料敏感 order 與 pii（1 分）、平台層資產影響所有品牌（1 分）、同業事件 evt-91app-2026-10 與 live-91app-artex-traces-2026-11 命中（1 分）。圖譜顯示 order-db-test 經 5432 連入此正式資料庫，與非正式環境不得連線正式庫的控制要求相符，但圖譜未提供品牌數與安裝數，因此無法確認實際影響範圍的數量。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "dispatch:live-91app-artex-traces-2026-11:order-db-prod:C-NET-SEGMENT",
+      "scope": "daily"
+    }
+  },
+  "6ac21c2f14aaf79d7afe96f7afabd2429442722503c605932c67b50f4f298227": {
+    "output": [
+      {
+        "id": "order-db-prod:postgresql:vuln",
+        "explanation": "基礎分 2 分來自 postgresql 15.6 的 44 個 NVD 已知漏洞，最高 CVSS 8.8（CVE-2024-10979）。資料敏感 1 分因資產儲存 order 與 pii 類資料。影響範圍 1 分因圖譜標示為平台層（platform_layer），會波及所有品牌。同業事件命中 1 分對應 evt-91app-2026-10 與 live-91app-artex-traces-2026-11。圖譜未提供品牌數與安裝數，本說明無法確認這兩項的具體數字；資產為 crown_jewel，未對網際網路開放。",
+        "confidence": "high"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "dispatch:live-91app-artex-traces-2026-11:order-db-prod:postgresql:vuln",
+      "scope": "daily"
+    }
+  },
+  "e59f159c1e72866de2fd96f320e1935e4ebfbb8ea6585c32a2f9d37669507bea": {
+    "output": [
+      {
+        "id": "payment-service:openjdk:vuln",
+        "explanation": "此項為程式算出的 5 分中的 4 分：基礎漏洞分 2 分（NVD 最高 CVSS 8.1，CVE-2026-114938，openjdk 21.0.4），加上資料敏感 1 分（payment 服務）、影響範圍 1 分（平台層，影響所有品牌），以及同業事件命中 1 分（live-java4shell-cve-2026-114938）。圖譜查詢顯示 openjdk 21.0.4 只對應 payment-service 一筆資產，但該資產不在本次查詢範圍內，因此無法補充品牌數、安裝數與資料欄位的細節，這些影響描述以分數拆解的文字為準。",
+        "confidence": "low"
+      }
+    ],
+    "meta": {
+      "agent": "a4",
+      "subagent": "impact-analyst",
+      "task": "dispatch:live-java4shell-cve-2026-114938:payment-service:openjdk:vuln",
+      "scope": "daily"
+    }
   }
 }

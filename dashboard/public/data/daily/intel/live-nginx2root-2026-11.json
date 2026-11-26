@@ -2,24 +2,17 @@
   "event": {
     "id": "live-nginx2root-2026-11",
     "kind": "live",
-    "title": "nginx2root：nginx 1.31.9 與 1.30.7 修補 10 個漏洞，5 個可遠端執行程式碼",
-    "date": "2026-11-18",
-    "industry": "SaaS",
-    "attack_chain": [
-      "未經認證的遠端攻擊者對啟用 HTTP/2 的 nginx 發送請求，利用流量控制整數溢位破壞 worker 記憶體",
-      "以 nginx worker 權限執行程式碼",
-      "串接另一個尚未修補的 Linux 核心 SCTP 漏洞取得主機 root"
-    ],
-    "attck": [
-      "T1190",
-      "T1068"
-    ],
+    "title": "F5 修補 NGINX2Root 重大漏洞，PoC 已公開",
+    "date": "2026-11-26",
+    "industry": "電商",
+    "attack_chain": [],
+    "attck": [],
     "cves": [
+      "CVE-2026-113425",
+      "CVE-2026-121810",
       "CVE-2026-123007",
       "CVE-2026-123633",
-      "CVE-2026-121810",
-      "CVE-2026-123634",
-      "CVE-2026-113425"
+      "CVE-2026-123634"
     ],
     "products": [
       {
@@ -44,36 +37,25 @@
     "confidence": "confirmed",
     "sources": [
       {
+        "url": "https://www.securityweek.com/f5-patches-critical-nginx2root-flaws-as-poc-exploits-go-public/",
+        "title": "F5 Patches Critical NGINX2Root Flaws as PoC Exploits Go Public - SecurityWeek",
+        "quote": "F5 Patches Critical NGINX2Root Flaws as PoC Exploits Go Public - SecurityWeek",
+        "published": "2026-11-26",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-26T05:43:21Z",
+        "content_hash": "sha256:fd0a107bd29cee546202ba3d59db8588f7df984ff3c2ca2667d07840b3c612c4",
+        "verification_basis": "live"
+      },
+      {
         "url": "https://thehackernews.com/2026/11/10-year-old-nginx-http2-flaw-lets.html",
         "title": "10-Year-Old NGINX HTTP/2 Flaw Lets Unauthenticated Attackers Execute Code on Servers",
-        "quote": "Fixed versions 1.31.9 and 1.30.7 came out today.",
-        "published": "2026-11-18",
+        "quote": "10-Year-Old NGINX HTTP/2 Flaw Lets Unauthenticated Attackers Execute Code on Servers",
+        "published": "2026-11-26",
         "fetch_status": "ok",
         "verified": true,
-        "verified_at": "2026-11-20T04:38:26Z",
-        "content_hash": "sha256:d4b6378e58c4e5aa9571103f8ec4ba95ca92a15a02390a0b671014c7b441f133",
-        "verification_basis": "live"
-      },
-      {
-        "url": "https://www.ithome.com.tw/news/180651",
-        "title": "Nginx緊急修補10個漏洞，其中5個恐遭遠端執行程式碼",
-        "quote": "Nginx緊急修補10個漏洞，其中5個恐遭遠端執行程式碼",
-        "published": "2026-11-18",
-        "fetch_status": "ok",
-        "verified": true,
-        "verified_at": "2026-11-20T04:38:26Z",
-        "content_hash": "sha256:b750fe2b045149257104a2aa0bfe7c738c77961c3646d0d886e7c2a9ef50c4a7",
-        "verification_basis": "live"
-      },
-      {
-        "url": "https://cyberq.tw/2026/11/19/nginx2root-cve-2026-123007-hands-on/",
-        "title": "實測 NGINX2Root：CVSS 9.2 分 nginx 漏洞影響上千萬台主機，從升級修補到重啟驗證",
-        "quote": "nginx 官方於 2026 年 11 月 18 日同時發布 mainline 1.31.9 與 stable 1.30.7 ，一次修補 10 個 CVE。",
-        "published": "2026-11-18",
-        "fetch_status": "ok",
-        "verified": true,
-        "verified_at": "2026-11-20T04:38:26Z",
-        "content_hash": "sha256:85a7e535a78a7c975600d5f8dbac16a1a6bf45f2af7f7c6a56d9dd1205f74372",
+        "verified_at": "2026-11-26T05:43:21Z",
+        "content_hash": "sha256:e26135649c78d1ed1b51636a868e1666876b9ab866e53879a1599a900d11243a",
         "verification_basis": "live"
       }
     ],
@@ -125,7 +107,7 @@
   ],
   "notice": {
     "needed": true,
-    "draft": "致各品牌商：我們發現與「nginx2root：nginx 1.31.9 與 1.30.7 修補 10 個漏洞，5 個可遠端執行程式碼」相關的風險，正在處理中。請提醒會員：官方不會以電話或簡訊要求轉帳或提供驗證碼，也請只從官方商店下載品牌 App。有疑問請聯繫平台客服。（自動範本，發送前請人工確認）"
+    "draft": "致各品牌商：我們發現與「F5 修補 NGINX2Root 重大漏洞，PoC 已公開」相關的風險，正在處理中。請提醒會員：官方不會以電話或簡訊要求轉帳或提供驗證碼，也請只從官方商店下載品牌 App。有疑問請聯繫平台客服。（自動範本，發送前請人工確認）"
   },
   "status": "open",
   "evaluated_asset_ids": [
@@ -133,54 +115,39 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "API 閘道使用 nginx 1.27.2，對外且落在受影響範圍，可能碰到會員個資，程式判定為高風險（8 分）。",
+  "summary": "API 閘道使用的 nginx 1.27.2 落在受影響範圍且對外，攻擊程式碼已公開，程式判定為高風險（8 分），建議升級至修補版本。",
   "blocks": {
     "1_summary": {
-      "title": "nginx2root：nginx 1.31.9 與 1.30.7 修補 10 個漏洞，5 個可遠端執行程式碼",
-      "date": "2026-11-18",
-      "industry": "SaaS",
-      "attack_chain": [
-        "未經認證的遠端攻擊者對啟用 HTTP/2 的 nginx 發送請求，利用流量控制整數溢位破壞 worker 記憶體",
-        "以 nginx worker 權限執行程式碼",
-        "串接另一個尚未修補的 Linux 核心 SCTP 漏洞取得主機 root"
-      ],
-      "attck": [
-        "T1190",
-        "T1068"
-      ],
+      "title": "F5 修補 NGINX2Root 重大漏洞，PoC 已公開",
+      "date": "2026-11-26",
+      "industry": "電商",
+      "attack_chain": [],
+      "attck": [],
       "cves": [
+        "CVE-2026-113425",
+        "CVE-2026-121810",
         "CVE-2026-123007",
         "CVE-2026-123633",
-        "CVE-2026-121810",
-        "CVE-2026-123634",
-        "CVE-2026-113425"
+        "CVE-2026-123634"
       ],
       "confidence": "已確認",
       "label": "真實",
       "sources": [
         {
+          "url": "https://www.securityweek.com/f5-patches-critical-nginx2root-flaws-as-poc-exploits-go-public/",
+          "title": "F5 Patches Critical NGINX2Root Flaws as PoC Exploits Go Public - SecurityWeek",
+          "quote": "F5 Patches Critical NGINX2Root Flaws as PoC Exploits Go Public - SecurityWeek",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-26T05:43:21Z"
+        },
+        {
           "url": "https://thehackernews.com/2026/11/10-year-old-nginx-http2-flaw-lets.html",
           "title": "10-Year-Old NGINX HTTP/2 Flaw Lets Unauthenticated Attackers Execute Code on Servers",
-          "quote": "Fixed versions 1.31.9 and 1.30.7 came out today.",
+          "quote": "10-Year-Old NGINX HTTP/2 Flaw Lets Unauthenticated Attackers Execute Code on Servers",
           "fetch_status": "ok",
           "verification_basis": "live",
-          "verified_at": "2026-11-20T04:38:26Z"
-        },
-        {
-          "url": "https://www.ithome.com.tw/news/180651",
-          "title": "Nginx緊急修補10個漏洞，其中5個恐遭遠端執行程式碼",
-          "quote": "Nginx緊急修補10個漏洞，其中5個恐遭遠端執行程式碼",
-          "fetch_status": "ok",
-          "verification_basis": "live",
-          "verified_at": "2026-11-20T04:38:26Z"
-        },
-        {
-          "url": "https://cyberq.tw/2026/11/19/nginx2root-cve-2026-123007-hands-on/",
-          "title": "實測 NGINX2Root：CVSS 9.2 分 nginx 漏洞影響上千萬台主機，從升級修補到重啟驗證",
-          "quote": "nginx 官方於 2026 年 11 月 18 日同時發布 mainline 1.31.9 與 stable 1.30.7 ，一次修補 10 個 CVE。",
-          "fetch_status": "ok",
-          "verification_basis": "live",
-          "verified_at": "2026-11-20T04:38:26Z"
+          "verified_at": "2026-11-26T05:43:21Z"
         }
       ],
       "verification": {
@@ -189,7 +156,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "API 閘道使用 nginx 1.27.2，對外且落在受影響範圍，可能碰到會員個資，程式判定為高風險（8 分）。",
+      "summary": "API 閘道使用的 nginx 1.27.2 落在受影響範圍且對外，攻擊程式碼已公開，程式判定為高風險（8 分），建議升級至修補版本。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -237,7 +204,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-20T04:38:26Z"
+        "observed_at": "2026-11-26T05:43:21Z"
       }
     ],
     "4_unaffected_and_check": {
@@ -274,12 +241,22 @@
     ],
     "6_notice": {
       "needed": true,
-      "draft": "致各品牌商：我們發現與「nginx2root：nginx 1.31.9 與 1.30.7 修補 10 個漏洞，5 個可遠端執行程式碼」相關的風險，正在處理中。請提醒會員：官方不會以電話或簡訊要求轉帳或提供驗證碼，也請只從官方商店下載品牌 App。有疑問請聯繫平台客服。（自動範本，發送前請人工確認）"
+      "draft": "致各品牌商：我們發現與「F5 修補 NGINX2Root 重大漏洞，PoC 已公開」相關的風險，正在處理中。請提醒會員：官方不會以電話或簡訊要求轉帳或提供驗證碼，也請只從官方商店下載品牌 App。有疑問請聯繫平台客服。（自動範本，發送前請人工確認）"
     },
     "7_status": {
       "status": "open",
       "label": "待處理"
     }
   },
-  "orchestrator_results": []
+  "orchestrator_results": [
+    {
+      "stage": "dispatch",
+      "agent": "a2",
+      "subagent": "dependency-analyst",
+      "target_type": "event",
+      "target_id": "live-nginx2root-2026-11",
+      "text": "nginx 1.27.2 落在 live 範圍 [1.9.5, 1.30.7) 內，依程式比對為受影響，最高 CVSS 9.8 (CVE-2026-97205)，且事件已有公開 PoC。可確定的最低修補版本為 1.30.7（1.31.x 分支為 1.31.9），但 31 個漏洞中部分沒有修補版本或範圍不明，整體修補版本無法完全確定，需人工逐一核對官方公告並確認 1.27.x 是否有後移修補。",
+      "source": "live"
+    }
+  ]
 }

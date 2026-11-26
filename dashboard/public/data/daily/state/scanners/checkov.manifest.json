@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "run_id": "45556435569",
+  "run_id": "45763402992",
   "job": "scanners-checkov",
   "scope": "scanner",
   "target_sha": "9a36cf036c436295c08a54d38789029e29d0f9ea",
-  "observed_at": "2026-11-25T05:52:34Z",
-  "valid_until": "2026-11-26T05:52:34Z",
+  "observed_at": "2026-11-26T05:44:22Z",
+  "valid_until": "2026-11-27T05:44:22Z",
   "tool_version": {
     "checkov": null
   },
@@ -13,7 +13,7 @@
     "checkov": null
   },
   "files": {
-    "checkov.json": "6693dc5c6621ab956c4b46dc11bfd820bb7c80e42ebc4b221ae12cd37d1d5f52"
+    "checkov.json": "cf97b2edc5dc8d470d10b8362053cb560c3df7e01bc0d5117f9e2561cd7ff0f1"
   },
   "status": "ok"
 }

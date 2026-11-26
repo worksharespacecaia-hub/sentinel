@@ -1,0 +1,196 @@
+{
+  "event": {
+    "id": "live-grape-king-geshun-unified-info-2026-11",
+    "kind": "live",
+    "title": "葡萄王子公司葡眾經委外廠商統一資訊通知，加密會員資料遭異常存取",
+    "date": "2026-11-24",
+    "industry": "零售",
+    "attack_chain": [
+      "委外服務廠商統一資訊發現經加密的會員資料遭未經授權的異常存取",
+      "統一資訊通知葡眾企業，葡眾啟動資安事件應變並透過電子平臺及簡訊提醒會員提高防詐警覺",
+      "葡眾要求統一資訊調查原因並確認影響範圍"
+    ],
+    "attck": [],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.ithome.com.tw/news/180795",
+        "title": "葡萄王集團不到一個月兩度受委外廠商資安事件波及，子公司葡眾接獲統一資訊通知，加密會員資料遭異常存取",
+        "quote": "葡萄王集團不到一個月兩度受委外廠商資安事件波及，子公司葡眾接獲統一資訊通知，加密會員資料遭異常存取",
+        "published": "2026-11-24",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-26T05:43:21Z",
+        "content_hash": "sha256:b9675eb62bcb3abf7f82ec2bd8f011ecb66e8a0070042316da17df5f1440d783",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "委外廠商發生資安事件時須在時限內通報，並定期盤點委外廠商存放的我方資料",
+        "reason": "來源指出會員資料存放在委外廠商，廠商發現異常存取後才轉知品牌方，現有控制項沒有涵蓋委外廠商的通報與資料盤點"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-grape-king-geshun-unified-info-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：委外廠商發生資安事件時須在時限內通報，並定期盤點委外廠商存放的我方資料"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "ai-1",
+          "source": "ai",
+          "inferred": true,
+          "target": null,
+          "hypothesis": "委外會員或電商服務廠商的資料庫被異常存取",
+          "why": null,
+          "check": "盤點我們是否與統一資訊、順立智慧（Cyberbiz）使用同一家委外服務；檢視寄信服務與會員資料的對外介接帳號與金鑰，查近期異常登入與大量查詢",
+          "how": null,
+          "plain": "委外會員或電商服務廠商的資料庫被異常存取",
+          "basis": "AI 依事件推測：來源指出是委外廠商統一資訊通知會員資料遭異常存取，入侵手法來源未交代",
+          "systems": [
+            {
+              "asset_id": "mail-service",
+              "label": "寄信服務"
+            },
+            {
+              "asset_id": "member-api",
+              "label": "會員服務 API"
+            },
+            {
+              "asset_id": "member-db-prod",
+              "label": "正式會員資料庫"
+            }
+          ],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "葡萄王於11月24日發布資安重訊，子公司葡眾企業接獲委外廠商統一資訊通知，經加密的會員資料遭未經授權的異常存取，影響範圍尚未確認。該集團11月4日才因委外廠商順立智慧（Cyberbiz）資料庫遭異常存取，導致旗下線上商城訂單及個資疑似外洩。",
+  "blocks": {
+    "1_summary": {
+      "title": "葡萄王子公司葡眾經委外廠商統一資訊通知，加密會員資料遭異常存取",
+      "date": "2026-11-24",
+      "industry": "零售",
+      "attack_chain": [
+        "委外服務廠商統一資訊發現經加密的會員資料遭未經授權的異常存取",
+        "統一資訊通知葡眾企業，葡眾啟動資安事件應變並透過電子平臺及簡訊提醒會員提高防詐警覺",
+        "葡眾要求統一資訊調查原因並確認影響範圍"
+      ],
+      "attck": [],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180795",
+          "title": "葡萄王集團不到一個月兩度受委外廠商資安事件波及，子公司葡眾接獲統一資訊通知，加密會員資料遭異常存取",
+          "quote": "葡萄王集團不到一個月兩度受委外廠商資安事件波及，子公司葡眾接獲統一資訊通知，加密會員資料遭異常存取",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-26T05:43:21Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "葡萄王於11月24日發布資安重訊，子公司葡眾企業接獲委外廠商統一資訊通知，經加密的會員資料遭未經授權的異常存取，影響範圍尚未確認。該集團11月4日才因委外廠商順立智慧（Cyberbiz）資料庫遭異常存取，導致旗下線上商城訂單及個資疑似外洩。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：委外廠商發生資安事件時須在時限內通報，並定期盤點委外廠商存放的我方資料"
+          ],
+          "observed_at": "2026-11-26T05:43:21Z",
+          "suggestions": [
+            {
+              "id": "ai-1",
+              "source": "ai",
+              "inferred": true,
+              "target": null,
+              "hypothesis": "委外會員或電商服務廠商的資料庫被異常存取",
+              "why": null,
+              "check": "盤點我們是否與統一資訊、順立智慧（Cyberbiz）使用同一家委外服務；檢視寄信服務與會員資料的對外介接帳號與金鑰，查近期異常登入與大量查詢",
+              "how": null,
+              "plain": "委外會員或電商服務廠商的資料庫被異常存取",
+              "basis": "AI 依事件推測：來源指出是委外廠商統一資訊通知會員資料遭異常存取，入侵手法來源未交代",
+              "systems": [
+                {
+                  "asset_id": "mail-service",
+                  "label": "寄信服務"
+                },
+                {
+                  "asset_id": "member-api",
+                  "label": "會員服務 API"
+                },
+                {
+                  "asset_id": "member-db-prod",
+                  "label": "正式會員資料庫"
+                }
+              ],
+              "controls": []
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  },
+  "orchestrator_results": []
+}

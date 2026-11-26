@@ -110,7 +110,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "內部營運工具使用的版本落在公告的受影響範圍，登入頁可從外部連到，程式判定為高風險（11 分），且位於完整攻擊鏈中，建議優先更新。這是示範公告（虛構產品）。",
+  "summary": "內部營運工具使用的 OpsBuilder 1.88 落在受影響範圍，登入頁可從外部連到，且位於攻擊鏈上，程式判定為高風險（11 分）。此公告為示範公告。",
   "blocks": {
     "1_summary": {
       "title": "示範公告：OpsBuilder 1.90 以前版本的帳號接管漏洞（虛構產品）",
@@ -144,7 +144,7 @@
         "issues": [],
         "max_level": null
       },
-      "summary": "內部營運工具使用的版本落在公告的受影響範圍，登入頁可從外部連到，程式判定為高風險（11 分），且位於完整攻擊鏈中，建議優先更新。這是示範公告（虛構產品）。",
+      "summary": "內部營運工具使用的 OpsBuilder 1.88 落在受影響範圍，登入頁可從外部連到，且位於攻擊鏈上，程式判定為高風險（11 分）。此公告為示範公告。",
       "summary_note": null,
       "fixture_note": "虛構產品 OpsBuilder 的示範公告；CVSS 與已利用旗標為明確標示的模擬 fixture 值（規格第 7.4 節）"
     },
@@ -182,7 +182,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10"
+            "reason": "evt-91app-2026-10、live-91app-artex-traces-2026-11"
           },
           {
             "factor": "位於完整攻擊鏈",
@@ -192,7 +192,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-25T05:51:33Z"
+        "observed_at": "2026-11-26T05:43:21Z"
       }
     ],
     "4_unaffected_and_check": {

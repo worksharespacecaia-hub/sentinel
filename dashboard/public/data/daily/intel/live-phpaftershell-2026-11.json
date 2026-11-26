@@ -4,7 +4,7 @@
     "kind": "live",
     "title": "PHP 重大漏洞 phpAfterShell，源自 PHP2Shell 修補不夠完整",
     "date": "2026-11-23",
-    "industry": "SaaS",
+    "industry": "電商",
     "attack_chain": [],
     "attck": [],
     "cves": [
@@ -77,14 +77,14 @@
     "confidence": "provisional",
     "sources": [
       {
-        "url": "https://www.ithome.com.tw/news/180756",
-        "title": "【資安日報】11月24日，CrowdStrike以439億美元併購Zscaler，創下資安界交易紀錄",
-        "quote": "【資安日報】11月24日，CrowdStrike以439億美元併購Zscaler，創下資安界交易紀錄 | iThome 移至主內容 文/ 張明德 | 2026-11-24 發表 本日新聞焦點 ● CrowdStrike以439億美元併購Zscaler，創下資安界交易紀錄 ● Shopline部分商店出貨資訊疑遭未授權存取，Funte、Simon受影響 ● PHP2Shell修補不夠完整，研究人員揭露PHP重大漏洞phpAfterShell ● Ghostscript字型載入器漏洞Upload2Shell影響WordPress等平臺 ● Apple揭露macOS重大漏洞，可能導致系統當機或執行任意程式碼 資安新聞總覽 CrowdStrike以439億美元併購零信任資安業者Zscaler，創下",
-        "published": "2026-11-24",
-        "fetch_status": "quote_mismatch",
-        "verified": false,
-        "verified_at": null,
-        "content_hash": "sha256:db3f6a8f7434652a3929a2712e4f1cb2886d541324c7912bfb56a71294a9f3ad",
+        "url": "https://www.ithome.com.tw/news/180722",
+        "title": "研究人員揭露PHP重大漏洞phpAfterShell，問題源自PHP2Shell修補不夠完整",
+        "quote": "研究人員揭露PHP重大漏洞phpAfterShell，問題源自PHP2Shell修補不夠完整",
+        "published": "2026-11-23",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-26T05:43:21Z",
+        "content_hash": "sha256:5a61c91a8d6b70598c7542ad7e87c2dd311ca208dddc90038f0091abacd9c257",
         "verification_basis": "live"
       }
     ],
@@ -104,8 +104,7 @@
       "verdict": "affected",
       "risk_id": "marketing-site:php:vuln",
       "to_verify": [],
-      "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True；停止支援且無修補",
-      "level_cap": "medium"
+      "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True；停止支援且無修補"
     },
     {
       "event_id": "live-phpaftershell-2026-11",
@@ -114,8 +113,7 @@
       "our_state": "php 8.4.27（fpm-fcgi）",
       "verdict": "not_affected",
       "risk_id": null,
-      "reason": "8.4.27 不在受影響範圍（已是修補版本或不同分支）",
-      "level_cap": "medium"
+      "reason": "8.4.27 不在受影響範圍（已是修補版本或不同分支）"
     },
     {
       "event_id": "live-phpaftershell-2026-11",
@@ -125,8 +123,7 @@
       "verdict": "affected",
       "risk_id": "phpmyadmin:php:vuln",
       "to_verify": [],
-      "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True",
-      "level_cap": "medium"
+      "reason": "版本落在受影響範圍，利用條件成立：serves_web_requests=True"
     }
   ],
   "solutions": [
@@ -199,12 +196,12 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "這是前次修補不夠完整所衍生的漏洞；行銷官網受影響、對外且原廠已停止支援，為高風險（9 分），資料庫管理介面因只允許公司連線進入，為中風險（4 分）。",
+  "summary": "此 PHP 漏洞與我們的行銷官網相符（PHP 8.1.27，已停止支援、無修補），程式判定為高風險（9 分）；另一管理工具因只允許公司連線，為中風險（4 分）。",
   "blocks": {
     "1_summary": {
       "title": "PHP 重大漏洞 phpAfterShell，源自 PHP2Shell 修補不夠完整",
       "date": "2026-11-23",
-      "industry": "SaaS",
+      "industry": "電商",
       "attack_chain": [],
       "attck": [],
       "cves": [
@@ -215,23 +212,21 @@
       "label": "真實",
       "sources": [
         {
-          "url": "https://www.ithome.com.tw/news/180756",
-          "title": "【資安日報】11月24日，CrowdStrike以439億美元併購Zscaler，創下資安界交易紀錄",
-          "quote": "【資安日報】11月24日，CrowdStrike以439億美元併購Zscaler，創下資安界交易紀錄 | iThome 移至主內容 文/ 張明德 | 2026-11-24 發表 本日新聞焦點 ● CrowdStrike以439億美元併購Zscaler，創下資安界交易紀錄 ● Shopline部分商店出貨資訊疑遭未授權存取，Funte、Simon受影響 ● PHP2Shell修補不夠完整，研究人員揭露PHP重大漏洞phpAfterShell ● Ghostscript字型載入器漏洞Upload2Shell影響WordPress等平臺 ● Apple揭露macOS重大漏洞，可能導致系統當機或執行任意程式碼 資安新聞總覽 CrowdStrike以439億美元併購零信任資安業者Zscaler，創下",
-          "fetch_status": "quote_mismatch",
+          "url": "https://www.ithome.com.tw/news/180722",
+          "title": "研究人員揭露PHP重大漏洞phpAfterShell，問題源自PHP2Shell修補不夠完整",
+          "quote": "研究人員揭露PHP重大漏洞phpAfterShell，問題源自PHP2Shell修補不夠完整",
+          "fetch_status": "ok",
           "verification_basis": "live",
-          "verified_at": null
+          "verified_at": "2026-11-26T05:43:21Z"
         }
       ],
       "verification": {
-        "status": "quote_mismatch",
-        "issues": [
-          "https://www.ithome.com.tw/news/180756：抓取的原文中找不到引用"
-        ],
-        "max_level": "medium",
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
         "note": null
       },
-      "summary": "這是前次修補不夠完整所衍生的漏洞；行銷官網受影響、對外且原廠已停止支援，為高風險（9 分），資料庫管理介面因只允許公司連線進入，為中風險（4 分）。",
+      "summary": "此 PHP 漏洞與我們的行銷官網相符（PHP 8.1.27，已停止支援、無修補），程式判定為高風險（9 分）；另一管理工具因只允許公司連線，為中風險（4 分）。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -269,7 +264,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-php2shell-2026-10、live-phpaftershell-2026-11"
+            "reason": "evt-php2shell-2026-10、live-pan-os-fragnesia-php2shell-chain-2026-11、live-phpaftershell-2026-11"
           },
           {
             "factor": "已停止支援",
@@ -279,7 +274,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-25T05:51:33Z"
+        "observed_at": "2026-11-26T05:43:21Z"
       },
       {
         "asset_id": "phpmyadmin",
@@ -309,7 +304,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-php2shell-2026-10、live-phpaftershell-2026-11"
+            "reason": "evt-php2shell-2026-10、live-pan-os-fragnesia-php2shell-chain-2026-11、live-phpaftershell-2026-11"
           },
           {
             "factor": "補償措施",
@@ -319,7 +314,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-25T05:51:33Z"
+        "observed_at": "2026-11-26T05:43:21Z"
       }
     ],
     "4_unaffected_and_check": {
@@ -400,26 +395,7 @@
       "label": "待處理"
     }
   },
-  "orchestrator_results": [
-    {
-      "stage": "dispatch",
-      "agent": "a2",
-      "subagent": "dependency-analyst",
-      "target_type": "event",
-      "target_id": "live-phpaftershell-2026-11",
-      "text": "php 8.1.27：php 8.1.27 依 NVD（CPE 候選經本地版本重新比對）確認有 27 個已知漏洞，最高 CVSS 9.8（CVE-2024-11236），其中 CVE-2026-109618、CVE-2026-109619 已列入 CISA KEV 且遭實際利用；程式給出的修補版本為 8.2.35。另有 3 個候選漏洞需人工確認，尚未納入確定結論。；php 8.3.20：php 8.3.20 依 NVD（CPE 候選經本地版本重新比對）確認有 28 個已知漏洞，最高 CVSS 9.8（CVE-2025-14179），其中 CVE-2026-109618、CVE-2026-109619 已列入 CISA KEV 且遭實際利用；程式給出的修補版本為 8.3.36。另有 3 個候選漏洞需人工確認，尚未納入確定結論。",
-      "source": "live"
-    },
-    {
-      "stage": "dispatch",
-      "agent": "a2",
-      "subagent": "runtime-analyst",
-      "target_type": "event",
-      "target_id": "live-phpaftershell-2026-11",
-      "text": "marketing-site 的 PHP 8.1.27 依 eol.json 記載支援已於 2025-12-31 結束，以今日 2026-11-25 計已停止支援。與 phpAfterShell 的關聯與利用條件在本次任務資料中沒有提供（attack_chain 為空），需確認受影響版本範圍與前提條件，目前不能視為安全。",
-      "source": "live"
-    }
-  ],
+  "orchestrator_results": [],
   "update_of": {
     "id": "evt-php2shell-2026-10",
     "title": "PHP2Shell：PHP 核心兩個免驗證遠端程式碼執行漏洞（CVE-2026-109618、CVE-2026-109619）",

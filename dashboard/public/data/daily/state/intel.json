@@ -1197,7 +1197,7 @@
           "impact": "other"
         }
       ],
-      "revision": "2026-11-20T12:18:18.987",
+      "revision": "2026-11-24T14:27:42.290",
       "controls": [],
       "confidence": "confirmed",
       "sources": [
@@ -1208,7 +1208,7 @@
           "published": "2026-10-26",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-20T12:55:27Z",
+          "verified_at": "2026-11-25T14:31:16Z",
           "content_hash": null,
           "verification_basis": "official_api"
         },
@@ -1219,7 +1219,7 @@
           "published": "2026-10-21",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-20T12:55:27Z",
+          "verified_at": "2026-11-25T14:31:16Z",
           "content_hash": null,
           "verification_basis": "official_api"
         }
@@ -1232,7 +1232,7 @@
       "possible_entry_points": [],
       "brand": null,
       "generated_by": "kev-nvd",
-      "generated_at": "2026-11-20T12:55:27Z"
+      "generated_at": "2026-11-25T14:31:16Z"
     },
     {
       "id": "kev-cve-2026-109619",
@@ -1273,7 +1273,7 @@
           "impact": "other"
         }
       ],
-      "revision": "2026-11-20T12:18:19.730",
+      "revision": "2026-11-24T14:27:34.097",
       "controls": [],
       "confidence": "confirmed",
       "sources": [
@@ -1284,7 +1284,7 @@
           "published": "2026-10-26",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-20T12:55:27Z",
+          "verified_at": "2026-11-25T14:31:16Z",
           "content_hash": null,
           "verification_basis": "official_api"
         },
@@ -1295,7 +1295,7 @@
           "published": "2026-10-21",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-20T12:55:27Z",
+          "verified_at": "2026-11-25T14:31:16Z",
           "content_hash": null,
           "verification_basis": "official_api"
         }
@@ -1308,7 +1308,7 @@
       "possible_entry_points": [],
       "brand": null,
       "generated_by": "kev-nvd",
-      "generated_at": "2026-11-20T12:55:27Z"
+      "generated_at": "2026-11-25T14:31:16Z"
     },
     {
       "id": "kev-cve-2026-111497",
@@ -1344,7 +1344,7 @@
           "impact": "other"
         }
       ],
-      "revision": "2026-11-18T19:17:27.513",
+      "revision": "2026-11-24T15:17:09.400",
       "controls": [],
       "confidence": "confirmed",
       "sources": [
@@ -1355,7 +1355,7 @@
           "published": "2026-10-27",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-19T03:30:16Z",
+          "verified_at": "2026-11-25T14:31:16Z",
           "content_hash": null,
           "verification_basis": "official_api"
         },
@@ -1366,7 +1366,7 @@
           "published": "2026-10-22",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-19T03:30:16Z",
+          "verified_at": "2026-11-25T14:31:16Z",
           "content_hash": null,
           "verification_basis": "official_api"
         }
@@ -1379,7 +1379,7 @@
       "possible_entry_points": [],
       "brand": null,
       "generated_by": "kev-nvd",
-      "generated_at": "2026-11-19T03:30:16Z"
+      "generated_at": "2026-11-25T14:31:16Z"
     },
     {
       "id": "kev-cve-2026-119977",
@@ -1614,20 +1614,130 @@
       "generated_at": "2026-11-10T17:04:44Z"
     },
     {
-      "id": "live-lifecom-admin-credential-abuse-2026-11",
+      "id": "live-grape-king-geshun-unified-info-2026-11",
       "kind": "live",
       "is_update_of": null,
-      "title": "電商資訊服務商立富康內部管理帳密遭盜用，訂單資料遭逐筆查詢",
-      "date": "2026-11-23",
+      "title": "葡萄王子公司葡眾經委外廠商統一資訊通知，加密會員資料遭異常存取",
+      "date": "2026-11-24",
+      "industry": "零售",
+      "attack_chain": [
+        "委外服務廠商統一資訊發現經加密的會員資料遭未經授權的異常存取",
+        "統一資訊通知葡眾企業，葡眾啟動資安事件應變並透過電子平臺及簡訊提醒會員提高防詐警覺",
+        "葡眾要求統一資訊調查原因並確認影響範圍"
+      ],
+      "attck": [],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180795",
+          "title": "葡萄王集團不到一個月兩度受委外廠商資安事件波及，子公司葡眾接獲統一資訊通知，加密會員資料遭異常存取",
+          "quote": "葡萄王集團不到一個月兩度受委外廠商資安事件波及，子公司葡眾接獲統一資訊通知，加密會員資料遭異常存取",
+          "published": "2026-11-24",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-26T05:43:21Z",
+          "content_hash": "sha256:b9675eb62bcb3abf7f82ec2bd8f011ecb66e8a0070042316da17df5f1440d783",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [
+        {
+          "title": "委外廠商發生資安事件時須在時限內通報，並定期盤點委外廠商存放的我方資料",
+          "reason": "來源指出會員資料存放在委外廠商，廠商發現異常存取後才轉知品牌方，現有控制項沒有涵蓋委外廠商的通報與資料盤點"
+        }
+      ],
+      "demo": false,
+      "facts": [],
+      "summary": "葡萄王於11月24日發布資安重訊，子公司葡眾企業接獲委外廠商統一資訊通知，經加密的會員資料遭未經授權的異常存取，影響範圍尚未確認。該集團11月4日才因委外廠商順立智慧（Cyberbiz）資料庫遭異常存取，導致旗下線上商城訂單及個資疑似外洩。",
+      "fixture_note": null,
+      "possible_entry_points": [
+        {
+          "text": "委外會員或電商服務廠商的資料庫被異常存取",
+          "check": "盤點我們是否與統一資訊、順立智慧（Cyberbiz）使用同一家委外服務；檢視寄信服務與會員資料的對外介接帳號與金鑰，查近期異常登入與大量查詢",
+          "systems": [
+            "mail-service",
+            "member-api",
+            "member-db-prod"
+          ],
+          "basis": "來源指出是委外廠商統一資訊通知會員資料遭異常存取，入侵手法來源未交代"
+        }
+      ],
+      "brand": null
+    },
+    {
+      "id": "live-taiwei-outsourced-invoice-platform-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "泰味國際委外雲端發票平臺遭異常存取，290人受影響",
+      "date": "2026-11-25",
       "industry": "電商",
       "attack_chain": [
-        "取得一組內部系統管理帳號密碼（外洩途徑未明）",
-        "以自動化程式使用有效帳密登入系統，繞過既有網路防護層直接連線主機",
-        "逐筆查詢訂單資料（收件人姓名、電話、配送地址、電子郵件）"
+        "委外購物網站服務廠商在雲端發票平臺發現異常資料存取",
+        "廠商發現後阻擋異常存取行為",
+        "初步評估影響人數為290人"
+      ],
+      "attck": [],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180806",
+          "title": "泰味國際委外雲端發票平臺遭異常存取，290人受影響",
+          "quote": "此次事件初步評估影響人數為290人，瓦城初步評估對公司營運並無重大影響。",
+          "published": "2026-11-26",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-26T05:43:21Z",
+          "content_hash": "sha256:a9fe244f50fac52c6df00b5c4274d787f4fecb9a1ba9ceecd9e3ed91e6af83eb",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [
+        {
+          "title": "委外購物網站與發票等第三方平臺須有異常存取通報與損害求償的合約條款",
+          "reason": "來源指出事件發生在委外廠商的雲端發票平臺，品牌方事後才知情並以求償因應，現有控制項沒有涵蓋第三方平臺管理"
+        }
+      ],
+      "demo": false,
+      "facts": [],
+      "summary": "瓦城於11月25日晚間發布重大訊息，旗下子公司泰味國際使用的委外購物網站服務，其雲端發票平臺發現異常資料存取，廠商發現後已阻擋。初步評估影響290人，若有受害者求償，泰味國際將向委外廠商求償。",
+      "fixture_note": null,
+      "possible_entry_points": [
+        {
+          "text": "電商外包平臺的發票或訂單介接被異常存取",
+          "check": "檢查商店網站與外部發票、購物服務之間的 API 金鑰與介接帳號，查看存取紀錄中的異常 IP 與大量請求",
+          "systems": [
+            "storefront",
+            "api-gateway"
+          ],
+          "basis": "來源指出是委外購物網站服務的雲端發票平臺發現異常資料存取"
+        }
+      ],
+      "brand": null
+    },
+    {
+      "id": "live-fake-drama-app-trojan-banking-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "假追劇App藏木馬遙控用戶網銀，逾百帳戶遭盜轉1742萬",
+      "date": "2026-11-26",
+      "industry": "支付",
+      "attack_chain": [
+        "詐騙集團設置追劇App，實際內藏木馬程式",
+        "木馬遠端遙控被害人的手機",
+        "盜用網銀帳戶盜轉存款"
       ],
       "attck": [
-        "T1078",
-        "T1119"
+        "T1655",
+        "T1219",
+        "T1657"
       ],
       "cves": [],
       "products": [],
@@ -1636,233 +1746,368 @@
       "confidence": "provisional",
       "sources": [
         {
-          "url": "https://www.ithome.com.tw/news/180755",
-          "title": "電商資訊服務業者再傳資安事件，立富康內部管理帳密遭盜用",
-          "quote": "立富康表示，該公司於11月11日11時56分發現異常存取情形，攻擊者取得一組內部系統管理帳號密碼，透過自動化程式登入系統，逐筆查詢訂單資料。",
-          "published": "2026-11-23",
+          "url": "https://www.cna.com.tw/news/asoc/202611260111.aspx",
+          "title": "假追劇App藏木馬遙控用戶網銀 逾百帳戶受害遭盜轉1742萬",
+          "quote": "刑事局統計至11月21日受理類似案件共100餘起，總財損1742萬餘元，有22家金融機構的客戶受害，包含19家銀行及證券商、3家電子支付。",
+          "published": "2026-11-26",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-25T05:51:33Z",
-          "content_hash": "sha256:3be6603d2a33c597871ddd860923bd4e3fd7c861c383778cebe092c781a74401",
+          "verified_at": "2026-11-26T05:43:21Z",
+          "content_hash": "sha256:c01c9475d855ea13c06fcba89bb5c33e64ecdcb94516cc17f24799cece5f355d",
           "verification_basis": "live"
         }
       ],
       "proposed_controls": [
         {
-          "title": "後台管理帳號須強制多因素驗證，並對大量訂單查詢設告警與頻率限制",
-          "reason": "來源指出攻擊者以有效管理帳密、自動化程式逐筆查詢訂單；立富康事後改為強制 OTP、新增大量查詢告警與查詢頻率限制，現有控制項未涵蓋。"
+          "title": "品牌 App 與支付流程需有假冒 App 與遠端遙控木馬的偵測與客戶提醒",
+          "reason": "來源指出詐騙以假 App 夾帶木馬遙控手機盜轉款項，現有控制項沒有涵蓋假冒 App 與客戶端木馬風險"
         }
       ],
       "demo": false,
       "facts": [],
-      "summary": "提供電商訂單管理、倉儲及物流整合服務的立富康，訂單管理系統遭未經授權存取，攻擊者取得一組內部系統管理帳號密碼，以自動化程式逐筆查詢訂單資料。合作品牌 Relove 公告部分顧客訂單資料可能遭未授權讀取；帳密外洩途徑仍由第三方鑑識中。",
+      "summary": "刑事局表示，詐騙集團設置追劇App實則藏木馬程式，以遠端遙控被害人的手機盜轉存款。統計至11月21日受理100餘起案件，總財損1742萬餘元，22家金融機構的客戶受害。",
       "fixture_note": null,
       "possible_entry_points": [],
       "brand": null
     },
     {
-      "id": "live-cheliwu-automated-attack-2026-11",
+      "id": "live-91app-artex-traces-2026-11",
       "kind": "live",
-      "is_update_of": null,
-      "title": "車麗屋購物網站遭自動化攻擊，部分會員個資疑似外洩",
-      "date": "2026-11-23",
-      "industry": "零售",
+      "is_update_of": "evt-91app-2026-10",
+      "title": "91APP 遭駭事件調查發現 ARTEX AI 攻擊框架使用痕跡",
+      "date": "2026-11-26",
+      "industry": "電商",
       "attack_chain": [
-        "網站遭自動化攻擊入侵，第三方未經授權存取部分會員資料",
-        "利用取得的資料冒用公司名義寄送電子郵件及簡訊聯繫消費者"
+        "91APP Commerce Cloud 的一座訂單資料庫遭非法存取",
+        "調查過程發現 ARTEX 的使用痕跡"
       ],
       "attck": [],
       "cves": [],
       "products": [],
       "revision": "1",
-      "controls": [],
+      "controls": [
+        "C-INTERNAL-TOOL-EXPOSED",
+        "C-SECRET-IN-GIT",
+        "C-NET-SEGMENT"
+      ],
       "confidence": "provisional",
       "sources": [
         {
-          "url": "https://www.ithome.com.tw/news/180759",
-          "title": "車麗屋購物網站遭自動化攻擊，部分會員個資疑似外洩",
-          "quote": "車麗屋購物網站遭自動化攻擊，部分會員個資疑似外洩",
-          "published": "2026-11-23",
+          "url": "https://www.ithome.com.tw/news/180781",
+          "title": "英國NCSC示警AI輔助網路攻擊顯著增加，駭客數分鐘內就可能利用企業既有資安弱點",
+          "quote": "iThome先前報導 ，電商技術服務業者91APP於10月22日公布遭駭事件調查結果，確認旗下電商服務平臺Commerce Cloud的一座訂單資料庫遭到非法存取，調查過程中也發現ARTEX的使用痕跡。",
+          "published": "2026-11-26",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-25T05:51:33Z",
-          "content_hash": "sha256:66dc957533e8cb7fa9d469b4c9e51f22cd2abf2c1a8607b5785e04495f70191e",
+          "verified_at": "2026-11-26T05:43:21Z",
+          "content_hash": "sha256:25468f38138cc105419d1af8486421ab75fc752c5df46f27f5eb5b4e633ca2a1",
           "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [
+        },
         {
-          "title": "會員網站須具備自動化攻擊偵測、存取控制與流量限制",
-          "reason": "來源指出網站遭自動化攻擊並疑似存取會員資料，車麗屋事後加強網站防護與存取控制並封鎖異常來源；現有控制項沒有涵蓋。"
-        }
-      ],
-      "demo": false,
-      "facts": [],
-      "summary": "車麗屋於11月21日發現網站遭自動化攻擊入侵，疑似有第三方未經授權存取部分會員資料，並冒用公司名義寄送電子郵件及簡訊聯繫消費者。事件原因與影響範圍仍在調查，公司已報警、封鎖異常存取來源並通知會員。",
-      "fixture_note": null,
-      "possible_entry_points": [
-        {
-          "text": "會員登入或會員資料查詢介面可能遭自動化程式大量嘗試",
-          "check": "檢查會員登入、會員資料與訂單查詢 API 的頻率限制與機器人防護，並查近日存取紀錄中的異常 IP 與大量請求",
-          "systems": [
-            "storefront",
-            "member-api",
-            "api-gateway"
-          ],
-          "basis": "事件提到網站遭自動化攻擊後會員資料被未授權存取，但未交代入侵路徑"
-        }
-      ],
-      "brand": null
-    },
-    {
-      "id": "live-mcdonalds-japan-app-db-2026-11",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "日本麥當勞 App 資料庫遭未授權存取，用戶消費紀錄恐外洩",
-      "date": "2026-11-25",
-      "industry": "零售",
-      "attack_chain": [
-        "官方 App 相關資料庫遭未授權第三方存取",
-        "客戶 ID、產品購買紀錄、IP 位址及行動裝置位置資訊可能外洩"
-      ],
-      "attck": [],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://www.ithome.com.tw/news/180782",
-          "title": "日本麥當勞App資料庫被駭，用戶消費紀錄恐外洩",
-          "quote": "可能已外洩的資料包括系統上的客戶ID、產品購買紀錄、IP位址及App使用時的行動裝置位置資訊。",
+          "url": "https://therecord.media/microsoft-china-salt-typhoon-using-artex-ai-tool",
+          "title": "Microsoft: China’s Salt Typhoon hackers are using Artex",
+          "quote": "Microsoft: China’s Salt Typhoon hackers are using Artex",
           "published": "2026-11-25",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-25T05:51:33Z",
-          "content_hash": "sha256:fc3f1029bf07ab3933a9248acca8030838e5e0ae3f3d3fbb713cb0c291c74d09",
-          "verification_basis": "live"
-        }
-      ],
-      "proposed_controls": [
-        {
-          "title": "App 後端資料庫與雲端儲存區須限縮存取並監控異常讀取",
-          "reason": "來源指出 App 相關資料庫遭未授權存取、購買紀錄與位置資訊可能外洩，但未說明路徑；現有控制項未涵蓋 App 後端資料庫存取。"
-        }
-      ],
-      "demo": false,
-      "facts": [],
-      "summary": "日本麥當勞公告官方應用程式相關資料庫遭未授權第三方存取，部分顧客資料和購買紀錄可能外流。外洩時間、筆數與入侵路徑均未說明；公司表示外流資料不含姓名、電子郵件、電話號碼、地址及信用卡資料。",
-      "fixture_note": null,
-      "possible_entry_points": [
-        {
-          "text": "App 後端資料庫或雲端儲存區的存取權限可能過寬",
-          "check": "檢查品牌 App 的雲端儲存區與後端資料存取規則是否公開或過寬，並確認內嵌 API 金鑰的權限範圍與近期異常讀取紀錄",
-          "systems": [
-            "brand-app",
-            "firebase-brand-app-storage",
-            "app-api-key"
-          ],
-          "basis": "事件為 App 相關資料庫被未授權存取，外洩內容為購買紀錄與位置資訊，入侵路徑未說明"
-        }
-      ],
-      "brand": null
-    },
-    {
-      "id": "live-tower-records-online-breach-2026-11",
-      "kind": "live",
-      "is_update_of": null,
-      "title": "日本 Tower Records 電商網站遭未授權存取，約 1,100 萬筆會員資料可能外洩",
-      "date": "2026-11-23",
-      "industry": "電商",
-      "attack_chain": [
-        "電商網站於11月19日遭未授權存取",
-        "會員姓名、電子郵件、會員ID及雜湊密碼等資料可能外洩",
-        "公司關閉電商網站，暫停下單與出貨"
-      ],
-      "attck": [],
-      "cves": [],
-      "products": [],
-      "revision": "1",
-      "controls": [],
-      "confidence": "provisional",
-      "sources": [
-        {
-          "url": "https://www.ithome.com.tw/news/180756",
-          "title": "【資安日報】11月24日，CrowdStrike以439億美元併購Zscaler，創下資安界交易紀錄",
-          "quote": "受攻擊事件影響，淘兒唱片緊急關閉電商網站，導致網購下單及商品出貨暫停，11月23日起才逐步恢復出貨，線上市集則仍在進行安全檢查，尚未確定重新開放時間。",
-          "published": "2026-11-24",
-          "fetch_status": "ok",
-          "verified": true,
-          "verified_at": "2026-11-25T05:51:33Z",
-          "content_hash": "sha256:db3f6a8f7434652a3929a2712e4f1cb2886d541324c7912bfb56a71294a9f3ad",
+          "verified_at": "2026-11-26T05:43:21Z",
+          "content_hash": "sha256:a1294727ed88933acacf4d57c05a9f9ddee7d4baa1ffebbfaa7330ecca9c7a2b",
           "verification_basis": "live"
         }
       ],
       "proposed_controls": [],
       "demo": false,
       "facts": [],
-      "summary": "Tower Records Online 於11月19日遭未授權存取，約1,100萬筆會員資料可能外洩，信用卡資料未受影響。公司緊急關閉電商網站，網購下單及出貨暫停，11月23日起逐步恢復出貨。",
+      "summary": "iThome 報導指出，91APP 於10月22日公布調查結果，確認 Commerce Cloud 的一座訂單資料庫遭非法存取，調查過程中也發現 ARTEX 的使用痕跡。Microsoft 表示中國與北韓的駭客組織都在使用 ARTEX。",
       "fixture_note": null,
-      "possible_entry_points": [
-        {
-          "text": "電商會員資料庫的存取入口可能被未授權利用",
-          "check": "檢查會員資料庫與管理介面的存取來源限制、密碼雜湊強度，並查近期對會員資料的大量讀取紀錄",
-          "systems": [
-            "member-db-prod",
-            "storefront"
-          ],
-          "basis": "事件為電商網站遭未授權存取導致千萬筆會員資料外洩，來源未交代入侵手法"
-        }
-      ],
-      "brand": null
+      "possible_entry_points": [],
+      "brand": null,
+      "inherited_from": "evt-91app-2026-10"
     },
     {
-      "id": "live-n0n-jpm-visa-mastercard-third-party-2026-11",
+      "id": "live-1password-github-breach-2026-11",
       "kind": "live",
       "is_update_of": null,
-      "title": "勒索組織 n0n 公布摩根大通、Visa、Mastercard 經第三方服務商外洩的資料",
+      "title": "1Password 員工 GitHub 帳號遭盜，後端遭入侵、部分客戶資料與原始碼外洩",
       "date": "2026-11-25",
-      "industry": "支付",
+      "industry": "SaaS",
       "attack_chain": [
-        "n0n 將59家企業列為受害者名單並威脅48小時內未聯繫贖金事宜就公開資料",
-        "倒數結束後在暗網公布摩根大通、Visa、Mastercard 資料",
-        "三家公司證實事件源自第三方服務商"
+        "未知攻擊者取得一名員工的公司 GitHub 帳號",
+        "利用該帳號存取原始碼並推送惡意程式碼到後端服務",
+        "惡意程式碼下載客戶管理資料，包含姓名、電子郵件與信件連結中的 token",
+        "複製私有儲存庫原始碼並取得 CI/CD 系統存取權"
       ],
       "attck": [
-        "T1657",
-        "T1199"
+        "T1078",
+        "T1528",
+        "T1213.003"
       ],
       "cves": [],
       "products": [],
       "revision": "1",
       "controls": [],
-      "confidence": "provisional",
+      "confidence": "confirmed",
       "sources": [
         {
-          "url": "https://www.ithome.com.tw/news/180784",
-          "title": "駭客公布竊取的摩根大通、Visa、Mastercard資料",
-          "quote": "Visa和Mastercard都證實是第三方服務商發生資安事件，且涉及部分非支付類客戶資料外洩，但兩家公司皆未說明駭客公開檔案的完整真實性，也未確認資料筆數。",
-          "published": "2026-11-25",
+          "url": "https://thehackernews.com/2026/11/1password-hacked-customer-data-and.html",
+          "title": "1Password Hacked, Customer Data and Source Code Stolen in GitHub Account Breach",
+          "quote": "\"The attacker also copied source code from private repositories and gained access to our CI/CD system,\" 1Password said.",
+          "published": "2026-11-26",
           "fetch_status": "ok",
           "verified": true,
-          "verified_at": "2026-11-25T05:51:33Z",
-          "content_hash": "sha256:e0761b9058f7e12c32f5069a383dedf7e054613a5f74b35c0576f6aeebabdb11",
+          "verified_at": "2026-11-26T05:43:21Z",
+          "content_hash": "sha256:94139671b32e06dcace5412fd99fe1a4b75948978291330f9c3f0eb4602a4670",
+          "verification_basis": "live"
+        },
+        {
+          "url": "https://cyberq.tw/2026/11/26/1password-backend-security-incident-2026-11/",
+          "title": "1Password 後端遭入侵：員工 GitHub 帳號被盜，部分客戶姓名與 email 外洩，保險庫未受影響",
+          "quote": "1Password 後端遭入侵：員工 GitHub 帳號被盜，部分客戶姓名與 email 外洩，保險庫未受影響",
+          "published": "2026-11-26",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-26T05:43:21Z",
+          "content_hash": "sha256:ad34a83f6937f03e5164dcc95f8a3b44cd575087a97edafd54b04a37bc938b52",
           "verification_basis": "live"
         }
       ],
       "proposed_controls": [
         {
-          "title": "委外服務商須限縮可取得的客戶資料並定期稽核其資安",
-          "reason": "來源指出外洩源自提供行銷服務的第三方業者，客戶姓名與電子郵件外流；現有控制項沒有涵蓋委外廠商的資料最小化與稽核。"
+          "title": "員工的程式碼平臺帳號須強制多因素驗證，且推送到正式服務的程式碼需經審核",
+          "reason": "來源指出攻擊者靠員工 GitHub 帳號推送惡意程式碼到後端並取得 CI/CD 存取，現有控制項沒有涵蓋程式碼平臺帳號與推送審核"
         }
       ],
       "demo": false,
       "facts": [],
-      "summary": "勒索組織 n0n 在48小時倒數後公布摩根大通、Visa、Mastercard 的資料，Visa 資料為亞太區行銷活動紀錄。三家公司皆證實是第三方（行銷服務）服務商發生資安事件，涉及部分非支付類客戶資料，但未確認筆數。",
+      "summary": "1Password 表示攻擊者取得員工的公司 GitHub 帳號，存取原始碼並推送惡意程式碼到後端服務，下載部分客戶的姓名、電子郵件等管理資料，也複製私有儲存庫原始碼並取得 CI/CD 存取。官方稱保險庫內容與金鑰未受影響。",
       "fixture_note": null,
       "possible_entry_points": [],
       "brand": null
+    },
+    {
+      "id": "live-wp-connect-plugins-backdoor-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "WordPress 封鎖六個遭植入後門的 WP Connect 外掛",
+      "date": "2026-11-25",
+      "industry": "電商",
+      "attack_chain": [
+        "開發者帳號疑似遭入侵，後門程式碼被提交到各外掛的 WordPress.org 儲存庫",
+        "後門模組每次請求都執行，回傳網站資訊到寫死的 C2 伺服器",
+        "以 eval() 執行伺服器回傳的 PHP 程式碼，可執行 shell 命令、讀寫檔案、傾印使用者表與密碼雜湊",
+        "植入 web shell 並註冊每小時執行的 WP-Cron hook"
+      ],
+      "attck": [
+        "T1195.002",
+        "T1505.003",
+        "T1053"
+      ],
+      "cves": [
+        "CVE-2026-135202"
+      ],
+      "products": [
+        {
+          "name": "air wp sync – airtable to wordpress",
+          "ecosystem": "generic",
+          "affected": [
+            {
+              "introduced": "2.9.1",
+              "fixed": null
+            }
+          ],
+          "cvss": 9.8,
+          "impact": "remote_code_execution"
+        },
+        {
+          "name": "wp sync for notion – notion to wordpress",
+          "ecosystem": "generic",
+          "affected": [
+            {
+              "introduced": "1.7.4",
+              "fixed": null
+            }
+          ],
+          "cvss": 9.8,
+          "impact": "remote_code_execution"
+        },
+        {
+          "name": "add-on brevo for gravity forms",
+          "ecosystem": "generic",
+          "affected": [
+            {
+              "introduced": "2.6.3",
+              "fixed": null
+            }
+          ],
+          "cvss": 9.8,
+          "impact": "remote_code_execution"
+        },
+        {
+          "name": "add-on for contact form 7 to airtable",
+          "ecosystem": "generic",
+          "affected": [
+            {
+              "introduced": "2.5.4",
+              "fixed": null
+            }
+          ],
+          "cvss": 9.8,
+          "impact": "remote_code_execution"
+        },
+        {
+          "name": "add-on for contact form 7 to notion",
+          "ecosystem": "generic",
+          "affected": [
+            {
+              "introduced": "1.6.4",
+              "fixed": null
+            }
+          ],
+          "cvss": 9.8,
+          "impact": "remote_code_execution"
+        },
+        {
+          "name": "orders sync to airtable for woocommerce",
+          "ecosystem": "generic",
+          "affected": [
+            {
+              "introduced": "1.0.2",
+              "fixed": null
+            }
+          ],
+          "cvss": 9.8,
+          "impact": "remote_code_execution"
+        }
+      ],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://thehackernews.com/2026/11/wordpress-blocks-six-backdoored-wp.html",
+          "title": "WordPress Blocks Six Backdoored WP Connect Plugins Before Malicious Releases Go Live",
+          "quote": "The supply chain compromise is being tracked as CVE-2026-135202 (CVSS score: 9.8).",
+          "published": "2026-11-25",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-26T05:43:21Z",
+          "content_hash": "sha256:4dd36a003d1140bdc5a28d6327483e0d7ee0268d782f5b586f1e11d076ea22f5",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [],
+      "summary": "WP Connect 開發者帳號疑似遭入侵，六個外掛於11月22日被植入可執行任意程式碼的後門，含 Orders Sync to Airtable for WooCommerce。惡意版本因 WordPress 冷卻機制未實際釋出，網站不太可能受影響，但仍應檢查是否安裝。",
+      "fixture_note": null,
+      "possible_entry_points": [],
+      "brand": null
+    },
+    {
+      "id": "live-pan-os-fragnesia-php2shell-chain-2026-11",
+      "kind": "live",
+      "is_update_of": "evt-php2shell-2026-10",
+      "title": "Palo Alto Networks 修補遭利用的 Fragnesia，攻擊者串連 PHP2Shell",
+      "date": "2026-11-25",
+      "industry": "資安設備",
+      "attack_chain": [
+        "先利用 PHP2Shell（CVE-2026-109618、CVE-2026-109619）入侵曝露於網際網路的管理介面",
+        "再利用 Fragnesia（CVE-2026-46300）提升權限"
+      ],
+      "attck": [
+        "T1190",
+        "T1068"
+      ],
+      "cves": [
+        "CVE-2026-109618",
+        "CVE-2026-109619",
+        "CVE-2026-46300"
+      ],
+      "products": [
+        {
+          "name": "php",
+          "ecosystem": "php",
+          "affected": [
+            {
+              "introduced": "8.2.0",
+              "fixed": "8.2.35"
+            },
+            {
+              "introduced": "8.3.0",
+              "fixed": "8.3.36"
+            },
+            {
+              "introduced": "8.4.0",
+              "fixed": "8.4.27"
+            },
+            {
+              "introduced": "8.5.0",
+              "fixed": "8.5.12"
+            },
+            {
+              "introduced": "8.1.0",
+              "fixed": null
+            },
+            {
+              "introduced": "8.0.0",
+              "fixed": null
+            },
+            {
+              "introduced": "7.4.0",
+              "fixed": null
+            }
+          ],
+          "conditions": [
+            {
+              "key": "serves_web_requests",
+              "equals": true,
+              "source_ref": 0
+            }
+          ],
+          "unknown_below": "7.4.0",
+          "aggravating_conditions": [
+            {
+              "key": "session.upload_progress.enabled",
+              "equals": "On",
+              "source_ref": 0,
+              "applies_to": "CVE-2026-109619"
+            }
+          ],
+          "cvss": 9.2,
+          "known_exploited": true,
+          "impact": "remote_code_execution",
+          "confirmed": true,
+          "source_refs": [
+            0,
+            1,
+            2
+          ]
+        }
+      ],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180808",
+          "title": "Palo Alto Networks修補防火牆已遭利用的Linux核心漏洞Fragnesia",
+          "quote": "攻擊者串連Fragnesia與PHP2Shell攻擊Palo Alto Networks防火牆的情況，已有前例。",
+          "published": "2026-11-26",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-26T05:43:21Z",
+          "content_hash": "sha256:95e63cd592530419e0e5e20f74326cbc9ea3f9edd6ef5d9e7c26bb2ff69045ac",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [],
+      "summary": "Palo Alto Networks 發布 PAN-OS 更新，修補已被用於攻擊曝露於網際網路防火牆管理介面的 Linux 核心本機提權漏洞 Fragnesia（CVE-2026-46300）。攻擊者須先觸發 PHP2Shell 入侵管理介面，才能使用 Fragnesia 提權；已完成 PHP2Shell 修補的防火牆應不受影響。",
+      "fixture_note": null,
+      "possible_entry_points": [],
+      "brand": null,
+      "inherited_from": "evt-php2shell-2026-10"
     },
     {
       "id": "live-phpaftershell-2026-11",
@@ -1870,7 +2115,7 @@
       "is_update_of": "evt-php2shell-2026-10",
       "title": "PHP 重大漏洞 phpAfterShell，源自 PHP2Shell 修補不夠完整",
       "date": "2026-11-23",
-      "industry": "SaaS",
+      "industry": "電商",
       "attack_chain": [],
       "attck": [],
       "cves": [
@@ -1943,25 +2188,320 @@
       "confidence": "provisional",
       "sources": [
         {
-          "url": "https://www.ithome.com.tw/news/180756",
-          "title": "【資安日報】11月24日，CrowdStrike以439億美元併購Zscaler，創下資安界交易紀錄",
-          "quote": "【資安日報】11月24日，CrowdStrike以439億美元併購Zscaler，創下資安界交易紀錄 | iThome 移至主內容 文/ 張明德 | 2026-11-24 發表 本日新聞焦點 ● CrowdStrike以439億美元併購Zscaler，創下資安界交易紀錄 ● Shopline部分商店出貨資訊疑遭未授權存取，Funte、Simon受影響 ● PHP2Shell修補不夠完整，研究人員揭露PHP重大漏洞phpAfterShell ● Ghostscript字型載入器漏洞Upload2Shell影響WordPress等平臺 ● Apple揭露macOS重大漏洞，可能導致系統當機或執行任意程式碼 資安新聞總覽 CrowdStrike以439億美元併購零信任資安業者Zscaler，創下",
-          "published": "2026-11-24",
-          "fetch_status": "quote_mismatch",
-          "verified": false,
-          "verified_at": null,
-          "content_hash": "sha256:db3f6a8f7434652a3929a2712e4f1cb2886d541324c7912bfb56a71294a9f3ad",
+          "url": "https://www.ithome.com.tw/news/180722",
+          "title": "研究人員揭露PHP重大漏洞phpAfterShell，問題源自PHP2Shell修補不夠完整",
+          "quote": "研究人員揭露PHP重大漏洞phpAfterShell，問題源自PHP2Shell修補不夠完整",
+          "published": "2026-11-23",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-26T05:43:21Z",
+          "content_hash": "sha256:5a61c91a8d6b70598c7542ad7e87c2dd311ca208dddc90038f0091abacd9c257",
           "verification_basis": "live"
         }
       ],
       "proposed_controls": [],
       "demo": false,
       "facts": [],
-      "summary": "研究人員揭露 PHP 重大漏洞 phpAfterShell，問題源自 PHP2Shell 修補不夠完整。來源僅有標題層級資訊，未提供 CVE、受影響版本或修補版本。",
+      "summary": "iThome 報導研究人員揭露 PHP 重大漏洞 phpAfterShell，問題源自 PHP2Shell 修補不夠完整。目前取得的來源只有標題，未含受影響版本範圍。",
       "fixture_note": null,
       "possible_entry_points": [],
       "brand": null,
       "inherited_from": "evt-php2shell-2026-10"
+    },
+    {
+      "id": "live-infostealer-35b-credentials-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "兩個公開資料庫曝露逾35億筆帳密與文件，疑為資訊竊取程式蒐集",
+      "date": "2026-11-26",
+      "industry": "電商",
+      "attack_chain": [
+        "資訊竊取惡意程式從受感染的個人裝置擷取帳密、Cookie 與工作階段權杖",
+        "資料被彙整在未加密的公開資料庫中暴露"
+      ],
+      "attck": [
+        "T1555.003",
+        "T1539"
+      ],
+      "cves": [],
+      "products": [],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://infosecu.technews.tw/2026/11/26/google-amazon-and-netflix-logins-turn-up-in-a-staggering-password-leak/",
+          "title": "公開資料庫曝 35 億筆帳密與文件，Google、亞馬遜、Netflix 等主流服務受波及",
+          "quote": "調查顯示，這批資料並非來自各家企業伺服器遭駭，而是疑似透過資訊竊取惡意程式（infostealer），直接從受感染的個人裝置擷取而來。",
+          "published": "2026-11-26",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-26T05:43:21Z",
+          "content_hash": "sha256:da584324164fb49e98697e0d205fb5969488919f00ef29ae3fcc19974f023e13",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [
+        {
+          "title": "員工與會員帳號需有外洩帳密比對與工作階段權杖失效機制",
+          "reason": "來源指出資料含瀏覽器 Cookie 與工作階段權杖，來自個人裝置的竊取程式，現有控制項沒有涵蓋帳密外洩與權杖失效"
+        }
+      ],
+      "demo": false,
+      "facts": [],
+      "summary": "研究人員發現兩個彼此無關、未加密的公開資料庫，合計暴露逾35億筆登入資料與文件，涉及 Google、亞馬遜、Netflix、PayPal 等服務。資料疑似由資訊竊取惡意程式從受感染的個人裝置擷取，存取目前已被封鎖。",
+      "fixture_note": null,
+      "possible_entry_points": [],
+      "brand": null
+    },
+    {
+      "id": "live-react-rsc-rce-cve-2026-126187",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "React Server Components 修補未經身分驗證 RCE 漏洞 CVE-2026-126187",
+      "date": "2026-11-26",
+      "industry": "電商",
+      "attack_chain": [
+        "向支援 RSC 的框架傳送特製負載",
+        "在特定條件下觸發未經驗證的遠端程式碼執行"
+      ],
+      "attck": [
+        "T1190"
+      ],
+      "cves": [
+        "CVE-2026-126187"
+      ],
+      "products": [
+        {
+          "name": "react-server-dom-webpack",
+          "ecosystem": "npm",
+          "affected": [
+            {
+              "introduced": "19.0.0",
+              "fixed": "19.0.9"
+            },
+            {
+              "introduced": "19.1.0",
+              "fixed": "19.1.10"
+            },
+            {
+              "introduced": "19.2.0",
+              "fixed": "19.2.9"
+            },
+            {
+              "introduced": "19.3.0",
+              "fixed": "19.3.1"
+            }
+          ],
+          "cvss": 9.5,
+          "impact": "remote_code_execution"
+        },
+        {
+          "name": "react-server-dom-parcel",
+          "ecosystem": "npm",
+          "affected": [
+            {
+              "introduced": "19.0.0",
+              "fixed": "19.0.9"
+            },
+            {
+              "introduced": "19.1.0",
+              "fixed": "19.1.10"
+            },
+            {
+              "introduced": "19.2.0",
+              "fixed": "19.2.9"
+            },
+            {
+              "introduced": "19.3.0",
+              "fixed": "19.3.1"
+            }
+          ],
+          "cvss": 9.5,
+          "impact": "remote_code_execution"
+        },
+        {
+          "name": "react-server-dom-turbopack",
+          "ecosystem": "npm",
+          "affected": [
+            {
+              "introduced": "19.0.0",
+              "fixed": "19.0.9"
+            },
+            {
+              "introduced": "19.1.0",
+              "fixed": "19.1.10"
+            },
+            {
+              "introduced": "19.2.0",
+              "fixed": "19.2.9"
+            },
+            {
+              "introduced": "19.3.0",
+              "fixed": "19.3.1"
+            }
+          ],
+          "cvss": 9.5,
+          "impact": "remote_code_execution"
+        }
+      ],
+      "revision": "1",
+      "controls": [],
+      "confidence": "provisional",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/180810",
+          "title": "React Server Components修補未經身分驗證RCE漏洞",
+          "quote": "未使用伺服器端React，或不支援RSC的應用程式則不受影響。",
+          "published": "2026-11-26",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-26T05:43:21Z",
+          "content_hash": "sha256:053eac9724e8a659e0393d1b69bef2b4561b06c94acc898b060a0718711f887c",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [],
+      "summary": "React 維護團隊修補 RSC 重大漏洞 CVE-2026-126187（CVSS 4.0 評分 9.5），攻擊者可向支援 RSC 的框架傳送特製負載，在特定條件下觸發未經驗證的遠端程式碼執行。未使用伺服器端 React 或不支援 RSC 的應用程式不受影響。",
+      "fixture_note": null,
+      "possible_entry_points": [],
+      "brand": null
+    },
+    {
+      "id": "live-nginx2root-2026-11",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "F5 修補 NGINX2Root 重大漏洞，PoC 已公開",
+      "date": "2026-11-26",
+      "industry": "電商",
+      "attack_chain": [],
+      "attck": [],
+      "cves": [
+        "CVE-2026-113425",
+        "CVE-2026-121810",
+        "CVE-2026-123007",
+        "CVE-2026-123633",
+        "CVE-2026-123634"
+      ],
+      "products": [
+        {
+          "name": "nginx",
+          "ecosystem": "generic",
+          "affected": [
+            {
+              "introduced": "1.9.5",
+              "fixed": "1.30.7"
+            },
+            {
+              "introduced": "1.31.0",
+              "fixed": "1.31.9"
+            }
+          ],
+          "cvss": 9.2,
+          "impact": "remote_code_execution"
+        }
+      ],
+      "revision": "1",
+      "controls": [],
+      "confidence": "confirmed",
+      "sources": [
+        {
+          "url": "https://www.securityweek.com/f5-patches-critical-nginx2root-flaws-as-poc-exploits-go-public/",
+          "title": "F5 Patches Critical NGINX2Root Flaws as PoC Exploits Go Public - SecurityWeek",
+          "quote": "F5 Patches Critical NGINX2Root Flaws as PoC Exploits Go Public - SecurityWeek",
+          "published": "2026-11-26",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-26T05:43:21Z",
+          "content_hash": "sha256:fd0a107bd29cee546202ba3d59db8588f7df984ff3c2ca2667d07840b3c612c4",
+          "verification_basis": "live"
+        },
+        {
+          "url": "https://thehackernews.com/2026/11/10-year-old-nginx-http2-flaw-lets.html",
+          "title": "10-Year-Old NGINX HTTP/2 Flaw Lets Unauthenticated Attackers Execute Code on Servers",
+          "quote": "10-Year-Old NGINX HTTP/2 Flaw Lets Unauthenticated Attackers Execute Code on Servers",
+          "published": "2026-11-26",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-26T05:43:21Z",
+          "content_hash": "sha256:e26135649c78d1ed1b51636a868e1666876b9ab866e53879a1599a900d11243a",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [],
+      "summary": "F5 修補 NGINX2Root 系列重大漏洞，標題指出 PoC 已公開；另一篇報導指 NGINX HTTP/2 存在存在十年的漏洞，未認證攻擊者可在伺服器上執行程式碼。搜尋摘要列出受影響 1.9.5 至 1.31.8、修補版 1.30.7 與 1.31.9，尚無遭利用回報（以上版本與 CVE 取自搜尋摘要，待程式核對）。",
+      "fixture_note": null,
+      "possible_entry_points": [],
+      "brand": null
+    },
+    {
+      "id": "live-java4shell-cve-2026-114938",
+      "kind": "live",
+      "is_update_of": null,
+      "title": "Java4Shell（CVE-2026-114938）可造成 Jira、Jenkins、Keycloak 等未認證 RCE",
+      "date": "2026-11-26",
+      "industry": "電商",
+      "attack_chain": [],
+      "attck": [],
+      "cves": [
+        "CVE-2026-114938"
+      ],
+      "products": [
+        {
+          "name": "openjdk",
+          "ecosystem": "generic",
+          "affected": [
+            {
+              "introduced": "17.0.6",
+              "fixed": "17.0.21.1"
+            },
+            {
+              "introduced": "21.0.0",
+              "fixed": "21.0.13.1"
+            }
+          ],
+          "cvss": 9.2,
+          "impact": "remote_code_execution"
+        }
+      ],
+      "revision": "1",
+      "controls": [],
+      "confidence": "confirmed",
+      "sources": [
+        {
+          "url": "https://thehackernews.com/2026/11/java4shell-cve-2026-114938-enables-pre.html",
+          "title": "Java4Shell Flaw (CVE-2026-114938) Enables Pre-Auth RCE in Jira, Jenkins, Keycloak and More",
+          "quote": "Java4Shell Flaw (CVE-2026-114938) Enables Pre-Auth RCE in Jira, Jenkins, Keycloak and More",
+          "published": "2026-11-26",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-26T05:43:21Z",
+          "content_hash": "sha256:4628fc9d3fe32531f58ef100d06127047950d1da3c6bfd217150588fb9c43864",
+          "verification_basis": "live"
+        },
+        {
+          "url": "https://www.securityweek.com/java4shell-exploitation-attempts-begin-as-vendors-rush-out-advisories/",
+          "title": "Java4Shell Exploitation Attempts Begin as Vendors Rush Out Advisories",
+          "quote": "Java4Shell Exploitation Attempts Begin as Vendors Rush Out Advisories",
+          "published": "2026-11-26",
+          "fetch_status": "ok",
+          "verified": true,
+          "verified_at": "2026-11-26T05:43:21Z",
+          "content_hash": "sha256:99999fdc04cfb34225ee9454d0eebbbc1013b82003d840ed8118af1e88372ca3",
+          "verification_basis": "live"
+        }
+      ],
+      "proposed_controls": [],
+      "demo": false,
+      "facts": [],
+      "summary": "兩家媒體報導 Java4Shell 漏洞（CVE-2026-114938）可造成未認證遠端程式碼執行，且已出現利用嘗試。搜尋摘要稱僅影響 x86-64 且支援 AVX-512 VBMI 的 OpenJDK 17.0.6 之後版本，Oracle 修補版含 17.0.21.1、21.0.13.1（版本與條件取自搜尋摘要，待程式核對）。",
+      "fixture_note": null,
+      "possible_entry_points": [],
+      "brand": null
     }
   ],
   "verification": {
@@ -2042,42 +2582,76 @@
       "max_level": null,
       "note": "程式取自 CISA KEV 與 NVD API"
     },
-    "live-lifecom-admin-credential-abuse-2026-11": {
+    "live-grape-king-geshun-unified-info-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-cheliwu-automated-attack-2026-11": {
+    "live-taiwei-outsourced-invoice-platform-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-mcdonalds-japan-app-db-2026-11": {
+    "live-fake-drama-app-trojan-banking-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-tower-records-online-breach-2026-11": {
+    "live-91app-artex-traces-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
-    "live-n0n-jpm-visa-mastercard-third-party-2026-11": {
+    "live-1password-github-breach-2026-11": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "live-wp-connect-plugins-backdoor-2026-11": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "live-pan-os-fragnesia-php2shell-chain-2026-11": {
       "status": "ok",
       "issues": [],
       "max_level": null,
       "note": null
     },
     "live-phpaftershell-2026-11": {
-      "status": "quote_mismatch",
-      "issues": [
-        "https://www.ithome.com.tw/news/180756：抓取的原文中找不到引用"
-      ],
-      "max_level": "medium",
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "live-infostealer-35b-credentials-2026-11": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "live-react-rsc-rce-cve-2026-126187": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "live-nginx2root-2026-11": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
+      "note": null
+    },
+    "live-java4shell-cve-2026-114938": {
+      "status": "ok",
+      "issues": [],
+      "max_level": null,
       "note": null
     }
   }

@@ -1,0 +1,191 @@
+{
+  "event": {
+    "id": "live-wp-connect-plugins-backdoor-2026-11",
+    "kind": "live",
+    "title": "WordPress 封鎖六個遭植入後門的 WP Connect 外掛",
+    "date": "2026-11-25",
+    "industry": "電商",
+    "attack_chain": [
+      "開發者帳號疑似遭入侵，後門程式碼被提交到各外掛的 WordPress.org 儲存庫",
+      "後門模組每次請求都執行，回傳網站資訊到寫死的 C2 伺服器",
+      "以 eval() 執行伺服器回傳的 PHP 程式碼，可執行 shell 命令、讀寫檔案、傾印使用者表與密碼雜湊",
+      "植入 web shell 並註冊每小時執行的 WP-Cron hook"
+    ],
+    "attck": [
+      "T1195.002",
+      "T1505.003",
+      "T1053"
+    ],
+    "cves": [
+      "CVE-2026-135202"
+    ],
+    "products": [
+      {
+        "name": "air wp sync – airtable to wordpress",
+        "ecosystem": "generic",
+        "affected": [
+          {
+            "introduced": "2.9.1",
+            "fixed": null
+          }
+        ],
+        "cvss": 9.8,
+        "impact": "remote_code_execution"
+      },
+      {
+        "name": "wp sync for notion – notion to wordpress",
+        "ecosystem": "generic",
+        "affected": [
+          {
+            "introduced": "1.7.4",
+            "fixed": null
+          }
+        ],
+        "cvss": 9.8,
+        "impact": "remote_code_execution"
+      },
+      {
+        "name": "add-on brevo for gravity forms",
+        "ecosystem": "generic",
+        "affected": [
+          {
+            "introduced": "2.6.3",
+            "fixed": null
+          }
+        ],
+        "cvss": 9.8,
+        "impact": "remote_code_execution"
+      },
+      {
+        "name": "add-on for contact form 7 to airtable",
+        "ecosystem": "generic",
+        "affected": [
+          {
+            "introduced": "2.5.4",
+            "fixed": null
+          }
+        ],
+        "cvss": 9.8,
+        "impact": "remote_code_execution"
+      },
+      {
+        "name": "add-on for contact form 7 to notion",
+        "ecosystem": "generic",
+        "affected": [
+          {
+            "introduced": "1.6.4",
+            "fixed": null
+          }
+        ],
+        "cvss": 9.8,
+        "impact": "remote_code_execution"
+      },
+      {
+        "name": "orders sync to airtable for woocommerce",
+        "ecosystem": "generic",
+        "affected": [
+          {
+            "introduced": "1.0.2",
+            "fixed": null
+          }
+        ],
+        "cvss": 9.8,
+        "impact": "remote_code_execution"
+      }
+    ],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://thehackernews.com/2026/11/wordpress-blocks-six-backdoored-wp.html",
+        "title": "WordPress Blocks Six Backdoored WP Connect Plugins Before Malicious Releases Go Live",
+        "quote": "The supply chain compromise is being tracked as CVE-2026-135202 (CVSS score: 9.8).",
+        "published": "2026-11-25",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-26T05:43:21Z",
+        "content_hash": "sha256:4dd36a003d1140bdc5a28d6327483e0d7ee0268d782f5b586f1e11d076ea22f5",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": []
+  },
+  "conclusion": "不受影響：技術棧中沒有 air wp sync – airtable to wordpress（資產清單完整且新鮮）。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [],
+  "solutions": [],
+  "notice": null,
+  "status": "not_affected",
+  "evaluated_asset_ids": [],
+  "complete": true,
+  "summary_source": "template",
+  "summary": "WP Connect 開發者帳號疑似遭入侵，六個外掛於11月22日被植入可執行任意程式碼的後門，含 Orders Sync to Airtable for WooCommerce。惡意版本因 WordPress 冷卻機制未實際釋出，網站不太可能受影響，但仍應檢查是否安裝。",
+  "blocks": {
+    "1_summary": {
+      "title": "WordPress 封鎖六個遭植入後門的 WP Connect 外掛",
+      "date": "2026-11-25",
+      "industry": "電商",
+      "attack_chain": [
+        "開發者帳號疑似遭入侵，後門程式碼被提交到各外掛的 WordPress.org 儲存庫",
+        "後門模組每次請求都執行，回傳網站資訊到寫死的 C2 伺服器",
+        "以 eval() 執行伺服器回傳的 PHP 程式碼，可執行 shell 命令、讀寫檔案、傾印使用者表與密碼雜湊",
+        "植入 web shell 並註冊每小時執行的 WP-Cron hook"
+      ],
+      "attck": [
+        "T1195.002",
+        "T1505.003",
+        "T1053"
+      ],
+      "cves": [
+        "CVE-2026-135202"
+      ],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://thehackernews.com/2026/11/wordpress-blocks-six-backdoored-wp.html",
+          "title": "WordPress Blocks Six Backdoored WP Connect Plugins Before Malicious Releases Go Live",
+          "quote": "The supply chain compromise is being tracked as CVE-2026-135202 (CVSS score: 9.8).",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-26T05:43:21Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "WP Connect 開發者帳號疑似遭入侵，六個外掛於11月22日被植入可執行任意程式碼的後門，含 Orders Sync to Airtable for WooCommerce。惡意版本因 WordPress 冷卻機制未實際釋出，網站不太可能受影響，但仍應檢查是否安裝。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "不受影響：技術棧中沒有 air wp sync – airtable to wordpress（資產清單完整且新鮮）。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [],
+      "notes": [
+        "技術棧中沒有 air wp sync – airtable to wordpress（資產清單完整且新鮮）",
+        "技術棧中沒有 wp sync for notion – notion to wordpress（資產清單完整且新鮮）",
+        "技術棧中沒有 add-on brevo for gravity forms（資產清單完整且新鮮）",
+        "技術棧中沒有 add-on for contact form 7 to airtable（資產清單完整且新鮮）",
+        "技術棧中沒有 add-on for contact form 7 to notion（資產清單完整且新鮮）",
+        "技術棧中沒有 orders sync to airtable for woocommerce（資產清單完整且新鮮）"
+      ]
+    },
+    "7_status": {
+      "status": "not_affected",
+      "label": "不受影響"
+    }
+  },
+  "orchestrator_results": []
+}

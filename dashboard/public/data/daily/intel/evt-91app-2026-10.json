@@ -214,7 +214,7 @@
   ],
   "complete": true,
   "summary_source": "live",
-  "summary": "程式比對出 5 項受影響，最高為高風險：內部營運工具對外開放（8 分）、內部程式碼管理平台與品牌 App 的程式碼中有正式金鑰（分別 8 分、10 分），與該事件的入侵手法相符；另有辦公室 NAS 對外開放與測試環境可連到正式訂單資料庫，各為中風險（5 分）。",
+  "summary": "此事件與我們有 5 項相符，最高為高風險：內部營運工具對外開放、程式碼平台與品牌 App 存有正式金鑰，且位於同一條攻擊鏈上（品牌 App 10 分、程式碼平台 8 分、內部營運工具 8 分）；另有辦公室 NAS 對外開放與測試環境可連正式資料庫兩項中風險（各 5 分）。",
   "blocks": {
     "1_summary": {
       "title": "91APP 訂單資料庫遭入侵：未更新的內部工具 Appsmith 成破口，自內部 GitLab 取得資料庫金鑰",
@@ -258,7 +258,7 @@
         "max_level": null,
         "note": null
       },
-      "summary": "程式比對出 5 項受影響，最高為高風險：內部營運工具對外開放（8 分）、內部程式碼管理平台與品牌 App 的程式碼中有正式金鑰（分別 8 分、10 分），與該事件的入侵手法相符；另有辦公室 NAS 對外開放與測試環境可連到正式訂單資料庫，各為中風險（5 分）。",
+      "summary": "此事件與我們有 5 項相符，最高為高風險：內部營運工具對外開放、程式碼平台與品牌 App 存有正式金鑰，且位於同一條攻擊鏈上（品牌 App 10 分、程式碼平台 8 分、內部營運工具 8 分）；另有辦公室 NAS 對外開放與測試環境可連正式資料庫兩項中風險（各 5 分）。",
       "summary_note": null,
       "fixture_note": null
     },
@@ -291,7 +291,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10"
+            "reason": "evt-91app-2026-10、live-91app-artex-traces-2026-11"
           },
           {
             "factor": "位於完整攻擊鏈",
@@ -301,7 +301,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-25T05:51:33Z"
+        "observed_at": "2026-11-26T05:43:21Z"
       },
       {
         "asset_id": "nas-office-01",
@@ -326,12 +326,12 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10、evt-synology-2026-10"
+            "reason": "evt-91app-2026-10、evt-synology-2026-10、live-91app-artex-traces-2026-11"
           }
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-25T05:51:33Z"
+        "observed_at": "2026-11-26T05:43:21Z"
       },
       {
         "asset_id": "gitlab",
@@ -361,7 +361,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10"
+            "reason": "evt-91app-2026-10、live-91app-artex-traces-2026-11"
           },
           {
             "factor": "位於完整攻擊鏈",
@@ -371,7 +371,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-25T05:51:33Z"
+        "observed_at": "2026-11-26T05:43:21Z"
       },
       {
         "asset_id": "brand-app",
@@ -406,7 +406,7 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10"
+            "reason": "evt-91app-2026-10、live-91app-artex-traces-2026-11"
           },
           {
             "factor": "位於完整攻擊鏈",
@@ -416,7 +416,7 @@
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-25T05:51:33Z"
+        "observed_at": "2026-11-26T05:43:21Z"
       },
       {
         "asset_id": "order-db-prod",
@@ -446,12 +446,12 @@
           {
             "factor": "同業事件命中",
             "points": 1,
-            "reason": "evt-91app-2026-10"
+            "reason": "evt-91app-2026-10、live-91app-artex-traces-2026-11"
           }
         ],
         "app_impact": null,
         "to_verify": [],
-        "observed_at": "2026-11-25T05:51:33Z"
+        "observed_at": "2026-11-26T05:43:21Z"
       }
     ],
     "4_unaffected_and_check": {
@@ -565,5 +565,15 @@
       "label": "待處理"
     }
   },
-  "orchestrator_results": []
+  "orchestrator_results": [],
+  "updates": [
+    {
+      "id": "live-91app-artex-traces-2026-11",
+      "title": "91APP 遭駭事件調查發現 ARTEX AI 攻擊框架使用痕跡",
+      "date": "2026-11-26",
+      "status": "open",
+      "conclusion": "5 項受影響，最高風險為高。internal-tool：network.json: internet → internal-tool:443。",
+      "confidence": "provisional"
+    }
+  ]
 }

@@ -1,0 +1,244 @@
+{
+  "event": {
+    "id": "live-fake-drama-app-trojan-banking-2026-11",
+    "kind": "live",
+    "title": "假追劇App藏木馬遙控用戶網銀，逾百帳戶遭盜轉1742萬",
+    "date": "2026-11-26",
+    "industry": "支付",
+    "attack_chain": [
+      "詐騙集團設置追劇App，實際內藏木馬程式",
+      "木馬遠端遙控被害人的手機",
+      "盜用網銀帳戶盜轉存款"
+    ],
+    "attck": [
+      "T1655",
+      "T1219",
+      "T1657"
+    ],
+    "cves": [],
+    "products": [],
+    "revision": "1",
+    "controls": [],
+    "confidence": "provisional",
+    "sources": [
+      {
+        "url": "https://www.cna.com.tw/news/asoc/202611260111.aspx",
+        "title": "假追劇App藏木馬遙控用戶網銀 逾百帳戶受害遭盜轉1742萬",
+        "quote": "刑事局統計至11月21日受理類似案件共100餘起，總財損1742萬餘元，有22家金融機構的客戶受害，包含19家銀行及證券商、3家電子支付。",
+        "published": "2026-11-26",
+        "fetch_status": "ok",
+        "verified": true,
+        "verified_at": "2026-11-26T05:43:21Z",
+        "content_hash": "sha256:c01c9475d855ea13c06fcba89bb5c33e64ecdcb94516cc17f24799cece5f355d",
+        "verification_basis": "live"
+      }
+    ],
+    "demo": false,
+    "is_update_of": null,
+    "proposed_controls": [
+      {
+        "title": "品牌 App 與支付流程需有假冒 App 與遠端遙控木馬的偵測與客戶提醒",
+        "reason": "來源指出詐騙以假 App 夾帶木馬遙控手機盜轉款項，現有控制項沒有涵蓋假冒 App 與客戶端木馬風險"
+      }
+    ]
+  },
+  "conclusion": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+  "affected_count": 0,
+  "max_level": null,
+  "impacts": [
+    {
+      "event_id": "live-fake-drama-app-trojan-banking-2026-11",
+      "asset_id": "*",
+      "basis": "control",
+      "our_state": "事件沒有可比對的產品、版本或控制項",
+      "verdict": "need_check",
+      "risk_id": null,
+      "to_verify": [
+        "人工判斷事件的攻擊手法是否適用於我們的系統",
+        "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+        "建議新增控制項：品牌 App 與支付流程需有假冒 App 與遠端遙控木馬的偵測與客戶提醒"
+      ],
+      "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+      "suggestions": [
+        {
+          "id": "generic-1",
+          "source": "rule",
+          "inferred": false,
+          "target": null,
+          "hypothesis": null,
+          "why": null,
+          "check": "人工判斷事件的攻擊手法是否適用於我們的系統",
+          "how": null,
+          "plain": "依事件內容人工判斷是否適用",
+          "basis": "事件沒有可比對的產品、CVE 或控制項",
+          "systems": [],
+          "controls": []
+        },
+        {
+          "id": "generic-2",
+          "source": "rule",
+          "inferred": false,
+          "target": null,
+          "hypothesis": null,
+          "why": null,
+          "check": "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+          "how": null,
+          "plain": null,
+          "basis": "事件沒有可比對的產品、CVE 或控制項",
+          "systems": [],
+          "controls": []
+        },
+        {
+          "id": "generic-3",
+          "source": "rule",
+          "inferred": false,
+          "target": null,
+          "hypothesis": null,
+          "why": null,
+          "check": "建議新增控制項：品牌 App 與支付流程需有假冒 App 與遠端遙控木馬的偵測與客戶提醒",
+          "how": null,
+          "plain": null,
+          "basis": "事件沒有可比對的產品、CVE 或控制項",
+          "systems": [],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "solutions": [],
+  "notice": null,
+  "status": "need_check",
+  "evaluated_asset_ids": [
+    "*"
+  ],
+  "complete": true,
+  "summary_source": "live",
+  "summary": "程式無法自動判定此事件是否與我們相關，需要人工依事件內容確認是否適用。",
+  "blocks": {
+    "1_summary": {
+      "title": "假追劇App藏木馬遙控用戶網銀，逾百帳戶遭盜轉1742萬",
+      "date": "2026-11-26",
+      "industry": "支付",
+      "attack_chain": [
+        "詐騙集團設置追劇App，實際內藏木馬程式",
+        "木馬遠端遙控被害人的手機",
+        "盜用網銀帳戶盜轉存款"
+      ],
+      "attck": [
+        "T1655",
+        "T1219",
+        "T1657"
+      ],
+      "cves": [],
+      "confidence": "暫定",
+      "label": "真實",
+      "sources": [
+        {
+          "url": "https://www.cna.com.tw/news/asoc/202611260111.aspx",
+          "title": "假追劇App藏木馬遙控用戶網銀 逾百帳戶受害遭盜轉1742萬",
+          "quote": "刑事局統計至11月21日受理類似案件共100餘起，總財損1742萬餘元，有22家金融機構的客戶受害，包含19家銀行及證券商、3家電子支付。",
+          "fetch_status": "ok",
+          "verification_basis": "live",
+          "verified_at": "2026-11-26T05:43:21Z"
+        }
+      ],
+      "verification": {
+        "status": "ok",
+        "issues": [],
+        "max_level": null,
+        "note": null
+      },
+      "summary": "程式無法自動判定此事件是否與我們相關，需要人工依事件內容確認是否適用。",
+      "summary_note": null,
+      "fixture_note": null
+    },
+    "2_conclusion": {
+      "text": "無法自動判定：事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產，需要人工確認。",
+      "affected_count": 0,
+      "max_level": null
+    },
+    "4_unaffected_and_check": {
+      "not_affected": [],
+      "need_check": [
+        {
+          "asset_id": "*",
+          "our_state": "事件沒有可比對的產品、版本或控制項",
+          "basis": "control",
+          "verdict": "need_check",
+          "reason": "事件沒有可比對的產品、CVE 或控制項，程式沒有比對任何資產",
+          "risk_id": null,
+          "level": null,
+          "score": null,
+          "breakdown": [],
+          "app_impact": null,
+          "to_verify": [
+            "人工判斷事件的攻擊手法是否適用於我們的系統",
+            "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+            "建議新增控制項：品牌 App 與支付流程需有假冒 App 與遠端遙控木馬的偵測與客戶提醒"
+          ],
+          "observed_at": "2026-11-26T05:43:21Z",
+          "suggestions": [
+            {
+              "id": "generic-1",
+              "source": "rule",
+              "inferred": false,
+              "target": null,
+              "hypothesis": null,
+              "why": null,
+              "check": "人工判斷事件的攻擊手法是否適用於我們的系統",
+              "how": null,
+              "plain": "依事件內容人工判斷是否適用",
+              "basis": "事件沒有可比對的產品、CVE 或控制項",
+              "systems": [],
+              "controls": []
+            },
+            {
+              "id": "generic-2",
+              "source": "rule",
+              "inferred": false,
+              "target": null,
+              "hypothesis": null,
+              "why": null,
+              "check": "把事件對應到 controls.yaml 的控制項；沒有合適的就建議新增",
+              "how": null,
+              "plain": null,
+              "basis": "事件沒有可比對的產品、CVE 或控制項",
+              "systems": [],
+              "controls": []
+            },
+            {
+              "id": "generic-3",
+              "source": "rule",
+              "inferred": false,
+              "target": null,
+              "hypothesis": null,
+              "why": null,
+              "check": "建議新增控制項：品牌 App 與支付流程需有假冒 App 與遠端遙控木馬的偵測與客戶提醒",
+              "how": null,
+              "plain": null,
+              "basis": "事件沒有可比對的產品、CVE 或控制項",
+              "systems": [],
+              "controls": []
+            }
+          ]
+        }
+      ],
+      "notes": []
+    },
+    "7_status": {
+      "status": "need_check",
+      "label": "需確認"
+    }
+  },
+  "orchestrator_results": [
+    {
+      "stage": "review",
+      "agent": "a5",
+      "subagent": "intel-report-writer",
+      "target_type": "event",
+      "target_id": "live-fake-drama-app-trojan-banking-2026-11",
+      "text": "程式無法自動判定此事件是否與我們相關，需要人工依事件內容確認是否適用。",
+      "source": "live"
+    }
+  ]
+}
