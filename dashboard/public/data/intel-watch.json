@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-26T08:21:09Z",
+  "checked_at": "2026-11-26T19:02:06Z",
   "advisories_checked": 5,
   "hits": [],
   "dispatched": false,
@@ -685,7 +685,7 @@
       "revision": null
     },
     "CVE-2025-42884": {
-      "checked_at": "2026-11-25T14:31:16Z",
+      "checked_at": "2026-11-26T19:02:06Z",
       "mapped": false,
       "revision": null
     },
@@ -730,7 +730,7 @@
       "revision": null
     },
     "CVE-2026-111497": {
-      "checked_at": "2026-11-25T14:31:16Z",
+      "checked_at": "2026-11-26T19:02:06Z",
       "mapped": true,
       "revision": "2026-11-24T15:17:09.400"
     },
@@ -795,7 +795,7 @@
       "revision": null
     },
     "CVE-2026-123890": {
-      "checked_at": "2026-11-25T14:31:16Z",
+      "checked_at": "2026-11-26T19:02:06Z",
       "mapped": false,
       "revision": null
     },
@@ -810,7 +810,7 @@
       "revision": null
     },
     "CVE-2026-129448": {
-      "checked_at": "2026-11-25T14:31:16Z",
+      "checked_at": "2026-11-26T19:02:06Z",
       "mapped": false,
       "revision": null
     },
@@ -885,27 +885,27 @@
       "revision": null
     },
     "CVE-2026-41709": {
-      "checked_at": "2026-11-25T14:31:16Z",
+      "checked_at": "2026-11-26T19:02:06Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-46300": {
-      "checked_at": "2026-11-25T14:31:16Z",
+      "checked_at": "2026-11-26T19:02:06Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-48356": {
-      "checked_at": "2026-11-25T14:31:16Z",
+      "checked_at": "2026-11-26T19:02:06Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-76418": {
-      "checked_at": "2026-11-25T14:31:16Z",
+      "checked_at": "2026-11-26T19:02:06Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-76466": {
-      "checked_at": "2026-11-25T14:31:16Z",
+      "checked_at": "2026-11-26T19:02:06Z",
       "mapped": false,
       "revision": null
     },
@@ -940,7 +940,7 @@
       "revision": null
     },
     "CVE-2026-97229": {
-      "checked_at": "2026-11-25T14:31:16Z",
+      "checked_at": "2026-11-26T19:02:06Z",
       "mapped": true,
       "revision": "2026-11-02T13:30:16.800"
     }
