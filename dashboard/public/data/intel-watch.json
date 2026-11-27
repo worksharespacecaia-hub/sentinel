@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-11-26T19:02:06Z",
-  "advisories_checked": 5,
+  "checked_at": "2026-11-27T02:12:25Z",
+  "advisories_checked": 4,
   "hits": [],
   "dispatched": false,
   "items": [
@@ -406,60 +406,6 @@
       "generated_at": "2026-11-21T11:05:09Z"
     },
     {
-      "id": "kev-cve-2026-111497",
-      "kind": "advisory",
-      "generated_by": "kev-nvd",
-      "revision": "2026-11-24T15:17:09.400",
-      "title": "CISA KEV：Google Brotli Unchecked Return Value Vulnerability（CVE-2026-111497）",
-      "date": "2026-10-27",
-      "industry": null,
-      "summary": "A buffer overflow vulnerability in the Brotli decoder (c/dec/decode.c) in Google Brotli versions 1.0.3 through 1.2.0 on all platforms allows a remote unauthenticated attacker to corrupt adjacent decoder state memory, disclose sensitive memory contents, cause a denial of service, or potentially execu",
-      "attack_chain": [],
-      "attck": [],
-      "cves": [
-        "CVE-2026-111497"
-      ],
-      "controls": [],
-      "confidence": "confirmed",
-      "products": [
-        {
-          "name": "node",
-          "ecosystem": "generic",
-          "affected": [
-            {
-              "end_excluding": "22.23.4"
-            },
-            {
-              "start_including": "23.0.0",
-              "end_excluding": "24.22.1"
-            },
-            {
-              "start_including": "25.0.0",
-              "end_excluding": "26.12.1"
-            }
-          ],
-          "cvss": 9.8,
-          "known_exploited": true,
-          "impact": "other"
-        }
-      ],
-      "sources": [
-        {
-          "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search=CVE-2026-111497",
-          "title": "CISA Known Exploited Vulnerabilities：CVE-2026-111497",
-          "quote": null,
-          "published": "2026-10-27"
-        },
-        {
-          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-111497",
-          "title": "NVD：CVE-2026-111497",
-          "quote": null,
-          "published": "2026-10-22"
-        }
-      ],
-      "generated_at": "2026-11-25T14:31:16Z"
-    },
-    {
       "id": "kev-cve-2026-119977",
       "kind": "advisory",
       "generated_by": "kev-nvd",
@@ -660,12 +606,12 @@
   ],
   "kev_checked": {
     "CVE-2023-25914": {
-      "checked_at": "2026-11-25T23:38:18Z",
+      "checked_at": "2026-11-27T02:12:25Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2023-25915": {
-      "checked_at": "2026-11-25T23:38:18Z",
+      "checked_at": "2026-11-27T02:12:25Z",
       "mapped": false,
       "revision": null
     },
@@ -680,7 +626,7 @@
       "revision": null
     },
     "CVE-2025-41450": {
-      "checked_at": "2026-11-25T23:38:18Z",
+      "checked_at": "2026-11-27T02:12:25Z",
       "mapped": false,
       "revision": null
     },
@@ -695,12 +641,7 @@
       "revision": null
     },
     "CVE-2026-103406": {
-      "checked_at": "2026-11-25T23:38:18Z",
-      "mapped": false,
-      "revision": null
-    },
-    "CVE-2026-106931": {
-      "checked_at": "2026-11-19T21:37:18Z",
+      "checked_at": "2026-11-27T02:12:25Z",
       "mapped": false,
       "revision": null
     },
@@ -719,13 +660,8 @@
       "mapped": false,
       "revision": null
     },
-    "CVE-2026-110936": {
-      "checked_at": "2026-11-19T21:37:18Z",
-      "mapped": false,
-      "revision": null
-    },
     "CVE-2026-111357": {
-      "checked_at": "2026-11-25T23:38:18Z",
+      "checked_at": "2026-11-27T02:12:25Z",
       "mapped": false,
       "revision": null
     },
@@ -740,7 +676,7 @@
       "revision": null
     },
     "CVE-2026-111793": {
-      "checked_at": "2026-11-25T23:38:18Z",
+      "checked_at": "2026-11-27T02:12:25Z",
       "mapped": false,
       "revision": null
     },
@@ -785,7 +721,7 @@
       "revision": null
     },
     "CVE-2026-123158": {
-      "checked_at": "2026-11-25T23:38:18Z",
+      "checked_at": "2026-11-27T02:12:25Z",
       "mapped": false,
       "revision": null
     },
@@ -815,47 +751,47 @@
       "revision": null
     },
     "CVE-2026-131914": {
-      "checked_at": "2026-11-25T23:38:18Z",
+      "checked_at": "2026-11-27T02:12:25Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-132165": {
-      "checked_at": "2026-11-25T23:38:18Z",
+      "checked_at": "2026-11-27T02:12:25Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-132224": {
-      "checked_at": "2026-11-25T23:38:18Z",
+      "checked_at": "2026-11-27T02:12:25Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-133275": {
-      "checked_at": "2026-11-25T23:38:18Z",
+      "checked_at": "2026-11-27T02:12:25Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-133303": {
-      "checked_at": "2026-11-25T23:38:18Z",
+      "checked_at": "2026-11-27T02:12:25Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-133311": {
-      "checked_at": "2026-11-25T23:38:18Z",
+      "checked_at": "2026-11-27T02:12:25Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-133323": {
-      "checked_at": "2026-11-25T23:38:18Z",
+      "checked_at": "2026-11-27T02:12:25Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-133324": {
-      "checked_at": "2026-11-25T23:38:18Z",
+      "checked_at": "2026-11-27T02:12:25Z",
       "mapped": false,
       "revision": null
     },
     "CVE-2026-133469": {
-      "checked_at": "2026-11-25T23:38:18Z",
+      "checked_at": "2026-11-27T02:12:25Z",
       "mapped": false,
       "revision": null
     },
@@ -875,7 +811,7 @@
       "revision": null
     },
     "CVE-2026-20320": {
-      "checked_at": "2026-11-25T23:38:18Z",
+      "checked_at": "2026-11-27T02:12:25Z",
       "mapped": false,
       "revision": null
     },
@@ -916,26 +852,6 @@
     },
     "CVE-2026-90817": {
       "checked_at": "2026-11-26T08:21:09Z",
-      "mapped": false,
-      "revision": null
-    },
-    "CVE-2026-96652": {
-      "checked_at": "2026-11-19T21:37:18Z",
-      "mapped": false,
-      "revision": null
-    },
-    "CVE-2026-96654": {
-      "checked_at": "2026-11-19T21:37:18Z",
-      "mapped": false,
-      "revision": null
-    },
-    "CVE-2026-96655": {
-      "checked_at": "2026-11-19T21:37:18Z",
-      "mapped": false,
-      "revision": null
-    },
-    "CVE-2026-96656": {
-      "checked_at": "2026-11-19T21:37:18Z",
       "mapped": false,
       "revision": null
     },
